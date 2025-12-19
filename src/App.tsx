@@ -1,5 +1,5 @@
 import { Widgemo } from 'widgemo-core';
-import { WidgemoConfig } from 'widgemo-core'; // adjust path if needed
+import type { WidgemoConfig } from 'widgemo-core';
 import { useState } from 'react';
 import './App.css';
 
@@ -21,6 +21,7 @@ const mockUsers: User[] = [
 const exampleConfig: WidgemoConfig = {
   title: 'Users Management',
   mode: 'table', // try 'cards', 'chart', etc.
+  dataSource: { type: 'static' },
   fields: [
     { name: 'id', label: 'ID', type: 'number' },
     { name: 'name', label: 'Full Name', type: 'text' },
@@ -52,12 +53,12 @@ function App() {
       await new Promise(resolve => setTimeout(resolve, 300));
       return { data: mockUsers, total: mockUsers.length };
     },
-    createRecord: async (record: Omit<User, 'id'>) => {
-      const newRecord: User = { ...record, id: Math.max(...data.map(d => d.id)) + 1 };
+    createRecord: async (record: Record<string, unknown>) => {
+      const newRecord = { ...record, id: Math.max(...data.map(d => d.id)) + 1 } as User;
       setData([...data, newRecord]);
       return newRecord;
     },
-    updateRecord: async (id: number, record: Partial<User>) => {
+    updateRecord: async (id: number, record: Record<string, unknown>) => {
       setData(data.map(item => (item.id === id ? { ...item, ...record } : item)));
     },
     deleteRecord: async (id: number) => {
