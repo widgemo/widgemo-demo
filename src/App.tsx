@@ -48,10 +48,12 @@ function App() {
   const [data, setData] = useState<User[]>(mockUsers);
 
   const adapters = {
-    fetchData: async () => {
-      // Simulate API delay
+    fetchData: async (params: Record<string, unknown>) => {
+      console.log('Widgemo called fetchData with params:', params);
       await new Promise(resolve => setTimeout(resolve, 300));
-      return { data: mockUsers, total: mockUsers.length };
+      const result = { data: mockUsers, total: mockUsers.length };
+      console.log('fetchData returning:', result);
+      return result;
     },
     createRecord: async (record: Record<string, unknown>) => {
       const newRecord = { ...record, id: Math.max(...data.map(d => d.id)) + 1 } as User;
