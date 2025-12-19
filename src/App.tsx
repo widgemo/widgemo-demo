@@ -42,6 +42,11 @@ const exampleConfig: WidgemoConfig = {
     edit: true,
     delete: true,
   },
+  labels: {
+    add: 'Add Record',
+    empty: 'No data yet — but fetch succeeded!',
+    loading: 'Loading records...',
+  },
 };
 
 function App() {
