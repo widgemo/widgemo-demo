@@ -35,7 +35,7 @@ const exampleConfig: WidgemoConfig = {
         { value: 'User', label: 'Regular User' },
       ],
     },
-    { name: 'active', label: 'Active', type: 'boolean' },
+    { name: 'active', label: 'Active', type: 'boolean', booleanTrueLabel:  '🟢 Online', booleanFalseLabel: '🔴 Offline' },
   ],
   actions: {
     create: true,
