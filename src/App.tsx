@@ -1,6 +1,6 @@
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig } from 'widgemo-core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 // Define User type
@@ -51,6 +51,15 @@ const exampleConfig: WidgemoConfig = {
 
 function App() {
   const [data, setData] = useState<User[]>(mockUsers);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   const adapters = {
     fetchData: async (params: Record<string, unknown>) => {
@@ -74,8 +83,24 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Widgemo Core Demo</h1>
+    <div className={`theme-${theme}`} style={{ padding: '2rem' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Widgemo Core Demo</h1>
+        <button 
+          onClick={toggleTheme}
+          style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '0.5rem',
+            border: `1px solid var(--border-color)`,
+            background: `var(--button-bg)`,
+            color: `var(--text-color)`,
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+        </button>
+      </div>
       <Widgemo config={exampleConfig} adapters={adapters} />
       
       <h2 style={{ marginTop: '4rem' }}>Another Widgemo (Cards mode)</h2>

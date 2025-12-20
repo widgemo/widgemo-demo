@@ -5,6 +5,40 @@
   text-align: center;
 }
 
+.theme-light {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #cccccc;
+  --button-bg: #f0f0f0;
+  --button-hover: #e0e0e0;
+}
+
+.theme-dark {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --border-color: #444444;
+  --button-bg: #333333;
+  --button-hover: #555555;
+}
+
+.theme-light,
+.theme-dark {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-light h1,
+.theme-light h2 {
+  color: var(--text-color);
+}
+
+.theme-dark h1,
+.theme-dark h2 {
+  color: var(--text-color);
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
