@@ -29,6 +29,49 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.config-popover {
+  background-color: #333333 !important;
+  border: 2px solid #cccccc !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+.config-popover .popover-header {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #cccccc !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.config-popover .popover-body {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.config-popover .popover-arrow {
+  display: none;
+}
+
+.copy-button {
+  background: none !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  padding: 0.25rem 0.5rem !important;
+  text-decoration: none !important;
+}
+
+.copy-button:hover {
+  background: #333333 !important;
+  border-radius: 4px !important;
+}
+
+.config-popover pre {
+  color: #ffffff !important;
+  background-color: #333333 !important;
+}
+
 .theme-light h1,
 .theme-light h2 {
   color: var(--text-color);

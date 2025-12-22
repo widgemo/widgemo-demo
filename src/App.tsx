@@ -1,6 +1,8 @@
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig } from 'widgemo-core';
 import { useState, useEffect } from 'react';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import { FaInfoCircle, FaCopy } from 'react-icons/fa';
 import './App.css';
 
 // Define User type
@@ -49,6 +51,60 @@ const exampleConfig: WidgemoConfig = {
   },
 };
 
+const tableConfig2: WidgemoConfig = {
+  title: 'Advanced Table',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center' },
+    { name: 'name', label: 'Name', type: 'text', sortable: true },
+    { name: 'email', label: 'Email', type: 'email', filterable: true },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ], editable: true },
+    { name: 'active', label: 'Active', type: 'boolean' },
+  ],
+  actions: { create: true, edit: true, delete: true },
+  pagination: { enabled: true, defaultPageSize: 5 },
+  sorting: { enabled: true },
+  filtering: { enabled: true },
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
+};
+
+const cardsConfig: WidgemoConfig = {
+  title: 'User Cards',
+  mode: 'cards',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center', showLabel: false },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email', showLabel: false },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ] },
+    { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
+  ],
+  actions: { view: true },
+  styling: { card: { shadow: true, borderRadius: '12px' } },
+};
+
+const tilesConfig: WidgemoConfig = {
+  title: 'User Tiles',
+  mode: 'tiles',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ] },
+  ],
+  actions: { edit: true },
+};
+
 function App() {
   const [data, setData] = useState<User[]>(mockUsers);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -82,6 +138,26 @@ function App() {
     },
   };
 
+  const ConfigPopover = (config: WidgemoConfig) => (
+    <Popover className="config-popover" style={{ width: '50vw', maxHeight: '60vh' }}>
+      <Popover.Header className="d-flex align-items-center" style={{ position: 'relative' }}>
+        Configuration
+        <Button 
+          variant="link" 
+          className="copy-button"
+          size="sm" 
+          style={{ position: 'absolute', right: '0' }}
+          onClick={() => navigator.clipboard.writeText(JSON.stringify(config, null, 2))}
+        >
+          <FaCopy /> Copy
+        </Button>
+      </Popover.Header>
+      <Popover.Body style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+        <pre>{JSON.stringify(config, null, 2)}</pre>
+      </Popover.Body>
+    </Popover>
+  );
+
   return (
     <div className={`theme-${theme}`} style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -101,13 +177,56 @@ function App() {
           {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
         </button>
       </div>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(exampleConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
       <Widgemo config={exampleConfig} adapters={adapters} />
       
-      <h2 style={{ marginTop: '4rem' }}>Another Widgemo (Cards mode)</h2>
-      <Widgemo
-        config={{ ...exampleConfig, mode: 'cards', title: 'Users as Cards' }}
-        adapters={adapters}
-      />
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Advanced Table with Pagination, Sorting, Filtering</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(tableConfig2)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={tableConfig2} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Cards Mode</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(cardsConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={cardsConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Tiles Mode</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(tilesConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={tilesConfig} adapters={adapters} />
     </div>
   );
 }
