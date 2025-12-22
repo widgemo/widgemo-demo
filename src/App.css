@@ -5,6 +5,14 @@
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  #root {
+    width: 100%;
+    max-width: none;
+    padding: 1rem;
+  }
+}
+
 .theme-light {
   --bg-color: #ffffff;
   --text-color: #161616;

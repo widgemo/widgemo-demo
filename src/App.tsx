@@ -397,8 +397,7 @@ function App() {
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Table Variants</h1>
 
-      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Advanced Table with Pagination, Sorting, Filtering</h2>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -410,8 +409,8 @@ function App() {
       </div>
       <Widgemo config={tableConfig2} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Simple Table</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -423,8 +422,8 @@ function App() {
       </div>
       <Widgemo config={simpleTableConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Table with Sorting</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -436,8 +435,8 @@ function App() {
       </div>
       <Widgemo config={sortingTableConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Table with Filtering</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -449,8 +448,8 @@ function App() {
       </div>
       <Widgemo config={filteringTableConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Compact Table</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -462,8 +461,8 @@ function App() {
       </div>
       <Widgemo config={compactTableConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Minimal Table</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -477,8 +476,8 @@ function App() {
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Card Variants</h1>
 
-      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Cards Mode</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -490,8 +489,8 @@ function App() {
       </div>
       <Widgemo config={cardsConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Cards with Labels</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -503,8 +502,8 @@ function App() {
       </div>
       <Widgemo config={cardsWithLabelsConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Cards with Full Actions</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -516,8 +515,8 @@ function App() {
       </div>
       <Widgemo config={cardsWithActionsConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Minimal Cards</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -529,8 +528,8 @@ function App() {
       </div>
       <Widgemo config={minimalCardsConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Centered Cards</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
@@ -542,8 +541,8 @@ function App() {
       </div>
       <Widgemo config={centeredCardsConfig} adapters={adapters} />
 
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Minimal Cards</h2>
+      <p></p>
+      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
         <OverlayTrigger
           trigger="click"
           placement="auto"
