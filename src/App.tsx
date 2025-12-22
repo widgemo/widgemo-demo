@@ -51,6 +51,101 @@ const exampleConfig: WidgemoConfig = {
   },
 };
 
+// Full configuration with all possible properties (commented out unused ones)
+const fullConfigJson = `{
+  "id": "users-management", // Optional ID for debugging
+  "title": "Users Management",
+  "mode": "table", // 'table' | 'cards' | 'tiles' | 'chart' | 'text' | 'image' | 'list'
+  "defaultViewMode": "table", // 'table' | 'tile' | 'chart'
+  // "collapsible": false, // Whether the component is collapsible
+  // "tableName": "users", // Table name for database operations
+  // "customComponent": null, // Custom component for rendering records
+  // "drillDown": null, // Drill-down function for navigation
+  "dataSource": {
+    "type": "static", // 'static' | 'api' | 'graphql' | 'custom'
+    // "config": {} // Additional configuration for the data source
+  },
+  "fields": [
+    { "name": "id", "label": "ID", "type": "number" },
+    { "name": "name", "label": "Full Name", "type": "text" },
+    { "name": "email", "label": "Email", "type": "email" },
+    {
+      "name": "role",
+      "label": "Role",
+      "type": "select",
+      "options": [
+        { "value": "Admin", "label": "Administrator" },
+        { "value": "User", "label": "Regular User" }
+      ]
+    },
+    { "name": "active", "label": "Active", "type": "boolean", "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" }
+  ],
+  "actions": {
+    "create": true,
+    "edit": true,
+    "delete": true
+    // "view": false, // Enable view/detail functionality
+    // "custom": [] // Custom actions array
+  },
+  // "chartConfig": { // Chart-specific configuration
+  //   "type": "bar", // 'bar' | 'line' | 'pie' | 'area' | 'scatter'
+  //   "xAxis": "name",
+  //   "yAxis": "id"
+  // },
+  // "pagination": { // Pagination configuration
+  //   "enabled": true,
+  //   "defaultPageSize": 10,
+  //   "pageSizeOptions": [5, 10, 25, 50]
+  // },
+  // "sorting": { // Sorting configuration
+  //   "enabled": true,
+  //   "defaultSort": { "field": "name", "direction": "asc" }
+  // },
+  // "filtering": { // Filtering configuration
+  //   "enabled": true,
+  //   "filters": []
+  // },
+  // "styling": { // Styling and theming options
+  //   "className": "",
+  //   "theme": "light", // 'light' | 'dark' | 'auto'
+  //   "compact": false,
+  //   "table": {
+  //     "showBorder": true,
+  //     "borderStyle": "solid",
+  //     "cellBorder": true,
+  //     "backgroundColor": "var(--bg-color)",
+  //     "shadow": true
+  //   },
+  //   "card": {
+  //     "showBorder": true,
+  //     "borderRadius": "4px",
+  //     "shadow": true
+  //   }
+  // },
+  // "emptyState": { // Empty state configuration
+  //   "message": "No data available",
+  //   "action": { "label": "Add First Item", "onClick": null }
+  // },
+  // "i18n": { // Internationalization options
+  //   "locale": "en",
+  //   "messages": {}
+  // },
+  // "header": { // Header configuration
+  //   "showRefresh": true,
+  //   "showViewToggle": false,
+  //   "showColumnSelector": false,
+  //   "showDeletedToggle": false,
+  //   "includeDeleted": false
+  // },
+  "labels": { // Configurable UI strings
+    "add": "Add Record",
+    "empty": "No data yet — but fetch succeeded!",
+    "loading": "Loading records..."
+    // "refresh": "Refresh",
+    // "actions": "Actions"
+  }
+}`;
+
 const tableConfig2: WidgemoConfig = {
   title: 'Advanced Table',
   mode: 'table',
@@ -286,6 +381,8 @@ const minimalCardConfig: WidgemoConfig = {
 function App() {
   const [data, setData] = useState<User[]>(mockUsers);
   const [theme, setTheme] = useState<string>('light');
+  const [config, setConfig] = useState<WidgemoConfig>(exampleConfig);
+  const [configJson, setConfigJson] = useState<string>(fullConfigJson);
 
   const themes = [
     { name: 'Light Default', value: 'light' },
@@ -299,6 +396,22 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  const applyConfig = () => {
+    try {
+      // Remove // comments before parsing
+      const cleanedJson = configJson.replace(/\/\/.*$/gm, '').replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+      const newConfig = JSON.parse(cleanedJson) as WidgemoConfig;
+      setConfig(newConfig);
+    } catch (error) {
+      alert('Invalid JSON: ' + (error as Error).message);
+    }
+  };
+
+  const resetConfig = () => {
+    setConfig(exampleConfig);
+    setConfigJson(fullConfigJson);
+  };
 
   const adapters = {
     fetchData: async (params: Record<string, unknown>) => {
@@ -388,12 +501,27 @@ function App() {
           trigger="click"
           placement="auto"
           rootClose={true}
-          overlay={ConfigPopover(exampleConfig)}
+          overlay={ConfigPopover(config)}
         >
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={exampleConfig} adapters={adapters} />
+      <Widgemo config={config} adapters={adapters} />
+
+      <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+        <h3>Sandbox - Edit Configuration</h3>
+        <textarea
+          className="form-control"
+          value={configJson}
+          onChange={(e) => setConfigJson(e.target.value)}
+          rows={20}
+          style={{ fontFamily: 'monospace' }}
+        />
+        <div style={{ marginTop: '1rem' }}>
+          <Button variant="primary" onClick={applyConfig} style={{ marginRight: '1rem' }}>Apply Changes</Button>
+          <Button variant="secondary" onClick={resetConfig}>Reset to Default</Button>
+        </div>
+      </div>
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Table Variants</h1>
 
