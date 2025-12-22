@@ -393,6 +393,17 @@ function App() {
     { name: 'Dark Purple', value: 'dark-purple' },
   ];
 
+  const themeBaseColors: Record<string, string> = {
+    light: '#ffffff',
+    'light-blue': '#f0f8ff',
+    'light-green': '#f0fff0',
+    dark: '#1a1a1a',
+    'dark-red': '#2a1a1a',
+    'dark-purple': '#f8f0ff',
+  };
+
+  const baseColor = themeBaseColors[theme] || '#ffffff';
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
@@ -506,7 +517,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={config} adapters={adapters} />
+      <Widgemo config={config} adapters={adapters} baseColor={baseColor} />
 
       <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
         <h3>Sandbox - Edit Configuration</h3>
@@ -535,7 +546,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={tableConfig2} adapters={adapters} />
+      <Widgemo config={tableConfig2} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -548,7 +559,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={simpleTableConfig} adapters={adapters} />
+      <Widgemo config={simpleTableConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -561,7 +572,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={sortingTableConfig} adapters={adapters} />
+      <Widgemo config={sortingTableConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -574,7 +585,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={filteringTableConfig} adapters={adapters} />
+      <Widgemo config={filteringTableConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -587,7 +598,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={compactTableConfig} adapters={adapters} />
+      <Widgemo config={compactTableConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -600,7 +611,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={minimalTableConfig} adapters={adapters} />
+      <Widgemo config={minimalTableConfig} adapters={adapters} baseColor={baseColor} />
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Card Variants</h1>
 
@@ -615,7 +626,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={cardsConfig} adapters={adapters} />
+      <Widgemo config={cardsConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -628,7 +639,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={cardsWithLabelsConfig} adapters={adapters} />
+      <Widgemo config={cardsWithLabelsConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -641,7 +652,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={cardsWithActionsConfig} adapters={adapters} />
+      <Widgemo config={cardsWithActionsConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -654,7 +665,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={minimalCardsConfig} adapters={adapters} />
+      <Widgemo config={minimalCardsConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -667,7 +678,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={centeredCardsConfig} adapters={adapters} />
+      <Widgemo config={centeredCardsConfig} adapters={adapters} baseColor={baseColor} />
 
       <p></p>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -680,7 +691,7 @@ function App() {
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={minimalCardConfig} adapters={adapters} />
+      <Widgemo config={minimalCardConfig} adapters={adapters} baseColor={baseColor} />
     </div>
   );
 }
