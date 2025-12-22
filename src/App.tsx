@@ -69,6 +69,7 @@ const tableConfig2: WidgemoConfig = {
   pagination: { enabled: true, defaultPageSize: 5 },
   sorting: { enabled: true },
   filtering: { enabled: true },
+  header: { showRefresh: true, showViewToggle: true },
   styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
 };
 
@@ -212,6 +213,7 @@ const cardsWithActionsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
   ],
   actions: { create: true, edit: true, delete: true },
+  header: { showRefresh: false, showDeletedToggle: true },
   styling: { card: { shadow: true } },
 };
 
