@@ -140,14 +140,22 @@ function App() {
 
   const ConfigPopover = (config: WidgemoConfig) => (
     <Popover className="config-popover" style={{ width: '50vw', maxHeight: '60vh' }}>
-      <Popover.Header className="d-flex align-items-center" style={{ position: 'relative' }}>
+      <Popover.Header className="d-flex align-items-center" style={{ position: 'relative', paddingRight: '2.5rem' }}>
         Configuration
         <Button 
           variant="link" 
           className="copy-button"
           size="sm" 
-          style={{ position: 'absolute', right: '0' }}
-          onClick={() => navigator.clipboard.writeText(JSON.stringify(config, null, 2))}
+          style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(JSON.stringify(config, null, 2));
+              alert('Configuration copied to clipboard!');
+            } catch (err) {
+              console.error('Failed to copy: ', err);
+              alert('Failed to copy to clipboard');
+            }
+          }}
         >
           <FaCopy /> Copy
         </Button>
