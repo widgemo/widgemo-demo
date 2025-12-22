@@ -72,6 +72,82 @@ const tableConfig2: WidgemoConfig = {
   styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
 };
 
+const simpleTableConfig: WidgemoConfig = {
+  title: 'Simple Table',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number' },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ] },
+    { name: 'active', label: 'Active', type: 'boolean' },
+  ],
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
+};
+
+const sortingTableConfig: WidgemoConfig = {
+  title: 'Table with Sorting',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', sortable: true },
+    { name: 'name', label: 'Name', type: 'text', sortable: true },
+    { name: 'email', label: 'Email', type: 'email', sortable: true },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ], sortable: true },
+    { name: 'active', label: 'Active', type: 'boolean', sortable: true },
+  ],
+  actions: { view: true },
+  sorting: { enabled: true },
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
+};
+
+const filteringTableConfig: WidgemoConfig = {
+  title: 'Table with Filtering',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', filterable: true },
+    { name: 'name', label: 'Name', type: 'text', filterable: true },
+    { name: 'email', label: 'Email', type: 'email', filterable: true },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ], filterable: true },
+    { name: 'active', label: 'Active', type: 'boolean', filterable: true },
+  ],
+  actions: { edit: true },
+  filtering: { enabled: true },
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
+};
+
+const compactTableConfig: WidgemoConfig = {
+  title: 'Compact Table',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center' },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ] },
+    { name: 'active', label: 'Active', type: 'boolean' },
+  ],
+  actions: { create: true, edit: true, delete: true },
+  pagination: { enabled: true, defaultPageSize: 3 },
+  sorting: { enabled: true },
+  filtering: { enabled: true },
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: false, borderRadius: '4px' } },
+};
+
 const cardsConfig: WidgemoConfig = {
   title: 'User Cards',
   mode: 'cards',
@@ -90,9 +166,45 @@ const cardsConfig: WidgemoConfig = {
   styling: { card: { shadow: true, borderRadius: '12px' } },
 };
 
-const tilesConfig: WidgemoConfig = {
-  title: 'User Tiles',
-  mode: 'tiles',
+const cardsWithLabelsConfig: WidgemoConfig = {
+  title: 'Cards with Labels',
+  mode: 'cards',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center', showLabel: true },
+    { name: 'name', label: 'Name', type: 'text', showLabel: true },
+    { name: 'email', label: 'Email', type: 'email', showLabel: true },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ], showLabel: true },
+    { name: 'active', label: 'Active', type: 'boolean', align: 'right', showLabel: true },
+  ],
+  actions: { view: true },
+  styling: { card: { shadow: true, borderRadius: '12px' } },
+};
+
+const cardsWithActionsConfig: WidgemoConfig = {
+  title: 'Cards with Full Actions',
+  mode: 'cards',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center', showLabel: false },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email', showLabel: false },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ] },
+    { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
+  ],
+  actions: { create: true, edit: true, delete: true },
+  styling: { card: { shadow: true, borderRadius: '12px' } },
+};
+
+const minimalCardsConfig: WidgemoConfig = {
+  title: 'Minimal Cards',
+  mode: 'cards',
   dataSource: { type: 'static' },
   fields: [
     { name: 'name', label: 'Name', type: 'text' },
@@ -102,7 +214,25 @@ const tilesConfig: WidgemoConfig = {
       { value: 'User', label: 'User' },
     ] },
   ],
+  styling: { card: { shadow: false, borderRadius: '4px' } },
+};
+
+const centeredCardsConfig: WidgemoConfig = {
+  title: 'Centered Cards',
+  mode: 'cards',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number', align: 'center', showLabel: true },
+    { name: 'name', label: 'Name', type: 'text', align: 'center', showLabel: true },
+    { name: 'email', label: 'Email', type: 'email', align: 'center', showLabel: true },
+    { name: 'role', label: 'Role', type: 'select', options: [
+      { value: 'Admin', label: 'Admin' },
+      { value: 'User', label: 'User' },
+    ], align: 'center', showLabel: true },
+    { name: 'active', label: 'Active', type: 'boolean', align: 'center', showLabel: true },
+  ],
   actions: { edit: true },
+  styling: { card: { shadow: true, borderRadius: '8px' } },
 };
 
 function App() {
@@ -210,7 +340,9 @@ function App() {
       </div>
       <Widgemo config={exampleConfig} adapters={adapters} />
       
-      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Table Variants</h1>
+      
+      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Advanced Table with Pagination, Sorting, Filtering</h2>
         <OverlayTrigger
           trigger="click"
@@ -224,6 +356,60 @@ function App() {
       <Widgemo config={tableConfig2} adapters={adapters} />
       
       <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Simple Table</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(simpleTableConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={simpleTableConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Table with Sorting</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(sortingTableConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={sortingTableConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Table with Filtering</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(filteringTableConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={filteringTableConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Compact Table</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(compactTableConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={compactTableConfig} adapters={adapters} />
+      
+      <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Card Variants</h1>
+      
+      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Cards Mode</h2>
         <OverlayTrigger
           trigger="click"
@@ -237,17 +423,56 @@ function App() {
       <Widgemo config={cardsConfig} adapters={adapters} />
       
       <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Tiles Mode</h2>
+        <h2>Cards with Labels</h2>
         <OverlayTrigger
           trigger="click"
           placement="auto"
           rootClose={true}
-          overlay={ConfigPopover(tilesConfig)}
+          overlay={ConfigPopover(cardsWithLabelsConfig)}
         >
           <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
         </OverlayTrigger>
       </div>
-      <Widgemo config={tilesConfig} adapters={adapters} />
+      <Widgemo config={cardsWithLabelsConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Cards with Full Actions</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(cardsWithActionsConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={cardsWithActionsConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Minimal Cards</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(minimalCardsConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={minimalCardsConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Centered Cards</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(centeredCardsConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={centeredCardsConfig} adapters={adapters} />
     </div>
   );
 }
