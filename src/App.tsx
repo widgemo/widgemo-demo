@@ -147,10 +147,23 @@ function App() {
           className="copy-button"
           size="sm" 
           style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}
-          onClick={async () => {
+          onClick={async (e) => {
+            e.stopPropagation();
+            const text = JSON.stringify(config, null, 2);
             try {
-              await navigator.clipboard.writeText(JSON.stringify(config, null, 2));
-              alert('Configuration copied to clipboard!');
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                alert('Configuration copied to clipboard!');
+              } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Configuration copied to clipboard!');
+              }
             } catch (err) {
               console.error('Failed to copy: ', err);
               alert('Failed to copy to clipboard');
