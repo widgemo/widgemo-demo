@@ -145,7 +145,20 @@ const compactTableConfig: WidgemoConfig = {
   pagination: { enabled: true, defaultPageSize: 3 },
   sorting: { enabled: true },
   filtering: { enabled: true },
-  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: false, borderRadius: '4px' } },
+  styling: { table: { backgroundColor: 'var(--bg-color)', shadow: false } },
+};
+
+const minimalTableConfig: WidgemoConfig = {
+  title: 'Minimal Table',
+  mode: 'table',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number' },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'role', label: 'Role', type: 'text' },
+    { name: 'active', label: 'Active', type: 'boolean' },
+  ],
 };
 
 const cardsConfig: WidgemoConfig = {
@@ -163,7 +176,7 @@ const cardsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
   ],
   actions: { view: true },
-  styling: { card: { shadow: true, borderRadius: '12px' } },
+  styling: { card: { shadow: true } },
 };
 
 const cardsWithLabelsConfig: WidgemoConfig = {
@@ -181,7 +194,7 @@ const cardsWithLabelsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right', showLabel: true },
   ],
   actions: { view: true },
-  styling: { card: { shadow: true, borderRadius: '12px' } },
+  styling: { card: { shadow: true } },
 };
 
 const cardsWithActionsConfig: WidgemoConfig = {
@@ -199,7 +212,7 @@ const cardsWithActionsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
   ],
   actions: { create: true, edit: true, delete: true },
-  styling: { card: { shadow: true, borderRadius: '12px' } },
+  styling: { card: { shadow: true } },
 };
 
 const minimalCardsConfig: WidgemoConfig = {
@@ -214,7 +227,7 @@ const minimalCardsConfig: WidgemoConfig = {
       { value: 'User', label: 'User' },
     ] },
   ],
-  styling: { card: { shadow: false, borderRadius: '4px' } },
+  styling: { card: { shadow: false } },
 };
 
 const centeredCardsConfig: WidgemoConfig = {
@@ -232,7 +245,20 @@ const centeredCardsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'center', showLabel: true },
   ],
   actions: { edit: true },
-  styling: { card: { shadow: true, borderRadius: '8px' } },
+  styling: { card: { shadow: true } },
+};
+
+const minimalCardConfig: WidgemoConfig = {
+  title: 'Minimal Cards',
+  mode: 'cards',
+  dataSource: { type: 'static' },
+  fields: [
+    { name: 'id', label: 'ID', type: 'number' },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'role', label: 'Role', type: 'text' },
+    { name: 'active', label: 'Active', type: 'boolean' },
+  ],
 };
 
 function App() {
@@ -407,6 +433,19 @@ function App() {
       </div>
       <Widgemo config={compactTableConfig} adapters={adapters} />
       
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Minimal Table</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(minimalTableConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={minimalTableConfig} adapters={adapters} />
+      
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Card Variants</h1>
       
       <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -473,6 +512,19 @@ function App() {
         </OverlayTrigger>
       </div>
       <Widgemo config={centeredCardsConfig} adapters={adapters} />
+      
+      <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Minimal Cards</h2>
+        <OverlayTrigger
+          trigger="click"
+          placement="auto"
+          rootClose={true}
+          overlay={ConfigPopover(minimalCardConfig)}
+        >
+          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
+        </OverlayTrigger>
+      </div>
+      <Widgemo config={minimalCardConfig} adapters={adapters} />
     </div>
   );
 }
