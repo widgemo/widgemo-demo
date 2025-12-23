@@ -1,8 +1,8 @@
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig } from 'widgemo-core';
 import { useState, useEffect } from 'react';
-import { Button, OverlayTrigger, Popover, DropdownButton, Dropdown } from 'react-bootstrap';
-import { FaInfoCircle, FaCopy } from 'react-icons/fa';
+import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
+//import { FaCopy } from 'react-icons/fa';
 import './App.css';
 
 // Define User type
@@ -449,48 +449,7 @@ function App() {
     },
   };
 
-  const ConfigPopover = (config: WidgemoConfig) => (
-    <Popover className="config-popover" style={{ width: '50vw', maxHeight: '60vh' }}>
-      <Popover.Header className="d-flex align-items-center" style={{ position: 'relative', paddingRight: '2.5rem' }}>
-        Configuration
-        <Button
-          variant="link"
-          className="copy-button"
-          size="sm"
-          style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}
-          onClick={async (e) => {
-            e.stopPropagation();
-            const text = JSON.stringify(config, null, 2);
-            try {
-              if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(text);
-                alert('Configuration copied to clipboard!');
-              } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Configuration copied to clipboard!');
-              }
-            } catch (err) {
-              console.error('Failed to copy: ', err);
-              alert('Failed to copy to clipboard');
-            }
-          }}
-        >
-          <FaCopy /> Copy
-        </Button>
-      </Popover.Header>
-      <Popover.Body style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-        <pre>{JSON.stringify(config, null, 2)}</pre>
-      </Popover.Body>
-    </Popover>
-  );
-
-  return (
+    return (
     <div className={`theme-${theme}`} style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Widgemo Core Demo</h1>
@@ -530,161 +489,31 @@ function App() {
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Table Variants</h1>
 
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(tableConfig2)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={tableConfig2} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(simpleTableConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={simpleTableConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(sortingTableConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={sortingTableConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(filteringTableConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={filteringTableConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(compactTableConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={compactTableConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(minimalTableConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={minimalTableConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
 
       <h1 style={{ marginTop: '4rem', marginBottom: '2rem' }}>Card Variants</h1>
 
-      <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(cardsConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
+
       <Widgemo config={cardsConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(cardsWithLabelsConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={cardsWithLabelsConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(cardsWithActionsConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={cardsWithActionsConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(minimalCardsConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={minimalCardsConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(centeredCardsConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={centeredCardsConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
-
       <p></p>
-      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <OverlayTrigger
-          trigger="click"
-          placement="auto"
-          rootClose={true}
-          overlay={ConfigPopover(minimalCardConfig)}
-        >
-          <Button variant="light" size="sm"><FaInfoCircle /> Config Details</Button>
-        </OverlayTrigger>
-      </div>
       <Widgemo config={minimalCardConfig} adapters={adapters} baseColor={baseColor} showConfigDetails={true} />
     </div>
   );
