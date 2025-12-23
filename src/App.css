@@ -61,21 +61,21 @@
   --button-hover: #d9b3ff;
 }
 
-.theme-dark {
+/* .theme-dark {
   --bg-color: #1a1a1a;
   --text-color: #cccccc;
   --border-color: #444444;
   --button-bg: #333333;
   --button-hover: #555555;
-}
+} */
 
-.theme-dark-red {
+/* .theme-dark-red {
   --bg-color: #2a1a1a;
   --text-color: #ffffff;
   --border-color: #664444;
   --button-bg: #4a2a2a;
   --button-hover: #6a4a4a;
-}
+} */
 
 .theme-dark-purple {
   --bg-color: #1a1a2a;
