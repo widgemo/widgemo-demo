@@ -23,7 +23,7 @@
 
 .theme-light-blue {
   --bg-color: #f0f8ff;
-  --text-color: #000000;
+  --text-color: #333333;
   --border-color: #b3d9ff;
   --button-bg: #cce7ff;
   --button-hover: #99d6ff;
@@ -31,7 +31,7 @@
 
 .theme-light-green {
   --bg-color: #f0fff0;
-  --text-color: #000000;
+  --text-color: #333333;
   --border-color: #b3ffb3;
   --button-bg: #ccffcc;
   --button-hover: #99ff99;
@@ -39,7 +39,7 @@
 
 .theme-dark {
   --bg-color: #1a1a1a;
-  --text-color: #ffffff;
+  --text-color: #cccccc;
   --border-color: #444444;
   --button-bg: #333333;
   --button-hover: #555555;
@@ -47,7 +47,7 @@
 
 .theme-dark-red {
   --bg-color: #2a1a1a;
-  --text-color: #ffffff;
+  --text-color: #cccccc;
   --border-color: #664444;
   --button-bg: #4a2a2a;
   --button-hover: #6a4a4a;
@@ -55,7 +55,7 @@
 
 .theme-light-purple {
   --bg-color: #f8f0ff;
-  --text-color: #000000;
+  --text-color: #333333;
   --border-color: #d9b3ff;
   --button-bg: #e6ccff;
   --button-hover: #d9b3ff;
@@ -63,7 +63,7 @@
 
 .theme-dark {
   --bg-color: #1a1a1a;
-  --text-color: #ffffff;
+  --text-color: #cccccc;
   --border-color: #444444;
   --button-bg: #333333;
   --button-hover: #555555;
@@ -79,7 +79,7 @@
 
 .theme-dark-purple {
   --bg-color: #1a1a2a;
-  --text-color: #ffffff;
+  --text-color: #cccccc;
   --border-color: #444466;
   --button-bg: #2a2a4a;
   --button-hover: #4a4a6a;
