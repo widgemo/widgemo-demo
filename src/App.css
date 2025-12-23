@@ -201,3 +201,22 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Icon button styling for Widgemo */
+.icon-button {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-color) !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: var(--button-hover) !important;
+  color: var(--text-color) !important;
+}
+
+.icon-button:focus {
+  background-color: var(--button-hover) !important;
+  color: var(--text-color) !important;
+  box-shadow: none !important;
+}
