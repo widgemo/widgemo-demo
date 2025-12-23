@@ -22,7 +22,8 @@ const mockUsers: User[] = [
 
 const exampleConfig: WidgemoConfig = {
   title: 'Users Management',
-  mode: 'table', // try 'cards', 'chart', etc.
+  // mode: 'table', // Now optional - defaults to 'table'
+  defaultMode: 'table', // Test that defaultMode works
   dataSource: { type: 'static' },
   fields: [
     { name: 'id', label: 'ID', type: 'number' },
@@ -55,7 +56,8 @@ const exampleConfig: WidgemoConfig = {
 const fullConfigJson = `{
   "id": "users-management", // Optional ID for debugging
   "title": "Users Management",
-  "mode": "table", // 'table' | 'cards' | 'tiles' | 'chart' | 'text' | 'image' | 'list'
+  // "mode": "table", // Optional: 'table' | 'cards' | 'tiles' | 'chart' | 'text' | 'image' | 'list' (defaults to 'table' or defaultMode)
+  // "defaultMode": "table", // Optional: Default mode when mode is not specified
   "defaultViewMode": "table", // 'table' | 'tile' | 'chart'
   // "collapsible": false, // Whether the component is collapsible
   // "tableName": "users", // Table name for database operations
