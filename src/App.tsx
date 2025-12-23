@@ -2,7 +2,6 @@ import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig } from 'widgemo-core';
 import { useState, useEffect } from 'react';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
-//import { FaCopy } from 'react-icons/fa';
 import './App.css';
 
 // Define User type
