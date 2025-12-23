@@ -109,6 +109,10 @@ const fullConfigJson = `{
   //   "className": "",
   //   "theme": "light", // 'light' | 'dark' | 'auto'
   //   "compact": false,
+  //   "baseColor": "#ffffff", // Base color for automatic background contrast
+  //   "autoContrast": true, // Enable automatic background contrast adjustment
+  //   "contrastAmount": 0.05, // Contrast adjustment amount (0-1)
+  //   "overrideBackground": false, // Override default background with computed color
   //   "table": {
   //     "showBorder": true,
   //     "borderStyle": "solid",
