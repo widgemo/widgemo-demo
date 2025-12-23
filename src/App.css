@@ -61,22 +61,6 @@
   --button-hover: #d9b3ff;
 }
 
-/* .theme-dark {
-  --bg-color: #1a1a1a;
-  --text-color: #cccccc;
-  --border-color: #444444;
-  --button-bg: #333333;
-  --button-hover: #555555;
-} */
-
-/* .theme-dark-red {
-  --bg-color: #2a1a1a;
-  --text-color: #ffffff;
-  --border-color: #664444;
-  --button-bg: #4a2a2a;
-  --button-hover: #6a4a4a;
-} */
-
 .theme-dark-purple {
   --bg-color: #1a1a2a;
   --text-color: #cccccc;
@@ -111,49 +95,6 @@
 .dropdown-item:hover {
   background-color: var(--button-hover) !important;
   color: var(--text-color) !important;
-}
-
-.config-popover {
-  background-color: #333333 !important;
-  border: 2px solid #545454 !important;
-  color: #ffffff !important;
-  border-radius: 10px !important;
-}
-
-.config-popover .popover-header {
-  background-color: #333333 !important;
-  color: #ffffff !important;
-  border-bottom: 1px solid #545454 !important;
-  padding: 0.5rem 1rem !important;  border-radius: 6px 6px 0 0 !important;}
-
-.config-popover .popover-body {
-  background-color: #333333 !important;
-  color: #ffffff !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 0 0 6px 6px !important;
-}
-
-.config-popover .popover-arrow {
-  display: none;
-}
-
-.copy-button {
-  background: none !important;
-  border: none !important;
-  color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 0.25rem 0.5rem !important;
-  text-decoration: none !important;
-}
-
-.copy-button:hover {
-  background: #333333 !important;
-  border-radius: 4px !important;
-}
-
-.config-popover pre {
-  color: #ffffff !important;
-  background-color: #333333 !important;
 }
 
 .theme-light h1,
