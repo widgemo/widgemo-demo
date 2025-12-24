@@ -410,6 +410,7 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.body.className = `theme-${theme}`;
   }, [theme]);
 
   const applyConfig = () => {
@@ -450,7 +451,7 @@ function App() {
   };
 
     return (
-    <div className={`theme-${theme}`} style={{ padding: '2rem' }}>
+    <div style={{ padding: '2rem' }}>
       <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Widgemo Core Demo</h1>
         <DropdownButton
