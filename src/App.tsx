@@ -56,7 +56,7 @@ const fullConfigJson = `{
   "title": "Users Management",
   // "mode": "table", // Optional: 'table' | 'cards' | 'tiles' | 'chart' | 'text' | 'image' | 'list' (defaults to 'table')
   // "defaultMode": "table", // Optional: Default mode when mode is not specified ('table' | 'cards' | 'tiles' | 'chart' | 'text' | 'image' | 'list')
-  // "collapsible": false, // Whether the component is collapsible
+  // "collapsible": "expanded", // 'collapsed' | 'expanded' | 'fixed' (default: 'expanded')
   // "tableName": "users", // Table name for database operations
   // "customComponent": null, // Custom component for rendering records
   // "drillDown": null, // Drill-down function for navigation
