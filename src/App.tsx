@@ -134,11 +134,8 @@ const fullConfigJson = `{
   //   "messages": {}
   // },
   // "header": { // Header configuration
-  //   "showRefresh": "always",
-  //   "showViewToggle": "discoverable",
-  //   "showColumnSelector": "none",
-  //   "showDeletedToggle": "none",
-  //   "showAdd": "always",
+  //   "discoverable": ["viewToggle", "columnSelector", "deletedToggle"], // Buttons shown on hover: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
+  //   "always": ["refresh", "add", "deletedToggle"],                   // Buttons always visible: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
   //   "includeDeleted": false
   // },
   "labels": { // Configurable UI strings
@@ -170,7 +167,7 @@ const tableConfig2: WidgemoConfig = {
   pagination: { enabled: true, defaultPageSize: 5 },
   sorting: { enabled: true },
   filtering: { enabled: true },
-  header: { showRefresh: 'always', showViewToggle: 'discoverable', showAdd: 'always' },
+  header: { always: ['refresh', 'add'], discoverable: ['viewToggle'] },
   styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
 };
 
@@ -328,7 +325,7 @@ const cardsWithActionsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
   ],
   actions: { create: true, edit: true, delete: true },
-  header: { showRefresh: 'none', showDeletedToggle: 'always', showAdd: 'always' },
+  header: { always: ['deletedToggle', 'add'] },
   styling: { card: { shadow: true } },
 };
 
