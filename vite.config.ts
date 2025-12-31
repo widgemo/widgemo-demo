@@ -6,7 +6,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["fcb32ff492ac.ngrok.app"]
+    allowedHosts: ["fcb32ff492ac.ngrok.app","849991690ad0.ngrok.app"]
   },
   resolve: {
     alias: {
