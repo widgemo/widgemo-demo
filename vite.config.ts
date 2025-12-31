@@ -6,7 +6,12 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["fcb32ff492ac.ngrok.app","849991690ad0.ngrok.app"]
+    // https: {
+    //   key: fs.readFileSync('./key.pem'),
+    //   cert: fs.readFileSync('./cert.pem'),
+    // },
+    host: '0.0.0.0',
+    allowedHosts: ["fcb32ff492ac.ngrok.app","849991690ad0.ngrok.app", "10.0.0.229"]
   },
   resolve: {
     alias: {

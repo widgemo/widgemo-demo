@@ -14,10 +14,15 @@ A demonstration application showcasing the features and usage of the Widgemo Cor
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
    ```
 
-3. Start the development server:
+3. Start the development server (runs on HTTPS):
    ```bash
    npm run dev
    ```
+   The server will be available at:
+   - Local: `https://localhost:5173` (or next available port)
+   - Network: `https://10.0.0.229:5173` (or next available port)
+
+   **Note**: Self-signed SSL certificates are automatically generated for development. Your browser may show a security warning - this is normal for self-signed certificates.
 
 4. Build for production:
    ```bash
