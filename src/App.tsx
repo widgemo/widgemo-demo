@@ -43,10 +43,16 @@ const exampleConfig: WidgemoConfig = {
     edit: true,
     delete: true,
   },
+  header: {
+    always: ['refresh'],
+    discoverable: ['deletedToggle'],
+    onMenu: ['columnSelector', 'add'],
+  },
   labels: {
     add: 'Add Record',
     empty: 'No data yet — but fetch succeeded!',
     loading: 'Loading records...',
+    actions: 'More Options',
   },
 };
 
@@ -136,6 +142,7 @@ const fullConfigJson = `{
   // "header": { // Header configuration
   //   "discoverable": ["viewToggle", "columnSelector", "deletedToggle"], // Buttons shown on hover: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
   //   "always": ["refresh", "add", "deletedToggle"],                   // Buttons always visible: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
+  //   "onMenu": ["columnSelector", "add", "refresh"],                 // Menu options in Actions dropdown: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
   //   "includeDeleted": false
   // },
   "labels": { // Configurable UI strings
@@ -167,7 +174,14 @@ const tableConfig2: WidgemoConfig = {
   pagination: { enabled: true, defaultPageSize: 5 },
   sorting: { enabled: true },
   filtering: { enabled: true },
-  header: { always: ['refresh', 'add'], discoverable: ['viewToggle'] },
+  header: { 
+    always: ['refresh'], 
+    discoverable: ['viewToggle'],
+    onMenu: ['columnSelector', 'deletedToggle', 'add']
+  },
+  labels: {
+    actions: 'Table Options'
+  },
   styling: { table: { backgroundColor: 'var(--bg-color)', shadow: true } },
 };
 
@@ -252,6 +266,10 @@ const compactTableConfig: WidgemoConfig = {
   pagination: { enabled: true, defaultPageSize: 3 },
   sorting: { enabled: true },
   filtering: { enabled: true },
+  header: {
+    discoverable: ['viewToggle', 'columnSelector'],
+    onMenu: ['refresh', 'deletedToggle']
+  },
   styling: { table: { backgroundColor: 'var(--bg-color)', shadow: false } },
 };
 
@@ -266,6 +284,12 @@ const minimalTableConfig: WidgemoConfig = {
     { name: 'role', label: 'Role', type: 'text' },
     { name: 'active', label: 'Active', type: 'boolean' },
   ],
+  header: {
+    onMenu: ['refresh', 'add', 'columnSelector']
+  },
+  labels: {
+    actions: 'Quick Actions'
+  },
 };
 
 const cardsConfig: WidgemoConfig = {
@@ -325,7 +349,13 @@ const cardsWithActionsConfig: WidgemoConfig = {
     { name: 'active', label: 'Active', type: 'boolean', align: 'right' },
   ],
   actions: { create: true, edit: true, delete: true },
-  header: { always: ['deletedToggle', 'add'] },
+  header: { 
+    always: ['deletedToggle'], 
+    onMenu: ['refresh', 'add', 'columnSelector']
+  },
+  labels: {
+    actions: 'Card Actions'
+  },
   styling: { card: { shadow: true } },
 };
 
