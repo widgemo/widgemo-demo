@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
-import { Button, Container, Row, Col, Card, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Nav, Navbar, Dropdown } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaGithub, FaBook } from 'react-icons/fa';
+import { FaGithub, FaBook, FaPalette } from 'react-icons/fa';
 import './App.css';
 
 // Define types for sample data
@@ -184,7 +184,7 @@ interface DemoSectionProps {
 }
 
 const DemoSection: React.FC<DemoSectionProps> = ({ id, title, subtitle, children, className = '' }) => (
-  <section id={id} className={`py-5 ${className}`}>
+  <section id={id} className={`py-5 theme-aware-section ${className}`}>
     <Container>
       <div className="text-center mb-5">
         <h2 className="display-4 fw-bold mb-3">{title}</h2>
@@ -196,9 +196,11 @@ const DemoSection: React.FC<DemoSectionProps> = ({ id, title, subtitle, children
 );
 
 // Navigation component
-const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: string) => void }> = ({
+const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: string) => void; currentTheme: string; onThemeChange: (theme: string) => void }> = ({
   activeSection,
-  onSectionChange
+  onSectionChange,
+  currentTheme,
+  onThemeChange
 }) => {
   const sections = [
     { id: 'hero', label: 'Hero' },
@@ -236,6 +238,7 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
               </Nav.Link>
             ))}
           </Nav>
+          <ThemeSelector currentTheme={currentTheme} onThemeChange={onThemeChange} />
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -243,9 +246,10 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
 };
 
 // Hero component with cycling modes
-const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void }> = ({
+const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean }> = ({
   onExploreGallery,
-  onJumpToSandbox
+  onJumpToSandbox,
+  shouldHaveDarkText
 }) => {
   const [currentModeIndex, setCurrentModeIndex] = useState(0);
   const modes: ('table' | 'cards' | 'tiles' | 'chart')[] = ['table', 'cards', 'tiles', 'chart'];
@@ -254,7 +258,7 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentModeIndex(prev => (prev + 1) % modesLength);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [modesLength]);
 
@@ -264,7 +268,7 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   return (
     <section id="hero" className="min-vh-100 d-flex align-items-center bg-gradient" style={{
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white'
+      color: shouldHaveDarkText ? '#161616' : 'white'
     }}>
       <Container>
         <Row className="align-items-center">
@@ -275,7 +279,7 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
             <h2 className="h3 mb-4 fw-light">
               One Configurable React Primitive for Infinite UIs
             </h2>
-            <p className="lead mb-4">
+            <p className="lead mb-4" style={{ color: shouldHaveDarkText ? '#161616' : 'white' }}>
               Configuration over custom code. Render cards, tables, grids, charts, and more—from a single component,
               data-agnostic and themeable.
             </p>
@@ -290,8 +294,8 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
               </Button>
               <Button
                 size="lg"
-                variant="outline-light"
-                className="px-4 py-3"
+                variant="primary"
+                className="px-4 py-3 fw-bold shadow"
                 onClick={onJumpToSandbox}
               >
                 Jump to Sandbox
@@ -299,16 +303,17 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
             </div>
           </Col>
           <Col lg={6}>
-            <Card className="shadow-lg border-0">
+            <Card className="shadow-lg border-0 theme-aware-card">
               <Card.Body className="p-4">
                 <div className="mb-3">
                   <small className="text-muted">
                     Mode: <strong>{currentMode.toUpperCase()}</strong>
-                    <span className="ms-2">(Auto-cycling every 5s)</span>
+                    <span className="ms-2">(Auto-cycling every 3s)</span>
                   </small>
                 </div>
                 <div style={{ maxHeight: '400px', overflow: 'auto' }}>
                   <Widgemo
+                    key={currentMode}
                     config={heroConfig}
                     adapters={mockAdapters}
                     showConfigDetails={false}
@@ -334,7 +339,7 @@ const GallerySection: React.FC = () => (
     <Row>
       {galleryConfigs.map((item, index) => (
         <Col lg={6} xl={4} key={index} className="mb-4">
-          <Card className="h-100 shadow-sm hover-lift">
+          <Card className="h-100 shadow-sm hover-lift theme-aware-card">
             <Card.Body className="d-flex flex-column">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
@@ -385,7 +390,7 @@ const SandboxSection: React.FC = () => {
       title="Interactive Sandbox"
       subtitle="Edit configuration JSON and see changes instantly"
     >
-      <Card className="shadow">
+      <Card className="shadow theme-aware-card">
         <Card.Body className="p-0">
           <Group>
             <Panel defaultSize={50} minSize={30}>
@@ -463,7 +468,7 @@ const AdvancedExamplesSection: React.FC = () => (
   >
     <Row>
       <Col lg={6} className="mb-4">
-        <Card className="shadow">
+        <Card className="shadow theme-aware-card">
           <Card.Body>
             <h5 className="card-title">Dashboard Layout</h5>
             <p className="text-muted">Multiple Widgemos in a dashboard configuration</p>
@@ -524,7 +529,7 @@ const AdvancedExamplesSection: React.FC = () => (
         </Card>
       </Col>
       <Col lg={6} className="mb-4">
-        <Card className="shadow">
+        <Card className="shadow theme-aware-card">
           <Card.Body>
             <h5 className="card-title">Nested Data Display</h5>
             <p className="text-muted">Hierarchical data with drill-down capabilities</p>
@@ -570,7 +575,7 @@ const ResourcesSection: React.FC = () => (
     <Container>
       <Row className="text-center mb-4">
         <Col>
-          <h2 className="display-5 fw-bold mb-3">Resources</h2>
+          <h2 className="display-5 fw-bold mb-3" style={{ color: 'white' }}>Resources</h2>
           <p className="lead">
             "Configuration is the new code. Build once, configure everywhere."
           </p>
@@ -578,9 +583,9 @@ const ResourcesSection: React.FC = () => (
       </Row>
       <Row className="g-4">
         <Col md={4}>
-          <Card className="bg-secondary text-light border-0">
+          <Card className="bg-secondary text-light border-0 h-100">
             <Card.Body className="text-center">
-              <FaBook className="display-4 mb-3 text-primary" />
+              <FaBook className="display-4 mb-3 text-warning" />
               <h5>Docs</h5>
               <p>Comprehensive documentation and API reference</p>
               <Button variant="outline-light" size="sm">Coming Soon</Button>
@@ -588,9 +593,9 @@ const ResourcesSection: React.FC = () => (
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="bg-secondary text-light border-0">
+          <Card className="bg-secondary text-light border-0 h-100">
             <Card.Body className="text-center">
-              <FaGithub className="display-4 mb-3 text-primary" />
+              <FaGithub className="display-4 mb-3 text-warning" />
               <h5>GitHub</h5>
               <p>Source code, issues, and contributions</p>
               <Button variant="outline-light" size="sm">View Repository</Button>
@@ -598,9 +603,9 @@ const ResourcesSection: React.FC = () => (
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="bg-secondary text-light border-0">
+          <Card className="bg-secondary text-light border-0 h-100">
             <Card.Body className="text-center">
-              <div className="display-4 mb-3 text-primary">$</div>
+              <div className="display-4 mb-3 text-warning">$</div>
               <h5>Install</h5>
               <code className="d-block bg-dark p-2 rounded">npm install widgemo-core</code>
               <Button variant="outline-light" size="sm" className="mt-2">Copy Command</Button>
@@ -609,47 +614,76 @@ const ResourcesSection: React.FC = () => (
         </Col>
       </Row>
       <hr className="my-4" />
-      <Row>
-        <Col md={8}>
-          <h5>Feedback</h5>
-          <Widgemo
-            config={{
-              title: 'Share Your Thoughts',
-              mode: 'cards',
-              dataSource: { type: 'static' },
-              fields: [
-                { name: 'rating', label: 'Rating', type: 'select', options: [
-                  { value: '5', label: '⭐⭐⭐⭐⭐ Excellent' },
-                  { value: '4', label: '⭐⭐⭐⭐ Very Good' },
-                  { value: '3', label: '⭐⭐⭐ Good' },
-                  { value: '2', label: '⭐⭐ Fair' },
-                  { value: '1', label: '⭐ Poor' },
-                ]},
-                { name: 'feedback', label: 'Feedback', type: 'textarea' },
-              ],
-              actions: { create: true },
-              styling: { compact: true, theme: 'light' },
-            }}
-            adapters={mockAdapters}
-          />
-        </Col>
-        <Col md={4} className="d-flex align-items-center">
-          <div>
-            <h5>About Widgemo</h5>
-            <p className="small">
-              A React component library that transforms configuration objects into
-              fully-featured data interfaces. One component, infinite possibilities.
-            </p>
-          </div>
+      <Row className="text-center">
+        <Col>
+          <p className="mb-2">
+            For feedback, questions, or to learn more about Widgemo, visit our main site:
+          </p>
+          <Button variant="outline-light" href="https://widgemo.com" target="_blank" rel="noopener noreferrer">
+            widgemo.com
+          </Button>
         </Col>
       </Row>
     </Container>
   </footer>
 );
 
+// Theme selector component
+const ThemeSelector: React.FC<{ currentTheme: string; onThemeChange: (theme: string) => void }> = ({
+  currentTheme,
+  onThemeChange
+}) => {
+  const themes = [
+    { key: 'theme-light', label: 'Light', color: '#ffffff' },
+    { key: 'theme-light-blue', label: 'Light Blue', color: '#f0f8ff' },
+    { key: 'theme-light-green', label: 'Light Green', color: '#f0fff0' },
+    { key: 'theme-light-purple', label: 'Light Purple', color: '#f8f0ff' },
+    { key: 'theme-dark', label: 'Dark', color: '#1a1a1a' },
+    { key: 'theme-dark-red', label: 'Dark Red', color: '#2a1a1a' },
+    { key: 'theme-dark-purple', label: 'Dark Purple', color: '#1a1a2a' },
+  ];
+
+  const currentThemeData = themes.find(t => t.key === currentTheme);
+
+  return (
+    <Dropdown className="ms-3">
+      <Dropdown.Toggle variant="outline-secondary" size="sm" id="theme-selector">
+        <FaPalette className="me-2" />
+        {currentThemeData?.label || 'Theme'}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        {themes.map(theme => (
+          <Dropdown.Item
+            key={theme.key}
+            active={currentTheme === theme.key}
+            onClick={() => onThemeChange(theme.key)}
+            className="d-flex align-items-center"
+          >
+            <div
+              className="me-2"
+              style={{
+                width: '16px',
+                height: '16px',
+                backgroundColor: theme.color,
+                border: '1px solid #ccc',
+                borderRadius: '2px'
+              }}
+            />
+            {theme.label}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+};
+
 // Main App component
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
+  const [currentTheme, setCurrentTheme] = useState('theme-light');
+
+  // Determine if current theme should have dark hero text
+  const shouldHaveDarkHeroText = currentTheme.startsWith('theme-light');
 
   // Handle scroll to update active section
   useEffect(() => {
@@ -681,12 +715,18 @@ function App() {
   };
 
   return (
-    <div className="App theme-light">
-      <DemoNav activeSection={activeSection} onSectionChange={setActiveSection} />
+    <div className={`App ${currentTheme}`}>
+      <DemoNav 
+        activeSection={activeSection} 
+        onSectionChange={setActiveSection}
+        currentTheme={currentTheme}
+        onThemeChange={setCurrentTheme}
+      />
 
       <HeroSection
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => scrollToSection('sandbox')}
+        shouldHaveDarkText={shouldHaveDarkHeroText}
       />
 
       <GallerySection />

@@ -76,6 +76,11 @@
   }
 }
 
+/* Theme-aware sections */
+.theme-aware-section.bg-light {
+  background-color: var(--bg-color) !important;
+}
+
 /* Resizable panels */
 [data-panel-group-direction="horizontal"] [data-panel-resize-handle] {
   background-color: #dee2e6;
@@ -126,6 +131,23 @@
 
 .card-body {
   padding: 1.5rem;
+}
+
+/* Theme-aware cards that change with theme */
+.theme-aware-card {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.theme-aware-card .card-body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+.theme-aware-card .text-muted {
+  color: var(--text-color) !important;
+  opacity: 0.6;
 }
 
 /* Footer */
