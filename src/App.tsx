@@ -680,7 +680,13 @@ const ThemeSelector: React.FC<{ currentTheme: string; onThemeChange: (theme: str
 // Main App component
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [currentTheme, setCurrentTheme] = useState('theme-light');
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    // Detect system preference for light/dark theme
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light';
+    }
+    return 'theme-light'; // fallback
+  });
 
   // Determine if current theme should have dark hero text
   const shouldHaveDarkHeroText = currentTheme.startsWith('theme-light');
