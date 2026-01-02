@@ -1,16 +1,189 @@
 #root {
-  max-width: 80%;
-  width: 80%;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Demo-specific styles */
+.App {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.375rem;
+}
+
+/* Hero Section */
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.bg-gradient {
+  background-attachment: fixed;
+}
+
+.display-1 {
+  font-size: 4rem;
+  line-height: 1.1;
 }
 
 @media (max-width: 768px) {
-  #root {
-    width: 100%;
-    max-width: none;
-    padding: 1rem;
+  .display-1 {
+    font-size: 2.5rem;
   }
+}
+
+/* Cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Sections */
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+@media (max-width: 768px) {
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+/* Resizable panels */
+[data-panel-group-direction="horizontal"] [data-panel-resize-handle] {
+  background-color: #dee2e6;
+  width: 2px;
+  cursor: col-resize;
+}
+
+[data-panel-group-direction="horizontal"] [data-panel-resize-handle]:hover,
+[data-panel-group-direction="horizontal"] [data-panel-resize-handle]:active {
+  background-color: #6c757d;
+}
+
+/* Form controls */
+.form-control {
+  border-radius: 0.375rem;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* Cards */
+.card {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Footer */
+footer {
+  margin-top: 4rem;
+}
+
+/* Utilities */
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.fw-light {
+  font-weight: 300 !important;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .lead {
+    font-size: 1.1rem;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure proper spacing for fixed navbar */
+body {
+  padding-top: 0;
+}
+
+/* Custom scrollbar for textarea */
+.form-control::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-control::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.form-control::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.form-control::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .theme-light {
