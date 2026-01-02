@@ -21,8 +21,8 @@ interface SampleData {
   feedback?: string;
 }
 
-// Neutral sample data for hero teaser
-const heroSampleData: SampleData[] = [
+// Neutral sample data for teaser
+const teaserSampleData: SampleData[] = [
   { name: 'Alpha', value: 42, category: 'A' },
   { name: 'Beta', value: 28, category: 'B' },
   { name: 'Gamma', value: 73, category: 'A' },
@@ -30,8 +30,8 @@ const heroSampleData: SampleData[] = [
   { name: 'Epsilon', value: 91, category: 'B' },
 ];
 
-// Hero teaser configuration that cycles through modes
-const createHeroConfig = (mode: 'table' | 'cards' | 'tiles' | 'chart'): WidgemoConfig => ({
+// Teaser configuration that cycles through modes
+const createTeaserConfig = (mode: 'table' | 'cards' | 'tiles' | 'chart'): WidgemoConfig => ({
   title: 'Live Demo',
   mode: mode,
   dataSource: { type: 'static' },
@@ -166,8 +166,8 @@ const defaultSandboxConfig: WidgemoConfig = {
 // Mock adapters for all Widgemo instances
 const mockAdapters: WidgemoAdapters = {
   fetchData: async () => ({
-    data: heroSampleData,
-    total: heroSampleData.length,
+    data: teaserSampleData,
+    total: teaserSampleData.length,
   }),
   createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
   updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
@@ -203,7 +203,7 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
   onThemeChange
 }) => {
   const sections = [
-    { id: 'hero', label: 'Hero' },
+    { id: 'teaser', label: 'Teaser' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'sandbox', label: 'Sandbox' },
     { id: 'advanced', label: 'Advanced Examples' },
@@ -223,7 +223,7 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
       <Container>
-        <Navbar.Brand href="#hero" onClick={() => scrollToSection('hero')}>
+        <Navbar.Brand href="#teaser" onClick={() => scrollToSection('teaser')}>
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
           <strong>Widgemo</strong> Demo
         </Navbar.Brand>
@@ -248,8 +248,8 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
   );
 };
 
-// Hero component with cycling modes
-const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean }> = ({
+// Teaser component with cycling modes
+const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean }> = ({
   onExploreGallery,
   onJumpToSandbox,
   shouldHaveDarkText
@@ -285,10 +285,10 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   }, [modesLength]);
 
   const currentMode = modes[currentModeIndex];
-  const heroConfig = createHeroConfig(currentMode);
+  const teaserConfig = createTeaserConfig(currentMode);
 
   return (
-    <section id="hero" className="bg-gradient" style={{
+    <section id="teaser" className="bg-gradient" style={{
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       color: shouldHaveDarkText ? '#161616' : 'white',
       paddingTop: '120px', // Fixed distance from navbar
@@ -338,7 +338,7 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
                 <div style={{ maxHeight: '400px', overflow: 'auto' }}>
                   <Widgemo
                     key={currentMode}
-                    config={heroConfig}
+                    config={teaserConfig}
                     adapters={mockAdapters}
                     showConfigDetails={false}
                   />
@@ -703,7 +703,7 @@ const ThemeSelector: React.FC<{ currentTheme: string; onThemeChange: (theme: str
 
 // Main App component
 function App() {
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState('teaser');
   const [currentTheme, setCurrentTheme] = useState(() => {
     // Detect system preference for light/dark theme
     if (typeof window !== 'undefined' && window.matchMedia) {
@@ -712,13 +712,13 @@ function App() {
     return 'theme-light'; // fallback
   });
 
-  // Determine if current theme should have dark hero text
-  const shouldHaveDarkHeroText = currentTheme.startsWith('theme-light');
+  // Determine if current theme should have dark teaser text
+  const shouldHaveDarkTeaserText = currentTheme.startsWith('theme-light');
 
   // Handle scroll to update active section
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'gallery', 'sandbox', 'advanced', 'resources'];
+      const sections = ['teaser', 'gallery', 'sandbox', 'advanced', 'resources'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -755,10 +755,10 @@ function App() {
         onThemeChange={setCurrentTheme}
       />
 
-      <HeroSection
+      <TeaserSection
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => scrollToSection('sandbox')}
-        shouldHaveDarkText={shouldHaveDarkHeroText}
+        shouldHaveDarkText={shouldHaveDarkTeaserText}
       />
 
       <GallerySection />
