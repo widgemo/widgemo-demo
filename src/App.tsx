@@ -618,7 +618,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
           </Col>
           <Col lg={8}>
             <Card className="shadow-lg border-0 theme-aware-card">
-              <Card.Body className="p-4">
+              <Card.Body className="p-1">
                 <div className="mb-3">
                   <small className="text-muted">
                     <strong>{currentTeaserItem.config.title}</strong>
@@ -655,8 +655,8 @@ const GallerySection: React.FC = () => (
     <Row>
       {galleryConfigs.map((item, index) => (
         <Col lg={6} xl={4} key={index} className="mb-4">
-          <Card className="h-100 shadow-sm hover-lift theme-aware-card">
-            <Card.Body className="d-flex flex-column">
+          <Card className="h-100 shadow-sm theme-aware-card">
+            <Card.Body className="d-flex flex-column p-1">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
                   config={{ ...item.config}}
@@ -717,7 +717,7 @@ const SandboxSection: React.FC = () => {
       subtitle="Edit configuration JSON and see changes instantly"
       className="sandbox-taller"
     >
-      <Card className="shadow theme-aware-card">
+      <Card className="shadow theme-aware-card p-1">
         <Card.Body className="p-0">
           <Group>
             <Panel defaultSize={35} minSize={30}>
@@ -778,7 +778,7 @@ const SandboxSection: React.FC = () => {
                 </Button>
               </div>
             </Panel>
-            <Separator className="bg-secondary" style={{ width: '2px' }} />
+            <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={65} minSize={30}>
               <div className="p-4 h-100">
                 <h5 className="mb-3">Live Preview</h5>
@@ -1014,7 +1014,7 @@ const AdvancedExamplesSection: React.FC = () => (
     <Row>
       <Col lg={6} className="mb-4">
         <Card className="shadow theme-aware-card">
-          <Card.Body>
+          <Card.Body className='p-1'>
             <h5 className="card-title">Dashboard Layout</h5>
             <p className="text-muted">Multiple Widgemos in a dashboard configuration</p>
             <div className="row g-3">
@@ -1077,7 +1077,7 @@ const AdvancedExamplesSection: React.FC = () => (
       </Col>
       <Col lg={6} className="mb-4">
         <Card className="shadow theme-aware-card">
-          <Card.Body>
+          <Card.Body className='p-1'>
             <h5 className="card-title">Team Directory</h5>
             <p className="text-muted">Browse users by department and role</p>
             <Widgemo
