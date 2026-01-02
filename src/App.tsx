@@ -222,6 +222,7 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
       <Container>
         <Navbar.Brand href="#hero" onClick={() => scrollToSection('hero')}>
+          <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
           <strong>Widgemo</strong> Demo
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="demo-nav" />
