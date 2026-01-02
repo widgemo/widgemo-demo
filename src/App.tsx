@@ -213,7 +213,9 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const navbarHeight = 56; // Bootstrap navbar height
+      const elementPosition = element.offsetTop - navbarHeight;
+      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
       onSectionChange(sectionId);
     }
   };
@@ -253,8 +255,22 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   shouldHaveDarkText
 }) => {
   const [currentModeIndex, setCurrentModeIndex] = useState(0);
+  const [isLargeScreen, setIsLargeScreen] = useState(true); // Default to large screen
   const modes: ('table' | 'cards' | 'tiles' | 'chart')[] = ['table', 'cards', 'tiles', 'chart'];
   const modesLength = modes.length;
+
+  // Detect screen size changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 992px)'); // Bootstrap lg breakpoint
+    setIsLargeScreen(mediaQuery.matches);
+
+    const handleResize = (e: MediaQueryListEvent) => {
+      setIsLargeScreen(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleResize);
+    return () => mediaQuery.removeEventListener('change', handleResize);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -267,12 +283,14 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   const heroConfig = createHeroConfig(currentMode);
 
   return (
-    <section id="hero" className="min-vh-100 d-flex align-items-center bg-gradient" style={{
+    <section id="hero" className="bg-gradient" style={{
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: shouldHaveDarkText ? '#161616' : 'white'
+      color: shouldHaveDarkText ? '#161616' : 'white',
+      paddingTop: '120px', // Fixed distance from navbar
+      height: isLargeScreen ? '800px' : '1200px' // Responsive height based on screen size
     }}>
       <Container>
-        <Row className="align-items-center">
+        <Row>
           <Col lg={6} className="mb-5 mb-lg-0">
             <h1 className="display-1 fw-bold mb-4">
               Experience <span className="text-warning">Widgemo</span>
@@ -717,7 +735,9 @@ function App() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const navbarHeight = 56; // Bootstrap navbar height
+      const elementPosition = element.offsetTop - navbarHeight;
+      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
     }
   };
 
