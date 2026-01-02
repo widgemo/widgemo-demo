@@ -188,7 +188,7 @@ const DemoSection: React.FC<DemoSectionProps> = ({ id, title, subtitle, children
     <Container>
       <div className="text-center mb-5">
         <h2 className="display-4 fw-bold mb-3">{title}</h2>
-        {subtitle && <p className="lead text-muted">{subtitle}</p>}
+        {subtitle && <p className="lead">{subtitle}</p>}
       </div>
       {children}
     </Container>
