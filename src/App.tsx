@@ -20,8 +20,8 @@ const mockUsers: User[] = [
 ];
 
 const exampleConfig: WidgemoConfig = {
+  id: "users-management", 
   title: 'Users Management',
-  // mode: 'table', // Now optional - defaults to 'table'
   dataSource: { type: 'static' },
   fields: [
     { name: 'id', label: 'ID', type: 'number' },
@@ -139,18 +139,18 @@ const fullConfigJson = `{
   //   "locale": "en",
   //   "messages": {}
   // },
-  // "header": { // Header configuration
-  //   "discoverable": ["viewToggle", "columnSelector", "deletedToggle"], // Buttons shown on hover: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
-  //   "always": ["refresh", "add", "deletedToggle"],                   // Buttons always visible: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
-  //   "onMenu": ["columnSelector", "add", "refresh"],                 // Menu options in Actions dropdown: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
+  "header": { // Header configuration
+    "discoverable": ["deletedToggle"], // Buttons shown on hover: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
+    "always": ["refresh"], // Buttons always visible: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
+    "onMenu": ["columnSelector", "add"], // Menu options in Actions dropdown: "refresh", "add", "viewToggle", "columnSelector", "deletedToggle"
   //   "includeDeleted": false
   // },
   "labels": { // Configurable UI strings
-    "add": "Add Record",
-    "empty": "No data yet — but fetch succeeded!",
-    "loading": "Loading records..."
-    // "refresh": "Refresh",
-    // "actions": "Actions"
+    "add": "Add Record", // Default: "Add"
+    "empty": "No data yet — but fetch succeeded!", // Default: "No records found."
+    "loading": "Loading records...", // Default: "Loading..."
+    // "refresh": "Refresh", // Default: "Refresh"
+    "actions": "More Options" // Default: "Actions"
   }
 }`;
 
