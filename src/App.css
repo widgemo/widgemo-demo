@@ -356,3 +356,9 @@ body {
   color: var(--text-color) !important;
   box-shadow: none !important;
 }
+
+/* Sandbox section */
+.sandbox-taller {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}

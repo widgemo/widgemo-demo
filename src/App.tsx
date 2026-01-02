@@ -8,134 +8,137 @@ import './App.css';
 
 // Define types for sample data
 interface SampleData {
-  name: string;
-  value: number;
-  category: string;
   id?: number;
+  name: string;
+  email?: string;
+  role?: string;
+  department?: string;
+  status?: boolean;
+  lastLogin?: string;
+  value?: number;
+  category?: string;
   metric?: string;
   month?: string;
   sales?: number;
-  status?: string;
   tasks?: number;
   rating?: string;
   feedback?: string;
+  activeUsers?: number;
+  totalUsers?: number;
 }
 
-// Neutral sample data for teaser
+// Neutral sample data for teaser - User Database
 const teaserSampleData: SampleData[] = [
-  { name: 'Alpha', value: 42, category: 'A' },
-  { name: 'Beta', value: 28, category: 'B' },
-  { name: 'Gamma', value: 73, category: 'A' },
-  { name: 'Delta', value: 15, category: 'C' },
-  { name: 'Epsilon', value: 91, category: 'B' },
+  { id: 1, name: 'Alice Johnson', email: 'alice.johnson@company.com', role: 'Manager', department: 'Engineering', status: true, lastLogin: '2024-01-15' },
+  { id: 2, name: 'Bob Smith', email: 'bob.smith@company.com', role: 'Developer', department: 'Engineering', status: true, lastLogin: '2024-01-14' },
+  { id: 3, name: 'Carol Williams', email: 'carol.williams@company.com', role: 'Designer', department: 'Design', status: false, lastLogin: '2024-01-10' },
+  { id: 4, name: 'David Brown', email: 'david.brown@company.com', role: 'Developer', department: 'Engineering', status: true, lastLogin: '2024-01-15' },
+  { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13' },
 ];
 
-// Teaser configuration that cycles through modes
-const createTeaserConfig = (mode: 'table' | 'cards' | 'tiles' | 'chart'): WidgemoConfig => ({
-  title: 'Live Demo',
-  mode: mode,
-  dataSource: { type: 'static' },
-  fields: [
-    { name: 'name', label: 'Name', type: 'text' },
-    { name: 'value', label: 'Value', type: 'number' },
-    { name: 'category', label: 'Category', type: 'text' },
-  ],
-  styling: { compact: true, theme: 'light' },
-});
-
-// Gallery configurations - reusing existing ones with neutral data
+// Gallery configurations - using user database data
 const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   {
     config: {
-      title: 'Data Table',
+      title: 'User Management Table',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
         { name: 'id', label: 'ID', type: 'number' },
         { name: 'name', label: 'Name', type: 'text' },
-        { name: 'value', label: 'Value', type: 'number' },
-        { name: 'category', label: 'Category', type: 'text' },
+        { name: 'email', label: 'Email', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean' },
       ],
       actions: { create: true, edit: true, delete: true },
       header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
       styling: { compact: true, theme: 'light' },
     },
-    description: 'Full-featured data table with CRUD operations'
+    description: 'Full-featured user management table with CRUD operations'
   },
   {
     config: {
-      title: 'Card Layout',
+      title: 'User Profile Cards',
       mode: 'cards',
       dataSource: { type: 'static' },
       fields: [
         { name: 'name', label: 'Name', type: 'text' },
-        { name: 'value', label: 'Value', type: 'number' },
-        { name: 'category', label: 'Category', type: 'text' },
+        { name: 'email', label: 'Email', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean' },
       ],
       actions: { view: true },
       styling: { card: { shadow: true }, theme: 'light' },
     },
-    description: 'Responsive card-based layout'
+    description: 'User profile cards with contact and role information'
   },
   {
     config: {
-      title: 'Compact Grid',
+      title: 'Department Overview',
       mode: 'tiles',
       dataSource: { type: 'static' },
       fields: [
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'value', label: 'Value', type: 'number' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'name', label: 'Lead', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
       ],
       styling: { compact: true, theme: 'light' },
     },
-    description: 'Space-efficient tile grid'
+    description: 'Department tiles showing team leads and roles'
   },
   {
     config: {
-      title: 'Data Chart',
+      title: 'User Activity Chart',
       mode: 'chart',
       dataSource: { type: 'static' },
       fields: [
-        { name: 'category', label: 'Category', type: 'text' },
-        { name: 'value', label: 'Value', type: 'number' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'name', label: 'User', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean' },
       ],
       chartConfig: {
         type: 'bar',
-        xAxis: 'category',
-        yAxis: 'value',
+        xAxis: 'department',
+        yAxis: 'status',
       },
       styling: { theme: 'light' },
     },
-    description: 'Interactive data visualization'
+    description: 'Chart showing active users by department'
   },
   {
     config: {
-      title: 'Minimal View',
+      title: 'Active Users',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
         { name: 'name', label: 'Name', type: 'text' },
-        { name: 'value', label: 'Value', type: 'number' },
+        /* { name: 'email', label: 'Email', type: 'text' }, */
+        { name: 'lastLogin', label: 'Last Login', type: 'date' },
       ],
       header: { onMenu: ['refresh'] },
       styling: { compact: true, theme: 'light' },
     },
-    description: 'Clean, minimal interface'
+    description: 'Simple view of active users with login information'
   },
   {
     config: {
-      title: 'Advanced Features',
+      title: 'Advanced User Management',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
         { name: 'id', label: 'ID', type: 'number', sortable: true },
         { name: 'name', label: 'Name', type: 'text', filterable: true },
-        { name: 'value', label: 'Value', type: 'number', sortable: true },
-        { name: 'category', label: 'Category', type: 'select', options: [
-          { value: 'A', label: 'Category A' },
-          { value: 'B', label: 'Category B' },
-          { value: 'C', label: 'Category C' },
+        { name: 'email', label: 'Email', type: 'text', filterable: true },
+        { name: 'department', label: 'Department', type: 'select', options: [
+          { value: 'Engineering', label: 'Engineering' },
+          { value: 'Design', label: 'Design' },
+          { value: 'Business', label: 'Business' },
         ], filterable: true },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean', filterable: true },
+        { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
       ],
       actions: { create: true, edit: true, delete: true },
       pagination: { enabled: true, defaultPageSize: 5 },
@@ -144,20 +147,22 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
       styling: { theme: 'light' },
     },
-    description: 'Full-featured with pagination, sorting, and filtering'
+    description: 'Full-featured user management with pagination, sorting, and filtering'
   },
 ];
 
 // Default sandbox configuration
 const defaultSandboxConfig: WidgemoConfig = {
-  title: 'Sandbox',
+  title: 'User Sandbox',
   mode: 'table',
   dataSource: { type: 'static' },
   fields: [
     { name: 'id', label: 'ID', type: 'number' },
     { name: 'name', label: 'Name', type: 'text' },
-    { name: 'value', label: 'Value', type: 'number' },
-    { name: 'category', label: 'Category', type: 'text' },
+    { name: 'email', label: 'Email', type: 'text' },
+    { name: 'role', label: 'Role', type: 'text' },
+    { name: 'department', label: 'Department', type: 'text' },
+    { name: 'status', label: 'Active', type: 'boolean' },
   ],
   actions: { create: true, edit: true },
   styling: { theme: 'light' },
@@ -248,13 +253,88 @@ const DemoNav: React.FC<{ activeSection: string; onSectionChange: (section: stri
   );
 };
 
-// Teaser component with cycling modes
+// Teaser configurations with varying settings for each mode
+const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
+  {
+    config: {
+      title: 'User Management Table',
+      mode: 'table',
+      dataSource: { type: 'static' },
+      fields: [
+        { name: 'id', label: 'ID', type: 'number' },
+        { name: 'name', label: 'Name', type: 'text' },
+        { name: 'email', label: 'Email', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
+      ],
+      actions: { create: true, edit: true, delete: true },
+      header: { always: ['refresh', 'add'], onMenu: ['deleteToggle'] },
+      styling: { compact: true, theme: 'light' },
+      labels: { add: 'Add User' }
+    },
+    description: 'Full-featured user management table'
+  },
+  {
+    config: {
+      title: 'User Profile Cards',
+      mode: 'cards',
+      dataSource: { type: 'static' },
+      fields: [
+        { name: 'name', label: 'Name', type: 'text' },
+        { name: 'email', label: 'Email', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'department', label: 'Department', type: 'text' },
+      ],
+      actions: { view: true },
+      header: { always: ['refresh']},
+      styling: { card: { shadow: true }, theme: 'light' },
+    },
+    description: 'User profile cards with contact info'
+  },
+  {
+    config: {
+      title: 'Department Overview',
+      mode: 'tiles',
+      dataSource: { type: 'static' },
+      fields: [
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'name', label: 'Lead', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+      ],
+      header: { always: ['refresh']},
+      styling: { compact: true, theme: 'light' },
+    },
+    description: 'Department tiles showing team leads'
+  },
+  {
+    config: {
+      title: 'User Activity Chart',
+      mode: 'chart',
+      dataSource: { type: 'static' },
+      fields: [
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'name', label: 'User', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean' },
+      ],
+      chartConfig: {
+        type: 'bar',
+        xAxis: 'department',
+        yAxis: 'status',
+      },
+      styling: { theme: 'light' },
+    },
+    description: 'Chart showing active users by department'
+  },
+];
+
+// Teaser component with cycling configurations
 const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean }> = ({
   onExploreGallery,
   onJumpToSandbox,
   shouldHaveDarkText
 }) => {
-  const [currentModeIndex, setCurrentModeIndex] = useState(0);
+  const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState(() => {
     // Detect initial screen size
     if (typeof window !== 'undefined' && window.matchMedia) {
@@ -262,8 +342,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
     }
     return true; // Default to large screen
   });
-  const modes: ('table' | 'cards' | 'tiles' | 'chart')[] = ['table', 'cards', 'tiles', 'chart'];
-  const modesLength = modes.length;
+  const configsLength = teaserConfigs.length;
 
   // Detect screen size changes
   useEffect(() => {
@@ -279,13 +358,13 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentModeIndex(prev => (prev + 1) % modesLength);
+      setCurrentConfigIndex(prev => (prev + 1) % configsLength);
     }, 3000);
     return () => clearInterval(interval);
-  }, [modesLength]);
+  }, [configsLength]);
 
-  const currentMode = modes[currentModeIndex];
-  const teaserConfig = createTeaserConfig(currentMode);
+  const currentTeaserItem = teaserConfigs[currentConfigIndex];
+  const teaserConfig = currentTeaserItem.config;
 
   return (
     <section id="teaser" className="bg-gradient" style={{
@@ -296,7 +375,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
     }}>
       <Container>
         <Row>
-          <Col lg={6} className="mb-5 mb-lg-0">
+          <Col lg={4} className="mb-5 mb-lg-0">
             <h1 className="display-1 fw-bold mb-4">
               Experience <span className="text-warning">Widgemo</span>
             </h1>
@@ -326,18 +405,20 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
               </Button>
             </div>
           </Col>
-          <Col lg={6}>
+          <Col lg={8}>
             <Card className="shadow-lg border-0 theme-aware-card">
               <Card.Body className="p-4">
                 <div className="mb-3">
                   <small className="text-muted">
-                    Mode: <strong>{currentMode.toUpperCase()}</strong>
+                    <strong>{currentTeaserItem.config.title}</strong>
                     <span className="ms-2">(Auto-cycling every 3s)</span>
                   </small>
+                  <br />
+                  <small className="text-muted">{currentTeaserItem.description}</small>
                 </div>
                 <div style={{ maxHeight: '400px', overflow: 'auto' }}>
                   <Widgemo
-                    key={currentMode}
+                    key={currentConfigIndex}
                     config={teaserConfig}
                     adapters={mockAdapters}
                     showConfigDetails={false}
@@ -393,7 +474,14 @@ const SandboxSection: React.FC = () => {
 
   const applyConfig = () => {
     try {
-      const parsed = JSON.parse(configJson);
+      // Remove comment lines (lines starting with //) before parsing
+      const cleanJson = configJson
+        .split('\n')
+        .filter(line => !line.trim().startsWith('//'))
+        .join('\n')
+        .trim();
+      
+      const parsed = JSON.parse(cleanJson);
       setConfig(parsed);
       setJsonError(null);
     } catch (error) {
@@ -401,10 +489,12 @@ const SandboxSection: React.FC = () => {
     }
   };
 
-  const loadPreset = (presetConfig: WidgemoConfig) => {
+  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const json = JSON.stringify(presetConfig, null, 2);
-    setConfigJson(json);
-    setConfig(presetConfig);
+    const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
+    const commentedJson = `${titleComment}${json}`;
+    setConfigJson(commentedJson);
+    // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
 
@@ -413,40 +503,30 @@ const SandboxSection: React.FC = () => {
       id="sandbox"
       title="Interactive Sandbox"
       subtitle="Edit configuration JSON and see changes instantly"
+      className="sandbox-taller"
     >
       <Card className="shadow theme-aware-card">
         <Card.Body className="p-0">
           <Group>
-            <Panel defaultSize={50} minSize={30}>
+            <Panel defaultSize={35} minSize={30}>
               <div className="p-4 h-100 d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0">Configuration Editor</h5>
-                  <div>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => loadPreset(galleryConfigs[0].config)}
-                    >
-                      Load Table Preset
-                    </Button>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => loadPreset(galleryConfigs[1].config)}
-                    >
-                      Load Cards Preset
-                    </Button>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={applyConfig}
-                      disabled={!!jsonError}
-                    >
-                      Apply Changes
-                    </Button>
-                  </div>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
+                      Load Preset
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {galleryConfigs.map((item, index) => (
+                        <Dropdown.Item
+                          key={index}
+                          onClick={() => loadPreset(item.config, item.config.title)}
+                        >
+                          {item.config.title}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
                 {jsonError && (
                   <div className="alert alert-danger small mb-3">
@@ -454,16 +534,31 @@ const SandboxSection: React.FC = () => {
                   </div>
                 )}
                 <textarea
-                  className="form-control flex-grow-1"
+                  className="form-control flex-grow-1 mb-3"
                   style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
                   value={configJson}
-                  onChange={(e) => setConfigJson(e.target.value)}
+                  onChange={(e) => {
+                    setConfigJson(e.target.value);
+                    // Clear any previous JSON errors when user starts typing
+                    if (jsonError) {
+                      setJsonError(null);
+                    }
+                  }}
                   spellCheck={false}
                 />
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={applyConfig}
+                  disabled={!!jsonError}
+                  className="w-100"
+                >
+                  Apply Changes
+                </Button>
               </div>
             </Panel>
             <Separator className="bg-secondary" style={{ width: '2px' }} />
-            <Panel defaultSize={50} minSize={30}>
+            <Panel defaultSize={65} minSize={30}>
               <div className="p-4 h-100">
                 <h5 className="mb-3">Live Preview</h5>
                 <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
@@ -504,16 +599,18 @@ const AdvancedExamplesSection: React.FC = () => (
                     mode: 'cards',
                     dataSource: { type: 'static' },
                     fields: [
-                      { name: 'metric', label: 'Metric', type: 'text' },
-                      { name: 'value', label: 'Value', type: 'number' },
+                      { name: 'department', label: 'Department', type: 'text' },
+                      { name: 'activeUsers', label: 'Active Users', type: 'number' },
+                      { name: 'totalUsers', label: 'Total Users', type: 'number' },
                     ],
                     styling: { compact: true, theme: 'light' },
                   }}
                   adapters={{
                     fetchData: async () => ({
                       data: [
-                        { metric: 'Total', value: 150 },
-                        { metric: 'Active', value: 89 },
+                        { department: 'Engineering', activeUsers: 3, totalUsers: 4 },
+                        { department: 'Design', activeUsers: 0, totalUsers: 1 },
+                        { department: 'Business', activeUsers: 1, totalUsers: 1 },
                       ] as SampleData[],
                     }),
                   }}
@@ -527,18 +624,18 @@ const AdvancedExamplesSection: React.FC = () => (
                     mode: 'chart',
                     dataSource: { type: 'static' },
                     fields: [
-                      { name: 'month', label: 'Month', type: 'text' },
-                      { name: 'sales', label: 'Sales', type: 'number' },
+                      { name: 'department', label: 'Department', type: 'text' },
+                      { name: 'activeUsers', label: 'Active Users', type: 'number' },
                     ],
-                    chartConfig: { type: 'line', xAxis: 'month', yAxis: 'sales' },
+                    chartConfig: { type: 'bar', xAxis: 'department', yAxis: 'activeUsers' },
                     styling: { compact: true, theme: 'light' },
                   }}
                   adapters={{
                     fetchData: async () => ({
                       data: [
-                        { month: 'Jan', sales: 400 },
-                        { month: 'Feb', sales: 300 },
-                        { month: 'Mar', sales: 600 },
+                        { department: 'Engineering', activeUsers: 3 },
+                        { department: 'Design', activeUsers: 0 },
+                        { department: 'Business', activeUsers: 1 },
                       ] as SampleData[],
                     }),
                   }}
@@ -555,30 +652,29 @@ const AdvancedExamplesSection: React.FC = () => (
       <Col lg={6} className="mb-4">
         <Card className="shadow theme-aware-card">
           <Card.Body>
-            <h5 className="card-title">Nested Data Display</h5>
-            <p className="text-muted">Hierarchical data with drill-down capabilities</p>
+            <h5 className="card-title">Team Directory</h5>
+            <p className="text-muted">Browse users by department and role</p>
             <Widgemo
               config={{
-                title: 'Projects',
+                title: 'Team Members',
                 mode: 'table',
                 dataSource: { type: 'static' },
                 fields: [
-                  { name: 'name', label: 'Project', type: 'text' },
-                  { name: 'status', label: 'Status', type: 'select', options: [
-                    { value: 'active', label: 'Active' },
-                    { value: 'completed', label: 'Completed' },
+                  { name: 'name', label: 'Name', type: 'text' },
+                  { name: 'department', label: 'Department', type: 'select', options: [
+                    { value: 'Engineering', label: 'Engineering' },
+                    { value: 'Design', label: 'Design' },
+                    { value: 'Business', label: 'Business' },
                   ]},
-                  { name: 'tasks', label: 'Tasks', type: 'number' },
+                  { name: 'role', label: 'Role', type: 'text' },
+                  { name: 'status', label: 'Active', type: 'boolean' },
                 ],
                 actions: { view: true },
                 styling: { compact: true, theme: 'light' },
               }}
               adapters={{
                 fetchData: async () => ({
-                  data: [
-                    { name: 'Website Redesign', status: 'active', tasks: 12 },
-                    { name: 'Mobile App', status: 'completed', tasks: 8 },
-                  ] as SampleData[],
+                  data: teaserSampleData,
                 }),
               }}
               showConfigDetails={false}
