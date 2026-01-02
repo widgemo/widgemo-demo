@@ -38,7 +38,7 @@ const teaserSampleData: SampleData[] = [
 const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   {
     config: {
-      title: 'User Management Table',
+      title: 'Table',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
@@ -57,7 +57,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   },
   {
     config: {
-      title: 'User Profile Cards',
+      title: 'Cards',
       mode: 'cards',
       dataSource: { type: 'static' },
       fields: [
@@ -74,7 +74,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   },
   {
     config: {
-      title: 'Department Overview',
+      title: 'Tiles',
       mode: 'tiles',
       dataSource: { type: 'static' },
       fields: [
@@ -88,7 +88,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   },
   {
     config: {
-      title: 'User Activity Chart',
+      title: 'Chart',
       mode: 'chart',
       dataSource: { type: 'static' },
       fields: [
@@ -107,7 +107,6 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   },
   {
     config: {
-      title: 'Active Users',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
@@ -122,7 +121,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   },
   {
     config: {
-      title: 'Advanced User Management',
+      title: 'Advanced',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
@@ -660,7 +659,7 @@ const GallerySection: React.FC = () => (
             <Card.Body className="d-flex flex-column">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
-                  config={{ ...item.config, title: undefined }}
+                  config={{ ...item.config}}
                   adapters={mockAdapters}
                   showConfigDetails={true}
                 />
