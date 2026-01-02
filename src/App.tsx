@@ -129,11 +129,13 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'id', label: 'ID', type: 'number', sortable: true },
         { name: 'name', label: 'Name', type: 'text', filterable: true },
         { name: 'email', label: 'Email', type: 'text', filterable: true },
-        { name: 'department', label: 'Department', type: 'select', options: [
-          { value: 'Engineering', label: 'Engineering' },
-          { value: 'Design', label: 'Design' },
-          { value: 'Business', label: 'Business' },
-        ], filterable: true },
+        {
+          name: 'department', label: 'Department', type: 'select', options: [
+            { value: 'Engineering', label: 'Engineering' },
+            { value: 'Design', label: 'Design' },
+            { value: 'Business', label: 'Business' },
+          ], filterable: true
+        },
         { name: 'role', label: 'Role', type: 'text' },
         { name: 'status', label: 'Active', type: 'boolean', filterable: true },
         { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
@@ -174,7 +176,7 @@ const mockAdapters: WidgemoAdapters = {
   }),
   createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
   updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
-  deleteRecord: async () => {},
+  deleteRecord: async () => { },
 };
 
 // Define types for configuration reference
@@ -497,7 +499,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'department', label: 'Department', type: 'text' },
       ],
       actions: { view: true },
-      header: { always: ['refresh']},
+      header: { always: ['refresh'] },
       styling: { card: { shadow: true }, theme: 'light' },
     },
     description: 'User profile cards with contact info'
@@ -512,7 +514,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'name', label: 'Lead', type: 'text' },
         { name: 'role', label: 'Role', type: 'text' },
       ],
-      header: { always: ['refresh']},
+      header: { always: ['refresh'] },
       styling: { compact: true, theme: 'light' },
     },
     description: 'Department tiles showing team leads'
@@ -691,7 +693,7 @@ const SandboxSection: React.FC = () => {
         .filter(line => !line.trim().startsWith('//'))
         .join('\n')
         .trim();
-      
+
       const parsed = JSON.parse(cleanJson);
       setConfig(parsed);
       setJsonError(null);
@@ -825,6 +827,7 @@ const SandboxSection: React.FC = () => {
                 {prop.properties && (
                   <div className="mt-2">
                     <small className="text-muted">Sub-properties:</small>
+                    <ul className="mb-0 mt-1">
                       {prop.properties.map((subProp: SubProperty, subIdx: number) => (
                         <li key={subIdx}>
                           <code>{subProp.name}</code> ({subProp.type})
@@ -835,6 +838,7 @@ const SandboxSection: React.FC = () => {
                           {subProp.example && <small className="text-success"> - {subProp.example}</small>}
                         </li>
                       ))}
+                    </ul>
                   </div>
                 )}
               </div>
@@ -1084,11 +1088,13 @@ const AdvancedExamplesSection: React.FC = () => (
                 dataSource: { type: 'static' },
                 fields: [
                   { name: 'name', label: 'Name', type: 'text' },
-                  { name: 'department', label: 'Department', type: 'select', options: [
-                    { value: 'Engineering', label: 'Engineering' },
-                    { value: 'Design', label: 'Design' },
-                    { value: 'Business', label: 'Business' },
-                  ]},
+                  {
+                    name: 'department', label: 'Department', type: 'select', options: [
+                      { value: 'Engineering', label: 'Engineering' },
+                      { value: 'Design', label: 'Design' },
+                      { value: 'Business', label: 'Business' },
+                    ]
+                  },
                   { name: 'role', label: 'Role', type: 'text' },
                   { name: 'status', label: 'Active', type: 'boolean' },
                 ],
@@ -1267,8 +1273,8 @@ function App() {
 
   return (
     <div className={`App ${currentTheme}`}>
-      <DemoNav 
-        activeSection={activeSection} 
+      <DemoNav
+        activeSection={activeSection}
         onSectionChange={setActiveSection}
         currentTheme={currentTheme}
         onThemeChange={setCurrentTheme}
