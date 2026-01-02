@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
-import { Button, Container, Row, Col, Card, Nav, Navbar, Dropdown } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Nav, Navbar, Dropdown, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaGithub, FaBook, FaPalette } from 'react-icons/fa';
 import './App.css';
@@ -35,8 +35,6 @@ const teaserSampleData: SampleData[] = [
   { id: 4, name: 'David Brown', email: 'david.brown@company.com', role: 'Developer', department: 'Engineering', status: true, lastLogin: '2024-01-15' },
   { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13' },
 ];
-
-// Gallery configurations - using user database data
 const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   {
     config: {
@@ -177,6 +175,218 @@ const mockAdapters: WidgemoAdapters = {
   createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
   updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
   deleteRecord: async () => {},
+};
+
+// Define types for configuration reference
+interface ConfigProperty {
+  property: string;
+  type: string;
+  description: string;
+  options?: string[];
+  example?: string;
+  optional?: boolean;
+  properties?: SubProperty[];
+}
+
+interface SubProperty {
+  name: string;
+  type: string;
+  description: string;
+  options?: string[];
+  optional?: boolean;
+  example?: string;
+}
+
+interface ConfigSection {
+  [key: string]: ConfigProperty[];
+}
+
+// Configuration reference data
+const configReference: ConfigSection = {
+  basic: [
+    {
+      property: 'title',
+      type: 'string',
+      description: 'The title displayed at the top of the component',
+      example: '"User Management"'
+    },
+    {
+      property: 'mode',
+      type: 'string',
+      description: 'Display mode for the data',
+      options: ['table', 'cards', 'tiles', 'chart'],
+      example: '"table"'
+    },
+    {
+      property: 'dataSource',
+      type: 'object',
+      description: 'Configuration for data fetching',
+      properties: [
+        { name: 'type', type: 'string', options: ['static', 'api'], description: 'Data source type' },
+        { name: 'url', type: 'string', description: 'API endpoint URL (for api type)', optional: true },
+        { name: 'method', type: 'string', options: ['GET', 'POST'], description: 'HTTP method', optional: true }
+      ]
+    }
+  ],
+  fields: [
+    {
+      property: 'name',
+      type: 'string',
+      description: 'Field identifier/key from your data',
+      example: '"name"'
+    },
+    {
+      property: 'label',
+      type: 'string',
+      description: 'Display label for the field',
+      example: '"Full Name"'
+    },
+    {
+      property: 'type',
+      type: 'string',
+      description: 'Data type for rendering and validation',
+      options: ['text', 'number', 'boolean', 'date', 'select', 'email', 'url'],
+      example: '"text"'
+    },
+    {
+      property: 'options',
+      type: 'array',
+      description: 'Available options for select fields',
+      example: '[{ "value": "admin", "label": "Administrator" }]',
+      optional: true
+    },
+    {
+      property: 'sortable',
+      type: 'boolean',
+      description: 'Whether this field can be sorted',
+      example: 'true',
+      optional: true
+    },
+    {
+      property: 'filterable',
+      type: 'boolean',
+      description: 'Whether this field can be filtered',
+      example: 'true',
+      optional: true
+    }
+  ],
+  actions: [
+    {
+      property: 'create',
+      type: 'boolean',
+      description: 'Enable create/add new record functionality',
+      example: 'true'
+    },
+    {
+      property: 'edit',
+      type: 'boolean',
+      description: 'Enable edit existing records functionality',
+      example: 'true'
+    },
+    {
+      property: 'delete',
+      type: 'boolean',
+      description: 'Enable delete record functionality',
+      example: 'true'
+    },
+    {
+      property: 'view',
+      type: 'boolean',
+      description: 'Enable view record details functionality',
+      example: 'true'
+    }
+  ],
+  header: [
+    {
+      property: 'always',
+      type: 'array',
+      description: 'Buttons always visible in header',
+      options: ['refresh', 'add', 'export', 'import'],
+      example: '["refresh", "add"]'
+    },
+    {
+      property: 'onMenu',
+      type: 'array',
+      description: 'Buttons available in header dropdown menu',
+      options: ['columnSelector', 'filter', 'sort', 'export', 'import', 'add'],
+      example: '["columnSelector", "filter"]'
+    },
+    {
+      property: 'discoverable',
+      type: 'array',
+      description: 'Buttons that appear on hover/focus',
+      options: ['viewToggle', 'density', 'fullscreen'],
+      example: '["viewToggle"]'
+    }
+  ],
+  styling: [
+    {
+      property: 'theme',
+      type: 'string',
+      description: 'Color theme',
+      options: ['light', 'dark'],
+      example: '"light"'
+    },
+    {
+      property: 'compact',
+      type: 'boolean',
+      description: 'Use compact spacing and sizing',
+      example: 'true'
+    },
+    {
+      property: 'card',
+      type: 'object',
+      description: 'Card-specific styling options',
+      properties: [
+        { name: 'shadow', type: 'boolean', description: 'Add shadow to cards' },
+        { name: 'border', type: 'boolean', description: 'Add border to cards' }
+      ]
+    }
+  ],
+  features: [
+    {
+      property: 'pagination',
+      type: 'object',
+      description: 'Pagination configuration',
+      properties: [
+        { name: 'enabled', type: 'boolean', description: 'Enable pagination' },
+        { name: 'defaultPageSize', type: 'number', description: 'Default items per page', example: '10' },
+        { name: 'pageSizeOptions', type: 'array', description: 'Available page size options', example: '[5, 10, 25, 50]' }
+      ]
+    },
+    {
+      property: 'sorting',
+      type: 'object',
+      description: 'Sorting configuration',
+      properties: [
+        { name: 'enabled', type: 'boolean', description: 'Enable sorting' },
+        { name: 'defaultSort', type: 'object', description: 'Default sort configuration', example: '{ "field": "name", "direction": "asc" }' }
+      ]
+    },
+    {
+      property: 'filtering',
+      type: 'object',
+      description: 'Filtering configuration',
+      properties: [
+        { name: 'enabled', type: 'boolean', description: 'Enable filtering' },
+        { name: 'defaultFilters', type: 'array', description: 'Default filter conditions' }
+      ]
+    }
+  ],
+  chart: [
+    {
+      property: 'chartConfig',
+      type: 'object',
+      description: 'Chart-specific configuration (only used in chart mode)',
+      properties: [
+        { name: 'type', type: 'string', options: ['bar', 'line', 'pie', 'doughnut'], description: 'Chart type' },
+        { name: 'xAxis', type: 'string', description: 'Field name for X-axis' },
+        { name: 'yAxis', type: 'string', description: 'Field name for Y-axis' },
+        { name: 'groupBy', type: 'string', description: 'Field to group data by', optional: true },
+        { name: 'aggregate', type: 'string', options: ['count', 'sum', 'avg', 'min', 'max'], description: 'Aggregation method for Y-axis', optional: true }
+      ]
+    }
+  ]
 };
 
 // Demo section wrapper component
@@ -471,6 +681,7 @@ const SandboxSection: React.FC = () => {
   const [configJson, setConfigJson] = useState(JSON.stringify(defaultSandboxConfig, null, 2));
   const [config, setConfig] = useState(defaultSandboxConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
+  const [showReferenceModal, setShowReferenceModal] = useState(false);
 
   const applyConfig = () => {
     try {
@@ -512,21 +723,30 @@ const SandboxSection: React.FC = () => {
               <div className="p-4 h-100 d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0">Configuration Editor</h5>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
-                      Load Preset
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {galleryConfigs.map((item, index) => (
-                        <Dropdown.Item
-                          key={index}
-                          onClick={() => loadPreset(item.config, item.config.title)}
-                        >
-                          {item.config.title}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <div className="d-flex gap-2">
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => setShowReferenceModal(true)}
+                    >
+                      Reference
+                    </Button>
+                    <Dropdown>
+                      <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
+                        Load Preset
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {galleryConfigs.map((item, index) => (
+                          <Dropdown.Item
+                            key={index}
+                            onClick={() => loadPreset(item.config, item.config.title)}
+                          >
+                            {item.config.title}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
                 </div>
                 {jsonError && (
                   <div className="alert alert-danger small mb-3">
@@ -573,6 +793,209 @@ const SandboxSection: React.FC = () => {
           </Group>
         </Card.Body>
       </Card>
+
+      <Modal
+        show={showReferenceModal}
+        onHide={() => setShowReferenceModal(false)}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Configuration Reference</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ maxHeight: '70vh', overflow: 'auto' }}>
+          <div className="mb-4">
+            <h6 className="text-primary">Basic Properties</h6>
+            {configReference.basic.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-primary">
+                <code className="text-primary fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                {prop.options && (
+                  <small className="text-muted ms-2">
+                    Options: {prop.options.join(', ')}
+                  </small>
+                )}
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.example && (
+                  <div className="mt-1">
+                    <small className="text-success">Example: {prop.example}</small>
+                  </div>
+                )}
+                {prop.properties && (
+                  <div className="mt-2">
+                    <small className="text-muted">Sub-properties:</small>
+                      {prop.properties.map((subProp: SubProperty, subIdx: number) => (
+                        <li key={subIdx}>
+                          <code>{subProp.name}</code> ({subProp.type})
+                          {subProp.optional && <span className="text-muted"> - optional</span>}
+                          {subProp.options && <span className="text-muted"> - {subProp.options.join(', ')}</span>}
+                          <br />
+                          <small className="text-muted">{subProp.description}</small>
+                          {subProp.example && <small className="text-success"> - {subProp.example}</small>}
+                        </li>
+                      ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-success">Fields Configuration</h6>
+            {configReference.fields.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-success">
+                <code className="text-success fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                {prop.optional && <span className="text-muted ms-2">(optional)</span>}
+                {prop.options && (
+                  <small className="text-muted ms-2">
+                    Options: {prop.options.join(', ')}
+                  </small>
+                )}
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.example && (
+                  <div className="mt-1">
+                    <small className="text-success">Example: {prop.example}</small>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-warning">Actions</h6>
+            {configReference.actions.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-warning">
+                <code className="text-warning fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.example && (
+                  <div className="mt-1">
+                    <small className="text-success">Example: {prop.example}</small>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-info">Header Configuration</h6>
+            {configReference.header.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-info">
+                <code className="text-info fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                {prop.options && (
+                  <small className="text-muted ms-2">
+                    Options: {prop.options.join(', ')}
+                  </small>
+                )}
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.example && (
+                  <div className="mt-1">
+                    <small className="text-success">Example: {prop.example}</small>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-secondary">Styling Options</h6>
+            {configReference.styling.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-secondary">
+                <code className="text-secondary fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                {prop.options && (
+                  <small className="text-muted ms-2">
+                    Options: {prop.options.join(', ')}
+                  </small>
+                )}
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.example && (
+                  <div className="mt-1">
+                    <small className="text-success">Example: {prop.example}</small>
+                  </div>
+                )}
+                {prop.properties && (
+                  <div className="mt-2">
+                    <small className="text-muted">Sub-properties:</small>
+                    <ul className="mb-0 mt-1">
+                      {prop.properties.map((subProp: SubProperty, subIdx: number) => (
+                        <li key={subIdx}>
+                          <code>{subProp.name}</code> ({subProp.type})
+                          <br />
+                          <small className="text-muted">{subProp.description}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-danger">Advanced Features</h6>
+            {configReference.features.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-danger">
+                <code className="text-danger fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.properties && (
+                  <div className="mt-2">
+                    <small className="text-muted">Sub-properties:</small>
+                    <ul className="mb-0 mt-1">
+                      {prop.properties.map((subProp: SubProperty, subIdx: number) => (
+                        <li key={subIdx}>
+                          <code>{subProp.name}</code> ({subProp.type})
+                          <br />
+                          <small className="text-muted">{subProp.description}</small>
+                          {subProp.example && <small className="text-success"> - {subProp.example}</small>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-primary">Chart Configuration</h6>
+            <small className="text-muted mb-2 d-block">Only used when mode is 'chart'</small>
+            {configReference.chart.map((prop, idx) => (
+              <div key={idx} className="mb-3 p-2 border-start border-primary">
+                <code className="text-primary fw-bold">{prop.property}</code>
+                <span className="badge bg-secondary ms-2">{prop.type}</span>
+                <br />
+                <small className="text-muted">{prop.description}</small>
+                {prop.properties && (
+                  <div className="mt-2">
+                    <small className="text-muted">Sub-properties:</small>
+                    <ul className="mb-0 mt-1">
+                      {prop.properties.map((subProp: SubProperty, subIdx: number) => (
+                        <li key={subIdx}>
+                          <code>{subProp.name}</code> ({subProp.type})
+                          {subProp.optional && <span className="text-muted"> - optional</span>}
+                          {subProp.options && <span className="text-muted"> - {subProp.options.join(', ')}</span>}
+                          <br />
+                          <small className="text-muted">{subProp.description}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+      </Modal>
     </DemoSection>
   );
 };
