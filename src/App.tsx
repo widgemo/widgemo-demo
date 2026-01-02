@@ -255,14 +255,19 @@ const HeroSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () 
   shouldHaveDarkText
 }) => {
   const [currentModeIndex, setCurrentModeIndex] = useState(0);
-  const [isLargeScreen, setIsLargeScreen] = useState(true); // Default to large screen
+  const [isLargeScreen, setIsLargeScreen] = useState(() => {
+    // Detect initial screen size
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(min-width: 992px)').matches;
+    }
+    return true; // Default to large screen
+  });
   const modes: ('table' | 'cards' | 'tiles' | 'chart')[] = ['table', 'cards', 'tiles', 'chart'];
   const modesLength = modes.length;
 
   // Detect screen size changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 992px)'); // Bootstrap lg breakpoint
-    setIsLargeScreen(mediaQuery.matches);
 
     const handleResize = (e: MediaQueryListEvent) => {
       setIsLargeScreen(e.matches);
