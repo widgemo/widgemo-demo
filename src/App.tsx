@@ -164,7 +164,7 @@ const defaultSandboxConfig: WidgemoConfig = {
     { name: 'status', label: 'Active', type: 'boolean' },
   ],
   actions: { create: true, edit: true },
-  styling: { theme: 'light', shadow: true },
+  styling: { theme: 'light', shadow: true, showBorder: true },
 };
 
 // Mock adapters for all Widgemo instances
@@ -332,6 +332,12 @@ const configReference: ConfigSection = {
       property: 'shadow',
       type: 'boolean',
       description: 'Show shadow for the entire widgemo container',
+      example: 'true'
+    },
+    {
+      property: 'showBorder',
+      type: 'boolean',
+      description: 'Show border for the entire widgemo container',
       example: 'true'
     },
     {
