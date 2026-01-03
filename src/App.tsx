@@ -1281,7 +1281,7 @@ export default App;`
                   <Widgemo
                     config={config}
                     adapters={dynamicAdapters}
-                    showConfigDetails={true}
+                    showConfigDetails={false}
                   />
                 </div>
               </div>
