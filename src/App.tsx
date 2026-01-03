@@ -698,6 +698,8 @@ const SandboxSection: React.FC<{
   const [exportStatus, setExportStatus] = useState<string | null>(null);
   const [showCodeSandboxModal, setShowCodeSandboxModal] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [showJsonEditorModal, setShowJsonEditorModal] = useState(false);
+  const [jsonEditorText, setJsonEditorText] = useState('');
   const [dataType, setDataType] = useState('users');
   const [recordCount, setRecordCount] = useState(10);
   const [adjustConfig, setAdjustConfig] = useState(false);
@@ -1227,6 +1229,17 @@ export default App;`
                   <h6 className="mb-2">Change Widgemo Source Data</h6>
                   <div className="d-flex gap-2 flex-wrap">
                     <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        setJsonEditorText(JSON.stringify(customData, null, 2));
+                        setShowJsonEditorModal(true);
+                      }}
+                    >
+                      <FaBook className="me-1" />
+                      View/Edit Data
+                    </Button>
+                    <Button
                       variant="outline-success"
                       size="sm"
                       onClick={() => setShowGenerateModal(true)}
@@ -1726,6 +1739,76 @@ export default App;`
           >
             <FaRandom className="me-2" />
             Generate Data
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showJsonEditorModal}
+        onHide={() => setShowJsonEditorModal(false)}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Source Data JSON</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Control
+            as="textarea"
+            rows={20}
+            value={jsonEditorText}
+            onChange={(e) => setJsonEditorText(e.target.value)}
+            placeholder="Enter JSON data..."
+            className="font-monospace"
+            style={{ fontSize: '0.875rem' }}
+          />
+          <small className="text-muted mt-2 d-block">
+            Edit the JSON data directly. Changes will be applied when you click "Save Changes".
+          </small>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowJsonEditorModal(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => {
+              try {
+                const parsedData = JSON.parse(jsonEditorText);
+                if (Array.isArray(parsedData)) {
+                  setCustomData(parsedData);
+                  onDataChange(parsedData);
+                  setExportStatus('Data updated successfully!');
+                  setTimeout(() => setExportStatus(null), 3000);
+                  setShowJsonEditorModal(false);
+                } else {
+                  setExportStatus('Error: Data must be an array of objects');
+                  setTimeout(() => setExportStatus(null), 3000);
+                }
+              } catch {
+                setExportStatus('Error: Invalid JSON format');
+                setTimeout(() => setExportStatus(null), 3000);
+              }
+            }}
+          >
+            Save Changes
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              const blob = new Blob([jsonEditorText], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'widgemo-data.json';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }}
+          >
+            <FaDownload className="me-2" />
+            Download JSON
           </Button>
         </Modal.Footer>
       </Modal>
