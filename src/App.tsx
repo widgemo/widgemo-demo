@@ -701,6 +701,7 @@ const SandboxSection: React.FC<{
   const [dataType, setDataType] = useState('users');
   const [recordCount, setRecordCount] = useState(10);
   const [adjustConfig, setAdjustConfig] = useState(false);
+  const [customEndpoint, setCustomEndpoint] = useState('');
 
   // Generate random dataset
   const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
@@ -726,6 +727,36 @@ const SandboxSection: React.FC<{
           setEntityLabel('Post');
           setEntityLabelPlural('Posts');
           break;
+        case 'users-jsonplaceholder':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'posts-jsonplaceholder':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        case 'comments-jsonplaceholder':
+          setEntityLabel('Comment');
+          setEntityLabelPlural('Comments');
+          break;
+        case 'albums-jsonplaceholder':
+          setEntityLabel('Album');
+          setEntityLabelPlural('Albums');
+          break;
+        case 'photos-jsonplaceholder':
+          setEntityLabel('Photo');
+          setEntityLabelPlural('Photos');
+          break;
+        case 'todos-jsonplaceholder':
+          setEntityLabel('Todo');
+          setEntityLabelPlural('Todos');
+          break;
+        case 'custom-api': {
+          const endpointName = customEndpoint.trim() || 'Custom';
+          setEntityLabel(endpointName.charAt(0).toUpperCase() + endpointName.slice(1));
+          setEntityLabelPlural(endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + 's');
+          break;
+        }
         default:
           setEntityLabel('Record');
           setEntityLabelPlural('Records');
@@ -735,41 +766,23 @@ const SandboxSection: React.FC<{
     updateEntityLabels(type);
 
     try {
-      if (type === 'users-api') {
-        // Fetch from JSONPlaceholder
-        const response = await fetch(`https://jsonplaceholder.typicode.com/users`);
+      if (type === 'custom-api') {
+        // Fetch from custom API endpoint
+        if (!customEndpoint.trim()) {
+          throw new Error('Please specify a custom API endpoint URL');
+        }
+        const response = await fetch(customEndpoint.trim());
+        if (!response.ok) {
+          throw new Error(`Failed to fetch from endpoint: ${customEndpoint}`);
+        }
         const apiData: Record<string, unknown>[] = await response.json();
-        randomData = apiData.slice(0, count).map((user: Record<string, unknown>) => ({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: 'User',
-          department: 'General',
-          status: Math.random() > 0.3,
-          lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          phone: user.phone,
-          website: user.website,
-          company: (user.company as Record<string, unknown>)?.name,
-        }));
-      } else if (type === 'posts-api') {
-        // Fetch posts and combine with users for richer data
-        const [postsRes, usersRes] = await Promise.all([
-          fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${count}`),
-          fetch('https://jsonplaceholder.typicode.com/users')
-        ]);
-        const posts: Record<string, unknown>[] = await postsRes.json();
-        const users: Record<string, unknown>[] = await usersRes.json();
-        const usersMap = users.reduce((acc: Record<number, Record<string, unknown>>, user: Record<string, unknown>) => ({ ...acc, [user.id as number]: user }), {});
-
-        randomData = posts.map((post: Record<string, unknown>) => ({
-          id: post.id,
-          title: post.title,
-          body: (post.body as string).substring(0, 100) + '...',
-          author: (usersMap[post.userId as number] as Record<string, unknown>)?.name,
-          email: (usersMap[post.userId as number] as Record<string, unknown>)?.email,
-          status: Math.random() > 0.2,
-          createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        }));
+        randomData = Array.isArray(apiData) ? apiData.slice(0, count) : [apiData];
+      } else if (type.endsWith('-jsonplaceholder')) {
+        // Fetch from JSONPlaceholder
+        const endpoint = type.replace('-jsonplaceholder', '');
+        const response = await fetch(`https://jsonplaceholder.typicode.com/${endpoint}`);
+        const apiData: Record<string, unknown>[] = await response.json();
+        randomData = apiData.slice(0, count);
       } else {
         // Generate local data based on type
         const firstNames = ['Alice', 'Bob', 'Carol', 'David', 'Eva', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
@@ -854,13 +867,27 @@ const SandboxSection: React.FC<{
           switch (dataType) {
             case 'users':
             case 'users-api':
+            case 'users-jsonplaceholder':
               return 'User Management';
             case 'sales':
               return 'Sales Records';
             case 'customers':
               return 'Customer Management';
             case 'posts-api':
+            case 'posts-jsonplaceholder':
               return 'Blog Posts';
+            case 'comments-jsonplaceholder':
+              return 'Comments';
+            case 'albums-jsonplaceholder':
+              return 'Photo Albums';
+            case 'photos-jsonplaceholder':
+              return 'Photos';
+            case 'todos-jsonplaceholder':
+              return 'Todo Items';
+            case 'custom-api': {
+              const endpointName = customEndpoint.trim() || 'Custom';
+              return endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + ' Data';
+            }
             default:
               return 'Data Management';
           }
@@ -898,7 +925,7 @@ const SandboxSection: React.FC<{
       onDataChange(fallbackData);
       return fallbackData;
     }
-  }, [configJson, onConfigChange, onDataChange]);
+  }, [configJson, onConfigChange, onDataChange, customEndpoint]);
 
   // Handle file upload
   const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -1551,17 +1578,15 @@ export default App;`
 ]`}</code></pre>
             </div>
 
-            <div className="alert alert-info">
-              <small>
-                <strong>Notes:</strong>
-                <ul className="mb-0 mt-2">
-                  <li>Data must be a valid JSON array of objects</li>
-                  <li>Each object represents one record/row</li>
-                  <li>Field names should be consistent across all records</li>
-                  <li>Supported field types: text, number, boolean, date (YYYY-MM-DD format), email</li>
-                  <li>The "id" field is optional but recommended for record identification</li>
-                </ul>
-              </small>
+            <div className="mb-3">
+              <h6 className="text-info">API Data Sources</h6>
+              <p className="small text-muted mb-2">
+                <strong>JSONPlaceholder Options:</strong> The dropdown includes direct options for all JSONPlaceholder endpoints (users, posts, comments, albums, photos, todos) that fetch real sample data.
+              </p>
+              <p className="small text-muted mb-2">
+                <strong>Custom API Endpoint:</strong> For testing with external APIs, select "Custom API Endpoint" and provide a full URL (e.g., https://api.github.com/users, https://jsonplaceholder.typicode.com/comments).
+                The system will attempt to fetch and display data from any valid JSON API endpoint.
+              </p>
             </div>
           </div>
         </Modal.Body>
@@ -1629,10 +1654,39 @@ export default App;`
               <option value="users">Users (Local)</option>
               <option value="sales">Sales Records (Local)</option>
               <option value="customers">Customers (Local)</option>
-              <option value="users-api">Users (API)</option>
-              <option value="posts-api">Posts (API)</option>
+              <option value="users-jsonplaceholder">Users (JSONPlaceholder)</option>
+              <option value="posts-jsonplaceholder">Posts (JSONPlaceholder)</option>
+              <option value="comments-jsonplaceholder">Comments (JSONPlaceholder)</option>
+              <option value="albums-jsonplaceholder">Albums (JSONPlaceholder)</option>
+              <option value="photos-jsonplaceholder">Photos (JSONPlaceholder)</option>
+              <option value="todos-jsonplaceholder">Todos (JSONPlaceholder)</option>
+              <option value="custom-api">Custom API Endpoint</option>
             </Form.Select>
           </div>
+          {(dataType === 'custom-api' || dataType.endsWith('-jsonplaceholder')) && (
+            <div className="mb-3">
+              <label className="form-label">
+                {dataType === 'custom-api' ? 'API Endpoint URL' : 'JSONPlaceholder Endpoint'}
+              </label>
+              <Form.Control
+                type="text"
+                placeholder={
+                  dataType === 'custom-api'
+                    ? 'e.g., https://api.example.com/users'
+                    : dataType.replace('-jsonplaceholder', '')
+                }
+                value={customEndpoint}
+                onChange={(e) => setCustomEndpoint(e.target.value)}
+                className="mb-2"
+              />
+              <small className="text-muted">
+                {dataType === 'custom-api'
+                  ? 'Enter a full API endpoint URL to fetch data from any system'
+                  : `This will fetch from https://jsonplaceholder.typicode.com/${dataType.replace('-jsonplaceholder', '')}`
+                }
+              </small>
+            </div>
+          )}
           <div className="mb-3">
             <label className="form-label">Number of Records</label>
             <Form.Control
@@ -1653,7 +1707,8 @@ export default App;`
           </div>
           <div className="alert alert-info">
             <small>
-              API options fetch real data from JSONPlaceholder. Local options generate synthetic data.
+              <strong>Local options</strong> generate synthetic data. <strong>JSONPlaceholder options</strong> fetch real sample data from jsonplaceholder.typicode.com.
+              <strong>Custom API Endpoint</strong> allows you to test with any external API by providing a full URL (e.g., https://api.example.com/users).
               Adjusting configuration will update the fields in your current setup to match the generated data structure.
             </small>
           </div>
