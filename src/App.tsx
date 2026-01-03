@@ -51,7 +51,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { create: true, edit: true, delete: true },
       header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
-      styling: { compact: true, theme: 'light' },
+      styling: { compact: true, theme: 'light', shadow: true, table: { shadow: true } },
     },
     description: 'Full-featured user management table with CRUD operations'
   },
@@ -68,7 +68,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'status', label: 'Active', type: 'boolean' },
       ],
       actions: { view: true },
-      styling: { card: { shadow: true }, theme: 'light' },
+      styling: { card: { shadow: true, showBorder: true }, theme: 'light', shadow: true },
     },
     description: 'User profile cards with contact and role information'
   },
@@ -164,7 +164,7 @@ const defaultSandboxConfig: WidgemoConfig = {
     { name: 'status', label: 'Active', type: 'boolean' },
   ],
   actions: { create: true, edit: true },
-  styling: { theme: 'light' },
+  styling: { theme: 'light', shadow: true },
 };
 
 // Mock adapters for all Widgemo instances
@@ -327,6 +327,12 @@ const configReference: ConfigSection = {
       description: 'Color theme',
       options: ['light', 'dark'],
       example: '"light"'
+    },
+    {
+      property: 'shadow',
+      type: 'boolean',
+      description: 'Show shadow for the entire widgemo container',
+      example: 'true'
     },
     {
       property: 'compact',
@@ -499,7 +505,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { view: true },
       header: { always: ['refresh'] },
-      styling: { card: { shadow: true }, theme: 'light' },
+      styling: { card: { shadow: true, showBorder: true }, theme: 'light' },
     },
     description: 'User profile cards with contact info'
   },
