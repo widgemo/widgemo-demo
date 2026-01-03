@@ -1226,26 +1226,16 @@ export default App;`
 
                 {/* Data Management */}
                 <div className="mt-3">
-                  <h6 className="mb-2">Change Widgemo Source Data</h6>
+                  <h6 className="mb-2">Sample Source Data <small className="text-muted ms-2">{customData.length} {entityLabelPlural.toLowerCase()}</small></h6>
                   <div className="d-flex gap-2 flex-wrap">
-                    <Button
-                      variant="outline-info"
-                      size="sm"
-                      onClick={() => {
-                        setJsonEditorText(JSON.stringify(customData, null, 2));
-                        setShowJsonEditorModal(true);
-                      }}
-                    >
-                      <FaBook className="me-1" />
-                      View/Edit Data
-                    </Button>
+                    
                     <Button
                       variant="outline-success"
                       size="sm"
                       onClick={() => setShowGenerateModal(true)}
                     >
                       <FaRandom className="me-1" />
-                      Generate Random
+                      Generate
                     </Button>
                     <Form.Control
                       type="file"
@@ -1262,9 +1252,17 @@ export default App;`
                       <FaUpload className="me-1" />
                       Upload JSON
                     </Button>
-                    <small className="text-muted align-self-center">
-                      {customData.length} {entityLabelPlural.toLowerCase()}
-                    </small>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        setJsonEditorText(JSON.stringify(customData, null, 2));
+                        setShowJsonEditorModal(true);
+                      }}
+                    >
+                      <FaBook className="me-1" />
+                      View/Edit Current
+                    </Button>
                   </div>
                 </div>
               </div>
