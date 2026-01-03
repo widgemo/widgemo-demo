@@ -51,7 +51,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { create: true, edit: true, delete: true },
       header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
-      styling: { compact: true, theme: 'light', shadow: true, table: { shadow: true } },
+      styling: { compact: true, theme: 'light', shadow: true },
     },
     description: 'Full-featured user management table with CRUD operations'
   },
@@ -633,7 +633,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
                   <br />
                   <small className="text-muted">{currentTeaserItem.description}</small>
                 </div>
-                <div style={{ maxHeight: '400px', overflow: 'auto' }}>
+                <div style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
                     config={teaserConfig}
@@ -1277,7 +1277,7 @@ export default App;`
             <Panel defaultSize={65} minSize={30}>
               <div className="p-4 h-100">
                 <h5 className="mb-3">Live Preview</h5>
-                <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
+                <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
                     config={config}
                     adapters={dynamicAdapters}
