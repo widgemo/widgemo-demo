@@ -706,6 +706,34 @@ const SandboxSection: React.FC<{
   const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
     let randomData: Record<string, unknown>[] = [];
 
+    // Update entity labels based on data type
+    const updateEntityLabels = (dataType: string) => {
+      switch (dataType) {
+        case 'users':
+        case 'users-api':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'sales':
+          setEntityLabel('Sale');
+          setEntityLabelPlural('Sales Records');
+          break;
+        case 'customers':
+          setEntityLabel('Customer');
+          setEntityLabelPlural('Customers');
+          break;
+        case 'posts-api':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        default:
+          setEntityLabel('Record');
+          setEntityLabelPlural('Records');
+      }
+    };
+
+    updateEntityLabels(type);
+
     try {
       if (type === 'users-api') {
         // Fetch from JSONPlaceholder
@@ -821,8 +849,26 @@ const SandboxSection: React.FC<{
           };
         });
 
+        // Get appropriate title based on data type
+        const getTitleForType = (dataType: string) => {
+          switch (dataType) {
+            case 'users':
+            case 'users-api':
+              return 'User Management';
+            case 'sales':
+              return 'Sales Records';
+            case 'customers':
+              return 'Customer Management';
+            case 'posts-api':
+              return 'Blog Posts';
+            default:
+              return 'Data Management';
+          }
+        };
+
         const newConfig = {
           ...JSON.parse(configJson),
+          title: getTitleForType(type),
           fields: fields
         };
 
@@ -1065,39 +1111,6 @@ export default App;`
           <Group>
             <Panel defaultSize={35} minSize={30}>
               <div className="p-4 h-100 d-flex flex-column">
-                {/* Data Management */}
-                <div className="mb-3">
-                  <h6 className="mb-2">Data Management</h6>
-                  <div className="d-flex gap-2 flex-wrap">
-                    <Button
-                      variant="outline-success"
-                      size="sm"
-                      onClick={() => setShowGenerateModal(true)}
-                    >
-                      <FaRandom className="me-1" />
-                      Generate Random
-                    </Button>
-                    <Form.Control
-                      type="file"
-                      accept=".json"
-                      onChange={handleFileUpload}
-                      style={{ display: 'none' }}
-                      id="data-upload"
-                    />
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => document.getElementById('data-upload')?.click()}
-                    >
-                      <FaUpload className="me-1" />
-                      Upload JSON
-                    </Button>
-                    <small className="text-muted align-self-center">
-                      {customData.length} {entityLabelPlural.toLowerCase()}
-                    </small>
-                  </div>
-                </div>
-
                 {/* Export Status */}
                 {exportStatus && (
                   <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
@@ -1108,26 +1121,6 @@ export default App;`
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0">Configuration Editor</h5>
                   <div className="d-flex gap-2">
-                    <Dropdown>
-                      <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
-                        <FaDownload className="me-1" />
-                        Export
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={copyToClipboard}>
-                          <FaCopy className="me-2" />
-                          Copy JSON
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={downloadConfig}>
-                          <FaDownload className="me-2" />
-                          Download JSON
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={showCodeSandboxModalHandler}>
-                          <FaExternalLinkAlt className="me-2" />
-                          CodeSandbox
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
                     <Dropdown>
                       <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
                         Load Preset
@@ -1170,15 +1163,70 @@ export default App;`
                   }}
                   spellCheck={false}
                 />
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={applyConfig}
-                  disabled={!!jsonError}
-                  className="w-100"
-                >
-                  Apply Changes
-                </Button>
+                <div className="d-flex gap-2">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={applyConfig}
+                    disabled={!!jsonError}
+                    className="flex-grow-1"
+                  >
+                    Apply Changes
+                  </Button>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
+                      <FaDownload className="me-1" />
+                      Export
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={copyToClipboard}>
+                        <FaCopy className="me-2" />
+                        Copy JSON
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={downloadConfig}>
+                        <FaDownload className="me-2" />
+                        Download JSON
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={showCodeSandboxModalHandler}>
+                        <FaExternalLinkAlt className="me-2" />
+                        CodeSandbox
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+
+                {/* Data Management */}
+                <div className="mt-3">
+                  <h6 className="mb-2">Change Widgemo Source Data</h6>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      onClick={() => setShowGenerateModal(true)}
+                    >
+                      <FaRandom className="me-1" />
+                      Generate Random
+                    </Button>
+                    <Form.Control
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      style={{ display: 'none' }}
+                      id="data-upload"
+                    />
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => document.getElementById('data-upload')?.click()}
+                    >
+                      <FaUpload className="me-1" />
+                      Upload JSON
+                    </Button>
+                    <small className="text-muted align-self-center">
+                      {customData.length} {entityLabelPlural.toLowerCase()}
+                    </small>
+                  </div>
+                </div>
               </div>
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
@@ -1399,6 +1447,122 @@ export default App;`
                 )}
               </div>
             ))}
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-info">Data Format Examples</h6>
+            <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
+
+            <div className="mb-3">
+              <h6 className="text-info">Users Data</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@company.com",
+    "role": "Developer",
+    "department": "Engineering",
+    "status": true,
+    "lastLogin": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane.smith@company.com",
+    "role": "Designer",
+    "department": "Design",
+    "status": false,
+    "lastLogin": "2024-01-10"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">Sales Records</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "product": "Widget A",
+    "amount": 1250.50,
+    "region": "North",
+    "status": "Completed",
+    "date": "2024-01-15",
+    "customer": "ABC Corp"
+  },
+  {
+    "id": 2,
+    "product": "Service X",
+    "amount": 850.00,
+    "region": "South",
+    "status": "Pending",
+    "date": "2024-01-14",
+    "customer": "XYZ Ltd"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">Customer Data</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@company.com",
+    "company": "Tech Solutions Inc",
+    "industry": "Technology",
+    "size": "Medium",
+    "status": "Active",
+    "lastContact": "2024-01-12"
+  },
+  {
+    "id": 2,
+    "name": "Bob Wilson",
+    "email": "bob@enterprise.com",
+    "company": "Global Corp",
+    "industry": "Finance",
+    "size": "Large",
+    "status": "Active",
+    "lastContact": "2024-01-10"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">Blog Posts</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "title": "Getting Started with React",
+    "body": "React is a popular JavaScript library...",
+    "author": "John Doe",
+    "email": "john@example.com",
+    "status": true,
+    "createdAt": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "title": "Advanced TypeScript Tips",
+    "body": "TypeScript provides excellent type safety...",
+    "author": "Jane Smith",
+    "email": "jane@example.com",
+    "status": true,
+    "createdAt": "2024-01-14"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="alert alert-info">
+              <small>
+                <strong>Notes:</strong>
+                <ul className="mb-0 mt-2">
+                  <li>Data must be a valid JSON array of objects</li>
+                  <li>Each object represents one record/row</li>
+                  <li>Field names should be consistent across all records</li>
+                  <li>Supported field types: text, number, boolean, date (YYYY-MM-DD format), email</li>
+                  <li>The "id" field is optional but recommended for record identification</li>
+                </ul>
+              </small>
+            </div>
           </div>
         </Modal.Body>
       </Modal>
