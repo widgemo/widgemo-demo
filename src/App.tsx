@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
-import { Button, Container, Row, Col, Card, Nav, Navbar, Dropdown, Modal } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Nav, Navbar, Dropdown, Modal, Form, Alert } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaGithub, FaBook, FaPalette } from 'react-icons/fa';
+import { FaGithub, FaBook, FaPalette, FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt } from 'react-icons/fa';
 import './App.css';
 
 // Define types for sample data
-interface SampleData {
+interface SampleData extends Record<string, unknown> {
   id?: number;
   name: string;
   email?: string;
@@ -645,7 +645,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
 };
 
 // Gallery component
-const GallerySection: React.FC = () => (
+const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?: SampleData[]) => void }> = ({ onLoadToSandbox }) => (
   <DemoSection
     id="gallery"
     title="Gallery"
@@ -655,11 +655,15 @@ const GallerySection: React.FC = () => (
     <Row>
       {galleryConfigs.map((item, index) => (
         <Col lg={6} xl={4} key={index} className="mb-4">
-          <Card className="h-100 shadow-sm theme-aware-card">
-            <Card.Body className="d-flex flex-column p-1">
+          <Card
+            className="h-100 shadow-sm hover-lift theme-aware-card"
+            style={{ cursor: 'pointer' }}
+            onClick={() => onLoadToSandbox(item.config)}
+          >
+            <Card.Body className="d-flex flex-column">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
-                  config={{ ...item.config}}
+                  config={{ ...item.config, title: undefined }}
                   adapters={mockAdapters}
                   showConfigDetails={true}
                 />
@@ -667,7 +671,7 @@ const GallerySection: React.FC = () => (
               <Card.Title className="h6">{item.config.title}</Card.Title>
               <Card.Text className="text-muted small">{item.description}</Card.Text>
               <div className="mt-auto">
-                <small className="text-muted">Hover for config • Future: Remix or load to sandbox</small>
+                <small className="text-muted">Click to load in sandbox</small>
               </div>
             </Card.Body>
           </Card>
@@ -678,11 +682,337 @@ const GallerySection: React.FC = () => (
 );
 
 // Sandbox component with split view
-const SandboxSection: React.FC = () => {
-  const [configJson, setConfigJson] = useState(JSON.stringify(defaultSandboxConfig, null, 2));
-  const [config, setConfig] = useState(defaultSandboxConfig);
+const SandboxSection: React.FC<{
+  initialConfig: WidgemoConfig;
+  initialData: Record<string, unknown>[];
+  onConfigChange: (config: WidgemoConfig) => void;
+  onDataChange: (data: Record<string, unknown>[]) => void;
+}> = ({ initialConfig, initialData, onConfigChange, onDataChange }) => {
+  const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
+  const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
+  const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
+  const [entityLabel, setEntityLabel] = useState('User');
+  const [entityLabelPlural, setEntityLabelPlural] = useState('Users');
+  const [exportStatus, setExportStatus] = useState<string | null>(null);
+  const [showCodeSandboxModal, setShowCodeSandboxModal] = useState(false);
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [dataType, setDataType] = useState('users');
+  const [recordCount, setRecordCount] = useState(10);
+  const [adjustConfig, setAdjustConfig] = useState(false);
+
+  // Generate random dataset
+  const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
+    let randomData: Record<string, unknown>[] = [];
+
+    try {
+      if (type === 'users-api') {
+        // Fetch from JSONPlaceholder
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users`);
+        const apiData: Record<string, unknown>[] = await response.json();
+        randomData = apiData.slice(0, count).map((user: Record<string, unknown>) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: 'User',
+          department: 'General',
+          status: Math.random() > 0.3,
+          lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          phone: user.phone,
+          website: user.website,
+          company: (user.company as Record<string, unknown>)?.name,
+        }));
+      } else if (type === 'posts-api') {
+        // Fetch posts and combine with users for richer data
+        const [postsRes, usersRes] = await Promise.all([
+          fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${count}`),
+          fetch('https://jsonplaceholder.typicode.com/users')
+        ]);
+        const posts: Record<string, unknown>[] = await postsRes.json();
+        const users: Record<string, unknown>[] = await usersRes.json();
+        const usersMap = users.reduce((acc: Record<number, Record<string, unknown>>, user: Record<string, unknown>) => ({ ...acc, [user.id as number]: user }), {});
+
+        randomData = posts.map((post: Record<string, unknown>) => ({
+          id: post.id,
+          title: post.title,
+          body: (post.body as string).substring(0, 100) + '...',
+          author: (usersMap[post.userId as number] as Record<string, unknown>)?.name,
+          email: (usersMap[post.userId as number] as Record<string, unknown>)?.email,
+          status: Math.random() > 0.2,
+          createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        }));
+      } else {
+        // Generate local data based on type
+        const firstNames = ['Alice', 'Bob', 'Carol', 'David', 'Eva', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
+        const lastNames = ['Johnson', 'Smith', 'Williams', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson'];
+
+        if (type === 'users') {
+          const departments = ['Engineering', 'Design', 'Business', 'Marketing', 'Sales'];
+          const roles = ['Manager', 'Developer', 'Designer', 'Analyst', 'Coordinator'];
+
+          randomData = Array.from({ length: count }, (_, i) => ({
+            id: i + 1,
+            name: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+            email: `${firstNames[Math.floor(Math.random() * firstNames.length)].toLowerCase()}.${lastNames[Math.floor(Math.random() * lastNames.length)].toLowerCase()}@company.com`,
+            role: roles[Math.floor(Math.random() * roles.length)],
+            department: departments[Math.floor(Math.random() * departments.length)],
+            status: Math.random() > 0.3,
+            lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          }));
+        } else if (type === 'sales') {
+          const products = ['Widget A', 'Widget B', 'Service X', 'Service Y', 'Package Z'];
+          const regions = ['North', 'South', 'East', 'West', 'Central'];
+          const statuses = ['Pending', 'Completed', 'Cancelled'];
+
+          randomData = Array.from({ length: count }, (_, i) => ({
+            id: i + 1,
+            product: products[Math.floor(Math.random() * products.length)],
+            amount: Math.floor(Math.random() * 10000) + 100,
+            region: regions[Math.floor(Math.random() * regions.length)],
+            status: statuses[Math.floor(Math.random() * statuses.length)],
+            date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            customer: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+          }));
+        } else if (type === 'customers') {
+          const industries = ['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing'];
+          const sizes = ['Small', 'Medium', 'Large', 'Enterprise'];
+          const statuses = ['Active', 'Inactive', 'Prospect'];
+
+          randomData = Array.from({ length: count }, (_, i) => {
+            const name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+            return {
+              id: i + 1,
+              name: name,
+              email: `${name.split(' ')[0].toLowerCase()}.${name.split(' ')[1].toLowerCase()}@company.com`,
+              company: `${name.split(' ')[1]} ${industries[Math.floor(Math.random() * industries.length)]}`,
+              industry: industries[Math.floor(Math.random() * industries.length)],
+              size: sizes[Math.floor(Math.random() * sizes.length)],
+              status: statuses[Math.floor(Math.random() * statuses.length)],
+              lastContact: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            };
+          });
+        }
+      }
+
+      setCustomData(randomData);
+      onDataChange(randomData);
+      setExportStatus('Data generated successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
+
+      // Adjust configuration if requested
+      if (shouldAdjustConfig && randomData.length > 0) {
+        const sampleRecord = randomData[0] as Record<string, unknown>;
+        const fields = Object.keys(sampleRecord).map(key => {
+          const value = sampleRecord[key];
+          let fieldType: string = 'text';
+          
+          if (typeof value === 'number') fieldType = 'number';
+          else if (typeof value === 'boolean') fieldType = 'boolean';
+          else if (value && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) fieldType = 'date';
+          else if (value && typeof value === 'string' && value.includes('@')) fieldType = 'email';
+
+          return {
+            name: key,
+            label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
+            type: fieldType,
+            sortable: fieldType !== 'boolean',
+            filterable: true
+          };
+        });
+
+        const newConfig = {
+          ...JSON.parse(configJson),
+          fields: fields
+        };
+
+        const newConfigJson = JSON.stringify(newConfig, null, 2);
+        setConfigJson(newConfigJson);
+        setConfig(newConfig);
+        onConfigChange(newConfig);
+      }
+
+      return randomData;
+    } catch (error) {
+      console.error('Error generating data:', error);
+      setExportStatus('Error generating data. Using local generation.');
+      setTimeout(() => setExportStatus(null), 3000);
+      
+      // Fallback to local generation
+      const fallbackData = Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@company.com`,
+        role: 'User',
+        department: 'General',
+        status: Math.random() > 0.3,
+        lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      }));
+      setCustomData(fallbackData);
+      onDataChange(fallbackData);
+      return fallbackData;
+    }
+  }, [configJson, onConfigChange, onDataChange]);
+
+  // Handle file upload
+  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target?.result as string);
+        if (Array.isArray(jsonData)) {
+          setCustomData(jsonData as Record<string, unknown>[]);
+          onDataChange(jsonData as Record<string, unknown>[]);
+          setExportStatus('Data uploaded successfully!');
+          setTimeout(() => setExportStatus(null), 3000);
+        } else {
+          setExportStatus('Error: Data must be an array of objects');
+          setTimeout(() => setExportStatus(null), 3000);
+        }
+      } catch {
+        setExportStatus('Error: Invalid JSON file');
+        setTimeout(() => setExportStatus(null), 3000);
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input
+    event.target.value = '';
+  }, [onDataChange]);
+
+  // Copy JSON to clipboard
+  const copyToClipboard = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(configJson);
+      setExportStatus('Configuration copied to clipboard!');
+      setTimeout(() => setExportStatus(null), 3000);
+    } catch {
+      // Fallback for browsers that don't support clipboard API or require user interaction
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = configJson;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setExportStatus('Configuration copied to clipboard!');
+        setTimeout(() => setExportStatus(null), 3000);
+      } catch {
+        setExportStatus('Failed to copy to clipboard');
+        setTimeout(() => setExportStatus(null), 3000);
+      }
+    }
+  }, [configJson]);
+
+  // Generate CodeSandbox link
+  const generateCodeSandboxLink = useCallback(() => {
+    const sandboxConfig = {
+      title: 'Widgemo Demo',
+      description: 'Interactive Widgemo configuration demo',
+      template: 'react',
+      files: {
+        'index.js': {
+          content: `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);`
+        },
+        'App.js': {
+          content: `import React, { useState } from 'react';
+import { Widgemo } from 'widgemo-core';
+
+function App() {
+  const [data] = useState(${JSON.stringify(customData, null, 2)});
+  
+  const config = ${configJson};
+  
+  const adapters = {
+    fetchData: async () => ({ data, total: data.length }),
+    createRecord: async (record) => ({ ...record, id: Date.now() }),
+    updateRecord: async (id, record) => record,
+    deleteRecord: async () => {},
+  };
+
+  return (
+    <div className="container mt-4">
+      <h1>Widgemo ${entityLabel} Management</h1>
+      <Widgemo config={config} adapters={adapters} />
+    </div>
+  );
+}
+
+export default App;`
+        },
+        'package.json': {
+          content: JSON.stringify({
+            name: 'widgemo-demo',
+            version: '0.1.0',
+            dependencies: {
+              'react': '^18.0.0',
+              'react-dom': '^18.0.0',
+              'widgemo-core': 'latest',
+              'bootstrap': '^5.3.0'
+            }
+          }, null, 2)
+        },
+        'index.html': {
+          content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Widgemo Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>`
+        }
+      }
+    };
+
+    // Base64 encode the sandbox configuration
+    const encodedConfig = btoa(JSON.stringify(sandboxConfig));
+    const codesandboxUrl = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${encodeURIComponent(encodedConfig)}`;
+
+    // Open in new tab
+    window.open(codesandboxUrl, '_blank');
+  }, [configJson, customData, entityLabel]);
+
+  // Download config as JSON file
+  const downloadConfig = useCallback(() => {
+    const blob = new Blob([configJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'widgemo-config.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [configJson]);
+
+  // Show CodeSandbox modal
+  const showCodeSandboxModalHandler = useCallback(() => {
+    setShowCodeSandboxModal(true);
+  }, []);
+
+  // Dynamic adapters that use custom data
+  const dynamicAdapters: WidgemoAdapters = {
+    fetchData: async () => ({
+      data: customData,
+      total: customData.length,
+    }),
+    createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
+    updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
+    deleteRecord: async () => {},
+  };
 
   const applyConfig = () => {
     try {
@@ -695,17 +1025,30 @@ const SandboxSection: React.FC = () => {
 
       const parsed = JSON.parse(cleanJson);
       setConfig(parsed);
+      onConfigChange(parsed);
       setJsonError(null);
     } catch (error) {
       setJsonError((error as Error).message);
     }
   };
 
+  // Sync with initial props
+  useEffect(() => {
+    setConfig(initialConfig);
+    setConfigJson(JSON.stringify(initialConfig, null, 2));
+  }, [initialConfig]);
+
+  useEffect(() => {
+    setCustomData(initialData);
+  }, [initialData]);
+
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
+    setConfig(presetConfig);
+    onConfigChange(presetConfig);
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
@@ -722,9 +1065,69 @@ const SandboxSection: React.FC = () => {
           <Group>
             <Panel defaultSize={35} minSize={30}>
               <div className="p-4 h-100 d-flex flex-column">
+                {/* Data Management */}
+                <div className="mb-3">
+                  <h6 className="mb-2">Data Management</h6>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      onClick={() => setShowGenerateModal(true)}
+                    >
+                      <FaRandom className="me-1" />
+                      Generate Random
+                    </Button>
+                    <Form.Control
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      style={{ display: 'none' }}
+                      id="data-upload"
+                    />
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => document.getElementById('data-upload')?.click()}
+                    >
+                      <FaUpload className="me-1" />
+                      Upload JSON
+                    </Button>
+                    <small className="text-muted align-self-center">
+                      {customData.length} {entityLabelPlural.toLowerCase()}
+                    </small>
+                  </div>
+                </div>
+
+                {/* Export Status */}
+                {exportStatus && (
+                  <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
+                    {exportStatus}
+                  </Alert>
+                )}
+
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0">Configuration Editor</h5>
                   <div className="d-flex gap-2">
+                    <Dropdown>
+                      <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
+                        <FaDownload className="me-1" />
+                        Export
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={copyToClipboard}>
+                          <FaCopy className="me-2" />
+                          Copy JSON
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={downloadConfig}>
+                          <FaDownload className="me-2" />
+                          Download JSON
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={showCodeSandboxModalHandler}>
+                          <FaExternalLinkAlt className="me-2" />
+                          CodeSandbox
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                     <Dropdown>
                       <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
                         Load Preset
@@ -785,7 +1188,7 @@ const SandboxSection: React.FC = () => {
                 <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
                   <Widgemo
                     config={config}
-                    adapters={mockAdapters}
+                    adapters={dynamicAdapters}
                     showConfigDetails={true}
                   />
                 </div>
@@ -998,6 +1401,114 @@ const SandboxSection: React.FC = () => {
             ))}
           </div>
         </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showCodeSandboxModal}
+        onHide={() => setShowCodeSandboxModal(false)}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Export to CodeSandbox</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-muted mb-3">
+            Customize the entity labels for your CodeSandbox demo:
+          </p>
+          <div className="mb-3">
+            <label className="form-label">Entity Label (singular)</label>
+            <Form.Control
+              placeholder="e.g., User, Product, Task"
+              value={entityLabel}
+              onChange={(e) => setEntityLabel(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Entity Label (plural)</label>
+            <Form.Control
+              placeholder="e.g., Users, Products, Tasks"
+              value={entityLabelPlural}
+              onChange={(e) => setEntityLabelPlural(e.target.value)}
+            />
+          </div>
+          <div className="alert alert-info">
+            <small>
+              This will generate a live CodeSandbox demo with your current configuration and data.
+              The demo will include a title like "Widgemo {entityLabel} Management".
+            </small>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCodeSandboxModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={() => { generateCodeSandboxLink(); setShowCodeSandboxModal(false); }}>
+            <FaExternalLinkAlt className="me-2" />
+            Generate CodeSandbox
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showGenerateModal}
+        onHide={() => setShowGenerateModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Generate Random Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-3">
+            <label className="form-label">Data Type</label>
+            <Form.Select value={dataType} onChange={(e) => setDataType(e.target.value)}>
+              <option value="users">Users (Local)</option>
+              <option value="sales">Sales Records (Local)</option>
+              <option value="customers">Customers (Local)</option>
+              <option value="users-api">Users (API)</option>
+              <option value="posts-api">Posts (API)</option>
+            </Form.Select>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Number of Records</label>
+            <Form.Control
+              type="number"
+              min="1"
+              max="100"
+              value={recordCount}
+              onChange={(e) => setRecordCount(parseInt(e.target.value) || 10)}
+            />
+          </div>
+          <div className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Adjust current configuration to match generated data fields"
+              checked={adjustConfig}
+              onChange={(e) => setAdjustConfig(e.target.checked)}
+            />
+          </div>
+          <div className="alert alert-info">
+            <small>
+              API options fetch real data from JSONPlaceholder. Local options generate synthetic data.
+              Adjusting configuration will update the fields in your current setup to match the generated data structure.
+            </small>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowGenerateModal(false)}>
+            Cancel
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={() => { 
+              generateRandomData(dataType, recordCount, adjustConfig); 
+              setShowGenerateModal(false); 
+            }}
+          >
+            <FaRandom className="me-2" />
+            Generate Data
+          </Button>
+        </Modal.Footer>
       </Modal>
     </DemoSection>
   );
@@ -1236,6 +1747,10 @@ function App() {
     return 'theme-light'; // fallback
   });
 
+  // Sandbox state management
+  const [sandboxConfig, setSandboxConfig] = useState(defaultSandboxConfig);
+  const [sandboxData, setSandboxData] = useState<Record<string, unknown>[]>(teaserSampleData);
+
   // Determine if current theme should have dark teaser text
   const shouldHaveDarkTeaserText = currentTheme.startsWith('theme-light');
 
@@ -1270,6 +1785,15 @@ function App() {
     }
   };
 
+  // Gallery integration callbacks
+  const loadConfigToSandbox = (config: WidgemoConfig, data?: SampleData[]) => {
+    setSandboxConfig(config);
+    if (data) {
+      setSandboxData(data as Record<string, unknown>[]);
+    }
+    scrollToSection('sandbox');
+  };
+
   return (
     <div className={`App ${currentTheme}`}>
       <DemoNav
@@ -1285,9 +1809,14 @@ function App() {
         shouldHaveDarkText={shouldHaveDarkTeaserText}
       />
 
-      <GallerySection />
+      <GallerySection onLoadToSandbox={loadConfigToSandbox} />
 
-      <SandboxSection />
+      <SandboxSection
+        initialConfig={sandboxConfig}
+        initialData={sandboxData}
+        onConfigChange={setSandboxConfig}
+        onDataChange={setSandboxData}
+      />
 
       <AdvancedExamplesSection />
 
