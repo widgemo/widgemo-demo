@@ -6,6 +6,7 @@ import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { fieldTypes, chartTypes, viewModes, presetConfigs } from '../data/configReference';
 import { DemoSection } from './DemoSection';
 
 interface SandboxSectionProps {
@@ -620,8 +621,373 @@ export default App;`
         <Modal.Header closeButton>
           <Modal.Title>Configuration Reference</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>Configuration reference documentation would go here.</p>
+        <Modal.Body style={{ maxHeight: '70vh', overflow: 'auto' }}>
+          <div className="mb-4">
+            <h6 className="text-primary">Basic Configuration</h6>
+            <div className="mb-3 p-2 border-start border-primary">
+              <code className="text-primary fw-bold">title</code>
+              <span className="badge bg-secondary ms-2">string</span>
+              <br />
+              <small className="text-muted">The title displayed at the top of the component</small>
+              <div className="mt-1">
+                <small className="text-success">Example: "User Management"</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-primary">
+              <code className="text-primary fw-bold">mode</code>
+              <span className="badge bg-secondary ms-2">string</span>
+              <small className="text-muted ms-2">
+                Options: {viewModes.map(m => m.value).join(', ')}
+              </small>
+              <br />
+              <small className="text-muted">Display mode for the data</small>
+              <div className="mt-1">
+                <small className="text-success">Example: "table"</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-primary">
+              <code className="text-primary fw-bold">dataSource</code>
+              <span className="badge bg-secondary ms-2">object</span>
+              <br />
+              <small className="text-muted">Configuration for data fetching</small>
+              <div className="mt-2">
+                <small className="text-muted">Sub-properties:</small>
+                <ul className="mb-0 mt-1">
+                  <li>
+                    <code>type</code> (string) - "static" or "api"
+                    <br />
+                    <small className="text-muted">Data source type</small>
+                  </li>
+                  <li>
+                    <code>url</code> (string) - API endpoint URL (for api type)
+                    <br />
+                    <small className="text-muted">Required when type is "api"</small>
+                  </li>
+                  <li>
+                    <code>method</code> (string) - HTTP method (optional)
+                    <br />
+                    <small className="text-muted">Defaults to "GET"</small>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-success">Fields Configuration</h6>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">name</code>
+              <span className="badge bg-secondary ms-2">string</span>
+              <br />
+              <small className="text-muted">Field identifier/key from your data</small>
+              <div className="mt-1">
+                <small className="text-success">Example: "name"</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">label</code>
+              <span className="badge bg-secondary ms-2">string</span>
+              <br />
+              <small className="text-muted">Display label for the field</small>
+              <div className="mt-1">
+                <small className="text-success">Example: "Full Name"</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">type</code>
+              <span className="badge bg-secondary ms-2">string</span>
+              <small className="text-muted ms-2">
+                Options: {fieldTypes.map(t => t.value).join(', ')}
+              </small>
+              <br />
+              <small className="text-muted">Data type for rendering and validation</small>
+              <div className="mt-1">
+                <small className="text-success">Example: "text"</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">required</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <span className="text-muted ms-2">(optional)</span>
+              <br />
+              <small className="text-muted">Whether this field is required for new records</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">sortable</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <span className="text-muted ms-2">(optional)</span>
+              <br />
+              <small className="text-muted">Whether this field can be sorted</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-success">
+              <code className="text-success fw-bold">filterable</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <span className="text-muted ms-2">(optional)</span>
+              <br />
+              <small className="text-muted">Whether this field can be filtered</small>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-warning">Actions</h6>
+            <div className="mb-3 p-2 border-start border-warning">
+              <code className="text-warning fw-bold">create</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Enable create/add new record functionality</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-warning">
+              <code className="text-warning fw-bold">edit</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Enable edit existing records functionality</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-warning">
+              <code className="text-warning fw-bold">delete</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Enable delete record functionality</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-warning">
+              <code className="text-warning fw-bold">view</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Enable view record details functionality</small>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-info">Pagination & Features</h6>
+            <div className="mb-3 p-2 border-start border-info">
+              <code className="text-info fw-bold">pagination</code>
+              <span className="badge bg-secondary ms-2">object</span>
+              <br />
+              <small className="text-muted">Pagination configuration</small>
+              <div className="mt-2">
+                <small className="text-muted">Sub-properties:</small>
+                <ul className="mb-0 mt-1">
+                  <li><code>enabled</code> (boolean) - Enable pagination</li>
+                  <li><code>defaultPageSize</code> (number) - Default items per page</li>
+                  <li><code>pageSizeOptions</code> (array) - Available page size options</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-info">
+              <code className="text-info fw-bold">sorting</code>
+              <span className="badge bg-secondary ms-2">object</span>
+              <br />
+              <small className="text-muted">Sorting configuration</small>
+              <div className="mt-2">
+                <small className="text-muted">Sub-properties:</small>
+                <ul className="mb-0 mt-1">
+                  <li><code>enabled</code> (boolean) - Enable sorting</li>
+                  <li><code>defaultSort</code> (object) - Default sort configuration</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-info">
+              <code className="text-info fw-bold">filtering</code>
+              <span className="badge bg-secondary ms-2">object</span>
+              <br />
+              <small className="text-muted">Filtering configuration</small>
+              <div className="mt-2">
+                <small className="text-muted">Sub-properties:</small>
+                <ul className="mb-0 mt-1">
+                  <li><code>enabled</code> (boolean) - Enable filtering</li>
+                  <li><code>defaultFilters</code> (array) - Default filter conditions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-secondary">Header Configuration</h6>
+            <div className="mb-3 p-2 border-start border-secondary">
+              <code className="text-secondary fw-bold">always</code>
+              <span className="badge bg-secondary ms-2">array</span>
+              <br />
+              <small className="text-muted">Buttons always visible in header</small>
+              <div className="mt-1">
+                <small className="text-success">Options: refresh, viewToggle</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-secondary">
+              <code className="text-secondary fw-bold">discoverable</code>
+              <span className="badge bg-secondary ms-2">array</span>
+              <br />
+              <small className="text-muted">Buttons that appear on hover/focus</small>
+              <div className="mt-1">
+                <small className="text-success">Options: viewToggle</small>
+              </div>
+            </div>
+            <div className="mb-3 p-2 border-start border-secondary">
+              <code className="text-secondary fw-bold">onMenu</code>
+              <span className="badge bg-secondary ms-2">array</span>
+              <br />
+              <small className="text-muted">Buttons available in header dropdown menu</small>
+              <div className="mt-1">
+                <small className="text-success">Options: columnSelector, add</small>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-danger">Styling Options</h6>
+            <div className="mb-3 p-2 border-start border-danger">
+              <code className="text-danger fw-bold">compact</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Use compact spacing and sizing</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-danger">
+              <code className="text-danger fw-bold">shadow</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Show shadow for the entire widgemo container</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-danger">
+              <code className="text-danger fw-bold">showBorder</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Show border for the entire widgemo container</small>
+            </div>
+            <div className="mb-3 p-2 border-start border-danger">
+              <code className="text-danger fw-bold">dynamicBackground</code>
+              <span className="badge bg-secondary ms-2">boolean</span>
+              <br />
+              <small className="text-muted">Adapt background color based on theme</small>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-primary">Chart Configuration</h6>
+            <small className="text-muted mb-2 d-block">Only used when mode is 'chart'</small>
+            <div className="mb-3 p-2 border-start border-primary">
+              <code className="text-primary fw-bold">chartConfig</code>
+              <span className="badge bg-secondary ms-2">object</span>
+              <br />
+              <small className="text-muted">Chart-specific configuration</small>
+              <div className="mt-2">
+                <small className="text-muted">Sub-properties:</small>
+                <ul className="mb-0 mt-1">
+                  <li>
+                    <code>type</code> (string) - Chart type
+                    <br />
+                    <small className="text-muted">Options: {chartTypes.map(t => t.value).join(', ')}</small>
+                  </li>
+                  <li><code>xAxis</code> (string) - Field name for X-axis</li>
+                  <li><code>yAxis</code> (string) - Field name for Y-axis</li>
+                  <li><code>groupBy</code> (string) - Field to group data by (optional)</li>
+                  <li><code>colors</code> (array) - Custom color palette</li>
+                  <li><code>showLegend</code> (boolean) - Show chart legend</li>
+                  <li><code>showGrid</code> (boolean) - Show chart grid</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-info">Data Format Examples</h6>
+            <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
+
+            <div className="mb-3">
+              <h6 className="text-info">Users Data</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@company.com",
+    "role": "Developer",
+    "department": "Engineering",
+    "status": true,
+    "lastLogin": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane.smith@company.com",
+    "role": "Designer",
+    "department": "Design",
+    "status": false,
+    "lastLogin": "2024-01-10"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">Sales Records</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "product": "Widget A",
+    "amount": 1250.50,
+    "region": "North",
+    "status": "Completed",
+    "date": "2024-01-15",
+    "customer": "ABC Corp"
+  },
+  {
+    "id": 2,
+    "product": "Service X",
+    "amount": 850.00,
+    "region": "South",
+    "status": "Pending",
+    "date": "2024-01-14",
+    "customer": "XYZ Ltd"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">Customer Data</h6>
+              <pre className="bg-light p-2 rounded small"><code>{`[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@company.com",
+    "company": "Tech Solutions Inc",
+    "industry": "Technology",
+    "size": "Medium",
+    "status": "Active",
+    "lastContact": "2024-01-12"
+  },
+  {
+    "id": 2,
+    "name": "Bob Wilson",
+    "email": "bob@enterprise.com",
+    "company": "Global Corp",
+    "industry": "Finance",
+    "size": "Large",
+    "status": "Active",
+    "lastContact": "2024-01-10"
+  }
+]`}</code></pre>
+            </div>
+
+            <div className="mb-3">
+              <h6 className="text-info">API Data Sources</h6>
+              <p className="small text-muted mb-2">
+                <strong>JSONPlaceholder Options:</strong> The dropdown includes direct options for all JSONPlaceholder endpoints (users, posts, comments, albums, photos, todos) that fetch real sample data.
+              </p>
+              <p className="small text-muted mb-2">
+                <strong>Custom API Endpoint:</strong> For testing with external APIs, select "Custom API Endpoint" and provide a full URL (e.g., https://api.github.com/users, https://jsonplaceholder.typicode.com/comments).
+                The system will attempt to fetch and display data from any valid JSON API endpoint.
+              </p>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h6 className="text-success">Preset Configurations</h6>
+            <small className="text-muted mb-3 d-block">Ready-to-use configuration templates</small>
+            {Object.entries(presetConfigs).map(([key, config]) => (
+              <div key={key} className="mb-3 p-2 border-start border-success">
+                <code className="text-success fw-bold">{key}</code>
+                <span className="badge bg-secondary ms-2">{config.title}</span>
+                <br />
+                <small className="text-muted">{config.mode} mode with {config.fields.length} fields</small>
+              </div>
+            ))}
+          </div>
         </Modal.Body>
       </Modal>
 
@@ -732,22 +1098,63 @@ export default App;`
           <Modal.Title>Edit Source Data JSON</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Control as="textarea" rows={20} value={jsonEditorText} onChange={(e) => setJsonEditorText(e.target.value)} />
+          <Form.Control
+            as="textarea"
+            rows={20}
+            value={jsonEditorText}
+            onChange={(e) => setJsonEditorText(e.target.value)}
+            placeholder="Enter JSON data..."
+            className="font-monospace"
+            style={{ fontSize: '0.875rem' }}
+          />
+          <small className="text-muted mt-2 d-block">
+            Edit the JSON data directly. Changes will be applied when you click "Save Changes".
+          </small>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowJsonEditorModal(false)}>Cancel</Button>
-          <Button variant="success" onClick={() => {
-            try {
-              const parsedData = JSON.parse(jsonEditorText);
-              if (Array.isArray(parsedData)) {
-                setCustomData(parsedData);
-                onDataChange(parsedData);
-                setShowJsonEditorModal(false);
+          <Button variant="secondary" onClick={() => setShowJsonEditorModal(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => {
+              try {
+                const parsedData = JSON.parse(jsonEditorText);
+                if (Array.isArray(parsedData)) {
+                  setCustomData(parsedData);
+                  onDataChange(parsedData);
+                  setExportStatus('Data updated successfully!');
+                  setTimeout(() => setExportStatus(null), 3000);
+                  setShowJsonEditorModal(false);
+                } else {
+                  setExportStatus('Error: Data must be an array of objects');
+                  setTimeout(() => setExportStatus(null), 3000);
+                }
+              } catch {
+                setExportStatus('Error: Invalid JSON format');
+                setTimeout(() => setExportStatus(null), 3000);
               }
-            } catch {
-              // Handle error
-            }
-          }}>Save Changes</Button>
+            }}
+          >
+            Save Changes
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              const blob = new Blob([jsonEditorText], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'widgemo-data.json';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }}
+          >
+            <FaDownload className="me-2" />
+            Download JSON
+          </Button>
         </Modal.Footer>
       </Modal>
     </DemoSection>
