@@ -305,8 +305,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           onHide={handleCloseModal}
           size="xl"
           centered
-          className={`gallery-modal ${currentTheme}`}
-          key={selectedItem.name}
+          backdrop={true}
         >
           <Modal.Header closeButton>
             <Modal.Title>
@@ -401,87 +400,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
           .theme-aware-card {
             transition: all 0.2s ease;
-          }
-
-          .gallery-modal .modal-dialog {
-            max-width: 95vw;
-          }
-
-          .gallery-modal .modal-body {
-            padding: 1.5rem;
-          }
-
-          /* Theme-specific modal backgrounds */
-          .gallery-modal.theme-light .modal-content {
-            background-color: #ffffffff;
-            border-color: #dee2e6;
-          }
-
-          .gallery-modal.theme-light-blue .modal-content {
-            background-color: #f0f8ff;
-            border-color: #b3d7ff;
-          }
-
-          .gallery-modal.theme-light-green .modal-content {
-            background-color: #f0fff0;
-            border-color: #b3ffb3;
-          }
-
-          .gallery-modal.theme-light-purple .modal-content {
-            background-color: #f8f0ff;
-            border-color: #d7b3ff;
-          }
-
-          .gallery-modal.theme-dark .modal-content {
-            background-color: #1a1a1a;
-            border-color: #333333;
-            color: #ffffff;
-          }
-
-          .gallery-modal.theme-dark .modal-header,
-          .gallery-modal.theme-dark .modal-footer {
-            border-color: #333333;
-          }
-
-          .gallery-modal.theme-dark .modal-title {
-            color: #ffffff;
-          }
-
-          .gallery-modal.theme-dark .btn-close {
-            filter: invert(1);
-          }
-
-          .gallery-modal.theme-dark-red .modal-content {
-            background-color: #2a1a1a;
-            border-color: #4d2a2a;
-            color: #ffffff;
-          }
-
-          .gallery-modal.theme-dark-red .modal-header,
-          .gallery-modal.theme-dark-red .modal-footer {
-            border-color: #4d2a2a;
-          }
-
-          .gallery-modal.theme-dark-purple .modal-content {
-            background-color: #1a1a2a;
-            border-color: #2a2a4d;
-            color: #ffffff;
-          }
-
-          .gallery-modal.theme-dark-purple .modal-header,
-          .gallery-modal.theme-dark-purple .modal-footer {
-            border-color: #2a2a4d;
-          }
-
-          .gallery-modal.theme-dark-teal .modal-content {
-            background-color: #1a2a2a;
-            border-color: #2a4d4d;
-            color: #ffffff;
-          }
-
-          .gallery-modal.theme-dark-teal .modal-header,
-          .gallery-modal.theme-dark-teal .modal-footer {
-            border-color: #2a4d4d;
           }
         `
       }} />
