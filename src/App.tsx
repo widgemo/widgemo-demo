@@ -736,7 +736,7 @@ const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?:
   >
     <Row>
       {galleryConfigs.map((item, index) => (
-        <Col lg={6} xl={4} key={index} className="mb-4">
+        <Col lg={6} xl={6} key={index} className="mb-4">
           <Card
             className="h-100 shadow-sm hover-lift theme-aware-card"
             style={{ cursor: 'pointer' }}
