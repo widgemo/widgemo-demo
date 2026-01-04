@@ -316,7 +316,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               </Badge>
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ minHeight: '500px' }}>
+          <Modal.Body style={{ minHeight: '500px', backgroundColor: getThemeBackgroundColor(currentTheme) }}>
             {(() => {
               // Create dynamic adapters for the selected item
               const selectedItemAdapters: WidgemoAdapters = selectedItem.data ? {
