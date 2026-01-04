@@ -54,6 +54,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
       onLoadToSandbox(selectedItem.config, selectedItem.data);
       setShowModal(false);
       setSelectedItem(null);
+      // Scroll to sandbox section after modal closes
+      setTimeout(() => {
+        const sandboxElement = document.getElementById('sandbox');
+        if (sandboxElement) {
+          sandboxElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300); // Wait for modal close animation
     }
   };
 
