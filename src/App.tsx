@@ -6,6 +6,37 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaGithub, FaBook, FaPalette, FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt } from 'react-icons/fa';
 import './App.css';
 
+// Utility function to merge theme into config
+const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): WidgemoConfig => {
+  // Convert demo theme format to Widgemo theme format (light, dark, auto)
+  let widgemoTheme: 'light' | 'dark' | 'auto' | undefined;
+  
+  // All light themes map to 'light'
+  if (demoTheme.startsWith('theme-light')) {
+    widgemoTheme = 'light';
+  } 
+  // All dark themes map to 'dark'
+  else if (demoTheme.startsWith('theme-dark')) {
+    widgemoTheme = 'dark';
+  } 
+  // Auto theme
+  else if (demoTheme === 'auto') {
+    widgemoTheme = 'auto';
+  } 
+  // Fallback
+  else {
+    widgemoTheme = 'light';
+  }
+
+  return {
+    ...config,
+    styling: {
+      ...config.styling,
+      theme: widgemoTheme === 'auto' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : widgemoTheme
+    }
+  };
+};
+
 // Define types for sample data
 interface SampleData extends Record<string, unknown> {
   id?: number;
@@ -51,7 +82,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { create: true, edit: true, delete: true },
       header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
-      styling: { compact: true, theme: 'light', shadow: true },
+      styling: { compact: true, shadow: true },
     },
     description: 'Full-featured user management table with CRUD operations'
   },
@@ -68,7 +99,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'status', label: 'Active', type: 'boolean' },
       ],
       actions: { view: true },
-      styling: { card: { shadow: true, showBorder: true }, theme: 'light', shadow: true },
+      styling: { card: { shadow: true, showBorder: true }, shadow: true },
     },
     description: 'User profile cards with contact and role information'
   },
@@ -82,7 +113,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'name', label: 'Lead', type: 'text' },
         { name: 'role', label: 'Role', type: 'text' },
       ],
-      styling: { compact: true, theme: 'light' },
+      styling: { compact: true },
     },
     description: 'Department tiles showing team leads and roles'
   },
@@ -101,7 +132,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         xAxis: 'department',
         yAxis: 'status',
       },
-      styling: { theme: 'light' },
+      styling: {},
     },
     description: 'Chart showing active users by department'
   },
@@ -115,7 +146,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'lastLogin', label: 'Last Login', type: 'date' },
       ],
       header: { onMenu: ['refresh'] },
-      styling: { compact: true, theme: 'light' },
+      styling: { compact: true },
     },
     description: 'Simple view of active users with login information'
   },
@@ -144,7 +175,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       sorting: { enabled: true },
       filtering: { enabled: true },
       header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
-      styling: { theme: 'light' },
+      styling: {},
     },
     description: 'Full-featured user management with pagination, sorting, and filtering'
   },
@@ -164,7 +195,7 @@ const defaultSandboxConfig: WidgemoConfig = {
     { name: 'status', label: 'Active', type: 'boolean' },
   ],
   actions: { create: true, edit: true },
-  styling: { theme: 'light', shadow: true, showBorder: true },
+  styling: { shadow: true, showBorder: true },
 };
 
 // Mock adapters for all Widgemo instances
@@ -493,7 +524,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { create: true, edit: true, delete: true },
       header: { always: ['refresh', 'add'], onMenu: ['deleteToggle'] },
-      styling: { compact: true, theme: 'light' },
+      styling: { compact: true },
       labels: { add: 'Add User' }
     },
     description: 'Full-featured user management table'
@@ -511,7 +542,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       ],
       actions: { view: true },
       header: { always: ['refresh'] },
-      styling: { card: { shadow: true, showBorder: true }, theme: 'light' },
+      styling: { card: { shadow: true, showBorder: true } },
     },
     description: 'User profile cards with contact info'
   },
@@ -526,7 +557,7 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'role', label: 'Role', type: 'text' },
       ],
       header: { always: ['refresh'] },
-      styling: { compact: true, theme: 'light' },
+      styling: { compact: true },
     },
     description: 'Department tiles showing team leads'
   },
@@ -545,17 +576,18 @@ const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         xAxis: 'department',
         yAxis: 'status',
       },
-      styling: { theme: 'light' },
+      styling: {},
     },
     description: 'Chart showing active users by department'
   },
 ];
 
 // Teaser component with cycling configurations
-const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean }> = ({
+const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: () => void; shouldHaveDarkText: boolean; currentTheme: string }> = ({
   onExploreGallery,
   onJumpToSandbox,
-  shouldHaveDarkText
+  shouldHaveDarkText,
+  currentTheme
 }) => {
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState(() => {
@@ -587,7 +619,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
   }, [configsLength]);
 
   const currentTeaserItem = teaserConfigs[currentConfigIndex];
-  const teaserConfig = currentTeaserItem.config;
+  const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
 
   return (
     <section id="teaser" className="bg-gradient" style={{
@@ -657,7 +689,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
 };
 
 // Gallery component
-const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?: SampleData[]) => void }> = ({ onLoadToSandbox }) => (
+const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?: SampleData[]) => void; currentTheme: string }> = ({ onLoadToSandbox, currentTheme }) => (
   <DemoSection
     id="gallery"
     title="Gallery"
@@ -675,7 +707,7 @@ const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?:
             <Card.Body className="d-flex flex-column">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
-                  config={{ ...item.config, title: undefined }}
+                  config={{ ...mergeThemeIntoConfig(item.config, currentTheme), title: undefined }}
                   adapters={mockAdapters}
                   showConfigDetails={true}
                 />
@@ -699,7 +731,8 @@ const SandboxSection: React.FC<{
   initialData: Record<string, unknown>[];
   onConfigChange: (config: WidgemoConfig) => void;
   onDataChange: (data: Record<string, unknown>[]) => void;
-}> = ({ initialConfig, initialData, onConfigChange, onDataChange }) => {
+  currentTheme: string;
+}> = ({ initialConfig, initialData, onConfigChange, onDataChange, currentTheme }) => {
   const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
   const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
@@ -1130,12 +1163,13 @@ export default App;`
   }, [initialData]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
-    const json = JSON.stringify(presetConfig, null, 2);
+    const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
+    const json = JSON.stringify(themedConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
-    setConfig(presetConfig);
-    onConfigChange(presetConfig);
+    setConfig(themedConfig);
+    onConfigChange(themedConfig);
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
@@ -1827,7 +1861,7 @@ export default App;`
 };
 
 // Advanced Examples component
-const AdvancedExamplesSection: React.FC = () => (
+const AdvancedExamplesSection: React.FC<{ currentTheme: string }> = ({ currentTheme }) => (
   <DemoSection
     id="advanced"
     title="Advanced Examples"
@@ -1843,7 +1877,7 @@ const AdvancedExamplesSection: React.FC = () => (
             <div className="row g-3">
               <div className="col-6">
                 <Widgemo
-                  config={{
+                  config={mergeThemeIntoConfig({
                     title: 'Summary',
                     mode: 'cards',
                     dataSource: { type: 'static' },
@@ -1852,8 +1886,8 @@ const AdvancedExamplesSection: React.FC = () => (
                       { name: 'activeUsers', label: 'Active Users', type: 'number' },
                       { name: 'totalUsers', label: 'Total Users', type: 'number' },
                     ],
-                    styling: { compact: true, theme: 'light' },
-                  }}
+                    styling: { compact: true },
+                  }, currentTheme)}
                   adapters={{
                     fetchData: async () => ({
                       data: [
@@ -1868,7 +1902,7 @@ const AdvancedExamplesSection: React.FC = () => (
               </div>
               <div className="col-6">
                 <Widgemo
-                  config={{
+                  config={mergeThemeIntoConfig({
                     title: 'Chart',
                     mode: 'chart',
                     dataSource: { type: 'static' },
@@ -1877,8 +1911,8 @@ const AdvancedExamplesSection: React.FC = () => (
                       { name: 'activeUsers', label: 'Active Users', type: 'number' },
                     ],
                     chartConfig: { type: 'bar', xAxis: 'department', yAxis: 'activeUsers' },
-                    styling: { compact: true, theme: 'light' },
-                  }}
+                    styling: { compact: true },
+                  }, currentTheme)}
                   adapters={{
                     fetchData: async () => ({
                       data: [
@@ -1904,7 +1938,7 @@ const AdvancedExamplesSection: React.FC = () => (
             <h5 className="card-title">Team Directory</h5>
             <p className="text-muted">Browse users by department and role</p>
             <Widgemo
-              config={{
+              config={mergeThemeIntoConfig({
                 title: 'Team Members',
                 mode: 'table',
                 dataSource: { type: 'static' },
@@ -1921,8 +1955,8 @@ const AdvancedExamplesSection: React.FC = () => (
                   { name: 'status', label: 'Active', type: 'boolean' },
                 ],
                 actions: { view: true },
-                styling: { compact: true, theme: 'light' },
-              }}
+                styling: { compact: true },
+              }, currentTheme)}
               adapters={{
                 fetchData: async () => ({
                   data: teaserSampleData,
@@ -2012,6 +2046,7 @@ const ThemeSelector: React.FC<{ currentTheme: string; onThemeChange: (theme: str
     { key: 'theme-dark', label: 'Dark', color: '#1a1a1a' },
     { key: 'theme-dark-red', label: 'Dark Red', color: '#2a1a1a' },
     { key: 'theme-dark-purple', label: 'Dark Purple', color: '#1a1a2a' },
+    { key: 'theme-dark-teal', label: 'Dark Teal', color: '#1a2a2a' },
   ];
 
   const currentThemeData = themes.find(t => t.key === currentTheme);
@@ -2099,7 +2134,7 @@ function App() {
 
   // Gallery integration callbacks
   const loadConfigToSandbox = (config: WidgemoConfig, data?: SampleData[]) => {
-    setSandboxConfig(config);
+    setSandboxConfig(mergeThemeIntoConfig(config, currentTheme));
     if (data) {
       setSandboxData(data as Record<string, unknown>[]);
     }
@@ -2119,18 +2154,20 @@ function App() {
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => scrollToSection('sandbox')}
         shouldHaveDarkText={shouldHaveDarkTeaserText}
+        currentTheme={currentTheme}
       />
 
-      <GallerySection onLoadToSandbox={loadConfigToSandbox} />
+      <GallerySection onLoadToSandbox={loadConfigToSandbox} currentTheme={currentTheme} />
 
       <SandboxSection
         initialConfig={sandboxConfig}
         initialData={sandboxData}
         onConfigChange={setSandboxConfig}
         onDataChange={setSandboxData}
+        currentTheme={currentTheme}
       />
 
-      <AdvancedExamplesSection />
+      <AdvancedExamplesSection currentTheme={currentTheme} />
 
       <ResourcesSection />
     </div>

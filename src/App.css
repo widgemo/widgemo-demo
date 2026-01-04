@@ -264,13 +264,22 @@ body {
   --button-hover: #4a4a6a;
 }
 
+.theme-dark-teal {
+  --bg-color: #022833;
+  --text-color: #cccccc;
+  --border-color: #446166;
+  --button-bg: #2a4a48;
+  --button-hover: #4a6a6a;
+}
+
 .theme-light,
 .theme-light-blue,
 .theme-light-green,
 .theme-light-purple,
 .theme-dark,
 .theme-dark-red,
-.theme-dark-purple {
+.theme-dark-purple,
+.theme-dark-teal {
   background-color: var(--bg-color);
   color: var(--text-color);
   min-height: 100vh;
