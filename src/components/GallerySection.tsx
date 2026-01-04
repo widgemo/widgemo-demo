@@ -136,7 +136,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             height: '180px',
             overflow: 'hidden',
             position: 'relative',
-            backgroundColor: getThemeBackgroundColor(item.theme || currentTheme),
+            backgroundColor: getThemeBackgroundColor(currentTheme),
             borderRadius: '0.375rem 0.375rem 0 0'
           }}>
             <div style={{
@@ -147,10 +147,10 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               pointerEvents: 'none'
             }}>
               <Widgemo
-                config={mergeThemeIntoConfig(item.config, item.theme || currentTheme)}
+                config={mergeThemeIntoConfig(item.config, currentTheme)}
                 adapters={itemAdapters}
                 showConfigDetails={false}
-                baseColor={getThemeBackgroundColor(item.theme || currentTheme)}
+                baseColor={getThemeBackgroundColor(currentTheme)}
               />
             </div>
             <div className="gallery-overlay">
@@ -255,7 +255,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                       height: '180px',
                       overflow: 'hidden',
                       position: 'relative',
-                      backgroundColor: getThemeBackgroundColor(item.theme || currentTheme),
+                      backgroundColor: getThemeBackgroundColor(currentTheme),
                       borderRadius: '0.375rem 0.375rem 0 0'
                     }}>
                       <div style={{
@@ -269,7 +269,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                           config={mergeThemeIntoConfig(item.config, item.theme || currentTheme)}
                           adapters={itemAdapters}
                           showConfigDetails={false}
-                          baseColor={getThemeBackgroundColor(item.theme || currentTheme)}
                         />
                       </div>
                       <div className="gallery-overlay">
@@ -329,10 +328,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
             return (
               <Widgemo
-                config={mergeThemeIntoConfig(selectedItem.config, selectedItem.theme || currentTheme)}
+                config={mergeThemeIntoConfig(selectedItem.config, currentTheme)}
                 adapters={selectedItemAdapters}
                 showConfigDetails={true}
-                baseColor={getThemeBackgroundColor(selectedItem.theme || currentTheme)}
               />
             );
           })()}

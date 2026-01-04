@@ -17,6 +17,13 @@ export const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): 
   else if (demoTheme === 'auto') {
     widgemoTheme = 'auto';
   }
+  // Simple theme names
+  else if (demoTheme === 'light') {
+    widgemoTheme = 'light';
+  }
+  else if (demoTheme === 'dark') {
+    widgemoTheme = 'dark';
+  }
   // Fallback
   else {
     widgemoTheme = 'light';
