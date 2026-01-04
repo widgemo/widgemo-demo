@@ -402,6 +402,33 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           .theme-aware-card {
             transition: all 0.2s ease;
           }
+
+          /* Ensure popovers appear above modal */
+          .modal-backdrop {
+            z-index: 1040 !important;
+          }
+
+          .modal {
+            z-index: 1045 !important;
+          }
+
+          .popover {
+            z-index: 1050 !important;
+          }
+
+          .tooltip {
+            z-index: 1050 !important;
+          }
+
+          /* Also target any popover-like elements */
+          [role="tooltip"], [data-bs-toggle="popover"] {
+            z-index: 1050 !important;
+          }
+
+          /* Target any element that might be a popover */
+          .popover, .tooltip, .dropdown-menu {
+            z-index: 1050 !important;
+          }
         `
       }} />
     </DemoSection>
