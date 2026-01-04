@@ -2181,7 +2181,6 @@ function App() {
     if (data) {
       setSandboxData(data as Record<string, unknown>[]);
     }
-    scrollToSection('sandbox');
   };
 
   return (
