@@ -81,10 +81,11 @@ const teaserSampleData: SampleData[] = [
   { id: 4, name: 'David Brown', email: 'david.brown@company.com', role: 'Developer', department: 'Engineering', status: true, lastLogin: '2024-01-15' },
   { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13' },
 ];
-const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
+const galleryConfigs: Array<{ config: WidgemoConfig; name: string; description: string }> = [
   {
+    name: 'Data Management Table',
     config: {
-      title: 'Table',
+      title: 'Users',
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
@@ -102,8 +103,9 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'Full-featured user management table with CRUD operations'
   },
   {
+    name: 'Simple Cards',
     config: {
-      title: 'Cards',
+      title: 'Profile Cards',
       mode: 'cards',
       dataSource: { type: 'static' },
       fields: [
@@ -119,8 +121,9 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'User profile cards with contact and role information'
   },
   {
+    name: 'Basic Tiles',
     config: {
-      title: 'Tiles',
+      title: 'Basic Tiles',
       mode: 'tiles',
       dataSource: { type: 'static' },
       fields: [
@@ -133,6 +136,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'Department tiles showing team leads and roles'
   },
   {
+    name: 'Clean Chart',
     config: {
       title: 'Chart',
       mode: 'chart',
@@ -152,6 +156,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'Chart showing active users by department'
   },
   {
+    name: 'Dynamic Background',
     config: {
       title: 'Dynamic Background',
       mode: 'table',
@@ -167,6 +172,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default'
   },
   {
+    name: 'Minimal',
     config: {
       mode: 'table',
       dataSource: { type: 'static' },
@@ -181,6 +187,7 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
     description: 'Simple view of active users with login information'
   },
   {
+    name: 'Advanced',
     config: {
       title: 'Advanced',
       mode: 'table',
@@ -744,7 +751,7 @@ const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?:
                   baseColor={getThemeBackgroundColor(currentTheme)}
                 />
               </div>
-              <Card.Title className="h6">{item.config.title}</Card.Title>
+              <Card.Title className="h6">{item.name}</Card.Title>
               <Card.Text className="text-muted small">{item.description}</Card.Text>
               <div className="mt-auto">
                 <small className="text-muted">Click to load in sandbox</small>
@@ -1236,9 +1243,9 @@ export default App;`
                         {galleryConfigs.map((item, index) => (
                           <Dropdown.Item
                             key={index}
-                            onClick={() => loadPreset(item.config, item.config.title)}
+                            onClick={() => loadPreset(item.config, item.name)}
                           >
-                            {item.config.title}
+                            {item.name}
                           </Dropdown.Item>
                         ))}
                       </Dropdown.Menu>
