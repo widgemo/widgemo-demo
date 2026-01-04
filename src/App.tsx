@@ -745,7 +745,7 @@ const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?:
             <Card.Body className="d-flex flex-column">
               <div style={{ flex: 1, minHeight: '200px', marginBottom: '1rem' }}>
                 <Widgemo
-                  config={{ ...mergeThemeIntoConfig(item.config, currentTheme), title: undefined }}
+                  config={mergeThemeIntoConfig(item.config, currentTheme)}
                   adapters={mockAdapters}
                   showConfigDetails={true}
                   baseColor={getThemeBackgroundColor(currentTheme)}
