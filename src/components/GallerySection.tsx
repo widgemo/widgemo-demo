@@ -307,7 +307,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           centered
           backdrop={true}
         >
-          <Modal.Header closeButton>
+            <Modal.Header closeButton className={currentTheme}>
             <Modal.Title>
               {selectedItem.name}
               <Badge bg="secondary" className="ms-2 text-capitalize">
@@ -315,7 +315,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               </Badge>
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ minHeight: '500px' }}>
+          <Modal.Body className={currentTheme} style={{ minHeight: '500px' }}>
             {(() => {
               // Create dynamic adapters for the selected item
               const selectedItemAdapters: WidgemoAdapters = selectedItem.data ? {
@@ -325,8 +325,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                   total: selectedItem.data!.length,
                 }),
               } : mockAdapters;
-              console.log('Selected Item Config:', selectedItem.config);
-              console.log ('Merged Config:', mergeThemeIntoConfig(selectedItem.config, currentTheme));
+              /* console.log('Selected Item Config:', selectedItem.config);
+              console.log ('Merged Config:', mergeThemeIntoConfig(selectedItem.config, currentTheme)); */
               return (
                 <Widgemo
                   config={mergeThemeIntoConfig(selectedItem.config, currentTheme)}
@@ -337,10 +337,10 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               );
             })()}
             <div className="mt-3">
-              <p className="text-muted">{selectedItem.description}</p>
+              <p >{selectedItem.description}</p>
             </div>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className={currentTheme}>
             <Button variant="secondary" onClick={handleCloseModal}>
               Close
             </Button>
