@@ -5,7 +5,7 @@ import { FaPlay, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs, mockAdapters } from '../data/sampleData';
-import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { getThemeBackgroundColor, mergeThemeIntoConfig } from '../utils/themeUtils';
 import { DemoSection } from './DemoSection';
 import type { SampleData } from '../data/sampleData';
 
@@ -23,7 +23,6 @@ interface GalleryItem {
   name: string;
   description: string;
   data?: SampleData[];
-  theme?: string;
   mode: string;
 }
 
@@ -148,7 +147,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               pointerEvents: 'none'
             }}>
               <Widgemo
-                config={mergeThemeIntoConfig(item.config, item.theme || currentTheme)}
+                config={item.config}
                 adapters={itemAdapters}
                 showConfigDetails={false}
                 baseColor={getThemeBackgroundColor(currentTheme)}
@@ -267,7 +266,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                         pointerEvents: 'none'
                       }}>
                         <Widgemo
-                          config={mergeThemeIntoConfig(item.config, item.theme || currentTheme)}
+                          config={item.config}
                           adapters={itemAdapters}
                           showConfigDetails={false}
                           baseColor={getThemeBackgroundColor(currentTheme)}
@@ -316,7 +315,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               </Badge>
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ minHeight: '500px', backgroundColor: getThemeBackgroundColor(currentTheme) }}>
+          <Modal.Body style={{ minHeight: '500px' }}>
             {(() => {
               // Create dynamic adapters for the selected item
               const selectedItemAdapters: WidgemoAdapters = selectedItem.data ? {
@@ -326,10 +325,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                   total: selectedItem.data!.length,
                 }),
               } : mockAdapters;
-
+              console.log('Selected Item Config:', selectedItem.config);
+              console.log ('Merged Config:', mergeThemeIntoConfig(selectedItem.config, currentTheme));
               return (
                 <Widgemo
-                  config={mergeThemeIntoConfig(selectedItem.config, selectedItem.theme || currentTheme)}
+                  config={mergeThemeIntoConfig(selectedItem.config, currentTheme)}
                   adapters={selectedItemAdapters}
                   showConfigDetails={true}
                   baseColor={getThemeBackgroundColor(currentTheme)}

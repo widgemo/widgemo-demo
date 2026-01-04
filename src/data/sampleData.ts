@@ -33,7 +33,6 @@ export const galleryConfigs: Array<{
   name: string;
   description: string;
   data?: SampleData[];
-  theme?: string;
   mode: string;
 }> = [
   {
@@ -56,8 +55,7 @@ export const galleryConfigs: Array<{
       styling: { compact: true, shadow: true },
     },
     description: 'Full-featured user management table with CRUD operations',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Simple Cards',
@@ -77,8 +75,7 @@ export const galleryConfigs: Array<{
       styling: { card: { shadow: true, showBorder: true }, shadow: true },
     },
     description: 'User profile cards with contact and role information',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Basic Tiles',
@@ -95,8 +92,7 @@ export const galleryConfigs: Array<{
       styling: { compact: true },
     },
     description: 'Department tiles showing team leads and roles',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Clean Chart',
@@ -118,8 +114,7 @@ export const galleryConfigs: Array<{
       styling: {},
     },
     description: 'Chart showing active users by department',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Dynamic Background',
@@ -137,8 +132,7 @@ export const galleryConfigs: Array<{
       styling: { dynamicBackground: false, shadow: true },
     },
     description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default',
-    data: teaserSampleData,
-    theme: 'dark'
+    data: teaserSampleData
   },
   {
     name: 'Minimal',
@@ -154,8 +148,7 @@ export const galleryConfigs: Array<{
       styling: { compact: true },
     },
     description: 'Simple view of active users with login information',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Advanced',
@@ -187,8 +180,7 @@ export const galleryConfigs: Array<{
       styling: {},
     },
     description: 'Full-featured user management with pagination, sorting, and filtering',
-    data: teaserSampleData,
-    theme: 'light'
+    data: teaserSampleData
   },
   {
     name: 'Sales Dashboard',
@@ -221,8 +213,7 @@ export const galleryConfigs: Array<{
       { name: 'Apr', month: 'Apr', sales: 14000, target: 15000 },
       { name: 'May', month: 'May', sales: 22000, target: 15000 },
       { name: 'Jun', month: 'Jun', sales: 19000, target: 15000 },
-    ],
-    theme: 'light'
+    ]
   },
   {
     name: 'Task Management',
@@ -250,8 +241,7 @@ export const galleryConfigs: Array<{
       { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
       { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
       { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
-    ],
-    theme: 'light'
+    ]
   },
 ];
 
