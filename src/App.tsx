@@ -162,9 +162,9 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
         { name: 'department', label: 'Department', type: 'text' },
         { name: 'status', label: 'Active', type: 'boolean' },
       ],
-      styling: { dynamicBackground: true, shadow: true },
+      styling: { dynamicBackground: false, shadow: true },
     },
-    description: 'Table with dynamic background that adapts to theme (lighter on dark themes, darker on light themes)'
+    description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default'
   },
   {
     config: {
