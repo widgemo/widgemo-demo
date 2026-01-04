@@ -37,6 +37,21 @@ const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): Widgemo
   };
 };
 
+// Get theme background color for dynamicBackground feature
+const getThemeBackgroundColor = (demoTheme: string): string => {
+  const themeColors: Record<string, string> = {
+    'theme-light': '#ffffff',
+    'theme-light-blue': '#f0f8ff',
+    'theme-light-green': '#f0fff0',
+    'theme-light-purple': '#f8f0ff',
+    'theme-dark': '#1a1a1a',
+    'theme-dark-red': '#2a1a1a',
+    'theme-dark-purple': '#1a1a2a',
+    'theme-dark-teal': '#1a2a2a',
+  };
+  return themeColors[demoTheme] || '#ffffff'; // fallback to white
+};
+
 // Define types for sample data
 interface SampleData extends Record<string, unknown> {
   id?: number;
@@ -135,6 +150,21 @@ const galleryConfigs: Array<{ config: WidgemoConfig; description: string }> = [
       styling: {},
     },
     description: 'Chart showing active users by department'
+  },
+  {
+    config: {
+      title: 'Dynamic Background',
+      mode: 'table',
+      dataSource: { type: 'static' },
+      fields: [
+        { name: 'name', label: 'Name', type: 'text' },
+        { name: 'role', label: 'Role', type: 'text' },
+        { name: 'department', label: 'Department', type: 'text' },
+        { name: 'status', label: 'Active', type: 'boolean' },
+      ],
+      styling: { dynamicBackground: true, shadow: true },
+    },
+    description: 'Table with dynamic background that adapts to theme (lighter on dark themes, darker on light themes)'
   },
   {
     config: {
@@ -677,6 +707,7 @@ const TeaserSection: React.FC<{ onExploreGallery: () => void; onJumpToSandbox: (
                     config={teaserConfig}
                     adapters={mockAdapters}
                     showConfigDetails={false}
+                    baseColor={getThemeBackgroundColor(currentTheme)}
                   />
                 </div>
               </Card.Body>
@@ -710,6 +741,7 @@ const GallerySection: React.FC<{ onLoadToSandbox: (config: WidgemoConfig, data?:
                   config={{ ...mergeThemeIntoConfig(item.config, currentTheme), title: undefined }}
                   adapters={mockAdapters}
                   showConfigDetails={true}
+                  baseColor={getThemeBackgroundColor(currentTheme)}
                 />
               </div>
               <Card.Title className="h6">{item.config.title}</Card.Title>
@@ -1322,6 +1354,7 @@ export default App;`
                     config={config}
                     adapters={dynamicAdapters}
                     showConfigDetails={false}
+                    baseColor={getThemeBackgroundColor(currentTheme)}
                   />
                 </div>
               </div>
@@ -1898,6 +1931,7 @@ const AdvancedExamplesSection: React.FC<{ currentTheme: string }> = ({ currentTh
                     }),
                   }}
                   showConfigDetails={false}
+                  baseColor={getThemeBackgroundColor(currentTheme)}
                 />
               </div>
               <div className="col-6">
@@ -1923,6 +1957,7 @@ const AdvancedExamplesSection: React.FC<{ currentTheme: string }> = ({ currentTh
                     }),
                   }}
                   showConfigDetails={false}
+                  baseColor={getThemeBackgroundColor(currentTheme)}
                 />
               </div>
             </div>
@@ -1963,6 +1998,7 @@ const AdvancedExamplesSection: React.FC<{ currentTheme: string }> = ({ currentTh
                 }),
               }}
               showConfigDetails={false}
+              baseColor={getThemeBackgroundColor(currentTheme)}
             />
             <small className="text-muted mt-2 d-block">
               Coming: Drill-down navigation and nested Widgemo rendering
