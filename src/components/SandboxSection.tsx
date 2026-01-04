@@ -1,0 +1,755 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
+import { Panel, Group, Separator } from 'react-resizable-panels';
+import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook } from 'react-icons/fa';
+import { Widgemo } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import { galleryConfigs } from '../data/sampleData';
+import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { DemoSection } from './DemoSection';
+
+interface SandboxSectionProps {
+  initialConfig: WidgemoConfig;
+  initialData: Record<string, unknown>[];
+  onConfigChange: (config: WidgemoConfig) => void;
+  onDataChange: (data: Record<string, unknown>[]) => void;
+  currentTheme: string;
+}
+
+export const SandboxSection: React.FC<SandboxSectionProps> = ({
+  initialConfig,
+  initialData,
+  onConfigChange,
+  onDataChange,
+  currentTheme
+}) => {
+  const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
+  const [config, setConfig] = useState(initialConfig);
+  const [jsonError, setJsonError] = useState<string | null>(null);
+  const [showReferenceModal, setShowReferenceModal] = useState(false);
+  const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
+  const [entityLabel, setEntityLabel] = useState('User');
+  const [entityLabelPlural, setEntityLabelPlural] = useState('Users');
+  const [exportStatus, setExportStatus] = useState<string | null>(null);
+  const [showCodeSandboxModal, setShowCodeSandboxModal] = useState(false);
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [showJsonEditorModal, setShowJsonEditorModal] = useState(false);
+  const [jsonEditorText, setJsonEditorText] = useState('');
+  const [dataType, setDataType] = useState('users');
+  const [recordCount, setRecordCount] = useState(10);
+  const [adjustConfig, setAdjustConfig] = useState(false);
+  const [customEndpoint, setCustomEndpoint] = useState('');
+
+  // Generate random dataset
+  const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
+    let randomData: Record<string, unknown>[] = [];
+
+    // Update entity labels based on data type
+    const updateEntityLabels = (dataType: string) => {
+      switch (dataType) {
+        case 'users':
+        case 'users-api':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'sales':
+          setEntityLabel('Sale');
+          setEntityLabelPlural('Sales Records');
+          break;
+        case 'customers':
+          setEntityLabel('Customer');
+          setEntityLabelPlural('Customers');
+          break;
+        case 'posts-api':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        case 'users-jsonplaceholder':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'posts-jsonplaceholder':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        case 'comments-jsonplaceholder':
+          setEntityLabel('Comment');
+          setEntityLabelPlural('Comments');
+          break;
+        case 'albums-jsonplaceholder':
+          setEntityLabel('Album');
+          setEntityLabelPlural('Albums');
+          break;
+        case 'photos-jsonplaceholder':
+          setEntityLabel('Photo');
+          setEntityLabelPlural('Photos');
+          break;
+        case 'todos-jsonplaceholder':
+          setEntityLabel('Todo');
+          setEntityLabelPlural('Todos');
+          break;
+        case 'custom-api': {
+          const endpointName = customEndpoint.trim() || 'Custom';
+          setEntityLabel(endpointName.charAt(0).toUpperCase() + endpointName.slice(1));
+          setEntityLabelPlural(endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + 's');
+          break;
+        }
+        default:
+          setEntityLabel('Record');
+          setEntityLabelPlural('Records');
+      }
+    };
+
+    updateEntityLabels(type);
+
+    try {
+      if (type === 'custom-api') {
+        // Fetch from custom API endpoint
+        if (!customEndpoint.trim()) {
+          throw new Error('Please specify a custom API endpoint URL');
+        }
+        const response = await fetch(customEndpoint.trim());
+        if (!response.ok) {
+          throw new Error(`Failed to fetch from endpoint: ${customEndpoint}`);
+        }
+        const apiData: Record<string, unknown>[] = await response.json();
+        randomData = Array.isArray(apiData) ? apiData.slice(0, count) : [apiData];
+      } else if (type.endsWith('-jsonplaceholder')) {
+        // Fetch from JSONPlaceholder
+        const endpoint = type.replace('-jsonplaceholder', '');
+        const response = await fetch(`https://jsonplaceholder.typicode.com/${endpoint}`);
+        const apiData: Record<string, unknown>[] = await response.json();
+        randomData = apiData.slice(0, count);
+      } else {
+        // Generate local data based on type
+        const firstNames = ['Alice', 'Bob', 'Carol', 'David', 'Eva', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
+        const lastNames = ['Johnson', 'Smith', 'Williams', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson'];
+
+        if (type === 'users') {
+          const departments = ['Engineering', 'Design', 'Business', 'Marketing', 'Sales'];
+          const roles = ['Manager', 'Developer', 'Designer', 'Analyst', 'Coordinator'];
+
+          randomData = Array.from({ length: count }, (_, i) => ({
+            id: i + 1,
+            name: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+            email: `${firstNames[Math.floor(Math.random() * firstNames.length)].toLowerCase()}.${lastNames[Math.floor(Math.random() * lastNames.length)].toLowerCase()}@company.com`,
+            role: roles[Math.floor(Math.random() * roles.length)],
+            department: departments[Math.floor(Math.random() * departments.length)],
+            status: Math.random() > 0.3,
+            lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          }));
+        } else if (type === 'sales') {
+          const products = ['Widget A', 'Widget B', 'Service X', 'Service Y', 'Package Z'];
+          const regions = ['North', 'South', 'East', 'West', 'Central'];
+          const statuses = ['Pending', 'Completed', 'Cancelled'];
+
+          randomData = Array.from({ length: count }, (_, i) => ({
+            id: i + 1,
+            product: products[Math.floor(Math.random() * products.length)],
+            amount: Math.floor(Math.random() * 10000) + 100,
+            region: regions[Math.floor(Math.random() * regions.length)],
+            status: statuses[Math.floor(Math.random() * statuses.length)],
+            date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            customer: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+          }));
+        } else if (type === 'customers') {
+          const industries = ['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing'];
+          const sizes = ['Small', 'Medium', 'Large', 'Enterprise'];
+          const statuses = ['Active', 'Inactive', 'Prospect'];
+
+          randomData = Array.from({ length: count }, (_, i) => {
+            const name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+            return {
+              id: i + 1,
+              name: name,
+              email: `${name.split(' ')[0].toLowerCase()}.${name.split(' ')[1].toLowerCase()}@company.com`,
+              company: `${name.split(' ')[1]} ${industries[Math.floor(Math.random() * industries.length)]}`,
+              industry: industries[Math.floor(Math.random() * industries.length)],
+              size: sizes[Math.floor(Math.random() * sizes.length)],
+              status: statuses[Math.floor(Math.random() * statuses.length)],
+              lastContact: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            };
+          });
+        }
+      }
+
+      setCustomData(randomData);
+      onDataChange(randomData);
+      setExportStatus('Data generated successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
+
+      // Adjust configuration if requested
+      if (shouldAdjustConfig && randomData.length > 0) {
+        const sampleRecord = randomData[0] as Record<string, unknown>;
+        const fields = Object.keys(sampleRecord).map(key => {
+          const value = sampleRecord[key];
+          let fieldType: string = 'text';
+
+          if (typeof value === 'number') fieldType = 'number';
+          else if (typeof value === 'boolean') fieldType = 'boolean';
+          else if (value && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) fieldType = 'date';
+          else if (value && typeof value === 'string' && value.includes('@')) fieldType = 'email';
+
+          return {
+            name: key,
+            label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
+            type: fieldType,
+            sortable: fieldType !== 'boolean',
+            filterable: true
+          };
+        });
+
+        // Get appropriate title based on data type
+        const getTitleForType = (dataType: string) => {
+          switch (dataType) {
+            case 'users':
+            case 'users-api':
+            case 'users-jsonplaceholder':
+              return 'User Management';
+            case 'sales':
+              return 'Sales Records';
+            case 'customers':
+              return 'Customer Management';
+            case 'posts-api':
+            case 'posts-jsonplaceholder':
+              return 'Blog Posts';
+            case 'comments-jsonplaceholder':
+              return 'Comments';
+            case 'albums-jsonplaceholder':
+              return 'Photo Albums';
+            case 'photos-jsonplaceholder':
+              return 'Photos';
+            case 'todos-jsonplaceholder':
+              return 'Todo Items';
+            case 'custom-api': {
+              const endpointName = customEndpoint.trim() || 'Custom';
+              return endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + ' Data';
+            }
+            default:
+              return 'Data Management';
+          }
+        };
+
+        const newConfig = {
+          ...JSON.parse(configJson),
+          title: getTitleForType(type),
+          fields: fields
+        };
+
+        const newConfigJson = JSON.stringify(newConfig, null, 2);
+        setConfigJson(newConfigJson);
+        setConfig(newConfig);
+        onConfigChange(newConfig);
+      }
+
+      return randomData;
+    } catch (error) {
+      console.error('Error generating data:', error);
+      setExportStatus('Error generating data. Using local generation.');
+      setTimeout(() => setExportStatus(null), 3000);
+
+      // Fallback to local generation
+      const fallbackData = Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@company.com`,
+        role: 'User',
+        department: 'General',
+        status: Math.random() > 0.3,
+        lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      }));
+      setCustomData(fallbackData);
+      onDataChange(fallbackData);
+      return fallbackData;
+    }
+  }, [configJson, onConfigChange, onDataChange, customEndpoint]);
+
+  // Handle file upload
+  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target?.result as string);
+        if (Array.isArray(jsonData)) {
+          setCustomData(jsonData as Record<string, unknown>[]);
+          onDataChange(jsonData as Record<string, unknown>[]);
+          setExportStatus('Data uploaded successfully!');
+          setTimeout(() => setExportStatus(null), 3000);
+        } else {
+          setExportStatus('Error: Data must be an array of objects');
+          setTimeout(() => setExportStatus(null), 3000);
+        }
+      } catch {
+        setExportStatus('Error: Invalid JSON file');
+        setTimeout(() => setExportStatus(null), 3000);
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input
+    event.target.value = '';
+  }, [onDataChange]);
+
+  // Copy JSON to clipboard
+  const copyToClipboard = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(configJson);
+      setExportStatus('Configuration copied to clipboard!');
+      setTimeout(() => setExportStatus(null), 3000);
+    } catch {
+      // Fallback for browsers that don't support clipboard API or require user interaction
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = configJson;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setExportStatus('Configuration copied to clipboard!');
+        setTimeout(() => setExportStatus(null), 3000);
+      } catch {
+        setExportStatus('Failed to copy to clipboard');
+        setTimeout(() => setExportStatus(null), 3000);
+      }
+    }
+  }, [configJson]);
+
+  // Generate CodeSandbox link
+  const generateCodeSandboxLink = useCallback(() => {
+    const sandboxConfig = {
+      title: 'Widgemo Demo',
+      description: 'Interactive Widgemo configuration demo',
+      template: 'react',
+      files: {
+        'index.js': {
+          content: `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);`
+        },
+        'App.js': {
+          content: `import React, { useState } from 'react';
+import { Widgemo } from 'widgemo-core';
+
+function App() {
+  const [data] = useState(${JSON.stringify(customData, null, 2)});
+  
+  const config = ${configJson};
+  
+  const adapters = {
+    fetchData: async () => ({ data, total: data.length }),
+    createRecord: async (record) => ({ ...record, id: Date.now() }),
+    updateRecord: async (id, record) => record,
+    deleteRecord: async () => {},
+  };
+
+  return (
+    <div className="container mt-4">
+      <h1>Widgemo ${entityLabel} Management</h1>
+      <Widgemo config={config} adapters={adapters} />
+    </div>
+  );
+}
+
+export default App;`
+        },
+        'package.json': {
+          content: JSON.stringify({
+            name: 'widgemo-demo',
+            version: '0.1.0',
+            dependencies: {
+              'react': '^18.0.0',
+              'react-dom': '^18.0.0',
+              'widgemo-core': 'latest',
+              'bootstrap': '^5.3.0'
+            }
+          }, null, 2)
+        },
+        'index.html': {
+          content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Widgemo Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>`
+        }
+      }
+    };
+
+    // Base64 encode the sandbox configuration
+    const encodedConfig = btoa(JSON.stringify(sandboxConfig));
+    const codesandboxUrl = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${encodeURIComponent(encodedConfig)}`;
+
+    // Open in new tab
+    window.open(codesandboxUrl, '_blank');
+  }, [configJson, customData, entityLabel]);
+
+  // Download config as JSON file
+  const downloadConfig = useCallback(() => {
+    const blob = new Blob([configJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'widgemo-config.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [configJson]);
+
+  // Dynamic adapters that use custom data
+  const dynamicAdapters: WidgemoAdapters = {
+    fetchData: async () => ({
+      data: customData,
+      total: customData.length,
+    }),
+    createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
+    updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
+    deleteRecord: async () => {},
+  };
+
+  const applyConfig = () => {
+    try {
+      // Remove comment lines (lines starting with //) before parsing
+      const cleanJson = configJson
+        .split('\n')
+        .filter(line => !line.trim().startsWith('//'))
+        .join('\n')
+        .trim();
+
+      const parsed = JSON.parse(cleanJson);
+      setConfig(parsed);
+      onConfigChange(parsed);
+      setJsonError(null);
+    } catch (error) {
+      setJsonError((error as Error).message);
+    }
+  };
+
+  // Sync with initial props
+  useEffect(() => {
+    setConfig(initialConfig);
+    setConfigJson(JSON.stringify(initialConfig, null, 2));
+  }, [initialConfig]);
+
+  useEffect(() => {
+    setCustomData(initialData);
+  }, [initialData]);
+
+  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
+    const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
+    const json = JSON.stringify(themedConfig, null, 2);
+    const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
+    const commentedJson = `${titleComment}${json}`;
+    setConfigJson(commentedJson);
+    setConfig(themedConfig);
+    onConfigChange(themedConfig);
+    // Don't apply the config automatically - wait for user to click Apply Changes
+    setJsonError(null);
+  };
+
+  return (
+    <DemoSection
+      id="sandbox"
+      title="Interactive Sandbox"
+      subtitle="Edit configuration JSON and see changes instantly"
+      className="sandbox-taller"
+    >
+      <Card className="shadow theme-aware-card p-1">
+        <Card.Body className="p-0">
+          <Group>
+            <Panel defaultSize={35} minSize={30}>
+              <div className="p-4 h-100 d-flex flex-column">
+                {/* Export Status */}
+                {exportStatus && (
+                  <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
+                    {exportStatus}
+                  </Alert>
+                )}
+
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0">Configuration Editor</h5>
+                  <div className="d-flex gap-2">
+                    <Dropdown>
+                      <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
+                        Load Preset
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {galleryConfigs.map((item, index) => (
+                          <Dropdown.Item
+                            key={index}
+                            onClick={() => loadPreset(item.config, item.name)}
+                          >
+                            {item.name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => setShowReferenceModal(true)}
+                    >
+                      Reference
+                    </Button>
+                  </div>
+                </div>
+                {jsonError && (
+                  <div className="alert alert-danger small mb-3">
+                    <strong>JSON Error:</strong> {jsonError}
+                  </div>
+                )}
+                <textarea
+                  className="form-control flex-grow-1 mb-3"
+                  style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
+                  value={configJson}
+                  onChange={(e) => {
+                    setConfigJson(e.target.value);
+                    // Clear any previous JSON errors when user starts typing
+                    if (jsonError) {
+                      setJsonError(null);
+                    }
+                  }}
+                  spellCheck={false}
+                />
+                <div className="d-flex gap-2">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={applyConfig}
+                    disabled={!!jsonError}
+                    className="flex-grow-1"
+                  >
+                    Apply Changes
+                  </Button>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
+                      <FaDownload className="me-1" />
+                      Export
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={copyToClipboard}>
+                        <FaCopy className="me-2" />
+                        Copy JSON
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={downloadConfig}>
+                        <FaDownload className="me-2" />
+                        Download JSON
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => setShowCodeSandboxModal(true)}>
+                        <FaExternalLinkAlt className="me-2" />
+                        CodeSandbox
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+
+                {/* Data Management */}
+                <div className="mt-3">
+                  <h6 className="mb-2">Sample Source Data <small className="text-muted ms-2">{customData.length} {entityLabelPlural.toLowerCase()}</small></h6>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      onClick={() => setShowGenerateModal(true)}
+                    >
+                      <FaRandom className="me-1" />
+                      Generate
+                    </Button>
+                    <Form.Control
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      style={{ display: 'none' }}
+                      id="data-upload"
+                    />
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => document.getElementById('data-upload')?.click()}
+                    >
+                      <FaUpload className="me-1" />
+                      Upload JSON
+                    </Button>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        setJsonEditorText(JSON.stringify(customData, null, 2));
+                        setShowJsonEditorModal(true);
+                      }}
+                    >
+                      <FaBook className="me-1" />
+                      View/Edit Current
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Panel>
+            <Separator className="bg-secondary" style={{ width: '1.5px' }} />
+            <Panel defaultSize={65} minSize={30}>
+              <div className="p-4 h-100">
+                <h5 className="mb-3">Live Preview</h5>
+                <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '8px' }}>
+                  <Widgemo
+                    config={config}
+                    adapters={dynamicAdapters}
+                    showConfigDetails={false}
+                    baseColor={getThemeBackgroundColor(currentTheme)}
+                  />
+                </div>
+              </div>
+            </Panel>
+          </Group>
+        </Card.Body>
+      </Card>
+
+      {/* Modals - simplified for now */}
+      <Modal show={showReferenceModal} onHide={() => setShowReferenceModal(false)} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Configuration Reference</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Configuration reference documentation would go here.</p>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showCodeSandboxModal} onHide={() => setShowCodeSandboxModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Export to CodeSandbox</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>CodeSandbox export functionality would go here.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCodeSandboxModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={() => { generateCodeSandboxLink(); setShowCodeSandboxModal(false); }}>
+            Generate CodeSandbox
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showGenerateModal} onHide={() => setShowGenerateModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Generate Random Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-3">
+            <label className="form-label">Data Type</label>
+            <Form.Select value={dataType} onChange={(e) => setDataType(e.target.value)}>
+              <option value="users">Users (Local)</option>
+              <option value="sales">Sales Records (Local)</option>
+              <option value="customers">Customers (Local)</option>
+              <option value="users-jsonplaceholder">Users (JSONPlaceholder)</option>
+              <option value="posts-jsonplaceholder">Posts (JSONPlaceholder)</option>
+              <option value="comments-jsonplaceholder">Comments (JSONPlaceholder)</option>
+              <option value="albums-jsonplaceholder">Albums (JSONPlaceholder)</option>
+              <option value="photos-jsonplaceholder">Photos (JSONPlaceholder)</option>
+              <option value="todos-jsonplaceholder">Todos (JSONPlaceholder)</option>
+              <option value="custom-api">Custom API Endpoint</option>
+            </Form.Select>
+          </div>
+          {(dataType === 'custom-api' || dataType.endsWith('-jsonplaceholder')) && (
+            <div className="mb-3">
+              <label className="form-label">
+                {dataType === 'custom-api' ? 'API Endpoint URL' : 'JSONPlaceholder Endpoint'}
+              </label>
+              <Form.Control
+                type="text"
+                placeholder={
+                  dataType === 'custom-api'
+                    ? 'e.g., https://api.example.com/users'
+                    : dataType.replace('-jsonplaceholder', '')
+                }
+                value={customEndpoint}
+                onChange={(e) => setCustomEndpoint(e.target.value)}
+                className="mb-2"
+              />
+              <small className="text-muted">
+                {dataType === 'custom-api'
+                  ? 'Enter a full API endpoint URL to fetch data from any system'
+                  : `This will fetch from https://jsonplaceholder.typicode.com/${dataType.replace('-jsonplaceholder', '')}`
+                }
+              </small>
+            </div>
+          )}
+          <div className="mb-3">
+            <label className="form-label">Number of Records</label>
+            <Form.Control
+              type="number"
+              min="1"
+              max="100"
+              value={recordCount}
+              onChange={(e) => setRecordCount(parseInt(e.target.value) || 10)}
+            />
+          </div>
+          <div className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Adjust current configuration to match generated data fields"
+              checked={adjustConfig}
+              onChange={(e) => setAdjustConfig(e.target.checked)}
+            />
+          </div>
+          <div className="alert alert-info">
+            <small>
+              <strong>Local options</strong> generate synthetic data. <strong>JSONPlaceholder options</strong> fetch real sample data from jsonplaceholder.typicode.com.
+              <strong>Custom API Endpoint</strong> allows you to test with any external API by providing a full URL (e.g., https://api.example.com/users).
+              Adjusting configuration will update the fields in your current setup to match the generated data structure.
+            </small>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowGenerateModal(false)}>
+            Cancel
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={() => { 
+              generateRandomData(dataType, recordCount, adjustConfig); 
+              setShowGenerateModal(false); 
+            }}
+          >
+            <FaRandom className="me-2" />
+            Generate Data
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showJsonEditorModal} onHide={() => setShowJsonEditorModal(false)} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Source Data JSON</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Control as="textarea" rows={20} value={jsonEditorText} onChange={(e) => setJsonEditorText(e.target.value)} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowJsonEditorModal(false)}>Cancel</Button>
+          <Button variant="success" onClick={() => {
+            try {
+              const parsedData = JSON.parse(jsonEditorText);
+              if (Array.isArray(parsedData)) {
+                setCustomData(parsedData);
+                onDataChange(parsedData);
+                setShowJsonEditorModal(false);
+              }
+            } catch {
+              // Handle error
+            }
+          }}>Save Changes</Button>
+        </Modal.Footer>
+      </Modal>
+    </DemoSection>
+  );
+};
