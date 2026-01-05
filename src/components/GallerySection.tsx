@@ -150,6 +150,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             borderRadius: '0.375rem 0.375rem 0 0'
           }}>
             <div style={{
+              backgroundColor: getThemeBackgroundColor(currentTheme), 
               transform: 'scale(0.5)',
               transformOrigin: 'top left',
               width: '200%',
@@ -272,7 +273,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                       borderRadius: '0.375rem 0.375rem 0 0'
                     }}>
                       <div style={{
-                        transform: 'scale(0.5)',
+                        backgroundColor: getThemeBackgroundColor(currentTheme), 
+                        transform: 'scale(0.5)', 
                         transformOrigin: 'top left',
                         width: '200%',
                         height: '200%',
