@@ -154,7 +154,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               pointerEvents: 'none'
             }}>
               <Widgemo
-                config={item.config}
+                config={mergeThemeIntoConfig(item.config, currentTheme)}
                 adapters={itemAdapters}
                 showConfigDetails={false}
                 baseColor={getThemeBackgroundColor(currentTheme)}
@@ -273,7 +273,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                         pointerEvents: 'none'
                       }}>
                         <Widgemo
-                          config={item.config}
+                          config={mergeThemeIntoConfig(item.config, currentTheme)}
                           adapters={itemAdapters}
                           showConfigDetails={false}
                           baseColor={getThemeBackgroundColor(currentTheme)}
