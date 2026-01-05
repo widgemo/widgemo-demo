@@ -132,6 +132,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
       }),
     } : mockAdapters;
 
+    // Debug: Log merged config for grid view
+    console.log('Grid View - Merged Config for', item.name + ':', mergeThemeIntoConfig(item.config, currentTheme));
+
     return (
       <Col xs={12} sm={6} lg={4} xl={3} key={index} className="mb-4">
         <Card
@@ -250,6 +253,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                   total: item.data!.length,
                 }),
               } : mockAdapters;
+
+              // Debug: Log merged config for carousel view
+              console.log('Carousel View - Merged Config for', item.name + ':', mergeThemeIntoConfig(item.config, currentTheme));
 
               return (
                 <div key={index} className="px-2">
