@@ -89,7 +89,7 @@ export const galleryConfigs: Array<{
         { name: 'name', label: 'Lead', type: 'text' },
         { name: 'role', label: 'Role', type: 'text' },
       ],
-      styling: { compact: true },
+      styling: { compact: true }, 
     },
     description: 'Department tiles showing team leads and roles',
     data: teaserSampleData
