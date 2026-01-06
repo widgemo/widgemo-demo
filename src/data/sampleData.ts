@@ -315,18 +315,21 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
   },
   {
     config: {
-      title: 'User Profile Cards',
+      title: 'User Profiles Board',
       mode: 'board',
       dataSource: { type: 'static' },
       fields: [
         { name: 'name', label: 'Name', type: 'text' },
         { name: 'email', label: 'Email', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
         { name: 'department', label: 'Department', type: 'text' },
       ],
       actions: { view: true },
       header: { always: ['refresh'] },
-      styling: { card: { shadow: true, showBorder: true } },
+      styling: {
+        board: {
+          groupBy: "role",
+        },
+      },
     },
     description: 'User profile board with contact info'
   },
@@ -341,17 +344,18 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'role', label: 'Role', type: 'text' },
       ],
       header: { always: ['refresh'] },
-      styling: { compact: true,
+      styling: {
+        compact: true,
         grid: {
-            columns: 3,
-            cellSize: {
-              width: 170,
-              height: 170
-            },
-            showGridLines: true,
-            aspectRatio: '1/1'
-          }
-       },
+          columns: 3,
+          cellSize: {
+            width: 170,
+            height: 170
+          },
+          showGridLines: true,
+          aspectRatio: '1/1'
+        }
+      },
     },
     description: 'Department grid showing team leads'
   },
