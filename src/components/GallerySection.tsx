@@ -262,8 +262,12 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                 }),
               } : mockAdapters;
 
+              // Merge config with theme and extract imagesConfig
+              const mergedConfig = mergeThemeIntoConfig(item.config, currentTheme);
+              const { imagesConfig, ...configWithoutImages } = mergedConfig;
+
               // Debug: Log merged config for carousel view
-              console.log('Carousel View - Merged Config for', item.name + ':', mergeThemeIntoConfig(item.config, currentTheme));
+              console.log('Carousel View - Merged Config for', item.name + ':', mergedConfig);
 
               return (
                 <div key={index} className="px-2">
@@ -288,8 +292,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                         pointerEvents: 'none'
                       }}>
                         <Widgemo
-                          config={mergeThemeIntoConfig(item.config, currentTheme)}
+                          config={configWithoutImages}
                           adapters={itemAdapters}
+                          imagesConfig={imagesConfig}
                           showConfigDetails={false}
                           baseColor={getThemeBackgroundColor(currentTheme)}
                         />
