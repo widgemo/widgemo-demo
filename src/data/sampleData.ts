@@ -36,7 +36,7 @@ export const galleryConfigs: Array<{
   mode: string;
 }> = [
     {
-      name: 'Data Management Table',
+      name: 'Data Management',
       mode: 'table',
       config: {
         title: 'Users',
@@ -51,17 +51,19 @@ export const galleryConfigs: Array<{
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
         actions: { create: true, edit: true, delete: true },
-        header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
+        header: { always: ['refresh', 'add'], onMenu: ['columnSelector', 'deletedToggle'] },
         styling: { compact: true, shadow: true },
+        labels: { add: 'Add User' },
+        collapsible: 'fixed',
       },
-      description: 'Full-featured user management table with CRUD operations',
+      description: 'Full-featured data management table with CRUD operations',
       data: teaserSampleData
     },
     {
-      name: 'Simple Board',
+      name: 'Kanban Board',
       mode: 'board',
       config: {
-        title: 'Profile Board',
+        title: 'Users by Role and Dept',
         mode: 'board',
         dataSource: { type: 'static' },
         fields: [
@@ -84,7 +86,7 @@ export const galleryConfigs: Array<{
           }, shadow: true
         },
       },
-      description: 'User profile board with contact and role information',
+      description: 'Kanban style board with configurable columns and swimlanes. Drag and drop to rearrange cards.',
       data: teaserSampleData
     },
     {
@@ -262,15 +264,21 @@ export const galleryConfigs: Array<{
           { name: 'assignee', label: 'Assignee', type: 'text' },
         ],
         actions: { edit: true, delete: true },
-        styling: { card: { shadow: true }, shadow: true },
+        styling: {
+          board: {
+            groupBy: 'status'
+          },
+          shadow: true
+        },
+        collapsible: 'fixed',
       },
-      description: 'Kanban-style task board with priority and status',
-      data: [
-        { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
-        { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
-        { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
-        { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
-      ]
+    description: 'Kanban-style task board with priority and status',
+    data: [
+      { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
+      { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
+      { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
+      { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
+    ]
     },
   ];
 
