@@ -325,7 +325,8 @@ export const galleryConfigs: Array<{
             groupBy: 'status',
             swimlaneBy: 'priority',
           },
-          shadow: true
+          shadow: true,
+          dynamicBackground: false,
         },
         collapsible: 'fixed',
       },
