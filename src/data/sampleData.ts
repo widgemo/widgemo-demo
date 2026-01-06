@@ -35,215 +35,234 @@ export const galleryConfigs: Array<{
   data?: SampleData[];
   mode: string;
 }> = [
-  {
-    name: 'Data Management Table',
-    mode: 'table',
-    config: {
-      title: 'Users',
+    {
+      name: 'Data Management Table',
       mode: 'table',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'id', label: 'ID', type: 'number' },
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'email', label: 'Email', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      actions: { create: true, edit: true, delete: true },
-      header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
-      styling: { compact: true, shadow: true },
+      config: {
+        title: 'Users',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'id', label: 'ID', type: 'number' },
+          { name: 'name', label: 'Name', type: 'text' },
+          { name: 'email', label: 'Email', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text' },
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean' },
+        ],
+        actions: { create: true, edit: true, delete: true },
+        header: { always: ['refresh'], onMenu: ['columnSelector', 'add'] },
+        styling: { compact: true, shadow: true },
+      },
+      description: 'Full-featured user management table with CRUD operations',
+      data: teaserSampleData
     },
-    description: 'Full-featured user management table with CRUD operations',
-    data: teaserSampleData
-  },
-  {
-    name: 'Simple Cards',
-    mode: 'cards',
-    config: {
-      title: 'Profile Cards',
+    {
+      name: 'Simple Cards',
       mode: 'cards',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'email', label: 'Email', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      actions: { view: true },
-      styling: { card: { shadow: true, showBorder: true }, shadow: true },
+      config: {
+        title: 'Profile Cards',
+        mode: 'cards',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Name', type: 'text' },
+          { name: 'email', label: 'Email', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text' },
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean' },
+        ],
+        actions: { view: true },
+        styling: { card: { shadow: true, showBorder: true }, shadow: true },
+      },
+      description: 'User profile cards with contact and role information',
+      data: teaserSampleData
     },
-    description: 'User profile cards with contact and role information',
-    data: teaserSampleData
-  },
-  {
-    name: 'Basic Grid',
-    mode: 'grid',
-    config: {
-      title: 'Basic Grid',
+    {
+      name: 'Basic Grid',
       mode: 'grid',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'name', label: 'Lead', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-      ],
-      styling: { compact: true }, 
-    },
-    description: 'Department grid showing team leads and roles',
-    data: teaserSampleData
-  },
-  {
-    name: 'Clean Chart',
-    mode: 'chart',
-    config: {
-      title: 'Chart',
-      mode: 'chart',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'name', label: 'User', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      chartConfig: {
-        type: 'bar',
-        xAxis: 'department',
-        yAxis: 'status',
-      },
-      styling: {},
-    },
-    description: 'Chart showing active users by department',
-    data: teaserSampleData
-  },
-  {
-    name: 'Dynamic Background',
-    mode: 'table',
-    config: {
-      title: 'Dynamic Background',
-      mode: 'table',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      styling: { dynamicBackground: false, shadow: true },
-    },
-    description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default',
-    data: teaserSampleData
-  },
-  {
-    name: 'Minimal',
-    mode: 'table',
-    config: {
-      mode: 'table',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'lastLogin', label: 'Last Login', type: 'date' },
-      ],
-      header: { onMenu: ['refresh'] },
-      styling: { compact: true },
-    },
-    description: 'Simple view of active users with login information',
-    data: teaserSampleData
-  },
-  {
-    name: 'Advanced',
-    mode: 'table',
-    config: {
-      title: 'Advanced',
-      mode: 'table',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'id', label: 'ID', type: 'number', sortable: true },
-        { name: 'name', label: 'Name', type: 'text', filterable: true },
-        { name: 'email', label: 'Email', type: 'text', filterable: true },
-        {
-          name: 'department', label: 'Department', type: 'select', options: [
-            { value: 'Engineering', label: 'Engineering' },
-            { value: 'Design', label: 'Design' },
-            { value: 'Business', label: 'Business' },
-          ], filterable: true
+      config: {
+        title: 'Basic Grid',
+        mode: 'grid',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'name', label: 'Lead', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text' },
+        ],
+        styling: {
+          compact: true,
+          grid: {
+            columns: 3,
+            cellSize: {
+              width: 200,
+              height: 200
+            },
+            gap: '10px',
+            showGridLines: true,
+            aspectRatio: '1/1'
+          }
         },
-        { name: 'role', label: 'Role', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean', filterable: true },
-        { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
-      ],
-      actions: { create: true, edit: true, delete: true },
-      pagination: { enabled: true, defaultPageSize: 5 },
-      sorting: { enabled: true },
-      filtering: { enabled: true },
-      header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
-      styling: {},
-    },
-    description: 'Full-featured user management with pagination, sorting, and filtering',
-    data: teaserSampleData
-  },
-  {
-    name: 'Sales Dashboard',
-    mode: 'chart',
-    config: {
-      title: 'Sales Performance',
-      mode: 'chart',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'month', label: 'Month', type: 'text' },
-        { name: 'sales', label: 'Sales', type: 'number' },
-        { name: 'target', label: 'Target', type: 'number' },
-      ],
-      chartConfig: {
-        type: 'line',
-        xAxis: 'month',
-        yAxis: 'sales',
-        settings: {
-          colors: ['#2196f3', '#4caf50'],
-          showLegend: true,
-        },
+        header: {
+          always: [
+            'refresh'
+          ]
+        }
       },
-      styling: { shadow: true },
+      description: 'Department grid showing team leads and roles',
+      data: teaserSampleData
     },
-    description: 'Line chart showing sales performance over time',
-    data: [
-      { name: 'Jan', month: 'Jan', sales: 12000, target: 15000 },
-      { name: 'Feb', month: 'Feb', sales: 15000, target: 15000 },
-      { name: 'Mar', month: 'Mar', sales: 18000, target: 15000 },
-      { name: 'Apr', month: 'Apr', sales: 14000, target: 15000 },
-      { name: 'May', month: 'May', sales: 22000, target: 15000 },
-      { name: 'Jun', month: 'Jun', sales: 19000, target: 15000 },
-    ]
-  },
-  {
-    name: 'Task Management',
-    mode: 'cards',
-    config: {
-      title: 'Task Board',
+    {
+      name: 'Clean Chart',
+      mode: 'chart',
+      config: {
+        title: 'Chart',
+        mode: 'chart',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'name', label: 'User', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean' },
+        ],
+        chartConfig: {
+          type: 'bar',
+          xAxis: 'department',
+          yAxis: 'status',
+        },
+        styling: {},
+      },
+      description: 'Chart showing active users by department',
+      data: teaserSampleData
+    },
+    {
+      name: 'Dynamic Background',
+      mode: 'table',
+      config: {
+        title: 'Dynamic Background',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Name', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text' },
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean' },
+        ],
+        styling: { dynamicBackground: false, shadow: true },
+      },
+      description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default',
+      data: teaserSampleData
+    },
+    {
+      name: 'Minimal',
+      mode: 'table',
+      config: {
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Name', type: 'text' },
+          { name: 'lastLogin', label: 'Last Login', type: 'date' },
+        ],
+        header: { onMenu: ['refresh'] },
+        styling: { compact: true },
+      },
+      description: 'Simple view of active users with login information',
+      data: teaserSampleData
+    },
+    {
+      name: 'Advanced',
+      mode: 'table',
+      config: {
+        title: 'Advanced',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'id', label: 'ID', type: 'number', sortable: true },
+          { name: 'name', label: 'Name', type: 'text', filterable: true },
+          { name: 'email', label: 'Email', type: 'text', filterable: true },
+          {
+            name: 'department', label: 'Department', type: 'select', options: [
+              { value: 'Engineering', label: 'Engineering' },
+              { value: 'Design', label: 'Design' },
+              { value: 'Business', label: 'Business' },
+            ], filterable: true
+          },
+          { name: 'role', label: 'Role', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean', filterable: true },
+          { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
+        ],
+        actions: { create: true, edit: true, delete: true },
+        pagination: { enabled: true, defaultPageSize: 5 },
+        sorting: { enabled: true },
+        filtering: { enabled: true },
+        header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
+        styling: {},
+      },
+      description: 'Full-featured user management with pagination, sorting, and filtering',
+      data: teaserSampleData
+    },
+    {
+      name: 'Sales Dashboard',
+      mode: 'chart',
+      config: {
+        title: 'Sales Performance',
+        mode: 'chart',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'month', label: 'Month', type: 'text' },
+          { name: 'sales', label: 'Sales', type: 'number' },
+          { name: 'target', label: 'Target', type: 'number' },
+        ],
+        chartConfig: {
+          type: 'line',
+          xAxis: 'month',
+          yAxis: 'sales',
+          settings: {
+            colors: ['#2196f3', '#4caf50'],
+            showLegend: true,
+          },
+        },
+        styling: { shadow: true },
+      },
+      description: 'Line chart showing sales performance over time',
+      data: [
+        { name: 'Jan', month: 'Jan', sales: 12000, target: 15000 },
+        { name: 'Feb', month: 'Feb', sales: 15000, target: 15000 },
+        { name: 'Mar', month: 'Mar', sales: 18000, target: 15000 },
+        { name: 'Apr', month: 'Apr', sales: 14000, target: 15000 },
+        { name: 'May', month: 'May', sales: 22000, target: 15000 },
+        { name: 'Jun', month: 'Jun', sales: 19000, target: 15000 },
+      ]
+    },
+    {
+      name: 'Task Management',
       mode: 'cards',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'title', label: 'Task', type: 'text' },
-        { name: 'priority', label: 'Priority', type: 'select', options: [
-          { value: 'high', label: 'High' },
-          { value: 'medium', label: 'Medium' },
-          { value: 'low', label: 'Low' },
-        ]},
-        { name: 'status', label: 'Status', type: 'text' },
-        { name: 'assignee', label: 'Assignee', type: 'text' },
-      ],
-      actions: { edit: true, delete: true },
-      styling: { card: { shadow: true }, shadow: true },
+      config: {
+        title: 'Task Board',
+        mode: 'cards',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'title', label: 'Task', type: 'text' },
+          {
+            name: 'priority', label: 'Priority', type: 'select', options: [
+              { value: 'high', label: 'High' },
+              { value: 'medium', label: 'Medium' },
+              { value: 'low', label: 'Low' },
+            ]
+          },
+          { name: 'status', label: 'Status', type: 'text' },
+          { name: 'assignee', label: 'Assignee', type: 'text' },
+        ],
+        actions: { edit: true, delete: true },
+        styling: { card: { shadow: true }, shadow: true },
+      },
+      description: 'Kanban-style task cards with priority and status',
+      data: [
+        { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
+        { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
+        { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
+        { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
+      ]
     },
-    description: 'Kanban-style task cards with priority and status',
-    data: [
-      { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
-      { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
-      { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
-      { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
-    ]
-  },
-];
+  ];
 
 // Default sandbox configuration
 export const defaultSandboxConfig: WidgemoConfig = {
