@@ -164,7 +164,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
-      name: 'Minimal',
+      name: 'Minimal Table',
       mode: 'table',
       config: {
         mode: 'table',
@@ -176,7 +176,7 @@ export const galleryConfigs: Array<{
         header: { onMenu: ['refresh'] },
         styling: { compact: true },
       },
-      description: 'Simple view of active users with login information',
+      description: 'Simple table view without header and controls',
       data: teaserSampleData
     },
     {
