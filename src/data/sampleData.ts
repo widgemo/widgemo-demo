@@ -102,10 +102,68 @@ export const galleryConfigs: Array<{
           }, shadow: true
         },
         collapsible: 'fixed',
-        header: { always: ['add'] }, 
+        header: { always: ['add'] },
         labels: { add: 'Add User Profile' }
       },
       description: 'Kanban style board with configurable columns and swimlanes. Drag and drop to rearrange cards.',
+      data: teaserSampleData
+    },
+    {
+      name: 'Image Grid - Contain Fit',
+      mode: 'grid',
+      config: {
+        title: 'Image Grid - Contain Fit',
+        mode: 'grid',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+        ],
+        imagesConfig: {
+          field: 'src',
+          fit: 'contain', // Show full image, may have letterboxing
+          lazy: true,
+          showTextOverlay: true,
+          placeholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+        },
+        styling: {
+          grid: {
+            columns: 3,
+            cellSize: { width: 250, height: 200 },
+            gap: '15px',
+            backgroundColor: '#f8f9fa',
+            imageGrid: {
+              masonry: false
+            }
+          },
+          shadow: true
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Image grid using "contain" object-fit, showing full images with potential letterboxing/pillarboxing.',
+      data: imageGalleryData.slice(0, 9)
+    },
+    {
+      name: 'Clean Chart',
+      mode: 'chart',
+      config: {
+        title: 'Chart',
+        mode: 'chart',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'name', label: 'User', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean' },
+        ],
+        chartConfig: {
+          type: 'bar',
+          xAxis: 'department',
+          yAxis: 'status',
+        },
+        styling: {},
+      },
+      description: 'Chart showing active users by department',
       data: teaserSampleData
     },
     {
@@ -140,28 +198,6 @@ export const galleryConfigs: Array<{
         }
       },
       description: 'Department grid showing team leads and roles',
-      data: teaserSampleData
-    },
-    {
-      name: 'Clean Chart',
-      mode: 'chart',
-      config: {
-        title: 'Chart',
-        mode: 'chart',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'name', label: 'User', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean' },
-        ],
-        chartConfig: {
-          type: 'bar',
-          xAxis: 'department',
-          yAxis: 'status',
-        },
-        styling: {},
-      },
-      description: 'Chart showing active users by department',
       data: teaserSampleData
     },
     {
@@ -293,13 +329,13 @@ export const galleryConfigs: Array<{
         },
         collapsible: 'fixed',
       },
-    description: 'Kanban-style task board with priority and status',
-    data: [
-      { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
-      { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
-      { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
-      { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
-    ]
+      description: 'Kanban-style task board with priority and status',
+      data: [
+        { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
+        { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
+        { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
+        { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
+      ]
     },
     {
       name: 'Image Gallery',
@@ -371,42 +407,6 @@ export const galleryConfigs: Array<{
       },
       description: 'Clean image grid without text overlays, fixed height layout with 4 columns.',
       data: imageGalleryData.slice(0, 8) // Use first 8 images
-    },
-    {
-      name: 'Image Grid - Contain Fit',
-      mode: 'grid',
-      config: {
-        title: 'Image Grid - Contain Fit',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-        ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'contain', // Show full image, may have letterboxing
-          lazy: true,
-          showTextOverlay: true,
-          placeholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          grid: {
-            columns: 3,
-            cellSize: { width: 250, height: 200 },
-            gap: '15px',
-            backgroundColor: '#f8f9fa',
-            imageGrid: {
-              masonry: false
-            }
-          },
-          shadow: true
-        },
-        collapsible: 'fixed',
-        header: { always: ['refresh'] }
-      },
-      description: 'Image grid using "contain" object-fit, showing full images with potential letterboxing/pillarboxing.',
-      data: imageGalleryData.slice(0, 9)
     },
     {
       name: 'Compact Image Grid',
