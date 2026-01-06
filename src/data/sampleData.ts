@@ -261,15 +261,17 @@ export const galleryConfigs: Array<{
               { value: 'high', label: 'High' },
               { value: 'medium', label: 'Medium' },
               { value: 'low', label: 'Low' },
-            ]
+            ],
+            visible: false,
           },
-          { name: 'status', label: 'Status', type: 'text' },
+          { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
           { name: 'assignee', label: 'Assignee', type: 'text' },
         ],
         actions: { edit: true, delete: true },
         styling: {
           board: {
-            groupBy: 'status'
+            groupBy: 'status',
+            swimlaneBy: 'priority',
           },
           shadow: true
         },
