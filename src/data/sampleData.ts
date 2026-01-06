@@ -69,8 +69,8 @@ export const galleryConfigs: Array<{
         fields: [
           { name: 'name', label: 'Name', type: 'text' },
           { name: 'email', label: 'Email', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text' },
-          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text', visible: false },
+          { name: 'department', label: 'Department', type: 'text', visible: false },
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
         actions: { view: true },
