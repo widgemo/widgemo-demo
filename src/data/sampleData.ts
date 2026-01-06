@@ -341,6 +341,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
           groupBy: "role",
         },
       },
+      collapsible: 'fixed',
     },
     description: 'User profile board with contact info'
   },
