@@ -78,11 +78,11 @@ export const galleryConfigs: Array<{
     data: teaserSampleData
   },
   {
-    name: 'Basic Tiles',
-    mode: 'tiles',
+    name: 'Basic Grid',
+    mode: 'grid',
     config: {
-      title: 'Basic Tiles',
-      mode: 'tiles',
+      title: 'Basic Grid',
+      mode: 'grid',
       dataSource: { type: 'static' },
       fields: [
         { name: 'department', label: 'Department', type: 'text' },
@@ -91,7 +91,7 @@ export const galleryConfigs: Array<{
       ],
       styling: { compact: true }, 
     },
-    description: 'Department tiles showing team leads and roles',
+    description: 'Department grid showing team leads and roles',
     data: teaserSampleData
   },
   {
@@ -304,7 +304,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
   {
     config: {
       title: 'Department Overview',
-      mode: 'tiles',
+      mode: 'grid',
       dataSource: { type: 'static' },
       fields: [
         { name: 'department', label: 'Department', type: 'text' },
@@ -314,7 +314,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       header: { always: ['refresh'] },
       styling: { compact: true },
     },
-    description: 'Department tiles showing team leads'
+    description: 'Department grid showing team leads'
   },
   {
     config: {
