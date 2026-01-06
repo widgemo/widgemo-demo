@@ -341,7 +341,17 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'role', label: 'Role', type: 'text' },
       ],
       header: { always: ['refresh'] },
-      styling: { compact: true },
+      styling: { compact: true,
+        grid: {
+            columns: 3,
+            cellSize: {
+              width: 170,
+              height: 170
+            },
+            showGridLines: true,
+            aspectRatio: '1/1'
+          }
+       },
     },
     description: 'Department grid showing team leads'
   },
