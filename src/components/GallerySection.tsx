@@ -132,8 +132,14 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
       }),
     } : mockAdapters;
 
+    // Merge config with theme
+    const mergedConfig = mergeThemeIntoConfig(item.config, currentTheme);
+    
+    // Extract imagesConfig from config if present
+    const { imagesConfig, ...configWithoutImages } = mergedConfig;
+
     // Debug: Log merged config for grid view
-    console.log('Grid View - Merged Config for', item.name + ':', mergeThemeIntoConfig(item.config, currentTheme));
+    console.log('Grid View - Merged Config for', item.name + ':', mergedConfig);
 
     return (
       <Col xs={12} sm={6} lg={4} xl={3} key={index} className="mb-4">
@@ -158,8 +164,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               pointerEvents: 'none'
             }}>
               <Widgemo
-                config={mergeThemeIntoConfig(item.config, currentTheme)}
+                config={configWithoutImages}
                 adapters={itemAdapters}
+                imagesConfig={imagesConfig}
                 showConfigDetails={false}
                 baseColor={getThemeBackgroundColor(currentTheme)}
               />
@@ -340,12 +347,18 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                   total: selectedItem.data!.length,
                 }),
               } : mockAdapters;
+              
+              // Merge config with theme and extract imagesConfig
+              const mergedConfig = mergeThemeIntoConfig(selectedItem.config, currentTheme);
+              const { imagesConfig, ...configWithoutImages } = mergedConfig;
+              
               /* console.log('Selected Item Config:', selectedItem.config);
-              console.log ('Merged Config:', mergeThemeIntoConfig(selectedItem.config, currentTheme)); */
+              console.log ('Merged Config:', mergedConfig); */
               return (
                 <Widgemo
-                  config={mergeThemeIntoConfig(selectedItem.config, currentTheme)}
+                  config={configWithoutImages}
                   adapters={selectedItemAdapters}
+                  imagesConfig={imagesConfig}
                   showConfigDetails={true}
                   baseColor={getThemeBackgroundColor(currentTheme)}
                 />

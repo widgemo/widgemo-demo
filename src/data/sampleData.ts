@@ -28,6 +28,18 @@ export const teaserSampleData: SampleData[] = [
   { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13' },
 ];
 
+// Sample data for image gallery
+export const imageGalleryData: SampleData[] = [
+  { id: 1, name: 'Mountain Landscape', src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop', category: 'Nature', description: 'Beautiful mountain vista' },
+  { id: 2, name: 'Ocean Sunset', src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop', category: 'Nature', description: 'Stunning ocean sunset' },
+  { id: 3, name: 'City Skyline', src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop', category: 'Urban', description: 'Modern city skyline' },
+  { id: 4, name: 'Forest Path', src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop', category: 'Nature', description: 'Peaceful forest trail' },
+  { id: 5, name: 'Desert Dunes', src: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&h=300&fit=crop', category: 'Nature', description: 'Golden desert landscape' },
+  { id: 6, name: 'Architecture', src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop', category: 'Urban', description: 'Modern architectural design' },
+  { id: 7, name: 'Wildlife', src: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=300&fit=crop', category: 'Wildlife', description: 'Majestic wildlife portrait' },
+  { id: 8, name: 'Abstract Art', src: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop', category: 'Art', description: 'Contemporary abstract art' },
+];
+
 export const galleryConfigs: Array<{
   config: WidgemoConfig;
   name: string;
@@ -284,6 +296,42 @@ export const galleryConfigs: Array<{
       { name: 'Documentation', title: 'Write documentation', priority: 'low', status: false, assignee: 'Carol' },
       { name: 'Mobile', title: 'Fix mobile responsiveness', priority: 'high', status: true, assignee: 'David' },
     ]
+    },
+    {
+      name: 'Image Gallery',
+      mode: 'grid',
+      config: {
+        title: 'Image Gallery',
+        mode: 'grid',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        imagesConfig: {
+          field: 'src',
+          fit: 'cover',
+          lazy: true,
+          showTextOverlay: true,
+          placeholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+        },
+        styling: {
+          grid: {
+            columns: 'auto',
+            cellSize: { width: 250, height: 200 },
+            gap: '15px',
+            imageGrid: {
+              masonry: true
+            }
+          },
+          shadow: true
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Image gallery with masonry layout, lazy loading, and hover overlays. Click images to view details.',
+      data: imageGalleryData
     },
   ];
 
