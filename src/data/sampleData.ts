@@ -85,6 +85,9 @@ export const galleryConfigs: Array<{
             gap: '8px'
           }, shadow: true
         },
+        collapsible: 'fixed',
+        header: { always: ['add'] }, 
+        labels: { add: 'Add User Profile' }
       },
       description: 'Kanban style board with configurable columns and swimlanes. Drag and drop to rearrange cards.',
       data: teaserSampleData
