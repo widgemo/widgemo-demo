@@ -47,7 +47,7 @@ export const AdvancedExamplesSection: React.FC<AdvancedExamplesSectionProps> = (
                 <Widgemo
                   config={mergeThemeIntoConfig({
                     title: 'Summary',
-                    mode: 'cards',
+                    mode: 'board',
                     dataSource: { type: 'static' },
                     fields: [
                       { name: 'department', label: 'Department', type: 'text' },

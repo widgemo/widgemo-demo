@@ -103,7 +103,7 @@ export const chartTypes = [
 
 export const viewModes = [
   { value: 'table', label: 'Table' },
-  { value: 'cards', label: 'Cards' },
+  { value: 'board', label: 'Board' },
   { value: 'grid', label: 'Grid' },
   { value: 'chart', label: 'Chart' },
 ];

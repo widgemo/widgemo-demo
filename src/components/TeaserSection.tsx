@@ -66,7 +66,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
               One Configurable React Primitive for Infinite UIs
             </h2>
             <p className="lead mb-4" style={{ color: shouldHaveDarkText ? '#161616' : 'white' }}>
-              Configuration over custom code. Render cards, tables, grids, charts, and more—from a single component,
+              Configuration over custom code. Render boards, tables, grids, charts, and more—from a single component,
               data-agnostic and themeable.
             </p>
             <div className="d-flex gap-3 flex-wrap">

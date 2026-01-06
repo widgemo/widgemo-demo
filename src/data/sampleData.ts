@@ -58,11 +58,11 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
-      name: 'Simple Cards',
-      mode: 'cards',
+      name: 'Simple Board',
+      mode: 'board',
       config: {
-        title: 'Profile Cards',
-        mode: 'cards',
+        title: 'Profile Board',
+        mode: 'board',
         dataSource: { type: 'static' },
         fields: [
           { name: 'name', label: 'Name', type: 'text' },
@@ -72,9 +72,19 @@ export const galleryConfigs: Array<{
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
         actions: { view: true },
-        styling: { card: { shadow: true, showBorder: true }, shadow: true },
+        styling: {
+          board: {
+            groupBy: 'role',
+            swimlaneBy: 'department',
+            draggable: true,
+            showColumnHeaders: true,
+            showItemCount: true,
+            columnWidth: '200px',
+            gap: '8px'
+          }, shadow: true
+        },
       },
-      description: 'User profile cards with contact and role information',
+      description: 'User profile board with contact and role information',
       data: teaserSampleData
     },
     {
@@ -234,10 +244,10 @@ export const galleryConfigs: Array<{
     },
     {
       name: 'Task Management',
-      mode: 'cards',
+      mode: 'board',
       config: {
         title: 'Task Board',
-        mode: 'cards',
+        mode: 'board',
         dataSource: { type: 'static' },
         fields: [
           { name: 'title', label: 'Task', type: 'text' },
@@ -254,7 +264,7 @@ export const galleryConfigs: Array<{
         actions: { edit: true, delete: true },
         styling: { card: { shadow: true }, shadow: true },
       },
-      description: 'Kanban-style task cards with priority and status',
+      description: 'Kanban-style task board with priority and status',
       data: [
         { name: 'Authentication', title: 'Implement user authentication', priority: 'high', status: false, assignee: 'Alice' },
         { name: 'Dashboard', title: 'Design new dashboard', priority: 'medium', status: true, assignee: 'Bob' },
@@ -306,7 +316,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
   {
     config: {
       title: 'User Profile Cards',
-      mode: 'cards',
+      mode: 'board',
       dataSource: { type: 'static' },
       fields: [
         { name: 'name', label: 'Name', type: 'text' },
@@ -318,7 +328,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       header: { always: ['refresh'] },
       styling: { card: { shadow: true, showBorder: true } },
     },
-    description: 'User profile cards with contact info'
+    description: 'User profile board with contact info'
   },
   {
     config: {
