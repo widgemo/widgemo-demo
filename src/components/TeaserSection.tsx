@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
-import { teaserConfigs, mockAdapters } from '../data/sampleData';
+import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 
 interface TeaserSectionProps {
@@ -48,6 +48,20 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
 
   const currentTeaserItem = teaserConfigs[currentConfigIndex];
   const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
+  
+  // Extract imagesConfig from config if present
+  const { imagesConfig, ...configWithoutImages } = teaserConfig;
+  
+  // Create dynamic adapters - all teasers use the same user data
+  const teaserAdapters = React.useMemo(() => {
+    return {
+      ...mockAdapters,
+      fetchData: async () => ({
+        data: teaserSampleData,
+        total: teaserSampleData.length,
+      }),
+    };
+  }, []);
 
   return (
     <section id="teaser" className="bg-gradient" style={{
@@ -102,8 +116,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                 <div style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
-                    config={teaserConfig}
-                    adapters={mockAdapters}
+                    config={configWithoutImages}
+                    adapters={teaserAdapters}
+                    imagesConfig={imagesConfig}
                     showConfigDetails={false}
                     baseColor={getThemeBackgroundColor(currentTheme)}
                   />
