@@ -466,7 +466,6 @@ export const galleryConfigs: Array<{
         styling: {
           grid: {
             columns: 2,
-            cellSize: { width: 400, height: 300 },
             gap: '20px',
             imageGrid: {
               masonry: true
