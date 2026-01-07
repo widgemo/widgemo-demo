@@ -762,7 +762,29 @@ export default App;`
                         }`} style={{ fontSize: '1.1rem' }}>
                           {prop.property}
                         </code>
-                        <span className="badge bg-secondary me-2">{prop.type}</span>
+                        <span 
+                          className={`badge me-2 ${
+                            prop.type.includes('FieldConfig') || prop.type.includes('WidgemoAdapters') || prop.type.includes('WidgemoConfig') || prop.type.includes('WidgemoProps') ? 'bg-info text-white' : 'bg-secondary'
+                          }`}
+                          style={prop.type.includes('FieldConfig') || prop.type.includes('WidgemoAdapters') || prop.type.includes('WidgemoConfig') || prop.type.includes('WidgemoProps') ? { cursor: 'pointer', textDecoration: 'underline', border: '1px solid #0dcaf0' } : {}}
+                          onClick={() => {
+                            if (prop.type.includes('FieldConfig')) {
+                              const element = document.getElementById('section-FieldConfig');
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else if (prop.type.includes('WidgemoAdapters')) {
+                              const element = document.getElementById('section-WidgemoAdapters');
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else if (prop.type.includes('WidgemoConfig')) {
+                              const element = document.getElementById('section-WidgemoConfig');
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else if (prop.type.includes('WidgemoProps')) {
+                              const element = document.getElementById('section-WidgemoProps');
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }}
+                        >
+                          {prop.type}
+                        </span>
                         <span className={`badge ${
                           prop.status === 'implemented' ? 'bg-success' :
                           prop.status === 'partial' ? 'bg-warning text-dark' :
