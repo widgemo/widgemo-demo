@@ -660,52 +660,138 @@ export default App;`
       </Card>
 
       {/* Modals - simplified for now */}
-      <Modal show={showReferenceModal} onHide={() => setShowReferenceModal(false)} size="lg" centered>
+      <Modal show={showReferenceModal} onHide={() => setShowReferenceModal(false)} size="xl" centered>
         <Modal.Header closeButton>
           <Modal.Title>Configuration Reference</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ maxHeight: '70vh', overflow: 'auto' }}>
-          {Object.entries(
-            widgemoConfigProperties.reduce((acc, prop) => {
-              if (!acc[prop.category]) acc[prop.category] = [];
-              acc[prop.category].push(prop);
-              return acc;
-            }, {} as Record<string, typeof widgemoConfigProperties>)
-          ).map(([category, properties]) => (
-            <div key={category} className="mb-4">
-              <h6 className={`text-${category === 'WidgemoConfig' ? 'primary' : category === 'WidgemoProps' ? 'success' : category === 'WidgemoAdapters' ? 'warning' : 'info'}`}>
-                {category}
-              </h6>
-              {properties.map((prop, index) => (
-                <div key={index} className={`mb-3 p-2 border-start border-${category === 'WidgemoConfig' ? 'primary' : category === 'WidgemoProps' ? 'success' : category === 'WidgemoAdapters' ? 'warning' : 'info'}`}>
-                  <code className={`text-${category === 'WidgemoConfig' ? 'primary' : category === 'WidgemoProps' ? 'success' : category === 'WidgemoAdapters' ? 'warning' : 'info'} fw-bold`}>
-                    {prop.property}
-                  </code>
-                  <span className="badge bg-secondary ms-2">{prop.type}</span>
-                  <span className={`badge ms-2 ${
-                    prop.status === 'implemented' ? 'bg-success' :
-                    prop.status === 'partial' ? 'bg-warning text-dark' :
-                    'bg-danger'
-                  }`}>
-                    {prop.status === 'implemented' ? '✅' : prop.status === 'partial' ? '⚠️' : '❌'} {prop.status.replace('-', ' ')}
-                  </span>
-                  <br />
-                  <small className="text-muted">{prop.description}</small>
-                  <br />
-                  <small className="text-muted"><strong>Usage:</strong> {prop.usage}</small>
-                  {prop.example && (
-                    <div className="mt-1">
-                      <small className="text-success"><strong>Example:</strong> {prop.example}</small>
+        <Modal.Body style={{ maxHeight: '80vh', overflow: 'hidden' }}>
+          <div className="row h-100">
+            {/* Left Navigation Panel */}
+            <div className="col-md-3 border-end" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              <h6 className="text-muted mb-3">Categories</h6>
+              <nav className="nav flex-column">
+                {Object.entries(
+                  widgemoConfigProperties.reduce((acc, prop) => {
+                    if (!acc[prop.category]) acc[prop.category] = [];
+                    acc[prop.category].push(prop);
+                    return acc;
+                  }, {} as Record<string, typeof widgemoConfigProperties>)
+                ).map(([category, properties]) => (
+                  <div key={category} className="mb-2">
+                    <button
+                      className={`nav-link text-start p-2 mb-1 ${
+                        category === 'WidgemoConfig' ? 'text-primary' :
+                        category === 'WidgemoProps' ? 'text-success' :
+                        category === 'WidgemoAdapters' ? 'text-warning' :
+                        'text-info'
+                      }`}
+                      onClick={() => {
+                        const element = document.getElementById(`section-${category}`);
+                        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                      style={{ background: 'none', border: 'none', width: '100%' }}
+                    >
+                      <strong>{category}</strong>
+                      <span className="badge bg-light text-dark ms-2">{properties.length}</span>
+                    </button>
+                    <div className="ms-3">
+                      {properties.map((prop, index) => (
+                        <button
+                          key={index}
+                          className={`nav-link text-start p-1 small ${
+                            prop.status === 'implemented' ? 'text-success' :
+                            prop.status === 'partial' ? 'text-warning' :
+                            'text-danger'
+                          }`}
+                          onClick={() => {
+                            const element = document.getElementById(`property-${category}-${prop.property}`);
+                            element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }}
+                          style={{ background: 'none', border: 'none', width: '100%', fontSize: '0.85rem' }}
+                        >
+                          {prop.property}
+                          <span className="ms-1">
+                            {prop.status === 'implemented' ? '✅' :
+                             prop.status === 'partial' ? '⚠️' : '❌'}
+                          </span>
+                        </button>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                ))}
+              </nav>
+            </div>
+
+            {/* Right Content Panel */}
+            <div className="col-md-9" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              {Object.entries(
+                widgemoConfigProperties.reduce((acc, prop) => {
+                  if (!acc[prop.category]) acc[prop.category] = [];
+                  acc[prop.category].push(prop);
+                  return acc;
+                }, {} as Record<string, typeof widgemoConfigProperties>)
+              ).map(([category, properties]) => (
+                <div key={category} id={`section-${category}`} className="mb-5">
+                  <h5 className={`mb-3 ${
+                    category === 'WidgemoConfig' ? 'text-primary' :
+                    category === 'WidgemoProps' ? 'text-success' :
+                    category === 'WidgemoAdapters' ? 'text-warning' :
+                    'text-info'
+                  }`}>
+                    {category}
+                    <span className="badge bg-light text-dark ms-2">{properties.length} properties</span>
+                  </h5>
+                  {properties.map((prop, index) => (
+                    <div
+                      key={index}
+                      id={`property-${category}-${prop.property}`}
+                      className={`mb-3 p-3 border-start border-3 ${
+                        category === 'WidgemoConfig' ? 'border-primary' :
+                        category === 'WidgemoProps' ? 'border-success' :
+                        category === 'WidgemoAdapters' ? 'border-warning' :
+                        'border-info'
+                      }`}
+                      style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                    >
+                      <div className="d-flex align-items-center mb-2">
+                        <code className={`fw-bold me-2 ${
+                          category === 'WidgemoConfig' ? 'text-primary' :
+                          category === 'WidgemoProps' ? 'text-success' :
+                          category === 'WidgemoAdapters' ? 'text-warning' :
+                          'text-info'
+                        }`} style={{ fontSize: '1.1rem' }}>
+                          {prop.property}
+                        </code>
+                        <span className="badge bg-secondary me-2">{prop.type}</span>
+                        <span className={`badge ${
+                          prop.status === 'implemented' ? 'bg-success' :
+                          prop.status === 'partial' ? 'bg-warning text-dark' :
+                          'bg-danger'
+                        }`}>
+                          {prop.status === 'implemented' ? '✅' : prop.status === 'partial' ? '⚠️' : '❌'} {prop.status.replace('-', ' ')}
+                        </span>
+                      </div>
+                      <p className="text-muted mb-2">{prop.description}</p>
+                      <div className="mb-2">
+                        <strong className="text-muted">Usage:</strong>
+                        <p className="mb-1">{prop.usage}</p>
+                      </div>
+                      {prop.example && (
+                        <div>
+                          <strong className="text-success">Example:</strong>
+                          <pre className="bg-light p-2 rounded mt-1 mb-0" style={{ fontSize: '0.85rem' }}>
+                            <code>{prop.example}</code>
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ))}
-            </div>
-          ))}
 
-          <div className="mb-4">
-            <h6 className="text-info">Data Format Examples</h6>
-            <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
+              <div className="mb-4">
+                <h6 className="text-info">Data Format Examples</h6>
+                <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
 
             <div className="mb-3">
               <h6 className="text-info">Users Data</h6>
@@ -805,7 +891,14 @@ export default App;`
               </div>
             ))}
           </div>
+            </div>
+          </div>
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowReferenceModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <Modal show={showCodeSandboxModal} onHide={() => setShowCodeSandboxModal(false)} centered>
