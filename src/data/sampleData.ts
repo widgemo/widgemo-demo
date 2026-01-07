@@ -479,6 +479,98 @@ export const galleryConfigs: Array<{
       description: 'Large 2-column masonry layout showcasing images with detailed text overlays.',
       data: imageGalleryData
     },
+    {
+      name: 'Nature Gallery - Background Images',
+      mode: 'board',
+      config: {
+        title: 'Nature Gallery - Background Images',
+        mode: 'board',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        imagesConfig: {
+          field: 'src',
+          fit: 'cover',
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+',
+          errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
+        },
+        styling: {
+          board: {
+            groupBy: 'category',
+            draggable: true,
+            showColumnHeaders: true,
+            showItemCount: true,
+            columnWidth: '280px',
+            gap: '12px',
+            imagePlacement: 'background'
+          },
+          card: {
+            showBorder: true,
+            borderRadius: '8px',
+            shadow: true,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)'
+          },
+          dynamicBackground: true
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Board view with images as card backgrounds, overlay text for readability, and dynamic color backgrounds',
+      data: imageGalleryData
+    },
+    {
+      name: 'Image Gallery Board - Header & Body',
+      mode: 'board',
+      config: {
+        title: 'Photo Portfolio - Header & Body Images',
+        mode: 'board',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        imagesConfig: {
+          field: 'src',
+          fit: 'cover',
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=',
+          errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmVkN2Q3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
+        },
+        styling: {
+          board: {
+            columns: [
+              { id: 'Nature', label: 'Nature & Landscapes' },
+              { id: 'Urban', label: 'Urban & Architecture' },
+              { id: 'Art', label: 'Art & Abstract' },
+              { id: 'Portrait', label: 'Portraits' }
+            ],
+            groupBy: 'category',
+            draggable: true,
+            showColumnHeaders: true,
+            showItemCount: true,
+            columnWidth: '320px',
+            gap: '16px',
+            imagePlacement: 'header'
+          },
+          card: {
+            showBorder: true,
+            borderRadius: '12px',
+            shadow: true,
+            backgroundColor: '#ffffff'
+          },
+          dynamicBackground: false
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Board view with images as card headers, custom column definitions, and static backgrounds with borders',
+      data: imageGalleryData
+    },
   ];
 
 // Default sandbox configuration
@@ -600,25 +692,6 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       header: { always: ['refresh'] }
     },
     description: 'User avatar gallery with names and roles'
-  },
-  {
-    config: {
-      title: 'User Activity Chart',
-      mode: 'chart',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'name', label: 'User', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      chartConfig: {
-        type: 'bar',
-        xAxis: 'department',
-        yAxis: 'status',
-      },
-      styling: {},
-    },
-    description: 'Chart showing active users by department'
   },
 ];
 

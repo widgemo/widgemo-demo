@@ -34,7 +34,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
   // Get unique modes for filter dropdown
   const availableModes = useMemo(() => {
-    const modes = Array.from(new Set(galleryConfigs.map(item => item.mode)));
+    const modes = Array.from(new Set(galleryConfigs.map(item => item.mode).filter(Boolean)));
     return modes.sort();
   }, []);
 
