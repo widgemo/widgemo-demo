@@ -28,6 +28,22 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
+  const [currentReferenceSection, setCurrentReferenceSection] = useState<string>('WidgemoConfig');
+  const [referenceBreadcrumb, setReferenceBreadcrumb] = useState<string[]>(['WidgemoConfig']);
+
+  // Handle navigation to complex type sections
+  const navigateToSection = useCallback((sectionName: string) => {
+    setCurrentReferenceSection(sectionName);
+    setReferenceBreadcrumb(prev => [...prev, sectionName]);
+  }, []);
+
+  const navigateBack = useCallback(() => {
+    if (referenceBreadcrumb.length > 1) {
+      const newBreadcrumb = referenceBreadcrumb.slice(0, -1);
+      setReferenceBreadcrumb(newBreadcrumb);
+      setCurrentReferenceSection(newBreadcrumb[newBreadcrumb.length - 1]);
+    }
+  }, [referenceBreadcrumb]);
   const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
   const [entityLabel, setEntityLabel] = useState('User');
   const [entityLabelPlural, setEntityLabelPlural] = useState('Users');
@@ -662,39 +678,45 @@ export default App;`
       {/* Modals - simplified for now */}
       <Modal show={showReferenceModal} onHide={() => setShowReferenceModal(false)} size="xl" centered>
         <Modal.Header closeButton>
-          <Modal.Title>Configuration Reference</Modal.Title>
+          <Modal.Title>
+            <FaBook className="me-2" />
+            Configuration Reference
+            {referenceBreadcrumb.length > 1 && (
+              <small className="text-muted ms-2">
+                {referenceBreadcrumb.join(' → ')}
+              </small>
+            )}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: '80vh', overflow: 'hidden' }}>
           <div className="row h-100">
             {/* Left Navigation Panel */}
             <div className="col-md-3 border-end" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-              <h6 className="text-muted mb-3">Categories</h6>
-              <nav className="nav flex-column">
-                {Object.entries(
-                  widgemoConfigProperties.reduce((acc, prop) => {
-                    if (!acc[prop.category]) acc[prop.category] = [];
-                    acc[prop.category].push(prop);
-                    return acc;
-                  }, {} as Record<string, typeof widgemoConfigProperties>)
-                ).map(([category, properties]) => (
-                  <div key={category} className="mb-2">
-                    <button
-                      className={`nav-link text-start p-2 mb-1 ${
-                        category === 'WidgemoConfig' ? 'text-primary' :
-                        category === 'WidgemoProps' ? 'text-success' :
-                        category === 'WidgemoAdapters' ? 'text-warning' :
-                        'text-info'
-                      }`}
-                      onClick={() => {
-                        const element = document.getElementById(`section-${category}`);
-                        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }}
-                      style={{ background: 'none', border: 'none', width: '100%' }}
-                    >
-                      <strong>{category}</strong>
-                      <span className="badge bg-light text-dark ms-2">{properties.length}</span>
-                    </button>
-                    <div className="ms-3">
+              <div className="p-3">
+                {referenceBreadcrumb.length > 1 && (
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    className="mb-3 w-100"
+                    onClick={navigateBack}
+                  >
+                    ← Back to {referenceBreadcrumb[referenceBreadcrumb.length - 2]}
+                  </Button>
+                )}
+
+                <h6 className="mb-3 text-primary">Navigation</h6>
+                <nav>
+                  {Object.entries(
+                    widgemoConfigProperties
+                      .filter(prop => prop.category === currentReferenceSection)
+                      .reduce((acc, prop) => {
+                        if (!acc[prop.category]) acc[prop.category] = [];
+                        acc[prop.category].push(prop);
+                        return acc;
+                      }, {} as Record<string, typeof widgemoConfigProperties>)
+                  ).map(([category, properties]) => (
+                    <div key={category} className="mb-3">
+                      <h6 className="text-muted small mb-2">{category}</h6>
                       {properties.map((prop, index) => (
                         <button
                           key={index}
@@ -717,107 +739,103 @@ export default App;`
                         </button>
                       ))}
                     </div>
-                  </div>
-                ))}
-              </nav>
+                  ))}
+                </nav>
+              </div>
             </div>
 
             {/* Right Content Panel */}
             <div className="col-md-9" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-              {Object.entries(
-                widgemoConfigProperties.reduce((acc, prop) => {
-                  if (!acc[prop.category]) acc[prop.category] = [];
-                  acc[prop.category].push(prop);
-                  return acc;
-                }, {} as Record<string, typeof widgemoConfigProperties>)
-              ).map(([category, properties]) => (
-                <div key={category} id={`section-${category}`} className="mb-5">
-                  <h5 className={`mb-3 ${
-                    category === 'WidgemoConfig' ? 'text-primary' :
-                    category === 'WidgemoProps' ? 'text-success' :
-                    category === 'WidgemoAdapters' ? 'text-warning' :
-                    'text-info'
-                  }`}>
-                    {category}
-                    <span className="badge bg-light text-dark ms-2">{properties.length} properties</span>
-                  </h5>
-                  {properties.map((prop, index) => (
-                    <div
-                      key={index}
-                      id={`property-${category}-${prop.property}`}
-                      className={`mb-3 p-3 border-start border-3 ${
-                        category === 'WidgemoConfig' ? 'border-primary' :
-                        category === 'WidgemoProps' ? 'border-success' :
-                        category === 'WidgemoAdapters' ? 'border-warning' :
-                        'border-info'
-                      }`}
-                      style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
-                    >
-                      <div className="d-flex align-items-center mb-2">
-                        <code className={`fw-bold me-2 ${
-                          category === 'WidgemoConfig' ? 'text-primary' :
-                          category === 'WidgemoProps' ? 'text-success' :
-                          category === 'WidgemoAdapters' ? 'text-warning' :
-                          'text-info'
-                        }`} style={{ fontSize: '1.1rem' }}>
-                          {prop.property}
-                        </code>
-                        <span 
-                          className={`badge me-2 ${
-                            prop.type.includes('FieldConfig') || prop.type.includes('WidgemoAdapters') || prop.type.includes('WidgemoConfig') || prop.type.includes('WidgemoProps') ? 'bg-info text-white' : 'bg-secondary'
-                          }`}
-                          style={prop.type.includes('FieldConfig') || prop.type.includes('WidgemoAdapters') || prop.type.includes('WidgemoConfig') || prop.type.includes('WidgemoProps') ? { cursor: 'pointer', textDecoration: 'underline', border: '1px solid #0dcaf0' } : {}}
-                          onClick={() => {
-                            if (prop.type.includes('FieldConfig')) {
-                              const element = document.getElementById('section-FieldConfig');
-                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            } else if (prop.type.includes('WidgemoAdapters')) {
-                              const element = document.getElementById('section-WidgemoAdapters');
-                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            } else if (prop.type.includes('WidgemoConfig')) {
-                              const element = document.getElementById('section-WidgemoConfig');
-                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            } else if (prop.type.includes('WidgemoProps')) {
-                              const element = document.getElementById('section-WidgemoProps');
-                              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                          }}
-                        >
-                          {prop.type}
-                        </span>
-                        <span className={`badge ${
-                          prop.status === 'implemented' ? 'bg-success' :
-                          prop.status === 'partial' ? 'bg-warning text-dark' :
-                          'bg-danger'
-                        }`}>
-                          {prop.status === 'implemented' ? '✅' : prop.status === 'partial' ? '⚠️' : '❌'} {prop.status.replace('-', ' ')}
-                        </span>
-                      </div>
-                      <p className="text-muted mb-2">{prop.description}</p>
-                      <div className="mb-2">
-                        <strong className="text-muted">Usage:</strong>
-                        <p className="mb-1">{prop.usage}</p>
-                      </div>
-                      {prop.example && (
-                        <div>
-                          <strong className="text-success">Example:</strong>
-                          <pre className="bg-light p-2 rounded mt-1 mb-0" style={{ fontSize: '0.85rem' }}>
-                            <code>{prop.example}</code>
-                          </pre>
-                        </div>
-                      )}
+              {(() => {
+                // Get current section properties
+                const currentSectionProps = widgemoConfigProperties.filter(prop =>
+                  prop.category === currentReferenceSection
+                );
+
+                return (
+                  <>
+                    {/* Section Header */}
+                    <div className="mb-4">
+                      <h4 className={`${
+                        currentReferenceSection === 'WidgemoConfig' ? 'text-primary' :
+                        currentReferenceSection === 'WidgemoProps' ? 'text-success' :
+                        currentReferenceSection === 'WidgemoAdapters' ? 'text-warning' :
+                        'text-info'
+                      }`}>
+                        {currentReferenceSection}
+                        <span className="badge bg-light text-dark ms-2">{currentSectionProps.length} properties</span>
+                      </h4>
                     </div>
-                  ))}
-                </div>
-              ))}
 
-              <div className="mb-4">
-                <h6 className="text-info">Data Format Examples</h6>
-                <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
+                    {/* Properties List */}
+                    {currentSectionProps.map((prop, index) => (
+                      <div
+                        key={index}
+                        id={`property-${currentReferenceSection}-${prop.property}`}
+                        className={`mb-3 p-3 border-start border-3 ${
+                          currentReferenceSection === 'WidgemoConfig' ? 'border-primary' :
+                          currentReferenceSection === 'WidgemoProps' ? 'border-success' :
+                          currentReferenceSection === 'WidgemoAdapters' ? 'border-warning' :
+                          'border-info'
+                        }`}
+                        style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                      >
+                        <div className="d-flex align-items-center mb-2">
+                          <code className={`fw-bold me-2 ${
+                            currentReferenceSection === 'WidgemoConfig' ? 'text-primary' :
+                            currentReferenceSection === 'WidgemoProps' ? 'text-success' :
+                            currentReferenceSection === 'WidgemoAdapters' ? 'text-warning' :
+                            'text-info'
+                          }`} style={{ fontSize: '1.1rem' }}>
+                            {prop.property}
+                          </code>
+                          <span
+                            className={`badge me-2 ${
+                              prop.isComplexType ? 'bg-info text-white' : 'bg-secondary'
+                            }`}
+                            style={prop.isComplexType ? { cursor: 'pointer', textDecoration: 'underline', border: '1px solid #0dcaf0' } : {}}
+                            onClick={() => {
+                              if (prop.isComplexType && prop.complexTypeSection) {
+                                navigateToSection(prop.complexTypeSection);
+                              }
+                            }}
+                          >
+                            {prop.type}
+                          </span>
+                          <span className={`badge ${
+                            prop.status === 'implemented' ? 'bg-success' :
+                            prop.status === 'partial' ? 'bg-warning text-dark' :
+                            'bg-danger'
+                          }`}>
+                            {prop.status === 'implemented' ? '✅' : prop.status === 'partial' ? '⚠️' : '❌'} {prop.status.replace('-', ' ')}
+                          </span>
+                        </div>
+                        <p className="text-muted mb-2">{prop.description}</p>
+                        <div className="mb-2">
+                          <strong className="text-muted">Usage:</strong>
+                          <p className="mb-1">{prop.usage}</p>
+                        </div>
+                        {prop.example && (
+                          <div>
+                            <strong className="text-success">Example:</strong>
+                            <pre className="bg-light p-2 rounded mt-1 mb-0" style={{ fontSize: '0.85rem' }}>
+                              <code>{prop.example}</code>
+                            </pre>
+                          </div>
+                        )}
+                      </div>
+                    ))}
 
-            <div className="mb-3">
-              <h6 className="text-info">Users Data</h6>
-              <pre className="bg-light p-2 rounded small"><code>{`[
+                    {/* Show additional content only on root section */}
+                    {currentReferenceSection === 'WidgemoConfig' && (
+                      <>
+                        <div className="mb-4">
+                          <h6 className="text-info">Data Format Examples</h6>
+                          <small className="text-muted mb-3 d-block">JSON structure examples for uploading custom data</small>
+
+                          <div className="mb-3">
+                            <h6 className="text-info">Users Data</h6>
+                            <pre className="bg-light p-2 rounded small"><code>{`[
   {
     "id": 1,
     "name": "John Doe",
@@ -837,11 +855,11 @@ export default App;`
     "lastLogin": "2024-01-10"
   }
 ]`}</code></pre>
-            </div>
+                          </div>
 
-            <div className="mb-3">
-              <h6 className="text-info">Sales Records</h6>
-              <pre className="bg-light p-2 rounded small"><code>{`[
+                          <div className="mb-3">
+                            <h6 className="text-info">Sales Records</h6>
+                            <pre className="bg-light p-2 rounded small"><code>{`[
   {
     "id": 1,
     "product": "Widget A",
@@ -861,11 +879,11 @@ export default App;`
     "customer": "XYZ Ltd"
   }
 ]`}</code></pre>
-            </div>
+                          </div>
 
-            <div className="mb-3">
-              <h6 className="text-info">Customer Data</h6>
-              <pre className="bg-light p-2 rounded small"><code>{`[
+                          <div className="mb-3">
+                            <h6 className="text-info">Customer Data</h6>
+                            <pre className="bg-light p-2 rounded small"><code>{`[
   {
     "id": 1,
     "name": "Alice Johnson",
@@ -887,32 +905,37 @@ export default App;`
     "lastContact": "2024-01-10"
   }
 ]`}</code></pre>
-            </div>
+                          </div>
 
-            <div className="mb-3">
-              <h6 className="text-info">API Data Sources</h6>
-              <p className="small text-muted mb-2">
-                <strong>JSONPlaceholder Options:</strong> The dropdown includes direct options for all JSONPlaceholder endpoints (users, posts, comments, albums, photos, todos) that fetch real sample data.
-              </p>
-              <p className="small text-muted mb-2">
-                <strong>Custom API Endpoint:</strong> For testing with external APIs, select "Custom API Endpoint" and provide a full URL (e.g., https://api.github.com/users, https://jsonplaceholder.typicode.com/comments).
-                The system will attempt to fetch and display data from any valid JSON API endpoint.
-              </p>
-            </div>
-          </div>
+                          <div className="mb-3">
+                            <h6 className="text-info">API Data Sources</h6>
+                            <p className="small text-muted mb-2">
+                              <strong>JSONPlaceholder Options:</strong> The dropdown includes direct options for all JSONPlaceholder endpoints (users, posts, comments, albums, photos, todos) that fetch real sample data.
+                            </p>
+                            <p className="small text-muted mb-2">
+                              <strong>Custom API Endpoint:</strong> For testing with external APIs, select "Custom API Endpoint" and provide a full URL (e.g., https://api.github.com/users, https://jsonplaceholder.typicode.com/comments).
+                              The system will attempt to fetch and display data from any valid JSON API endpoint.
+                            </p>
+                          </div>
+                        </div>
 
-          <div className="mb-4">
-            <h6 className="text-success">Preset Configurations</h6>
-            <small className="text-muted mb-3 d-block">Ready-to-use configuration templates</small>
-            {Object.entries(presetConfigs).map(([key, config]) => (
-              <div key={key} className="mb-3 p-2 border-start border-success">
-                <code className="text-success fw-bold">{key}</code>
-                <span className="badge bg-secondary ms-2">{config.title}</span>
-                <br />
-                <small className="text-muted">{config.mode} mode with {config.fields.length} fields</small>
-              </div>
-            ))}
-          </div>
+                        <div className="mb-4">
+                          <h6 className="text-success">Preset Configurations</h6>
+                          <small className="text-muted mb-3 d-block">Ready-to-use configuration templates</small>
+                          {Object.entries(presetConfigs).map(([key, config]) => (
+                            <div key={key} className="mb-3 p-2 border-start border-success">
+                              <code className="text-success fw-bold">{key}</code>
+                              <span className="badge bg-secondary ms-2">{config.title}</span>
+                              <br />
+                              <small className="text-muted">{config.mode} mode with {config.fields.length} fields</small>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         </Modal.Body>
