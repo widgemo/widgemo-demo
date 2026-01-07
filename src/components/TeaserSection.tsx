@@ -18,6 +18,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
   currentTheme
 }) => {
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState(() => {
     // Detect initial screen size
     if (typeof window !== 'undefined' && window.matchMedia) {
@@ -42,9 +43,21 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentConfigIndex(prev => (prev + 1) % configsLength);
+      setProgress(0); // Reset progress when changing config
     }, 3000);
     return () => clearInterval(interval);
   }, [configsLength]);
+
+  // Progress bar animation - synchronized with config changes
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        const nextProgress = prev + 1;
+        return nextProgress >= 100 ? 0 : nextProgress;
+      });
+    }, 30); // Update every 30ms for smooth animation (3000ms / 100 = 30ms)
+    return () => clearInterval(progressInterval);
+  }, []);
 
   const currentTeaserItem = teaserConfigs[currentConfigIndex];
   const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
@@ -106,12 +119,24 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
             <Card className="shadow-lg border-0 theme-aware-card">
               <Card.Body className="p-1">
                 <div className="mb-3">
-                  <small className="text-muted">
-                    <strong>{currentTeaserItem.config.title}</strong>
-                    <span className="ms-2">(Auto-cycling every 3s)</span>
+                  <small className="text-muted d-flex justify-content-between align-items-center">
+                    <strong>{currentTeaserItem.description}</strong>
+                    <div style={{ width: '120px' }}>
+                      <div className="progress" style={{ height: '4px' }}>
+                        <div
+                          className="progress-bar bg-primary"
+                          role="progressbar"
+                          style={{
+                            width: `${progress}%`,
+                            transition: 'none'
+                          }}
+                          aria-valuenow={progress}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                    </div>
                   </small>
-                  <br />
-                  <small className="text-muted">{currentTeaserItem.description}</small>
                 </div>
                 <div style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
