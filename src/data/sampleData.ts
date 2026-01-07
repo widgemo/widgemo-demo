@@ -97,7 +97,7 @@ export const galleryConfigs: Array<{
             draggable: true,
             showColumnHeaders: true,
             showItemCount: true,
-            columnWidth: '200px',
+            minColumnWidth: '200px',
             gap: '8px'
           }, shadow: true
         },
@@ -504,7 +504,7 @@ export const galleryConfigs: Array<{
             draggable: true,
             showColumnHeaders: true,
             showItemCount: true,
-            columnWidth: '280px',
+            minColumnWidth: '280px',
             gap: '12px',
             imagePlacement: 'background'
           },
@@ -553,7 +553,7 @@ export const galleryConfigs: Array<{
             draggable: true,
             showColumnHeaders: true,
             showItemCount: true,
-            columnWidth: '320px',
+            minColumnWidth: '320px',
             gap: '16px',
             imagePlacement: 'header'
           },
