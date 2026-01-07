@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook } from 'react-icons/fa';
@@ -447,6 +447,42 @@ export default App;`
   useEffect(() => {
     setCustomData(initialData);
   }, [initialData]);
+
+  const lastAppliedThemeRef = useRef(currentTheme);
+
+  // Update JSON editor and apply changes when theme changes
+  useEffect(() => {
+    if (lastAppliedThemeRef.current !== currentTheme) {
+      try {
+        // Parse current JSON (remove any comments first)
+        const cleanJson = configJson.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
+        const currentConfig = JSON.parse(cleanJson || '{}');
+
+        // Update theme in config
+        const targetTheme = currentTheme.startsWith('theme-light') ? 'light' :
+                           currentTheme.startsWith('theme-dark') ? 'dark' : 'light';
+
+        const updatedConfig = {
+          ...currentConfig,
+          styling: {
+            ...currentConfig.styling,
+            theme: targetTheme
+          }
+        };
+        setConfigJson(JSON.stringify(updatedConfig, null, 2));
+
+        // Auto-apply the changes
+        setConfig(updatedConfig);
+        onConfigChange(updatedConfig);
+        setJsonError(null);
+
+        lastAppliedThemeRef.current = currentTheme;
+      } catch (e) {
+        // If JSON is invalid, just update the ref
+        lastAppliedThemeRef.current = currentTheme;
+      }
+    }
+  }, [currentTheme]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
