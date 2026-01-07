@@ -51,7 +51,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
   const handleLoadToSandbox = () => {
     if (selectedItem) {
-      onLoadToSandbox(selectedItem.config, selectedItem.data);
+      // Merge the config with the current theme before loading to sandbox
+      const themedConfig = mergeThemeIntoConfig(selectedItem.config, currentTheme);
+      onLoadToSandbox(themedConfig, selectedItem.data);
       setShowModal(false);
       setSelectedItem(null);
       // Scroll to sandbox section after modal closes
