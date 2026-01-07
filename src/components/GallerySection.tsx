@@ -26,6 +26,33 @@ interface GalleryItem {
   mode: string;
 }
 
+// Custom arrow component for carousel - defined outside to avoid recreation
+const CustomArrow = ({ direction, onClick }: { direction: 'next' | 'prev'; onClick?: () => void }) => (
+  <button
+    className={`slick-arrow slick-${direction}`}
+    onClick={onClick}
+    style={{
+      background: 'rgba(0,0,0,0.5)',
+      border: 'none',
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      zIndex: 1,
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      right: direction === 'next' ? '-20px' : 'auto',
+      left: direction === 'prev' ? '-20px' : 'auto',
+    }}
+  >
+    {direction === 'next' ? <FaChevronRight /> : <FaChevronLeft />}
+  </button>
+);
+
 export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox, currentTheme }) => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -70,32 +97,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
     setShowModal(false);
     setSelectedItem(null);
   };
-
-  const CustomArrow = ({ direction, onClick }: { direction: 'next' | 'prev'; onClick?: () => void }) => (
-    <button
-      className={`slick-arrow slick-${direction}`}
-      onClick={onClick}
-      style={{
-        background: 'rgba(0,0,0,0.5)',
-        border: 'none',
-        borderRadius: '50%',
-        width: '40px',
-        height: '40px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        zIndex: 1,
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        right: direction === 'next' ? '-20px' : 'auto',
-        left: direction === 'prev' ? '-20px' : 'auto',
-      }}
-    >
-      {direction === 'next' ? <FaChevronRight /> : <FaChevronLeft />}
-    </button>
-  );
 
   // Carousel settings
   const carouselSettings = {

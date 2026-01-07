@@ -8,6 +8,7 @@ import { ResourcesSection } from './components/ResourcesSection';
 import { defaultSandboxConfig, teaserSampleData } from './data/sampleData';
 import type { WidgemoConfig } from 'widgemo-core';
 import type { SampleData } from './data/sampleData';
+import { injectThemeCSS } from './utils/themeConfig';
 import './App.css';
 
 // Main App component
@@ -20,6 +21,11 @@ function App() {
     }
     return 'theme-light'; // fallback
   });
+
+  // Inject theme CSS on app load
+  useEffect(() => {
+    injectThemeCSS();
+  }, []);
 
   // Sandbox state management
   const [sandboxConfig, setSandboxConfig] = useState(defaultSandboxConfig);

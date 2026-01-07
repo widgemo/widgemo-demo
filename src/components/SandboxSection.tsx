@@ -477,12 +477,12 @@ export default App;`
         setJsonError(null);
 
         lastAppliedThemeRef.current = currentTheme;
-      } catch (e) {
+      } catch {
         // If JSON is invalid, just update the ref
         lastAppliedThemeRef.current = currentTheme;
       }
     }
-  }, [currentTheme]);
+  }, [currentTheme, configJson, onConfigChange]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
