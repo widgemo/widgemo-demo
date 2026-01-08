@@ -37,6 +37,15 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     setReferenceBreadcrumb(prev => [...prev, sectionName]);
   }, []);
 
+  // Navigate to a specific breadcrumb index
+  const navigateToBreadcrumbIndex = useCallback((index: number) => {
+    if (index >= 0 && index < referenceBreadcrumb.length) {
+      const newBreadcrumb = referenceBreadcrumb.slice(0, index + 1);
+      setReferenceBreadcrumb(newBreadcrumb);
+      setCurrentReferenceSection(newBreadcrumb[newBreadcrumb.length - 1]);
+    }
+  }, [referenceBreadcrumb]);
+
   const navigateBack = useCallback(() => {
     if (referenceBreadcrumb.length > 1) {
       const newBreadcrumb = referenceBreadcrumb.slice(0, -1);
@@ -683,7 +692,18 @@ export default App;`
             Configuration Reference
             {referenceBreadcrumb.length > 1 && (
               <small className="text-muted ms-2">
-                {referenceBreadcrumb.join(' → ')}
+                {referenceBreadcrumb.map((segment, index) => (
+                  <span key={index}>
+                    {index > 0 && <span className="mx-1">→</span>}
+                    <span
+                      className={index === referenceBreadcrumb.length - 1 ? 'fw-bold' : 'text-decoration-underline'}
+                      style={{ cursor: index === referenceBreadcrumb.length - 1 ? 'default' : 'pointer' }}
+                      onClick={() => index < referenceBreadcrumb.length - 1 && navigateToBreadcrumbIndex(index)}
+                    >
+                      {segment}
+                    </span>
+                  </span>
+                ))}
               </small>
             )}
           </Modal.Title>
