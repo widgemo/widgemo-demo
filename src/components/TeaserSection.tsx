@@ -138,7 +138,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                     </div>
                   </small>
                 </div>
-                <div style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
+                <div inert style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
                     config={configWithoutImages}
