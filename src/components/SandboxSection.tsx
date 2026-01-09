@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck } from 'react-icons/fa';
+import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
@@ -44,6 +44,10 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [showConfigDetails, setShowConfigDetails] = useState(false);
   const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
   const [showAdvancedProps, setShowAdvancedProps] = useState(false);
+
+  // Control whether to override specific properties
+  const [overrideBaseColorEnabled, setOverrideBaseColorEnabled] = useState(false);
+  const [overrideBackgroundEnabled, setOverrideBackgroundEnabled] = useState(false);
 
   // Applied advanced props state (to prevent live updates)
   const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
@@ -568,10 +572,18 @@ export default App;`
       setAppliedStyleJson(styleJson);
       setAppliedLoading(loading);
       setAppliedError(error);
-      setAppliedBaseColor(baseColor);
+      if (overrideBaseColorEnabled) {
+        setAppliedBaseColor(baseColor);
+      } else {
+        setAppliedBaseColor('');
+      }
       setAppliedAutoContrast(autoContrast);
       setAppliedContrastAmount(contrastAmount);
-      setAppliedOverrideBackground(overrideBackground);
+      if (overrideBackgroundEnabled) {
+        setAppliedOverrideBackground(overrideBackground);
+      } else {
+        setAppliedOverrideBackground('');
+      }
       
       setApplyAdvancedProps(true);
       setExportStatus('Advanced properties applied successfully!');
@@ -580,7 +592,7 @@ export default App;`
       setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
       setTimeout(() => setExportStatus(null), 5000);
     }
-  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground]);
+  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
 
   return (
     <DemoSection
@@ -759,6 +771,13 @@ export default App;`
                           {/* Colors */}
                           <div className="col-md-4">
                             <Form.Label className="small fw-bold">Base Color</Form.Label>
+                            <Form.Check
+                              type="checkbox"
+                              checked={overrideBaseColorEnabled}
+                              onChange={(e) => setOverrideBaseColorEnabled(e.target.checked)}
+                              label="Override base color"
+                              className="mb-2"
+                            />
                             <div className="d-flex gap-2">
                               <Form.Control
                                 type="color"
@@ -766,6 +785,7 @@ export default App;`
                                 value={baseColor}
                                 onChange={(e) => setBaseColor(e.target.value)}
                                 style={{ width: '60px' }}
+                                disabled={!overrideBaseColorEnabled}
                               />
                               <Form.Control
                                 type="text"
@@ -774,12 +794,20 @@ export default App;`
                                 onChange={(e) => setBaseColor(e.target.value)}
                                 placeholder="#ffffff"
                                 className="flex-grow-1"
+                                disabled={!overrideBaseColorEnabled}
                               />
                             </div>
                           </div>
 
                           <div className="col-md-4">
                             <Form.Label className="small fw-bold">Override Background</Form.Label>
+                            <Form.Check
+                              type="checkbox"
+                              checked={overrideBackgroundEnabled}
+                              onChange={(e) => setOverrideBackgroundEnabled(e.target.checked)}
+                              label="Override background"
+                              className="mb-2"
+                            />
                             <div className="d-flex gap-2">
                               <Form.Control
                                 type="color"
@@ -787,6 +815,7 @@ export default App;`
                                 value={overrideBackground}
                                 onChange={(e) => setOverrideBackground(e.target.value)}
                                 style={{ width: '60px' }}
+                                disabled={!overrideBackgroundEnabled}
                               />
                               <Form.Control
                                 type="text"
@@ -795,6 +824,7 @@ export default App;`
                                 onChange={(e) => setOverrideBackground(e.target.value)}
                                 placeholder="#f0f0f0"
                                 className="flex-grow-1"
+                                disabled={!overrideBackgroundEnabled}
                               />
                             </div>
                           </div>
@@ -836,15 +866,41 @@ export default App;`
 
                           {/* Apply Button */}
                           <div className="col-12">
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              onClick={applyAdvancedProperties}
-                              className="w-100"
-                            >
-                              <FaCheck className="me-1" />
-                              Apply Advanced Properties
-                            </Button>
+                            <div className="d-flex gap-2">
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={applyAdvancedProperties}
+                                className="flex-grow-1"
+                              >
+                                <FaCheck className="me-1" />
+                                Apply Advanced Properties
+                              </Button>
+                              <Button
+                                variant="outline-secondary"
+                                size="sm"
+                                onClick={() => {
+                                  // Reset all advanced properties to defaults
+                                  setOverridesJson('{}');
+                                  setClassName('');
+                                  setStyleJson('{}');
+                                  setLoading(false);
+                                  setError('');
+                                  setBaseColor('#ffffff');
+                                  setOverrideBackground('#f0f0f0');
+                                  setAutoContrast(true);
+                                  setContrastAmount(0.05);
+                                  setOverrideBaseColorEnabled(false);
+                                  setOverrideBackgroundEnabled(false);
+                                  setApplyAdvancedProps(false);
+                                  setExportStatus('Advanced properties reset to defaults!');
+                                  setTimeout(() => setExportStatus(null), 3000);
+                                }}
+                              >
+                                <FaUndo className="me-1" />
+                                Reset All
+                              </Button>
+                            </div>
                           </div>
 
                           {/* Excluded Properties Notice */}
@@ -971,15 +1027,15 @@ export default App;`
                     showConfigDetails={showConfigDetails}
                     baseColor={getThemeBackgroundColor(currentTheme)}
                     {...(applyAdvancedProps && {
-                      overrides: appliedOverrides,
-                      className: appliedClassName,
-                      style: appliedStyleJson.trim() ? JSON.parse(appliedStyleJson) : undefined,
-                      loading: appliedLoading,
-                      error: appliedError || undefined,
-                      baseColor: appliedBaseColor,
-                      overrideBackground: appliedOverrideBackground,
-                      autoContrast: appliedAutoContrast,
-                      contrastAmount: appliedContrastAmount,
+                      ...(Object.keys(appliedOverrides).length > 0 && { overrides: appliedOverrides }),
+                      ...(appliedClassName && { className: appliedClassName }),
+                      ...(appliedStyleJson.trim() && { style: JSON.parse(appliedStyleJson) }),
+                      ...(appliedLoading && { loading: appliedLoading }),
+                      ...(appliedError && { error: appliedError }),
+                      ...(appliedBaseColor && { baseColor: appliedBaseColor }),
+                      ...(appliedOverrideBackground && { overrideBackground: appliedOverrideBackground }),
+                      ...(appliedAutoContrast !== true && { autoContrast: appliedAutoContrast }),
+                      ...(Math.abs(appliedContrastAmount - 0.05) > 0.001 && { contrastAmount: appliedContrastAmount }),
                     })}
                   />
                 </div>
