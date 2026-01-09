@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import { FaBook, FaGithub } from 'react-icons/fa';
 
 export const ResourcesSection: React.FC = () => (
   <footer id="resources" className="bg-dark text-light py-5">
-    <Container>
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
       <Row className="text-center mb-4">
         <Col>
           <h2 className="display-5 fw-bold mb-3" style={{ color: 'white' }}>Resources</h2>
@@ -56,6 +56,6 @@ export const ResourcesSection: React.FC = () => (
           </Button>
         </Col>
       </Row>
-    </Container>
+    </div>
   </footer>
 );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DemoNav } from './components/DemoNav';
+import { AppNavbar } from './components/Navbar';
 import { TeaserSection } from './components/TeaserSection';
 import { GallerySection } from './components/GallerySection';
 import { SandboxSection } from './components/SandboxSection';
@@ -75,7 +75,7 @@ function App() {
 
   return (
     <div className={`App ${currentTheme}`}>
-      <DemoNav
+      <AppNavbar
         activeSection={activeSection}
         onSectionChange={setActiveSection}
         currentTheme={currentTheme}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Button, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
 import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
@@ -80,7 +80,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
       paddingTop: '120px', // Fixed distance from navbar
       height: isLargeScreen ? '800px' : '1200px' // Responsive height based on screen size
     }}>
-      <Container>
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <Row>
           <Col lg={4} className="mb-5 mb-lg-0">
             <h1 className="display-1 fw-bold mb-4">
@@ -148,7 +148,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
             </Card>
           </Col>
         </Row>
-      </Container>
+      </div>
     </section>
   );
 };
