@@ -670,7 +670,7 @@ export const galleryConfigs: Array<{
       }))
     },
     {
-      name: 'Table with Background Images',
+      name: 'Table with Medium Size Images',
       mode: 'table',
       config: {
         title: 'Image Portfolio Table',
@@ -700,7 +700,7 @@ export const galleryConfigs: Array<{
         collapsible: 'fixed',
         header: { always: ['refresh'] }
       },
-      description: 'Table with images displayed in cells with cover fit and semi-transparent background overlay',
+      description: 'Table with images displayed in cells with cover fit',
       data: imageGalleryData.slice(0, 6)
     },
     {
