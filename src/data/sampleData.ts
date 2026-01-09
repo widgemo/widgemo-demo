@@ -119,11 +119,13 @@ export const galleryConfigs: Array<{
           { name: 'name', label: 'Title', type: 'text' },
           { name: 'category', label: 'Category', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'contain', // Show full image, may have letterboxing
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            fit: 'contain',
+            lightbox: true
+          }],
           lazy: true,
-          showTextOverlay: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
@@ -350,11 +352,13 @@ export const galleryConfigs: Array<{
           { name: 'category', label: 'Category', type: 'text' },
           { name: 'description', label: 'Description', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
-          showTextOverlay: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
@@ -385,11 +389,13 @@ export const galleryConfigs: Array<{
           { name: 'name', label: 'Title', type: 'text' },
           { name: 'category', label: 'Category', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
-          showTextOverlay: false, // No text overlay
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
@@ -419,11 +425,13 @@ export const galleryConfigs: Array<{
         fields: [
           { name: 'name', label: 'Title', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
-          showTextOverlay: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
@@ -456,11 +464,13 @@ export const galleryConfigs: Array<{
           { name: 'category', label: 'Category', type: 'text' },
           { name: 'description', label: 'Description', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
-          showTextOverlay: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
@@ -491,9 +501,13 @@ export const galleryConfigs: Array<{
           { name: 'category', label: 'Category', type: 'text' },
           { name: 'description', label: 'Description', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            placement: 'background',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+',
           errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
@@ -534,9 +548,13 @@ export const galleryConfigs: Array<{
           { name: 'category', label: 'Category', type: 'text' },
           { name: 'description', label: 'Description', type: 'text' },
         ],
-        imagesConfig: {
-          field: 'src',
-          fit: 'cover',
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            placement: 'header',
+            fit: 'cover',
+            lightbox: true
+          }],
           lazy: true,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=',
           errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmVkN2Q3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
@@ -668,11 +686,13 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'name', label: 'Name', type: 'text', showLabel: false },
         { name: 'role', label: 'Role', type: 'text', visible: false },
       ],
-      imagesConfig: {
-        field: 'src',
-        fit: 'cover',
+      mediaConfig: {
+        fields: [{
+          field: 'src',
+          fit: 'cover',
+          lightbox: true
+        }],
         lazy: true,
-        showTextOverlay: true,
         loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
       },
       styling: {

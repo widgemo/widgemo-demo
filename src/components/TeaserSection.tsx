@@ -62,9 +62,6 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
   const currentTeaserItem = teaserConfigs[currentConfigIndex];
   const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
   
-  // Extract imagesConfig from config if present
-  const { imagesConfig, ...configWithoutImages } = teaserConfig;
-  
   // Create dynamic adapters - all teasers use the same user data
   const teaserAdapters = React.useMemo(() => {
     return {
@@ -141,9 +138,8 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                 <div inert style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
-                    config={configWithoutImages}
+                    config={teaserConfig}
                     adapters={teaserAdapters}
-                    imagesConfig={imagesConfig}
                     showConfigDetails={false}
                     baseColor={getThemeBackgroundColor(currentTheme)}
                   />

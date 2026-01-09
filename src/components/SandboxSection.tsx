@@ -664,19 +664,12 @@ export default App;`
               <div className="p-4 h-100">
                 <h5 className="mb-3">Live Preview</h5>
                 <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '8px' }}>
-                  {(() => {
-                    // Extract imagesConfig from config if present
-                    const { imagesConfig, ...configWithoutImages } = config;
-                    return (
-                      <Widgemo
-                        config={configWithoutImages}
-                        adapters={dynamicAdapters}
-                        imagesConfig={imagesConfig}
-                        showConfigDetails={false}
-                        baseColor={getThemeBackgroundColor(currentTheme)}
-                      />
-                    );
-                  })()}
+                  <Widgemo
+                    config={config}
+                    adapters={dynamicAdapters}
+                    showConfigDetails={false}
+                    baseColor={getThemeBackgroundColor(currentTheme)}
+                  />
                 </div>
               </div>
             </Panel>

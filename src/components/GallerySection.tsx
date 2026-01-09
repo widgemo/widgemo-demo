@@ -138,9 +138,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
     // Merge config with theme
     const mergedConfig = mergeThemeIntoConfig(item.config, currentTheme);
     
-    // Extract imagesConfig from config if present
-    const { imagesConfig, ...configWithoutImages } = mergedConfig;
-
     // Debug: Log merged config for grid view
     console.log('Grid View - Merged Config for', item.name + ':', mergedConfig);
 
@@ -167,9 +164,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               pointerEvents: 'none'
             }}>
               <Widgemo
-                config={configWithoutImages}
+                config={mergedConfig}
                 adapters={itemAdapters}
-                imagesConfig={imagesConfig}
                 showConfigDetails={false}
                 baseColor={getThemeBackgroundColor(currentTheme)}
               />
@@ -265,9 +261,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                 }),
               } : mockAdapters;
 
-              // Merge config with theme and extract imagesConfig
+              // Merge config with theme and extract mediaConfig
               const mergedConfig = mergeThemeIntoConfig(item.config, currentTheme);
-              const { imagesConfig, ...configWithoutImages } = mergedConfig;
 
               // Debug: Log merged config for carousel view
               console.log('Carousel View - Merged Config for', item.name + ':', mergedConfig);
@@ -295,9 +290,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                         pointerEvents: 'none'
                       }}>
                         <Widgemo
-                          config={configWithoutImages}
+                          config={mergedConfig}
                           adapters={itemAdapters}
-                          imagesConfig={imagesConfig}
                           showConfigDetails={false}
                           baseColor={getThemeBackgroundColor(currentTheme)}
                         />
@@ -356,17 +350,15 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
                 }),
               } : mockAdapters;
               
-              // Merge config with theme and extract imagesConfig
+              // Merge config with theme and extract mediaConfig
               const mergedConfig = mergeThemeIntoConfig(selectedItem.config, currentTheme);
-              const { imagesConfig, ...configWithoutImages } = mergedConfig;
               
               /* console.log('Selected Item Config:', selectedItem.config);
               console.log ('Merged Config:', mergedConfig); */
               return (
                 <Widgemo
-                  config={configWithoutImages}
+                  config={mergedConfig}
                   adapters={selectedItemAdapters}
-                  imagesConfig={imagesConfig}
                   showConfigDetails={true}
                   baseColor={getThemeBackgroundColor(currentTheme)}
                 />
