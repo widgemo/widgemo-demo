@@ -19,7 +19,7 @@ export const DemoNav: React.FC<DemoNavProps> = ({
     { id: 'teaser', label: 'Teaser' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'sandbox', label: 'Sandbox' },
-    { id: 'advanced', label: 'Advanced Examples' },
+    { id: 'advanced', label: 'Advanced' },
     { id: 'resources', label: 'Resources' },
   ];
 
@@ -38,7 +38,7 @@ export const DemoNav: React.FC<DemoNavProps> = ({
       <Container>
         <Navbar.Brand href="#teaser" onClick={() => scrollToSection('teaser')}>
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
-          <strong>Widgemo</strong> Demo
+          <strong>Widgemo</strong>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="demo-nav" />
         <Navbar.Collapse id="demo-nav">

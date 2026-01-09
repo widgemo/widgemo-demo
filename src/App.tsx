@@ -3,7 +3,7 @@ import { DemoNav } from './components/DemoNav';
 import { TeaserSection } from './components/TeaserSection';
 import { GallerySection } from './components/GallerySection';
 import { SandboxSection } from './components/SandboxSection';
-import { AdvancedExamplesSection } from './components/AdvancedExamplesSection';
+import { AdvancedSection } from './components/AdvancedSection';
 import { ResourcesSection } from './components/ResourcesSection';
 import { defaultSandboxConfig, teaserSampleData } from './data/sampleData';
 import type { WidgemoConfig } from 'widgemo-core';
@@ -99,7 +99,7 @@ function App() {
         currentTheme={currentTheme}
       />
 
-      <AdvancedExamplesSection currentTheme={currentTheme} />
+      <AdvancedSection currentTheme={currentTheme} />
 
       <ResourcesSection />
     </div>

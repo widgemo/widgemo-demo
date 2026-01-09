@@ -6,7 +6,7 @@ interface AdvancedSectionProps {
   currentTheme: string;
 }
 
-export const AdvancedSection: React.FC<AdvancedSectionProps> = ({ currentTheme }) => (
+export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
   <DemoSection
     id="advanced"
     title="Advanced Usage"
