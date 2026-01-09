@@ -589,8 +589,8 @@ export default App;`
       subtitle="Edit configuration JSON and see changes instantly"
       className="sandbox-taller"
     >
-      <Card className="shadow theme-aware-card p-1">
-        <Card.Body className="p-0">
+      <Card className="shadow theme-aware-card">
+        <Card.Body className="p-0 theme-aware-card">
           <Group>
             <Panel defaultSize={35} minSize={30}>
               <div className="p-4 h-100 d-flex flex-column">
@@ -691,8 +691,8 @@ export default App;`
                   </Button>
 
                   {showAdvancedProps && (
-                    <Card className="mt-3 border-secondary">
-                      <Card.Body className="p-3">
+                    <Card className="mt-3 p-0 border-secondary theme-aware-card">
+                      <Card.Body className="p-2 theme-aware-card">
                         <div className="row g-3">
                           {/* Overrides */}
                           <div className="col-12">
