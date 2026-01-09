@@ -589,6 +589,155 @@ export const galleryConfigs: Array<{
       description: 'Board view with images as card headers, custom column definitions, and static backgrounds with borders',
       data: imageGalleryData
     },
+    {
+      name: 'Table with Avatar Images',
+      mode: 'table',
+      config: {
+        title: 'User Profiles with Avatars',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Name', type: 'text' },
+          { name: 'role', label: 'Role', type: 'text' },
+          { name: 'department', label: 'Department', type: 'text' },
+          { name: 'status', label: 'Active', type: 'boolean', booleanTrueLabel: "🟢 Online", booleanFalseLabel: "🔴 Offline" },
+        ],
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            placement: 'cell',
+            size: 'small',
+            shape: 'circle',
+            fit: 'cover',
+            lightbox: true
+          }],
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
+        },
+        styling: { compact: true, shadow: true },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Table view with circular avatar images in cells, showing user profiles with online status',
+      data: teaserSampleData
+    },
+    {
+      name: 'Table with Multiple Images',
+      mode: 'table',
+      config: {
+        title: 'Image Gallery Table',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        mediaConfig: {
+          fields: [
+            {
+              field: 'src',
+              placement: 'cell',
+              size: 'small',
+              shape: 'square',
+              fit: 'cover',
+              lightbox: true,
+              priority: 2
+            },
+            {
+              field: 'thumbnail',
+              placement: 'cell',
+              size: 'large',
+              shape: 'rounded',
+              fit: 'contain',
+              lightbox: true,
+              priority: 1
+            }
+          ],
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjxwYXRoIGQ9Im02MCA3MCAxMCAxMCAxMC0xMCIgc3Ryb2tlPSIjYWRiNWJkIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
+        },
+        styling: { compact: true, shadow: true },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Table with multiple image columns - thumbnail and full-size preview with different sizes and shapes',
+      data: imageGalleryData.map(item => ({
+        ...item,
+        thumbnail: (item.src as string).replace('w=400', 'w=120').replace('h=250', 'h=80').replace('h=350', 'h=80').replace('h=300', 'h=80').replace('h=400', 'h=80').replace('h=280', 'h=80').replace('h=320', 'h=80').replace('h=360', 'h=80').replace('h=290', 'h=80').replace('h=380', 'h=80').replace('h=270', 'h=80').replace('h=330', 'h=80').replace('h=310', 'h=80')
+      }))
+    },
+    {
+      name: 'Table with Background Images',
+      mode: 'table',
+      config: {
+        title: 'Image Portfolio Table',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            placement: 'background',
+            fit: 'cover',
+            lightbox: true
+          }],
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiBy0iMjAiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+        },
+        styling: {
+          table: {
+            backgroundColor: 'rgba(255, 255, 255, 0.9)'
+          },
+          shadow: true
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Table with background images behind text content, creating an overlay effect',
+      data: imageGalleryData.slice(0, 6)
+    },
+    {
+      name: 'Table with Large Images',
+      mode: 'table',
+      config: {
+        title: 'Image Showcase Table',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'name', label: 'Title', type: 'text' },
+          { name: 'category', label: 'Category', type: 'text' },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        mediaConfig: {
+          fields: [{
+            field: 'src',
+            placement: 'cell',
+            size: 'large',
+            shape: 'rounded',
+            fit: 'contain',
+            lightbox: true
+          }],
+          lazy: true,
+          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
+        },
+        styling: {
+          table: {
+            cellBorder: true,
+            borderColor: '#e9ecef'
+          },
+          shadow: true
+        },
+        collapsible: 'fixed',
+        header: { always: ['refresh'] }
+      },
+      description: 'Table with large rounded images using contain fit, showing full image content with borders',
+      data: imageGalleryData.slice(0, 4)
+    },
   ];
 
 // Default sandbox configuration
