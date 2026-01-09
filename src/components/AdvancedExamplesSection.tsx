@@ -3,10 +3,10 @@ import { Row, Col, Card, Button } from 'react-bootstrap';
 import { DemoSection } from './DemoSection';
 
 interface AdvancedSectionProps {
-  currentTheme: string;
+  // No props needed for this placeholder section
 }
 
-export const AdvancedSection: React.FC<AdvancedSectionProps> = ({ currentTheme }) => (
+export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
   <DemoSection
     id="advanced"
     title="Advanced Usage"
