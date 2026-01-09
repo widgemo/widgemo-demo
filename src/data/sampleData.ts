@@ -693,7 +693,7 @@ export const galleryConfigs: Array<{
         },
         styling: {
           table: {
-            backgroundColor: 'rgba(255, 255, 255, 0.9)'
+            // backgroundColor: 'rgba(255, 255, 255, 0.9)'
           },
           shadow: true
         },
