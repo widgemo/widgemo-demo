@@ -32,7 +32,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [referenceBreadcrumb, setReferenceBreadcrumb] = useState<string[]>(['WidgemoConfig']);
 
   // Additional WidgemoProps state
-  const [overrides, setOverrides] = useState<Partial<WidgemoConfig>>({});
   const [overridesJson, setOverridesJson] = useState('{}');
   const [className, setClassName] = useState('');
   const [styleJson, setStyleJson] = useState('{}');
@@ -45,6 +44,17 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [showConfigDetails, setShowConfigDetails] = useState(false);
   const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
   const [showAdvancedProps, setShowAdvancedProps] = useState(false);
+
+  // Applied advanced props state (to prevent live updates)
+  const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
+  const [appliedClassName, setAppliedClassName] = useState('');
+  const [appliedStyleJson, setAppliedStyleJson] = useState('{}');
+  const [appliedLoading, setAppliedLoading] = useState(false);
+  const [appliedError, setAppliedError] = useState('');
+  const [appliedBaseColor, setAppliedBaseColor] = useState('');
+  const [appliedAutoContrast, setAppliedAutoContrast] = useState(true);
+  const [appliedContrastAmount, setAppliedContrastAmount] = useState(0.05);
+  const [appliedOverrideBackground, setAppliedOverrideBackground] = useState('');
 
   // Preview dimensions state
   const [width, setWidth] = useState<number>(400);
@@ -546,12 +556,22 @@ export default App;`
     try {
       // Parse overrides JSON
       const parsedOverrides = overridesJson.trim() ? JSON.parse(overridesJson) : {};
-      setOverrides(parsedOverrides);
+      setAppliedOverrides(parsedOverrides);
 
       // Parse style JSON (though we don't store it separately, just validate)
       if (styleJson.trim()) {
         JSON.parse(styleJson);
       }
+      
+      // Apply all current values to applied state
+      setAppliedClassName(className);
+      setAppliedStyleJson(styleJson);
+      setAppliedLoading(loading);
+      setAppliedError(error);
+      setAppliedBaseColor(baseColor);
+      setAppliedAutoContrast(autoContrast);
+      setAppliedContrastAmount(contrastAmount);
+      setAppliedOverrideBackground(overrideBackground);
       
       setApplyAdvancedProps(true);
       setExportStatus('Advanced properties applied successfully!');
@@ -560,7 +580,7 @@ export default App;`
       setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
       setTimeout(() => setExportStatus(null), 5000);
     }
-  }, [overridesJson, styleJson]);
+  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground]);
 
   return (
     <DemoSection
@@ -951,14 +971,15 @@ export default App;`
                     showConfigDetails={showConfigDetails}
                     baseColor={getThemeBackgroundColor(currentTheme)}
                     {...(applyAdvancedProps && {
-                      overrides,
-                      className,
-                      style: styleJson.trim() ? JSON.parse(styleJson) : undefined,
-                      loading,
-                      error: error || undefined,
-                      overrideBackground,
-                      autoContrast,
-                      contrastAmount,
+                      overrides: appliedOverrides,
+                      className: appliedClassName,
+                      style: appliedStyleJson.trim() ? JSON.parse(appliedStyleJson) : undefined,
+                      loading: appliedLoading,
+                      error: appliedError || undefined,
+                      baseColor: appliedBaseColor,
+                      overrideBackground: appliedOverrideBackground,
+                      autoContrast: appliedAutoContrast,
+                      contrastAmount: appliedContrastAmount,
                     })}
                   />
                 </div>
