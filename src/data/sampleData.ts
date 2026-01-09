@@ -655,6 +655,7 @@ export const galleryConfigs: Array<{
               shape: 'square',
               fit: 'contain',
               lightbox: true,
+              afterField: 'category',
               priority: 2
             }
           ],
