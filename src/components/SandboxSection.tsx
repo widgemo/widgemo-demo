@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
+import { Button, Card, Dropdown, Alert, Form, Modal, Tabs, Tab } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
 import { Widgemo } from 'widgemo-core';
@@ -43,7 +43,17 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [overrideBackground, setOverrideBackground] = useState('');
   const [showConfigDetails, setShowConfigDetails] = useState(false);
   const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
-  const [showAdvancedProps, setShowAdvancedProps] = useState(false);
+
+  // Active tab state
+  const [activeTab, setActiveTab] = useState(() => {
+    const saved = localStorage.getItem('sandbox-active-tab');
+    return saved || 'config-editor';
+  });
+
+  // Save active tab to localStorage
+  useEffect(() => {
+    localStorage.setItem('sandbox-active-tab', activeTab);
+  }, [activeTab]);
 
   // Control whether to override specific properties
   const [overrideBaseColorEnabled, setOverrideBaseColorEnabled] = useState(false);
@@ -92,9 +102,13 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [entityLabel, setEntityLabel] = useState('User');
   const [entityLabelPlural, setEntityLabelPlural] = useState('Users');
   const [exportStatus, setExportStatus] = useState<string | null>(null);
+
+  // Sync jsonEditorText with customData
+  useEffect(() => {
+    setJsonEditorText(JSON.stringify(customData, null, 2));
+  }, [customData]);
   const [showCodeSandboxModal, setShowCodeSandboxModal] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [showJsonEditorModal, setShowJsonEditorModal] = useState(false);
   const [jsonEditorText, setJsonEditorText] = useState('');
   const [dataType, setDataType] = useState('users');
   const [recordCount, setRecordCount] = useState(10);
@@ -613,356 +627,364 @@ export default App;`
                   </Alert>
                 )}
 
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="mb-0">Configuration Editor</h5>
-                  <div className="d-flex gap-2">
-                    <Dropdown>
-                      <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
-                        Load Preset
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {galleryConfigs.map((item, index) => (
-                          <Dropdown.Item
-                            key={index}
-                            onClick={() => loadPreset(item.config, item.name)}
+                <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k || 'config-editor')} className="mb-3">
+                  <Tab eventKey="config-editor" title="Config Editor">
+                    <div>
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h5 className="mb-0">Configuration Editor</h5>
+                        <div className="d-flex gap-2">
+                          <Dropdown>
+                            <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
+                              Load Preset
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              {galleryConfigs.map((item, index) => (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() => loadPreset(item.config, item.name)}
+                                >
+                                  {item.name}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                          <Button
+                            variant="outline-info"
+                            size="sm"
+                            onClick={() => setShowReferenceModal(true)}
                           >
-                            {item.name}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    <Button
-                      variant="outline-info"
-                      size="sm"
-                      onClick={() => setShowReferenceModal(true)}
-                    >
-                      Reference
-                    </Button>
-                  </div>
-                </div>
-                {jsonError && (
-                  <div className="alert alert-danger small mb-3">
-                    <strong>JSON Error:</strong> {jsonError}
-                  </div>
-                )}
-                <textarea
-                  className="form-control flex-grow-1 mb-3"
-                  style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
-                  value={configJson}
-                  onChange={(e) => {
-                    setConfigJson(e.target.value);
-                    // Clear any previous JSON errors when user starts typing
-                    if (jsonError) {
-                      setJsonError(null);
-                    }
-                  }}
-                  spellCheck={false}
-                />
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={applyConfig}
-                    disabled={!!jsonError}
-                    className="flex-grow-1"
-                  >
-                    Apply Changes
-                  </Button>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
-                      <FaDownload className="me-1" />
-                      Export
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={copyToClipboard}>
-                        <FaCopy className="me-2" />
-                        Copy JSON
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={downloadConfig}>
-                        <FaDownload className="me-2" />
-                        Download JSON
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setShowCodeSandboxModal(true)}>
-                        <FaExternalLinkAlt className="me-2" />
-                        CodeSandbox
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-
-                {/* Advanced Properties Section */}
-                <div className="mt-4">
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setShowAdvancedProps(!showAdvancedProps)}
-                    className="w-100"
-                  >
-                    {showAdvancedProps ? '▼' : '▶'} Advanced Properties
-                    <small className="text-muted ms-2">(Optional Widgemo Props)</small>
-                  </Button>
-
-                  {showAdvancedProps && (
-                    <Card className="mt-3 p-0 border-secondary theme-aware-card">
-                      <Card.Body className="p-2 theme-aware-card">
-                        <div className="row g-3">
-                          {/* Overrides */}
-                          <div className="col-12">
-                            <Form.Label className="small fw-bold">Overrides (Partial Config)</Form.Label>
+                            Reference
+                          </Button>
+                        </div>
+                      </div>
+                      {jsonError && (
+                        <div className="alert alert-danger small mb-3">
+                          <strong>JSON Error:</strong> {jsonError}
+                        </div>
+                      )}
+                      <textarea
+                        className="form-control flex-grow-1 mb-3"
+                        style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
+                        value={configJson}
+                        onChange={(e) => {
+                          setConfigJson(e.target.value);
+                          if (jsonError) {
+                            setJsonError(null);
+                          }
+                        }}
+                        spellCheck={false}
+                      />
+                      <div className="d-flex gap-2">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={applyConfig}
+                          disabled={!!jsonError}
+                          className="flex-grow-1"
+                        >
+                          Apply Changes
+                        </Button>
+                        <Dropdown>
+                          <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
+                            <FaDownload className="me-1" />
+                            Export
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={copyToClipboard}>
+                              <FaCopy className="me-2" />
+                              Copy JSON
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={downloadConfig}>
+                              <FaDownload className="me-2" />
+                              Download JSON
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => setShowCodeSandboxModal(true)}>
+                              <FaExternalLinkAlt className="me-2" />
+                              CodeSandbox
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="advanced-properties" title="Advanced Properties">
+                    <div>
+                      <div className="row g-3">
+                        <div className="col-12">
+                          <Form.Label className="small fw-bold">Overrides (Partial Config)</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            size="sm"
+                            rows={3}
+                            value={overridesJson}
+                            onChange={(e) => setOverridesJson(e.target.value)}
+                            placeholder="{}"
+                            style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Form.Label className="small fw-bold">CSS Class Name</Form.Label>
+                          <Form.Control
+                            type="text"
+                            size="sm"
+                            value={className}
+                            onChange={(e) => setClassName(e.target.value)}
+                            placeholder="custom-class"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Form.Label className="small fw-bold">Inline Styles (JSON)</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            size="sm"
+                            rows={2}
+                            value={styleJson}
+                            onChange={(e) => setStyleJson(e.target.value)}
+                            placeholder="{}"
+                            style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Form.Label className="small fw-bold">Loading State</Form.Label>
+                          <Form.Check
+                            type="checkbox"
+                            checked={loading}
+                            onChange={(e) => setLoading(e.target.checked)}
+                            label="Show loading spinner"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Form.Label className="small fw-bold">Error Message</Form.Label>
+                          <Form.Control
+                            type="text"
+                            size="sm"
+                            value={error}
+                            onChange={(e) => setError(e.target.value)}
+                            placeholder="Error message (leave empty for no error)"
+                          />
+                        </div>
+                        <div className="col-md-4">
+                          <Form.Label className="small fw-bold">Base Color</Form.Label>
+                          <Form.Check
+                            type="checkbox"
+                            checked={overrideBaseColorEnabled}
+                            onChange={(e) => setOverrideBaseColorEnabled(e.target.checked)}
+                            label="Override base color"
+                            className="mb-2"
+                          />
+                          <div className="d-flex gap-2">
                             <Form.Control
-                              as="textarea"
+                              type="color"
                               size="sm"
-                              rows={3}
-                              value={overridesJson}
-                              onChange={(e) => setOverridesJson(e.target.value)}
-                              placeholder="{}"
-                              style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
+                              value={baseColor}
+                              onChange={(e) => setBaseColor(e.target.value)}
+                              style={{ width: '60px' }}
+                              disabled={!overrideBaseColorEnabled}
                             />
-                          </div>
-
-                          {/* Class Name */}
-                          <div className="col-md-6">
-                            <Form.Label className="small fw-bold">CSS Class Name</Form.Label>
-                            <Form.Control
-                              type="text"
-                              size="sm"
-                              value={className}
-                              onChange={(e) => setClassName(e.target.value)}
-                              placeholder="custom-class"
-                            />
-                          </div>
-
-                          {/* Style */}
-                          <div className="col-md-6">
-                            <Form.Label className="small fw-bold">Inline Styles (JSON)</Form.Label>
-                            <Form.Control
-                              as="textarea"
-                              size="sm"
-                              rows={2}
-                              value={styleJson}
-                              onChange={(e) => setStyleJson(e.target.value)}
-                              placeholder="{}"
-                              style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
-                            />
-                          </div>
-
-                          {/* Loading & Error */}
-                          <div className="col-md-6">
-                            <Form.Label className="small fw-bold">Loading State</Form.Label>
-                            <Form.Check
-                              type="checkbox"
-                              checked={loading}
-                              onChange={(e) => setLoading(e.target.checked)}
-                              label="Show loading spinner"
-                            />
-                          </div>
-
-                          <div className="col-md-6">
-                            <Form.Label className="small fw-bold">Error Message</Form.Label>
                             <Form.Control
                               type="text"
                               size="sm"
-                              value={error}
-                              onChange={(e) => setError(e.target.value)}
-                              placeholder="Error message (leave empty for no error)"
+                              value={baseColor}
+                              onChange={(e) => setBaseColor(e.target.value)}
+                              placeholder="#ffffff"
+                              className="flex-grow-1"
+                              disabled={!overrideBaseColorEnabled}
                             />
-                          </div>
-
-                          {/* Colors */}
-                          <div className="col-md-4">
-                            <Form.Label className="small fw-bold">Base Color</Form.Label>
-                            <Form.Check
-                              type="checkbox"
-                              checked={overrideBaseColorEnabled}
-                              onChange={(e) => setOverrideBaseColorEnabled(e.target.checked)}
-                              label="Override base color"
-                              className="mb-2"
-                            />
-                            <div className="d-flex gap-2">
-                              <Form.Control
-                                type="color"
-                                size="sm"
-                                value={baseColor}
-                                onChange={(e) => setBaseColor(e.target.value)}
-                                style={{ width: '60px' }}
-                                disabled={!overrideBaseColorEnabled}
-                              />
-                              <Form.Control
-                                type="text"
-                                size="sm"
-                                value={baseColor}
-                                onChange={(e) => setBaseColor(e.target.value)}
-                                placeholder="#ffffff"
-                                className="flex-grow-1"
-                                disabled={!overrideBaseColorEnabled}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-md-4">
-                            <Form.Label className="small fw-bold">Override Background</Form.Label>
-                            <Form.Check
-                              type="checkbox"
-                              checked={overrideBackgroundEnabled}
-                              onChange={(e) => setOverrideBackgroundEnabled(e.target.checked)}
-                              label="Override background"
-                              className="mb-2"
-                            />
-                            <div className="d-flex gap-2">
-                              <Form.Control
-                                type="color"
-                                size="sm"
-                                value={overrideBackground}
-                                onChange={(e) => setOverrideBackground(e.target.value)}
-                                style={{ width: '60px' }}
-                                disabled={!overrideBackgroundEnabled}
-                              />
-                              <Form.Control
-                                type="text"
-                                size="sm"
-                                value={overrideBackground}
-                                onChange={(e) => setOverrideBackground(e.target.value)}
-                                placeholder="#f0f0f0"
-                                className="flex-grow-1"
-                                disabled={!overrideBackgroundEnabled}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Contrast Settings */}
-                          <div className="col-md-4">
-                            <Form.Label className="small fw-bold">Contrast Settings</Form.Label>
-                            <div className="d-flex gap-2 align-items-center">
-                              <Form.Check
-                                type="checkbox"
-                                checked={autoContrast}
-                                onChange={(e) => setAutoContrast(e.target.checked)}
-                                label="Auto"
-                                className="me-2"
-                              />
-                              <Form.Control
-                                type="number"
-                                size="sm"
-                                min="0.01"
-                                max="0.2"
-                                step="0.01"
-                                value={contrastAmount}
-                                onChange={(e) => setContrastAmount(parseFloat(e.target.value) || 0.05)}
-                                disabled={!autoContrast}
-                                style={{ width: '80px' }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Config Details */}
-                          <div className="col-12">
-                            <Form.Check
-                              type="checkbox"
-                              checked={showConfigDetails}
-                              onChange={(e) => setShowConfigDetails(e.target.checked)}
-                              label="Show config details button (for development)"
-                            />
-                          </div>
-
-                          {/* Apply Button */}
-                          <div className="col-12">
-                            <div className="d-flex gap-2">
-                              <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={applyAdvancedProperties}
-                                className="flex-grow-1"
-                              >
-                                <FaCheck className="me-1" />
-                                Apply Advanced Properties
-                              </Button>
-                              <Button
-                                variant="outline-secondary"
-                                size="sm"
-                                onClick={() => {
-                                  // Reset all advanced properties to defaults
-                                  setOverridesJson('{}');
-                                  setClassName('');
-                                  setStyleJson('{}');
-                                  setLoading(false);
-                                  setError('');
-                                  setBaseColor('#ffffff');
-                                  setOverrideBackground('#f0f0f0');
-                                  setAutoContrast(true);
-                                  setContrastAmount(0.05);
-                                  setOverrideBaseColorEnabled(false);
-                                  setOverrideBackgroundEnabled(false);
-                                  setApplyAdvancedProps(false);
-                                  setExportStatus('Advanced properties reset to defaults!');
-                                  setTimeout(() => setExportStatus(null), 3000);
-                                }}
-                              >
-                                <FaUndo className="me-1" />
-                                Reset All
-                              </Button>
-                            </div>
-                          </div>
-
-                          {/* Excluded Properties Notice */}
-                          <div className="col-12">
-                            <Alert variant="info" className="py-2 small">
-                              <strong>Note:</strong> Some properties are excluded from editing as they require function implementations or complex objects:
-                              <code className="ms-1">adapters</code>,
-                              <code className="ms-1">onReady</code>,
-                              <code className="ms-1">onDataChange</code>,
-                              <code className="ms-1">onRecordSelect</code>,
-                              <code className="ms-1">onCustomAction</code>,
-                              <code className="ms-1">customLoading</code>,
-                              <code className="ms-1">customError</code>,
-                              <code className="ms-1">customEmpty</code>
-                            </Alert>
                           </div>
                         </div>
-                      </Card.Body>
-                    </Card>
-                  )}
-                </div>
-
-                {/* Data Management */}
-                <div className="mt-3">
-                  <h6 className="mb-2">Sample Source Data <small className="text-muted ms-2">{customData.length} {entityLabelPlural.toLowerCase()}</small></h6>
-                  <div className="d-flex gap-2 flex-wrap">
-                    <Button
-                      variant="outline-success"
-                      size="sm"
-                      onClick={() => setShowGenerateModal(true)}
-                    >
-                      <FaRandom className="me-1" />
-                      Generate
-                    </Button>
-                    <Form.Control
-                      type="file"
-                      accept=".json"
-                      onChange={handleFileUpload}
-                      style={{ display: 'none' }}
-                      id="data-upload"
-                    />
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => document.getElementById('data-upload')?.click()}
-                    >
-                      <FaUpload className="me-1" />
-                      Upload JSON
-                    </Button>
-                    <Button
-                      variant="outline-info"
-                      size="sm"
-                      onClick={() => {
-                        setJsonEditorText(JSON.stringify(customData, null, 2));
-                        setShowJsonEditorModal(true);
-                      }}
-                    >
-                      <FaBook className="me-1" />
-                      View/Edit Current
-                    </Button>
-                  </div>
-                </div>
+                        <div className="col-md-4">
+                          <Form.Label className="small fw-bold">Override Background</Form.Label>
+                          <Form.Check
+                            type="checkbox"
+                            checked={overrideBackgroundEnabled}
+                            onChange={(e) => setOverrideBackgroundEnabled(e.target.checked)}
+                            label="Override background"
+                            className="mb-2"
+                          />
+                          <div className="d-flex gap-2">
+                            <Form.Control
+                              type="color"
+                              size="sm"
+                              value={overrideBackground}
+                              onChange={(e) => setOverrideBackground(e.target.value)}
+                              style={{ width: '60px' }}
+                              disabled={!overrideBackgroundEnabled}
+                            />
+                            <Form.Control
+                              type="text"
+                              size="sm"
+                              value={overrideBackground}
+                              onChange={(e) => setOverrideBackground(e.target.value)}
+                              placeholder="#f0f0f0"
+                              className="flex-grow-1"
+                              disabled={!overrideBackgroundEnabled}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <Form.Label className="small fw-bold">Contrast Settings</Form.Label>
+                          <div className="d-flex gap-2 align-items-center">
+                            <Form.Check
+                              type="checkbox"
+                              checked={autoContrast}
+                              onChange={(e) => setAutoContrast(e.target.checked)}
+                              label="Auto"
+                              className="me-2"
+                            />
+                            <Form.Control
+                              type="number"
+                              size="sm"
+                              min="0.01"
+                              max="0.2"
+                              step="0.01"
+                              value={contrastAmount}
+                              onChange={(e) => setContrastAmount(parseFloat(e.target.value) || 0.05)}
+                              disabled={!autoContrast}
+                              style={{ width: '80px' }}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <Form.Check
+                            type="checkbox"
+                            checked={showConfigDetails}
+                            onChange={(e) => setShowConfigDetails(e.target.checked)}
+                            label="Show config details button (for development)"
+                          />
+                        </div>
+                        <div className="col-12">
+                          <div className="d-flex gap-2">
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={applyAdvancedProperties}
+                              className="flex-grow-1"
+                            >
+                              <FaCheck className="me-1" />
+                              Apply Advanced Properties
+                            </Button>
+                            <Button
+                              variant="outline-secondary"
+                              size="sm"
+                              onClick={() => {
+                                setOverridesJson('{}');
+                                setClassName('');
+                                setStyleJson('{}');
+                                setLoading(false);
+                                setError('');
+                                setBaseColor('#ffffff');
+                                setOverrideBackground('#f0f0f0');
+                                setAutoContrast(true);
+                                setContrastAmount(0.05);
+                                setOverrideBaseColorEnabled(false);
+                                setOverrideBackgroundEnabled(false);
+                                setApplyAdvancedProps(false);
+                                setExportStatus('Advanced properties reset to defaults!');
+                                setTimeout(() => setExportStatus(null), 3000);
+                              }}
+                            >
+                              <FaUndo className="me-1" />
+                              Reset All
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <Alert variant="info" className="py-2 small">
+                            <strong>Note:</strong> Some properties are excluded from editing as they require function implementations or complex objects:
+                            <code className="ms-1">adapters</code>,
+                            <code className="ms-1">onReady</code>,
+                            <code className="ms-1">onDataChange</code>,
+                            <code className="ms-1">onRecordSelect</code>,
+                            <code className="ms-1">onCustomAction</code>,
+                            <code className="ms-1">customLoading</code>,
+                            <code className="ms-1">customError</code>,
+                            <code className="ms-1">customEmpty</code>
+                          </Alert>
+                        </div>
+                      </div>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="sample-data" title="Sample Data">
+                    <div>
+                      <p className="small text-muted mb-2">Sample Source Data <small className="ms-2">{customData.length} {entityLabelPlural.toLowerCase()}</small></p>
+                      <div className="d-flex gap-2 flex-wrap mb-3">
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          onClick={() => setShowGenerateModal(true)}
+                        >
+                          <FaRandom className="me-1" />
+                          Generate
+                        </Button>
+                        <Form.Control
+                          type="file"
+                          accept=".json"
+                          onChange={handleFileUpload}
+                          style={{ display: 'none' }}
+                          id="data-upload"
+                        />
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => document.getElementById('data-upload')?.click()}
+                        >
+                          <FaUpload className="me-1" />
+                          Upload JSON
+                        </Button>
+                      </div>
+                      <Form.Label className="small fw-bold">JSON Data</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        value={jsonEditorText}
+                        onChange={(e) => setJsonEditorText(e.target.value)}
+                        style={{ fontFamily: 'monospace', fontSize: '0.75rem', minHeight: '300px' }}
+                        spellCheck={false}
+                      />
+                      <div className="d-flex gap-2 mt-2">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => {
+                            try {
+                              const parsed = JSON.parse(jsonEditorText);
+                              if (Array.isArray(parsed)) {
+                                setCustomData(parsed);
+                                onDataChange(parsed);
+                                // Update entity labels based on data structure
+                                if (parsed.length > 0) {
+                                  const firstItem = parsed[0];
+                                  if (typeof firstItem === 'object' && firstItem !== null) {
+                                    const keys = Object.keys(firstItem);
+                                    if (keys.includes('name') && keys.includes('email')) {
+                                      setEntityLabel('User');
+                                      setEntityLabelPlural('Users');
+                                    } else if (keys.includes('title') && keys.includes('body')) {
+                                      setEntityLabel('Post');
+                                      setEntityLabelPlural('Posts');
+                                    } else {
+                                      setEntityLabel('Record');
+                                      setEntityLabelPlural('Records');
+                                    }
+                                  }
+                                }
+                                setExportStatus('Data updated successfully!');
+                                setTimeout(() => setExportStatus(null), 3000);
+                              } else {
+                                throw new Error('Data must be an array');
+                              }
+                            } catch (error) {
+                              setExportStatus(`Error parsing JSON: ${(error as Error).message}`);
+                              setTimeout(() => setExportStatus(null), 5000);
+                            }
+                          }}
+                        >
+                          <FaCheck className="me-1" />
+                          Save Changes
+                        </Button>
+                      </div>
+                    </div>
+                  </Tab>
+                </Tabs>
               </div>
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
@@ -1425,71 +1447,6 @@ export default App;`
           >
             <FaRandom className="me-2" />
             Generate Data
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showJsonEditorModal} onHide={() => setShowJsonEditorModal(false)} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Source Data JSON</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Control
-            as="textarea"
-            rows={20}
-            value={jsonEditorText}
-            onChange={(e) => setJsonEditorText(e.target.value)}
-            placeholder="Enter JSON data..."
-            className="font-monospace"
-            style={{ fontSize: '0.875rem' }}
-          />
-          <small className="text-muted mt-2 d-block">
-            Edit the JSON data directly. Changes will be applied when you click "Save Changes".
-          </small>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowJsonEditorModal(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant="success"
-            onClick={() => {
-              try {
-                const parsedData = JSON.parse(jsonEditorText);
-                if (Array.isArray(parsedData)) {
-                  setCustomData(parsedData);
-                  onDataChange(parsedData);
-                  setExportStatus('Data updated successfully!');
-                  setTimeout(() => setExportStatus(null), 3000);
-                  setShowJsonEditorModal(false);
-                } else {
-                  setExportStatus('Error: Data must be an array of objects');
-                  setTimeout(() => setExportStatus(null), 3000);
-                }
-              } catch {
-                setExportStatus('Error: Invalid JSON format');
-                setTimeout(() => setExportStatus(null), 3000);
-              }
-            }}
-          >
-            Save Changes
-          </Button>
-          <Button
-            variant="outline-primary"
-            onClick={() => {
-              const blob = new Blob([jsonEditorText], { type: 'application/json' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'widgemo-data.json';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-            }}
-          >
-            <FaDownload className="me-2" />
-            Download JSON
           </Button>
         </Modal.Footer>
       </Modal>
