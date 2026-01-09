@@ -46,6 +46,11 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
   const [showAdvancedProps, setShowAdvancedProps] = useState(false);
 
+  // Preview dimensions state
+  const [width, setWidth] = useState<number>(400);
+  const [height, setHeight] = useState<number>(300);
+  const [isAuto, setIsAuto] = useState<boolean>(true);
+
   // Handle navigation to complex type sections
   const navigateToSection = useCallback((sectionName: string) => {
     setCurrentReferenceSection(sectionName);
@@ -886,8 +891,51 @@ export default App;`
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={65} minSize={30}>
               <div className="p-4 h-100">
-                <h5 className="mb-3">Live Preview</h5>
-                <div style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '8px' }}>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0">Live Preview</h5>
+                  <div className="d-flex align-items-center gap-3">
+                    <Form.Check
+                      type="checkbox"
+                      label="Auto size"
+                      checked={isAuto}
+                      onChange={(e) => setIsAuto(e.target.checked)}
+                    />
+                    {!isAuto && (
+                      <div className="d-flex gap-2 ms-3">
+                        <div className="d-flex align-items-center gap-2">
+                          <Form.Label className="mb-0" style={{ width: '80px' }}>Width (px)</Form.Label>
+                          <Form.Control
+                            type="number"
+                            value={width}
+                            onChange={(e) => setWidth(Number(e.target.value))}
+                            min="100"
+                            max="1200"
+                            size="sm"
+                            style={{width: '70px'}}
+                          />
+                        </div>
+                        <div className="d-flex align-items-center gap-2">
+                          <Form.Label className="mb-0" style={{ width: '80px' }}>Height (px)</Form.Label>
+                          <Form.Control
+                            type="number"
+                            value={height}
+                            onChange={(e) => setHeight(Number(e.target.value))}
+                            min="100"
+                            max="800"
+                            size="sm"
+                            style={{width: '70px'}}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div style={{
+                  ...(isAuto ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
+                  overflow: 'auto',
+                  padding: '8px',
+                  width: isAuto ? 'auto' : `${width}px`
+                }}>
                   <Widgemo
                     config={config}
                     adapters={dynamicAdapters}
