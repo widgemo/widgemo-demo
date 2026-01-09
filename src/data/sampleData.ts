@@ -609,7 +609,8 @@ export const galleryConfigs: Array<{
             size: 'small',
             shape: 'circle',
             fit: 'cover',
-            lightbox: true
+            lightbox: true,
+            position: 'start'
           }],
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
