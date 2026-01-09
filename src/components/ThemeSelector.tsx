@@ -17,11 +17,11 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 
   return (
     <Dropdown className="ms-3">
-      <Dropdown.Toggle variant="outline-secondary" size="sm" id="theme-selector">
+      <Dropdown.Toggle variant="outline-secondary" size="sm" id="theme-selector" style={{ width: '150px' }}>
         <FaPalette className="me-2" />
         {currentThemeData?.label || 'Theme'}
       </Dropdown.Toggle>
-      <Dropdown.Menu>
+      <Dropdown.Menu align={{lg: 'end'}}>
         {themes.map(theme => (
           <Dropdown.Item
             key={theme.key}
