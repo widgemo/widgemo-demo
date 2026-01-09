@@ -605,6 +605,7 @@ export const galleryConfigs: Array<{
         mediaConfig: {
           fields: [{
             field: 'src',
+            label: '',
             placement: 'cell',
             size: 'small',
             shape: 'circle',
@@ -636,23 +637,26 @@ export const galleryConfigs: Array<{
         ],
         mediaConfig: {
           fields: [
-            {
-              field: 'src',
+                        {
+              field: 'thumbnail',
+              label: '',
               placement: 'cell',
               size: 'small',
-              shape: 'square',
+              shape: 'rounded',
               fit: 'cover',
               lightbox: true,
-              priority: 2
+              position: 'start',
+              priority: 1
             },
             {
-              field: 'thumbnail',
+              field: 'src',
+              label: 'Image Preview',
               placement: 'cell',
-              size: 'large',
-              shape: 'rounded',
+              size: 'medium',
+              shape: 'square',
               fit: 'contain',
               lightbox: true,
-              priority: 1
+              priority: 2
             }
           ],
           lazy: false,
