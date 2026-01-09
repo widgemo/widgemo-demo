@@ -644,7 +644,6 @@ export const galleryConfigs: Array<{
               size: 'small',
               shape: 'rounded',
               fit: 'cover',
-              lightbox: true,
               position: 'start',
               priority: 1
             },
