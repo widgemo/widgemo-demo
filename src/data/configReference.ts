@@ -35,7 +35,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'WidgemoConfig', property: 'i18n', type: '{ locale?: string; messages?: Record<string, string> }', status: 'not-implemented', description: 'Internationalization', usage: 'Not implemented: Property exists but no localization logic.', example: '{ locale: "en", messages: { add: "Add Item" } }' },
   { category: 'WidgemoConfig', property: 'header', type: '{ discoverable?: string[]; always?: string[]; onMenu?: string[]; includeDeleted?: boolean }', status: 'partial', description: 'Header config', usage: 'Button arrays handled in WidgemoHeader.tsx; onMenu and includeDeleted not fully.', example: '{ always: ["refresh"], discoverable: ["add"] }', isComplexType: true, complexTypeSection: 'HeaderConfig' },
   { category: 'WidgemoConfig', property: 'labels', type: '{ add?: string; empty?: string; loading?: string; refresh?: string; actions?: string }', status: 'partial', description: 'UI labels', usage: 'Some used in components; not all customizable.', example: '{ add: "Create New" }' },
-  { category: 'WidgemoConfig', property: 'imagesConfig', type: '{ field?: string; fit?: ...; lazy?: boolean; altFn?: (item: any) => string; ... }', status: 'implemented', description: 'Image configuration', usage: 'Used in ImageRenderer.tsx for rendering images in views.', example: '{ field: "src", fit: "cover" }', isComplexType: true, complexTypeSection: 'ImagesConfig' },
+  { category: 'WidgemoConfig', property: 'mediaConfig', type: '{ fields: Array<{field: string; placement?: string; size?: ...; fit?: ...; shape?: ...; lightbox?: boolean; altFn?: Function; priority?: number}>; defaultFit?: string; lazy?: boolean; loadingPlaceholder?: string; errorPlaceholder?: string; enableLightbox?: boolean }', status: 'implemented', description: 'Media configuration for images/videos', usage: 'Used in MediaRenderer.tsx for rendering media in views. Placement options vary by mode: Table=cell, Grid=cell/background, Board=background/header/body.', example: '{ fields: [{ field: "src", placement: "cell" }], lazy: false }', isComplexType: true, complexTypeSection: 'MediaConfig' },
 
   // StylingConfig properties
   { category: 'StylingConfig', property: 'className', type: 'string', status: 'implemented', description: 'Additional CSS class name', usage: 'Applied to root element.', example: '"my-custom-class"' },
@@ -100,14 +100,13 @@ export const widgemoConfigProperties: Array<{
   { category: 'HeaderConfig', property: 'onMenu', type: 'string[]', status: 'not-implemented', description: 'Buttons in dropdown menu', usage: 'Not implemented.', example: '["export", "import"]' },
   { category: 'HeaderConfig', property: 'includeDeleted', type: 'boolean', status: 'not-implemented', description: 'Include deleted records', usage: 'Not implemented.', example: 'false' },
 
-  // ImagesConfig properties
-  { category: 'ImagesConfig', property: 'field', type: 'string', status: 'implemented', description: 'Image source field path', usage: 'Dot notation path to image field.', example: '"thumbnail.url"' },
-  { category: 'ImagesConfig', property: 'fit', type: "'cover' | 'contain' | 'fill' | 'none' | 'scale-down'", status: 'implemented', description: 'CSS object-fit property', usage: 'Controls image sizing.', example: "'cover'" },
-  { category: 'ImagesConfig', property: 'lazy', type: 'boolean', status: 'implemented', description: 'Enable lazy loading', usage: 'Loads images on demand.', example: 'true' },
-  { category: 'ImagesConfig', property: 'altFn', type: '(item: any) => string', status: 'implemented', description: 'Alt text generator function', usage: 'Generates alt text from item data.', example: '(item) => item.name' },
-  { category: 'ImagesConfig', property: 'loadingPlaceholder', type: 'string', status: 'implemented', description: 'Loading placeholder image', usage: 'Shown while image loads.', example: '"/loading.gif"' },
-  { category: 'ImagesConfig', property: 'errorPlaceholder', type: 'string', status: 'implemented', description: 'Error placeholder image', usage: 'Shown when image fails.', example: '"/error.png"' },
-  { category: 'ImagesConfig', property: 'showTextOverlay', type: 'boolean', status: 'implemented', description: 'Show text overlay on images', usage: 'Overlays text on images.', example: 'true' },
+  // MediaConfig properties
+  { category: 'MediaConfig', property: 'fields', type: 'Array<{field: string; placement?: "cell" | "background" | "header" | "body" | "overlay" | "badge" | "carousel"; size?: "small" | "medium" | "large" | {width: number|string; height: number|string}; fit?: "cover" | "contain" | "fill" | "none" | "scale-down"; shape?: "square" | "circle" | "rounded"; lightbox?: boolean; altFn?: (item: any) => string; priority?: number}>', status: 'implemented', description: 'Array of media field configurations', usage: 'Each field defines how media is rendered. Placement determines position: Table=cell only, Grid=cell/background, Board=background/header/body.', example: '[{ field: "src", placement: "cell", fit: "cover" }]', isComplexType: true, complexTypeSection: 'MediaFieldConfig' },
+  { category: 'MediaConfig', property: 'defaultFit', type: "'cover' | 'contain'", status: 'implemented', description: 'Default CSS object-fit for all media', usage: 'Applied when field.fit is not specified.', example: "'cover'" },
+  { category: 'MediaConfig', property: 'lazy', type: 'boolean', status: 'implemented', description: 'Enable lazy loading for all media', usage: 'Loads media on demand when near viewport.', example: 'false' },
+  { category: 'MediaConfig', property: 'loadingPlaceholder', type: 'string', status: 'implemented', description: 'Loading placeholder media URL/data URI', usage: 'Shown while media loads.', example: '"data:image/svg+xml;base64,..."' },
+  { category: 'MediaConfig', property: 'errorPlaceholder', type: 'string', status: 'implemented', description: 'Error placeholder media URL/data URI', usage: 'Shown when media fails to load.', example: '"data:image/svg+xml;base64,..."' },
+  { category: 'MediaConfig', property: 'enableLightbox', type: 'boolean', status: 'implemented', description: 'Enable lightbox globally for all media', usage: 'Allows clicking media to open in lightbox.', example: 'true' },
 
   // ChartConfig properties
   { category: 'ChartConfig', property: 'type', type: "'bar' | 'line' | 'pie' | 'area' | 'scatter'", status: 'implemented', description: 'Chart type', usage: 'Basic chart types supported.', example: "'bar'" },
@@ -147,6 +146,16 @@ export const widgemoConfigProperties: Array<{
   { category: 'FieldConfig', property: 'align', type: "'left' | 'center' | 'right'", status: 'implemented', description: 'Text alignment', usage: 'Applied in table cells.', example: "'center'" },
   { category: 'FieldConfig', property: 'showLabel', type: 'boolean', status: 'implemented', description: 'Show label in cards', usage: 'For card views.', example: 'true' },
 
+  // MediaFieldConfig properties (for mediaConfig.fields array)
+  { category: 'MediaFieldConfig', property: 'field', type: 'string', status: 'implemented', description: 'Field name/path to extract media source', usage: 'Dot notation path to media field in data items.', example: '"src"' },
+  { category: 'MediaFieldConfig', property: 'placement', type: "'cell' | 'background' | 'header' | 'body' | 'overlay' | 'badge' | 'carousel'", status: 'implemented', description: 'Where to place the media element', usage: 'Varies by mode: Table=cell only, Grid=cell/background, Board=background/header/body, Chart=none. Overlay/badge/carousel reserved for future use.', example: "'cell'" },
+  { category: 'MediaFieldConfig', property: 'size', type: "'small' | 'medium' | 'large' | {width: number|string; height: number|string}", status: 'implemented', description: 'Size of the media element', usage: 'Predefined sizes or custom dimensions.', example: "'medium'" },
+  { category: 'MediaFieldConfig', property: 'fit', type: "'cover' | 'contain' | 'fill' | 'none' | 'scale-down'", status: 'implemented', description: 'CSS object-fit property', usage: 'Controls how media fits within its container.', example: "'cover'" },
+  { category: 'MediaFieldConfig', property: 'shape', type: "'square' | 'circle' | 'rounded'", status: 'implemented', description: 'Shape of the media element', usage: 'Applies border-radius styling.', example: "'rounded'" },
+  { category: 'MediaFieldConfig', property: 'lightbox', type: 'boolean', status: 'implemented', description: 'Enable lightbox for this media field', usage: 'Allows clicking to open media in lightbox modal.', example: 'true' },
+  { category: 'MediaFieldConfig', property: 'altFn', type: '(item: any) => string', status: 'implemented', description: 'Function to generate alt text', usage: 'Creates accessible alt text from item data.', example: '(item) => `Image of ${item.name}`' },
+  { category: 'MediaFieldConfig', property: 'priority', type: 'number', status: 'implemented', description: 'Priority for primary media selection', usage: 'Higher numbers = higher priority when multiple media fields exist.', example: '1' },
+
   // WidgemoProps properties
   { category: 'WidgemoProps', property: 'config', type: 'WidgemoConfig', status: 'implemented', description: 'Configuration object', usage: 'Core to component behavior.', example: '{ title: "Data", mode: "table" }' },
   { category: 'WidgemoProps', property: 'adapters', type: 'WidgemoAdapters', status: 'implemented', description: 'Data operation adapters', usage: 'Used for fetch/create/update/delete in useWidgemoData.ts.', example: '{ fetchData: async () => ({ data: [] }) }' },
@@ -167,7 +176,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'WidgemoProps', property: 'contrastAmount', type: 'number', status: 'implemented', description: 'Contrast amount', usage: 'Used in background calculation.', example: '0.05' },
   { category: 'WidgemoProps', property: 'overrideBackground', type: 'string', status: 'implemented', description: 'Manual background override', usage: 'Highest priority.', example: '"#f0f0f0"' },
   { category: 'WidgemoProps', property: 'showConfigDetails', type: 'boolean', status: 'implemented', description: 'Show config details button', usage: 'Adds button in header.', example: 'true' },
-  { category: 'WidgemoProps', property: 'imagesConfig', type: '{...}', status: 'implemented', description: 'Image configuration', usage: 'Passed to views for image handling.', example: '{ field: "image" }' },
+  { category: 'WidgemoProps', property: 'mediaConfig', type: '{...}', status: 'implemented', description: 'Media configuration', usage: 'Passed to views for media handling.', example: '{ fields: [{ field: "image" }] }' },
 
   // WidgemoAdapters properties
   { category: 'WidgemoAdapters', property: 'fetchData', type: 'Function', status: 'implemented', description: 'Fetch data with params', usage: 'Core data fetching in useWidgemoData.ts.', example: 'async (params) => ({ data: [], total: 0 })' },
