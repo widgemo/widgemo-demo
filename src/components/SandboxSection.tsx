@@ -49,7 +49,8 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   // Preview dimensions state
   const [width, setWidth] = useState<number>(400);
   const [height, setHeight] = useState<number>(300);
-  const [isAuto, setIsAuto] = useState<boolean>(true);
+  const [isAutoWidth, setIsAutoWidth] = useState<boolean>(true);
+  const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
 
   // Handle navigation to complex type sections
   const navigateToSection = useCallback((sectionName: string) => {
@@ -896,12 +897,18 @@ export default App;`
                   <div className="d-flex align-items-center gap-3">
                     <Form.Check
                       type="checkbox"
-                      label="Auto size"
-                      checked={isAuto}
-                      onChange={(e) => setIsAuto(e.target.checked)}
+                      label="Auto width"
+                      checked={isAutoWidth}
+                      onChange={(e) => setIsAutoWidth(e.target.checked)}
                     />
-                    {!isAuto && (
-                      <div className="d-flex gap-2 ms-3">
+                    <Form.Check
+                      type="checkbox"
+                      label="Auto height"
+                      checked={isAutoHeight}
+                      onChange={(e) => setIsAutoHeight(e.target.checked)}
+                    />
+                    <div className="d-flex gap-2 ms-3">
+                      {!isAutoWidth && (
                         <div className="d-flex align-items-center gap-2">
                           <Form.Label className="mb-0" style={{ width: '80px' }}>Width (px)</Form.Label>
                           <Form.Control
@@ -914,6 +921,8 @@ export default App;`
                             style={{width: '70px'}}
                           />
                         </div>
+                      )}
+                      {!isAutoHeight && (
                         <div className="d-flex align-items-center gap-2">
                           <Form.Label className="mb-0" style={{ width: '80px' }}>Height (px)</Form.Label>
                           <Form.Control
@@ -926,15 +935,15 @@ export default App;`
                             style={{width: '70px'}}
                           />
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div style={{
-                  ...(isAuto ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
+                  ...(isAutoHeight ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
                   overflow: 'auto',
                   padding: '8px',
-                  width: isAuto ? 'auto' : `${width}px`
+                  width: isAutoWidth ? 'auto' : `${width}px`
                 }}>
                   <Widgemo
                     config={config}
