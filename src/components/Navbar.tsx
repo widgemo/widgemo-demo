@@ -34,29 +34,31 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({
   };
 
   return (
-    <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 w-100">
-        <BootstrapNavbar.Brand href="#teaser" onClick={() => scrollToSection('teaser')}>
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
+        <BootstrapNavbar.Brand href="#teaser" onClick={() => scrollToSection('teaser')} className="d-flex align-items-center ms-4">
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
           <strong>Widgemo</strong>
         </BootstrapNavbar.Brand>
         <BootstrapNavbar.Toggle aria-controls="demo-nav" />
-        <BootstrapNavbar.Collapse id="demo-nav">
-          <Nav className="ms-auto">
-            {sections.map(section => (
-              <Nav.Link
-                key={section.id}
-                active={activeSection === section.id}
-                onClick={() => scrollToSection(section.id)}
-                className="mx-2"
-              >
-                {section.label}
-              </Nav.Link>
-            ))}
-          </Nav>
-          <ThemeSelector currentTheme={currentTheme} onThemeChange={onThemeChange} />
+        <BootstrapNavbar.Collapse id="demo-nav" className='me-4'>
+          <div className="d-flex justify-content-end align-items-center w-100">
+            <Nav className="mb-0 me-3">
+              {sections.map(section => (
+                <Nav.Link
+                  key={section.id}
+                  active={activeSection === section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className="mx-2"
+                >
+                  {section.label}
+                </Nav.Link>
+              ))}
+            </Nav>
+            <ThemeSelector currentTheme={currentTheme} onThemeChange={onThemeChange} />
+          </div>
         </BootstrapNavbar.Collapse>
-      </div>
-    </BootstrapNavbar>
+      </BootstrapNavbar>
+    </div>
   );
 };
