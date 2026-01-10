@@ -14,11 +14,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 interface GallerySectionProps {
-  onLoadToSandbox: (config: WidgemoConfig, data?: SampleData[]) => void;
+  onLoadToSandbox: (configId: string) => void;
   currentTheme: string;
 }
 
 interface GalleryItem {
+  id: string;
   config: WidgemoConfig;
   name: string;
   description: string;
@@ -78,9 +79,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
   const handleLoadToSandbox = () => {
     if (selectedItem) {
-      // Merge the config with the current theme before loading to sandbox
-      const themedConfig = mergeThemeIntoConfig(selectedItem.config, currentTheme);
-      onLoadToSandbox(themedConfig, selectedItem.data);
+      onLoadToSandbox(selectedItem.id);
       setShowModal(false);
       setSelectedItem(null);
       // Scroll to sandbox section after modal closes
