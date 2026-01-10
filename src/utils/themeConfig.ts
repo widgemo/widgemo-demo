@@ -101,6 +101,22 @@ export const generateThemeCSS = (): string => {
   --button-bg: ${theme.buttonBg};
   --button-hover: ${theme.buttonHover};
 }
+
+.${theme.key} .theme-aware-card {
+  background-color: ${theme.backgroundColor} !important;
+  color: ${theme.textColor} !important;
+  border: 1px solid ${theme.borderColor} !important;
+}
+
+.${theme.key} .theme-aware-card .card-body {
+  background-color: ${theme.backgroundColor} !important;
+  color: ${theme.textColor} !important;
+}
+
+.${theme.key} .theme-aware-card .text-muted {
+  color: ${theme.textColor} !important;
+  opacity: 0.6;
+}
 `;
   });
 
@@ -150,8 +166,8 @@ export const injectThemeCSS = (): void => {
   style.id = 'dynamic-theme-styles';
   style.textContent = generateThemeCSS();
 
-  // Insert at the beginning of head to ensure it loads before other styles
-  document.head.insertBefore(style, document.head.firstChild);
+  // Insert at the end of head to ensure it loads after Bootstrap
+  document.head.appendChild(style);
 };
 
 // Helper functions
@@ -161,6 +177,10 @@ export const getThemeConfig = (themeKey: string): ThemeConfig | undefined => {
 
 export const getThemeBackgroundColor = (themeKey: string): string => {
   return THEME_CONFIGS[themeKey]?.backgroundColor || '#ffffff';
+};
+
+export const getThemeBorderColor = (themeKey: string): string => {
+  return THEME_CONFIGS[themeKey]?.borderColor || '#cccccc';
 };
 
 export const getAllThemeKeys = (): string[] => {

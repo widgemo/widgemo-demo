@@ -142,7 +142,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
     console.log('Grid View - Merged Config for', item.name + ':', mergedConfig);
 
     return (
-      <Col xs={12} sm={6} lg={4} xl={3} key={index} className="mb-4">
+      <Col xs={12} sm={6} md={6} lg={4} xl={3} xxl={3} key={index} className="mb-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
         <Card
           className="h-100 shadow-sm hover-lift theme-aware-card gallery-item"
           style={{ cursor: 'pointer', minHeight: '280px' }}
@@ -198,7 +198,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
       id="gallery"
       title="Gallery"
       subtitle="Explore different configurations and modes"
-      className="bg-light"
     >
       {/* Controls */}
       <div className="d-flex justify-content-between align-items-center mb-4">

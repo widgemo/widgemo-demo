@@ -11,7 +11,6 @@ export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
     id="advanced"
     title="Advanced Usage"
     subtitle="Compositions, nesting, parent-controls, dashboards, and special configurations"
-    className="bg-light"
   >
     <Row className="justify-content-center">
       <Col lg={8} className="text-center">

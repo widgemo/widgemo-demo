@@ -7,13 +7,12 @@ import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
-import { DemoSection } from './DemoSection';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
   initialData: Record<string, unknown>[];
-  onConfigChange: (config: WidgemoConfig) => void;
-  onDataChange: (data: Record<string, unknown>[]) => void;
+  onConfigChange?: (config: WidgemoConfig) => void;
+  onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: string;
 }
 
@@ -249,7 +248,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       }
 
       setCustomData(randomData);
-      onDataChange(randomData);
+      if (onDataChange) onDataChange(randomData);
       setExportStatus('Data generated successfully!');
       setTimeout(() => setExportStatus(null), 3000);
 
@@ -314,7 +313,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         const newConfigJson = JSON.stringify(newConfig, null, 2);
         setConfigJson(newConfigJson);
         setConfig(newConfig);
-        onConfigChange(newConfig);
+        if (onConfigChange) onConfigChange(newConfig);
       }
 
       return randomData;
@@ -334,7 +333,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       }));
       setCustomData(fallbackData);
-      onDataChange(fallbackData);
+      if (onDataChange) onDataChange(fallbackData);
       return fallbackData;
     }
   }, [configJson, onConfigChange, onDataChange, customEndpoint]);
@@ -350,7 +349,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         const jsonData = JSON.parse(e.target?.result as string);
         if (Array.isArray(jsonData)) {
           setCustomData(jsonData as Record<string, unknown>[]);
-          onDataChange(jsonData as Record<string, unknown>[]);
+          if (onDataChange) onDataChange(jsonData as Record<string, unknown>[]);
           setExportStatus('Data uploaded successfully!');
           setTimeout(() => setExportStatus(null), 3000);
         } else {
@@ -505,7 +504,7 @@ export default App;`
 
       const parsed = JSON.parse(cleanJson);
       setConfig(parsed);
-      onConfigChange(parsed);
+      if (onConfigChange) onConfigChange(parsed);
       setJsonError(null);
     } catch (error) {
       setJsonError((error as Error).message);
@@ -547,7 +546,7 @@ export default App;`
 
         // Auto-apply the changes
         setConfig(updatedConfig);
-        onConfigChange(updatedConfig);
+        if (onConfigChange) onConfigChange(updatedConfig);
         setJsonError(null);
 
         lastAppliedThemeRef.current = currentTheme;
@@ -565,7 +564,7 @@ export default App;`
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
     setConfig(themedConfig);
-    onConfigChange(themedConfig);
+    if (onConfigChange) onConfigChange(themedConfig);
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
@@ -609,15 +608,10 @@ export default App;`
   }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
 
   return (
-    <DemoSection
-      id="sandbox"
-      title="Interactive Sandbox"
-      subtitle="Edit configuration JSON and see changes instantly"
-      className="sandbox-taller"
-    >
-      <Card className="shadow theme-aware-card">
-        <Card.Body className="p-0 theme-aware-card">
-          <Group>
+    <div className="h-100 d-flex flex-column">
+      <Card className="shadow theme-aware-card flex-grow-1">
+        <Card.Body className="p-0 theme-aware-card h-100 d-flex flex-column">
+          <Group className="h-100">
             <Panel defaultSize={35} minSize={30}>
               <div className="p-4 h-100 d-flex flex-column">
                 {/* Export Status */}
@@ -949,7 +943,7 @@ export default App;`
                               const parsed = JSON.parse(jsonEditorText);
                               if (Array.isArray(parsed)) {
                                 setCustomData(parsed);
-                                onDataChange(parsed);
+                                if (onDataChange) onDataChange(parsed);
                                 // Update entity labels based on data structure
                                 if (parsed.length > 0) {
                                   const firstItem = parsed[0];
@@ -1450,6 +1444,6 @@ export default App;`
           </Button>
         </Modal.Footer>
       </Modal>
-    </DemoSection>
+    </div>
   );
 };

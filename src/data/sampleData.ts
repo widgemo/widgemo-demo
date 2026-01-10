@@ -45,6 +45,7 @@ export const imageGalleryData: SampleData[] = [
 ];
 
 export const galleryConfigs: Array<{
+  id: string;
   config: WidgemoConfig;
   name: string;
   description: string;
@@ -52,6 +53,7 @@ export const galleryConfigs: Array<{
   mode: string;
 }> = [
     {
+      id: 'data-management',
       name: 'Data Management',
       mode: 'table',
       config: {
@@ -76,6 +78,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'kanban-board',
       name: 'Kanban Board',
       mode: 'board',
       config: {
@@ -109,6 +112,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'image-grid-contain-fit',
       name: 'Image Grid - Contain Fit',
       mode: 'grid',
       config: {
@@ -147,6 +151,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData.slice(0, 9)
     },
     {
+      id: 'clean-chart',
       name: 'Clean Chart',
       mode: 'chart',
       config: {
@@ -169,6 +174,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'basic-grid',
       name: 'Basic Grid',
       mode: 'grid',
       config: {
@@ -203,6 +209,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'dynamic-background',
       name: 'Dynamic Background',
       mode: 'table',
       config: {
@@ -221,6 +228,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'minimal-table',
       name: 'Minimal Table',
       mode: 'table',
       config: {
@@ -237,6 +245,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'advanced',
       name: 'Advanced',
       mode: 'table',
       config: {
@@ -269,6 +278,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'sales-dashboard',
       name: 'Sales Dashboard',
       mode: 'chart',
       config: {
@@ -302,6 +312,7 @@ export const galleryConfigs: Array<{
       ]
     },
     {
+      id: 'task-management',
       name: 'Task Management',
       mode: 'board',
       config: {
@@ -341,6 +352,7 @@ export const galleryConfigs: Array<{
       ]
     },
     {
+      id: 'image-gallery',
       name: 'Image Gallery',
       mode: 'grid',
       config: {
@@ -379,6 +391,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData
     },
     {
+      id: 'image-grid-no-text',
       name: 'Image Grid - No Text',
       mode: 'grid',
       config: {
@@ -416,6 +429,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData.slice(0, 8) // Use first 8 images
     },
     {
+      id: 'compact-image-grid',
       name: 'Compact Image Grid',
       mode: 'grid',
       config: {
@@ -453,6 +467,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData
     },
     {
+      id: 'large-image-showcase',
       name: 'Large Image Showcase',
       mode: 'grid',
       config: {
@@ -490,6 +505,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData
     },
     {
+      id: 'nature-gallery-background-images',
       name: 'Nature Gallery - Background Images',
       mode: 'board',
       config: {
@@ -537,6 +553,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData
     },
     {
+      id: 'image-gallery-board-header-body',
       name: 'Image Gallery Board - Header & Body',
       mode: 'board',
       config: {
@@ -590,6 +607,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData
     },
     {
+      id: 'table-with-avatar-images',
       name: 'Table with Avatar Images',
       mode: 'table',
       config: {
@@ -624,6 +642,7 @@ export const galleryConfigs: Array<{
       data: teaserSampleData
     },
     {
+      id: 'table-with-multiple-images',
       name: 'Table with Multiple Images',
       mode: 'table',
       config: {
@@ -675,6 +694,7 @@ export const galleryConfigs: Array<{
       }))
     },
     {
+      id: 'table-with-medium-size-images',
       name: 'Table with Medium Size Images',
       mode: 'table',
       config: {
@@ -709,6 +729,7 @@ export const galleryConfigs: Array<{
       data: imageGalleryData.slice(0, 6)
     },
     {
+      id: 'table-with-large-images',
       name: 'Table with Large Images',
       mode: 'table',
       config: {

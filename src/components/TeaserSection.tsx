@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
 import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
-import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { mergeThemeIntoConfig, getThemeBackgroundColor, getThemeBorderColor } from '../utils/themeUtils';
 
 interface TeaserSectionProps {
   onExploreGallery: () => void;
@@ -74,10 +74,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
   }, []);
 
   return (
-    <section id="teaser" className="bg-gradient" style={{
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    <section id="teaser" className="py-5 theme-aware-section" style={{
+      background: `linear-gradient(to bottom, ${getThemeBorderColor(currentTheme)} 0%, ${getThemeBackgroundColor(currentTheme)} 100%)`,
       color: shouldHaveDarkText ? '#161616' : 'white',
-      paddingTop: '120px', // Fixed distance from navbar
       height: isLargeScreen ? '800px' : '1200px' // Responsive height based on screen size
     }}>
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
@@ -113,9 +112,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
             </div>
           </Col>
           <Col lg={8}>
-            <Card className="shadow-lg border-0 theme-aware-card">
-              <Card.Body className="p-1">
-                <div className="mb-3">
+            <Card className="shadow-lg border-0 theme-aware-card" style={{ height: '500px', overflow: 'hidden' }}>
+              <Card.Body className="p-1 d-flex flex-column h-100">
+                <div className="mb-3 flex-shrink-0">
                   <small className="text-muted d-flex justify-content-between align-items-center">
                     <strong>{currentTeaserItem.description}</strong>
                     <div style={{ width: '120px' }}>
@@ -135,7 +134,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                     </div>
                   </small>
                 </div>
-                <div inert style={{ maxHeight: '400px', overflow: 'auto', padding: '8px' }}>
+                <div inert className="flex-grow-1 overflow-auto" style={{ padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
                     config={teaserConfig}
