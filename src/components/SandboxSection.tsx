@@ -7,6 +7,7 @@ import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
+import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -1075,6 +1076,7 @@ export default App;`
                     adapters={dynamicAdapters}
                     showConfigDetails={showConfigDetails}
                     baseColor={getThemeBackgroundColor(currentTheme)}
+                    renderIcon={fontAwesomeRenderIcon}
                     {...(applyAdvancedProps && {
                       ...(Object.keys(appliedOverrides).length > 0 && { overrides: appliedOverrides }),
                       ...(appliedClassName && { className: appliedClassName }),
