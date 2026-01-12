@@ -77,6 +77,13 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
     setLocalUseCustomError(useCustomError);
   }, [useCustomError]);
 
+  // Disable custom error when there's no error message
+  React.useEffect(() => {
+    if (!localErrorMessage.trim()) {
+      setLocalUseCustomError(false);
+    }
+  }, [localErrorMessage]);
+
   const handleApplyChanges = useCallback(() => {
     onShowLoadingChange(localShowLoading);
     onErrorMessageChange(localErrorMessage);
@@ -158,11 +165,12 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
               type="checkbox"
               checked={localUseCustomError}
               onChange={(e) => setLocalUseCustomError(e.target.checked)}
+              disabled={!localErrorMessage.trim()}
               label="Use custom error component"
               aria-label="Toggle custom error component"
             />
             <Form.Text className="text-muted">
-              Replace default error with a custom error component.
+              Replace default error with a custom error component. {!localErrorMessage.trim() && "Requires an error message."}
             </Form.Text>
             {localUseCustomError && (
               <Alert variant="warning" className="mt-2 py-2">
