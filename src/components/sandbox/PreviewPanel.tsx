@@ -76,6 +76,11 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   // State for resolved config from onResolvedProps
   const [resolvedConfig, setResolvedConfig] = React.useState<Omit<WidgemoConfig, 'data'> | null>(null);
 
+  // Memoize the callback to prevent infinite re-renders
+  const handleResolvedProps = React.useCallback((resolved: Omit<WidgemoConfig, 'data'>) => {
+    setResolvedConfig(resolved);
+  }, []);
+
   // Use the merged props hook
   const { mergedProps } = useMergedWidgemoProps({
     config,
@@ -96,7 +101,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
     appliedContrastAmount,
     customLoadingComponent,
     customErrorComponent,
-    onResolvedProps: setResolvedConfig,
+    onResolvedProps: handleResolvedProps,
   });
 
   // Apply custom theme to preview container
