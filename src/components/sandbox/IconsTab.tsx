@@ -51,7 +51,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
               <option value="none">None (Widgemo Defaults)</option>
               <option value="react-icons">React Icons</option>
               <option value="lucide">Lucide</option>
-              <option value="heroicons">Heroicons (Coming Soon)</option>
+              <option value="heroicons">Heroicons</option>
             </Form.Select>
           </div>
 
@@ -83,9 +83,9 @@ export const IconsTab: React.FC<IconsTabProps> = ({
 
           {iconLibrary === 'heroicons' && (
             <div className="col-12">
-              <Alert variant="warning" className="py-2 small">
-                <strong>Coming Soon:</strong> Heroicons integration will be available in a future update.
-                For now, use React Icons, Lucide, or Widgemo defaults.
+              <Alert variant="success" className="py-2 small">
+                <strong>Heroicons:</strong> Maps common icon names to Heroicons from react-icons. 
+                Features a clean, consistent design system with both outline and solid variants.
               </Alert>
             </div>
           )}
@@ -110,6 +110,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
                   {iconLibrary === 'none' ? 'Using default inline SVGs from widgemo-core' :
                    iconLibrary === 'react-icons' ? 'Using FontAwesome icons from react-icons library' :
                    iconLibrary === 'lucide' ? 'Using Lucide icons from react-icons library' :
+                   iconLibrary === 'heroicons' ? 'Using Heroicons from react-icons library' :
                    'Custom icon renderer'}
                 </div>
               </div>
