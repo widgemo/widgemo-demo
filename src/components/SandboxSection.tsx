@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { Button, Card, Form, Modal } from 'react-bootstrap';
+import { Button, Card, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaRandom, FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
+import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
@@ -10,6 +10,7 @@ import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
+import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 
 // Custom loading component that matches widgemo-core's expected interface
 const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
@@ -138,12 +139,8 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     setJsonEditorText(JSON.stringify(customData, null, 2));
   }, [customData]);
   const [showCodeSandboxModal, setShowCodeSandboxModal] = useState(false);
-  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [showSampleGen, setShowSampleGen] = useState(false);
   const [jsonEditorText, setJsonEditorText] = useState('');
-  const [dataType, setDataType] = useState('users');
-  const [recordCount, setRecordCount] = useState(10);
-  const [adjustConfig, setAdjustConfig] = useState(false);
-  const [customEndpoint, setCustomEndpoint] = useState('');
 
   // Current theme based on theming tab settings
   const currentSandboxTheme = useMemo(() => {
@@ -271,230 +268,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     // For other libraries (coming soon), fall back to undefined
     return undefined;
   }, [iconLibrary]);
-
-  // Generate random dataset
-  const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
-    let randomData: Record<string, unknown>[] = [];
-
-    // Update entity labels based on data type
-    const updateEntityLabels = (dataType: string) => {
-      switch (dataType) {
-        case 'users':
-        case 'users-api':
-          setEntityLabel('User');
-          setEntityLabelPlural('Users');
-          break;
-        case 'sales':
-          setEntityLabel('Sale');
-          setEntityLabelPlural('Sales Records');
-          break;
-        case 'customers':
-          setEntityLabel('Customer');
-          setEntityLabelPlural('Customers');
-          break;
-        case 'posts-api':
-          setEntityLabel('Post');
-          setEntityLabelPlural('Posts');
-          break;
-        case 'users-jsonplaceholder':
-          setEntityLabel('User');
-          setEntityLabelPlural('Users');
-          break;
-        case 'posts-jsonplaceholder':
-          setEntityLabel('Post');
-          setEntityLabelPlural('Posts');
-          break;
-        case 'comments-jsonplaceholder':
-          setEntityLabel('Comment');
-          setEntityLabelPlural('Comments');
-          break;
-        case 'albums-jsonplaceholder':
-          setEntityLabel('Album');
-          setEntityLabelPlural('Albums');
-          break;
-        case 'photos-jsonplaceholder':
-          setEntityLabel('Photo');
-          setEntityLabelPlural('Photos');
-          break;
-        case 'todos-jsonplaceholder':
-          setEntityLabel('Todo');
-          setEntityLabelPlural('Todos');
-          break;
-        case 'custom-api': {
-          const endpointName = customEndpoint.trim() || 'Custom';
-          setEntityLabel(endpointName.charAt(0).toUpperCase() + endpointName.slice(1));
-          setEntityLabelPlural(endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + 's');
-          break;
-        }
-        default:
-          setEntityLabel('Record');
-          setEntityLabelPlural('Records');
-      }
-    };
-
-    updateEntityLabels(type);
-
-    try {
-      if (type === 'custom-api') {
-        // Fetch from custom API endpoint
-        if (!customEndpoint.trim()) {
-          throw new Error('Please specify a custom API endpoint URL');
-        }
-        const response = await fetch(customEndpoint.trim());
-        if (!response.ok) {
-          throw new Error(`Failed to fetch from endpoint: ${customEndpoint}`);
-        }
-        const apiData: Record<string, unknown>[] = await response.json();
-        randomData = Array.isArray(apiData) ? apiData.slice(0, count) : [apiData];
-      } else if (type.endsWith('-jsonplaceholder')) {
-        // Fetch from JSONPlaceholder
-        const endpoint = type.replace('-jsonplaceholder', '');
-        const response = await fetch(`https://jsonplaceholder.typicode.com/${endpoint}`);
-        const apiData: Record<string, unknown>[] = await response.json();
-        randomData = apiData.slice(0, count);
-      } else {
-        // Generate local data based on type
-        const firstNames = ['Alice', 'Bob', 'Carol', 'David', 'Eva', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
-        const lastNames = ['Johnson', 'Smith', 'Williams', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson'];
-
-        if (type === 'users') {
-          const departments = ['Engineering', 'Design', 'Business', 'Marketing', 'Sales'];
-          const roles = ['Manager', 'Developer', 'Designer', 'Analyst', 'Coordinator'];
-
-          randomData = Array.from({ length: count }, (_, i) => ({
-            id: i + 1,
-            name: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
-            email: `${firstNames[Math.floor(Math.random() * firstNames.length)].toLowerCase()}.${lastNames[Math.floor(Math.random() * lastNames.length)].toLowerCase()}@company.com`,
-            role: roles[Math.floor(Math.random() * roles.length)],
-            department: departments[Math.floor(Math.random() * departments.length)],
-            status: Math.random() > 0.3,
-            lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          }));
-        } else if (type === 'sales') {
-          const products = ['Widget A', 'Widget B', 'Service X', 'Service Y', 'Package Z'];
-          const regions = ['North', 'South', 'East', 'West', 'Central'];
-          const statuses = ['Pending', 'Completed', 'Cancelled'];
-
-          randomData = Array.from({ length: count }, (_, i) => ({
-            id: i + 1,
-            product: products[Math.floor(Math.random() * products.length)],
-            amount: Math.floor(Math.random() * 10000) + 100,
-            region: regions[Math.floor(Math.random() * regions.length)],
-            status: statuses[Math.floor(Math.random() * statuses.length)],
-            date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            customer: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
-          }));
-        } else if (type === 'customers') {
-          const industries = ['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing'];
-          const sizes = ['Small', 'Medium', 'Large', 'Enterprise'];
-          const statuses = ['Active', 'Inactive', 'Prospect'];
-
-          randomData = Array.from({ length: count }, (_, i) => {
-            const name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
-            return {
-              id: i + 1,
-              name: name,
-              email: `${name.split(' ')[0].toLowerCase()}.${name.split(' ')[1].toLowerCase()}@company.com`,
-              company: `${name.split(' ')[1]} ${industries[Math.floor(Math.random() * industries.length)]}`,
-              industry: industries[Math.floor(Math.random() * industries.length)],
-              size: sizes[Math.floor(Math.random() * sizes.length)],
-              status: statuses[Math.floor(Math.random() * statuses.length)],
-              lastContact: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            };
-          });
-        }
-      }
-
-      setCustomData(randomData);
-      if (onDataChange) onDataChange(randomData);
-      setExportStatus('Data generated successfully!');
-      setTimeout(() => setExportStatus(null), 3000);
-
-      // Adjust configuration if requested
-      if (shouldAdjustConfig && randomData.length > 0) {
-        const sampleRecord = randomData[0] as Record<string, unknown>;
-        const fields = Object.keys(sampleRecord).map(key => {
-          const value = sampleRecord[key];
-          let fieldType: string = 'text';
-
-          if (typeof value === 'number') fieldType = 'number';
-          else if (typeof value === 'boolean') fieldType = 'boolean';
-          else if (value && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) fieldType = 'date';
-          else if (value && typeof value === 'string' && value.includes('@')) fieldType = 'email';
-
-          return {
-            name: key,
-            label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
-            type: fieldType,
-            sortable: fieldType !== 'boolean',
-            filterable: true
-          };
-        });
-
-        // Get appropriate title based on data type
-        const getTitleForType = (dataType: string) => {
-          switch (dataType) {
-            case 'users':
-            case 'users-api':
-            case 'users-jsonplaceholder':
-              return 'User Management';
-            case 'sales':
-              return 'Sales Records';
-            case 'customers':
-              return 'Customer Management';
-            case 'posts-api':
-            case 'posts-jsonplaceholder':
-              return 'Blog Posts';
-            case 'comments-jsonplaceholder':
-              return 'Comments';
-            case 'albums-jsonplaceholder':
-              return 'Photo Albums';
-            case 'photos-jsonplaceholder':
-              return 'Photos';
-            case 'todos-jsonplaceholder':
-              return 'Todo Items';
-            case 'custom-api': {
-              const endpointName = customEndpoint.trim() || 'Custom';
-              return endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + ' Data';
-            }
-            default:
-              return 'Data Management';
-          }
-        };
-
-        const newConfig = {
-          ...JSON.parse(configJson),
-          title: getTitleForType(type),
-          fields: fields
-        };
-
-        const newConfigJson = JSON.stringify(newConfig, null, 2);
-        setConfigJson(newConfigJson);
-        setConfig(newConfig);
-        if (onConfigChange) onConfigChange(newConfig);
-      }
-
-      return randomData;
-    } catch (error) {
-      console.error('Error generating data:', error);
-      setExportStatus('Error generating data. Using local generation.');
-      setTimeout(() => setExportStatus(null), 3000);
-
-      // Fallback to local generation
-      const fallbackData = Array.from({ length: count }, (_, i) => ({
-        id: i + 1,
-        name: `User ${i + 1}`,
-        email: `user${i + 1}@company.com`,
-        role: 'User',
-        department: 'General',
-        status: Math.random() > 0.3,
-        lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      }));
-      setCustomData(fallbackData);
-      if (onDataChange) onDataChange(fallbackData);
-      return fallbackData;
-    }
-  }, [configJson, onConfigChange, onDataChange, customEndpoint]);
 
   // Copy JSON to clipboard
   const copyToClipboard = useCallback(async () => {
@@ -851,9 +624,135 @@ export default App;`
     setJsonEditorText(text);
   }, []);
 
-  const handleGenerateClick = useCallback(() => {
-    setShowGenerateModal(true);
-  }, []);
+  // Handle data generation from modal
+  const handleGenerateData = useCallback((generatedData: Record<string, unknown>[], options: { adjustConfig: boolean; dataType: string }) => {
+    // Update entity labels based on data type
+    const updateEntityLabels = (dataType: string) => {
+      switch (dataType) {
+        case 'users':
+        case 'users-api':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'sales':
+          setEntityLabel('Sale');
+          setEntityLabelPlural('Sales Records');
+          break;
+        case 'customers':
+          setEntityLabel('Customer');
+          setEntityLabelPlural('Customers');
+          break;
+        case 'posts-api':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        case 'users-jsonplaceholder':
+          setEntityLabel('User');
+          setEntityLabelPlural('Users');
+          break;
+        case 'posts-jsonplaceholder':
+          setEntityLabel('Post');
+          setEntityLabelPlural('Posts');
+          break;
+        case 'comments-jsonplaceholder':
+          setEntityLabel('Comment');
+          setEntityLabelPlural('Comments');
+          break;
+        case 'albums-jsonplaceholder':
+          setEntityLabel('Album');
+          setEntityLabelPlural('Albums');
+          break;
+        case 'photos-jsonplaceholder':
+          setEntityLabel('Photo');
+          setEntityLabelPlural('Photos');
+          break;
+        case 'todos-jsonplaceholder':
+          setEntityLabel('Todo');
+          setEntityLabelPlural('Todos');
+          break;
+        case 'custom-api': {
+          const endpointName = 'Custom';
+          setEntityLabel(endpointName.charAt(0).toUpperCase() + endpointName.slice(1));
+          setEntityLabelPlural(endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + 's');
+          break;
+        }
+        default:
+          setEntityLabel('Record');
+          setEntityLabelPlural('Records');
+      }
+    };
+
+    updateEntityLabels(options.dataType);
+
+    setCustomData(generatedData);
+    if (onDataChange) onDataChange(generatedData);
+    setExportStatus('Data generated successfully!');
+    setTimeout(() => setExportStatus(null), 3000);
+
+    // Adjust configuration if requested
+    if (options.adjustConfig && generatedData.length > 0) {
+      const sampleRecord = generatedData[0] as Record<string, unknown>;
+      const fields = Object.keys(sampleRecord).map(key => {
+        const value = sampleRecord[key];
+        let fieldType: string = 'text';
+
+        if (typeof value === 'number') fieldType = 'number';
+        else if (typeof value === 'boolean') fieldType = 'boolean';
+        else if (value && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) fieldType = 'date';
+        else if (value && typeof value === 'string' && value.includes('@')) fieldType = 'email';
+
+        return {
+          name: key,
+          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
+          type: fieldType,
+          sortable: fieldType !== 'boolean',
+          filterable: true
+        };
+      });
+
+      // Get appropriate title based on data type
+      const getTitleForType = (dataType: string) => {
+        switch (dataType) {
+          case 'users':
+          case 'users-api':
+          case 'users-jsonplaceholder':
+            return 'User Management';
+          case 'sales':
+            return 'Sales Records';
+          case 'customers':
+            return 'Customer Management';
+          case 'posts-api':
+          case 'posts-jsonplaceholder':
+            return 'Blog Posts';
+          case 'comments-jsonplaceholder':
+            return 'Comments';
+          case 'albums-jsonplaceholder':
+            return 'Photo Albums';
+          case 'photos-jsonplaceholder':
+            return 'Photos';
+          case 'todos-jsonplaceholder':
+            return 'Todo Items';
+          case 'custom-api': {
+            const endpointName = 'Custom';
+            return endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + ' Data';
+          }
+          default:
+            return 'Data Management';
+        }
+      };
+
+      const newConfig = {
+        ...JSON.parse(configJson),
+        title: getTitleForType(options.dataType),
+        fields: fields
+      };
+
+      const newConfigJson = JSON.stringify(newConfig, null, 2);
+      setConfigJson(newConfigJson);
+      setConfig(newConfig);
+      if (onConfigChange) onConfigChange(newConfig);
+    }
+  }, [configJson, onConfigChange, onDataChange]);
 
   const handleSampleDataFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -981,7 +880,7 @@ export default App;`
                 jsonEditorText={jsonEditorText}
                 onJsonEditorTextChange={handleJsonEditorTextChange}
                 entityLabelPlural={entityLabelPlural}
-                onGenerateClick={handleGenerateClick}
+                onGenerateClick={() => setShowSampleGen(true)}
                 onFileUpload={handleSampleDataFileUpload}
                 onSaveChanges={handleSaveChanges}
                 // LoadingStatesTab props
@@ -1053,92 +952,11 @@ export default App;`
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showGenerateModal} onHide={() => setShowGenerateModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Generate Random Data</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="mb-3">
-            <label className="form-label">Data Type</label>
-            <Form.Select value={dataType} onChange={(e) => setDataType(e.target.value)}>
-              <option value="users">Users (Local)</option>
-              <option value="sales">Sales Records (Local)</option>
-              <option value="customers">Customers (Local)</option>
-              <option value="users-jsonplaceholder">Users (JSONPlaceholder)</option>
-              <option value="posts-jsonplaceholder">Posts (JSONPlaceholder)</option>
-              <option value="comments-jsonplaceholder">Comments (JSONPlaceholder)</option>
-              <option value="albums-jsonplaceholder">Albums (JSONPlaceholder)</option>
-              <option value="photos-jsonplaceholder">Photos (JSONPlaceholder)</option>
-              <option value="todos-jsonplaceholder">Todos (JSONPlaceholder)</option>
-              <option value="custom-api">Custom API Endpoint</option>
-            </Form.Select>
-          </div>
-          {(dataType === 'custom-api' || dataType.endsWith('-jsonplaceholder')) && (
-            <div className="mb-3">
-              <label className="form-label">
-                {dataType === 'custom-api' ? 'API Endpoint URL' : 'JSONPlaceholder Endpoint'}
-              </label>
-              <Form.Control
-                type="text"
-                placeholder={
-                  dataType === 'custom-api'
-                    ? 'e.g., https://api.example.com/users'
-                    : dataType.replace('-jsonplaceholder', '')
-                }
-                value={customEndpoint}
-                onChange={(e) => setCustomEndpoint(e.target.value)}
-                className="mb-2"
-              />
-              <small className="text-muted">
-                {dataType === 'custom-api'
-                  ? 'Enter a full API endpoint URL to fetch data from any system'
-                  : `This will fetch from https://jsonplaceholder.typicode.com/${dataType.replace('-jsonplaceholder', '')}`
-                }
-              </small>
-            </div>
-          )}
-          <div className="mb-3">
-            <label className="form-label">Number of Records</label>
-            <Form.Control
-              type="number"
-              min="1"
-              max="100"
-              value={recordCount}
-              onChange={(e) => setRecordCount(parseInt(e.target.value) || 10)}
-            />
-          </div>
-          <div className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="Adjust current configuration to match generated data fields"
-              checked={adjustConfig}
-              onChange={(e) => setAdjustConfig(e.target.checked)}
-            />
-          </div>
-          <div className="alert alert-info">
-            <small>
-              <strong>Local options</strong> generate synthetic data. <strong>JSONPlaceholder options</strong> fetch real sample data from jsonplaceholder.typicode.com.
-              <strong>Custom API Endpoint</strong> allows you to test with any external API by providing a full URL (e.g., https://api.example.com/users).
-              Adjusting configuration will update the fields in your current setup to match the generated data structure.
-            </small>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowGenerateModal(false)}>
-            Cancel
-          </Button>
-          <Button 
-            variant="primary" 
-            onClick={() => { 
-              generateRandomData(dataType, recordCount, adjustConfig); 
-              setShowGenerateModal(false); 
-            }}
-          >
-            <FaRandom className="me-2" />
-            Generate Data
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <SampleDataGenerationModal
+        isOpen={showSampleGen}
+        onClose={() => setShowSampleGen(false)}
+        onGenerate={handleGenerateData}
+      />
     </div>
   );
 };
