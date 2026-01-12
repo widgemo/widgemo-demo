@@ -108,7 +108,10 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       config: WidgemoConfig;
       adapters: WidgemoAdapters;
     } = {
-      config,
+      config: {
+        ...config,
+        theme: currentSandboxTheme || config.theme,
+      },
       adapters,
     };
 
