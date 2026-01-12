@@ -38,6 +38,8 @@ interface PreviewPanelProps {
   appliedOverrideBackground?: string;
   appliedAutoContrast?: boolean;
   appliedContrastAmount?: number;
+  customLoadingComponent?: () => React.ReactElement;
+  customErrorComponent?: (error: string) => React.ReactElement;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
@@ -65,6 +67,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   appliedOverrideBackground,
   appliedAutoContrast,
   appliedContrastAmount,
+  customLoadingComponent,
+  customErrorComponent,
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
@@ -139,12 +143,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           showConfigDetails={showConfigDetails}
           baseColor={getThemeBackgroundColor(currentTheme)}
           renderIcon={currentIconRenderer}
+          {...((appliedLoading || customLoadingComponent) && { loading: appliedLoading || !!customLoadingComponent })}
+          {...((appliedError || customErrorComponent) && { error: appliedError || (customErrorComponent ? 'Custom error' : '') })}
+          {...(customLoadingComponent && { loadingComponent: customLoadingComponent })}
+          {...(customErrorComponent && { errorComponent: customErrorComponent })}
           {...(applyAdvancedProps && {
             ...(Object.keys(appliedOverrides || {}).length > 0 && { overrides: appliedOverrides }),
             ...(appliedClassName && { className: appliedClassName }),
             ...(appliedStyleJson?.trim() && { style: JSON.parse(appliedStyleJson) }),
-            ...(appliedLoading && { loading: appliedLoading }),
-            ...(appliedError && { error: appliedError }),
             ...(appliedBaseColor && { baseColor: appliedBaseColor }),
             ...(appliedOverrideBackground && { overrideBackground: appliedOverrideBackground }),
             ...(appliedAutoContrast !== true && { autoContrast: appliedAutoContrast }),
@@ -158,11 +164,11 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         showConfigDetails={showConfigDetails}
         baseColor={getThemeBackgroundColor(currentTheme)}
         renderIcon={currentIconRenderer}
+        loading={appliedLoading}
+        error={appliedError}
         overrides={applyAdvancedProps && Object.keys(appliedOverrides || {}).length > 0 ? appliedOverrides : undefined}
         className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
         style={applyAdvancedProps && appliedStyleJson?.trim() ? JSON.parse(appliedStyleJson) : undefined}
-        loading={applyAdvancedProps ? appliedLoading : undefined}
-        error={applyAdvancedProps ? appliedError : undefined}
         autoContrast={applyAdvancedProps && appliedAutoContrast !== true ? appliedAutoContrast : undefined}
         contrastAmount={applyAdvancedProps && appliedContrastAmount !== undefined && Math.abs(appliedContrastAmount - 0.05) > 0.001 ? appliedContrastAmount : undefined}
         overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}

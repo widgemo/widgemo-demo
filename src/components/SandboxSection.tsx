@@ -15,6 +15,36 @@ import { IconsTab } from './sandbox/IconsTab';
 import { SampleDataTab } from './sandbox/SampleDataTab';
 import { LoadingStatesTab } from './sandbox/LoadingStatesTab';
 
+// Custom loading and error components for the sandbox
+const CustomLoadingComponent: React.FC = () => (
+  <div className="d-flex flex-column align-items-center justify-content-center p-4">
+    <div className="spinner-border text-primary mb-3" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+    <h5 className="text-muted">Custom Loading Component</h5>
+    <p className="text-center text-muted small">
+      This is a custom loading component that can be passed to Widgemo via the loadingComponent prop.
+    </p>
+  </div>
+);
+
+const CustomErrorComponent: React.FC<{ error: string }> = ({ error }) => (
+  <div className="d-flex flex-column align-items-center justify-content-center p-4 border border-danger rounded">
+    <div className="text-danger mb-3">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+    </div>
+    <h5 className="text-danger">Custom Error Component</h5>
+    <p className="text-center text-muted small mb-2">
+      This is a custom error component that can be passed to Widgemo via the errorComponent prop.
+    </p>
+    <Alert variant="danger" className="w-100">
+      <strong>Error:</strong> {error}
+    </Alert>
+  </div>
+);
+
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
   initialData: Record<string, unknown>[];
@@ -43,12 +73,15 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [styleJson, setStyleJson] = useState('{}');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [useCustomLoading, setUseCustomLoading] = useState(false);
+  const [useCustomError, setUseCustomError] = useState(false);
   const [baseColor, setBaseColor] = useState('');
   const [autoContrast, setAutoContrast] = useState(true);
   const [contrastAmount, setContrastAmount] = useState(0.05);
   const [overrideBackground, setOverrideBackground] = useState('');
   const [showConfigDetails, setShowConfigDetails] = useState(false);
   const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
+  const [renderTrigger, setRenderTrigger] = useState(0);
 
   // Active tab state
   const [activeTab, setActiveTab] = useState(() => {
@@ -69,8 +102,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
   const [appliedClassName, setAppliedClassName] = useState('');
   const [appliedStyleJson, setAppliedStyleJson] = useState('{}');
-  const [appliedLoading, setAppliedLoading] = useState(false);
-  const [appliedError, setAppliedError] = useState('');
   const [appliedBaseColor, setAppliedBaseColor] = useState('');
   const [appliedAutoContrast, setAppliedAutoContrast] = useState(true);
   const [appliedContrastAmount, setAppliedContrastAmount] = useState(0.05);
@@ -701,13 +732,19 @@ export default App;`
   }, [overridesJson, styleJson, className, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
 
   const handleApplyLoadingStates = useCallback(() => {
-    // Apply loading and error states to applied state for preview
-    setAppliedLoading(loading);
-    setAppliedError(error);
-    setApplyAdvancedProps(true); // This ensures the preview uses the applied states
+    // Force re-render of preview
+    setRenderTrigger(prev => prev + 1);
     setExportStatus('Loading and error states applied successfully!');
     setTimeout(() => setExportStatus(null), 3000);
-  }, [loading, error]);
+  }, []);
+
+  const handleUseCustomLoadingChange = useCallback((value: boolean) => {
+    setUseCustomLoading(value);
+  }, []);
+
+  const handleUseCustomErrorChange = useCallback((value: boolean) => {
+    setUseCustomError(value);
+  }, []);
 
   const handleResetAll = useCallback(() => {
     setOverridesJson('{}');
@@ -975,6 +1012,10 @@ export default App;`
                     errorMessage={error}
                     onErrorMessageChange={handleErrorChange}
                     onApplyChanges={handleApplyLoadingStates}
+                    useCustomLoading={useCustomLoading}
+                    onUseCustomLoadingChange={handleUseCustomLoadingChange}
+                    useCustomError={useCustomError}
+                    onUseCustomErrorChange={handleUseCustomErrorChange}
                   />
                 )}
               </div>
@@ -982,6 +1023,7 @@ export default App;`
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={65} minSize={30}>
               <PreviewPanel
+                key={renderTrigger}
                 config={config}
                 adapters={dynamicAdapters}
                 showConfigDetails={showConfigDetails}
@@ -1000,12 +1042,14 @@ export default App;`
                 appliedOverrides={appliedOverrides}
                 appliedClassName={appliedClassName}
                 appliedStyleJson={appliedStyleJson}
-                appliedLoading={appliedLoading}
-                appliedError={appliedError}
+                appliedLoading={loading}
+                appliedError={error}
                 appliedBaseColor={appliedBaseColor}
                 appliedOverrideBackground={appliedOverrideBackground}
                 appliedAutoContrast={appliedAutoContrast}
                 appliedContrastAmount={appliedContrastAmount}
+                customLoadingComponent={useCustomLoading ? () => <CustomLoadingComponent /> : undefined}
+                customErrorComponent={useCustomError ? (error: string) => <CustomErrorComponent error={error} /> : undefined}
               />
             </Panel>
           </Group>

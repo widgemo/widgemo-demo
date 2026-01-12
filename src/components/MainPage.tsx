@@ -23,7 +23,7 @@ export const MainPage: React.FC = () => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const handleLoadToSandbox = (configId: string) => {
     // Navigate to sandbox with config param
     navigate(`/sandbox?config=${configId}`);
