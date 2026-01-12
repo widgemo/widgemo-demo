@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { Button, Card, Modal } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
@@ -11,6 +11,7 @@ import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
+import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
 
 // Custom loading component that matches widgemo-core's expected interface
 const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
@@ -297,82 +298,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     }
   }, [configJson]);
 
-  // Generate CodeSandbox link
-  const generateCodeSandboxLink = useCallback(() => {
-    const sandboxConfig = {
-      title: 'Widgemo Demo',
-      description: 'Interactive Widgemo configuration demo',
-      template: 'react',
-      files: {
-        'index.js': {
-          content: `import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);`
-        },
-        'App.js': {
-          content: `import React, { useState } from 'react';
-import { Widgemo } from 'widgemo-core';
-
-function App() {
-  const [data] = useState(${JSON.stringify(customData, null, 2)});
-  
-  const config = ${configJson};
-  
-  const adapters = {
-    fetchData: async () => ({ data, total: data.length }),
-    createRecord: async (record) => ({ ...record, id: Date.now() }),
-    updateRecord: async (id, record) => record,
-    deleteRecord: async () => {},
-  };
-
-  return (
-    <div className="container mt-4">
-      <h1>Widgemo ${entityLabel} Management</h1>
-      <Widgemo config={config} adapters={adapters} />
-    </div>
-  );
-}
-
-export default App;`
-        },
-        'package.json': {
-          content: JSON.stringify({
-            name: 'widgemo-demo',
-            version: '0.1.0',
-            dependencies: {
-              'react': '^18.0.0',
-              'react-dom': '^18.0.0',
-              'widgemo-core': 'latest',
-              'bootstrap': '^5.3.0'
-            }
-          }, null, 2)
-        },
-        'index.html': {
-          content: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Widgemo Demo</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div id="root"></div>
-</body>
-</html>`
-        }
-      }
-    };
-
-    // Base64 encode the sandbox configuration
-    const encodedConfig = btoa(JSON.stringify(sandboxConfig));
-    const codesandboxUrl = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${encodeURIComponent(encodedConfig)}`;
-
-    // Open in new tab
-    window.open(codesandboxUrl, '_blank');
-  }, [configJson, customData, entityLabel]);
 
   // Download config as JSON file
   const downloadConfig = useCallback(() => {
@@ -937,20 +863,15 @@ export default App;`
         onClose={() => setShowReferenceModal(false)}
       />
 
-      <Modal show={showCodeSandboxModal} onHide={() => setShowCodeSandboxModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Export to CodeSandbox</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>CodeSandbox export functionality would go here.</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowCodeSandboxModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={() => { generateCodeSandboxLink(); setShowCodeSandboxModal(false); }}>
-            Generate CodeSandbox
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CodeSandboxExportModal
+        isOpen={showCodeSandboxModal}
+        onClose={() => setShowCodeSandboxModal(false)}
+        currentConfig={{
+          configJson,
+          customData,
+          entityLabel
+        }}
+      />
 
       <SampleDataGenerationModal
         isOpen={showSampleGen}
