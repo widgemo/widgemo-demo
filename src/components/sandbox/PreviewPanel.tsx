@@ -174,6 +174,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}
         currentSandboxTheme={currentSandboxTheme}
         currentIconRenderer={currentIconRenderer}
+        customLoading={customLoadingComponent}
+        customError={customErrorComponent}
       />
     </div>
   );

@@ -17,6 +17,8 @@ interface AppliedConfigProps {
   overrideBackground?: string;
   currentSandboxTheme?: any;
   currentIconRenderer?: any;
+  customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
 }
 
 export const AppliedConfig: React.FC<AppliedConfigProps> = ({
@@ -35,6 +37,8 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
   overrideBackground,
   currentSandboxTheme,
   currentIconRenderer,
+  customLoading,
+  customError,
 }) => {
   // Build the effective configuration object
   const resolvedProps = React.useMemo(() => {
@@ -92,6 +96,8 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
       ...(autoContrast !== undefined && { autoContrast }),
       ...(contrastAmount !== undefined && { contrastAmount }),
       ...(overrideBackground && { overrideBackground }),
+      ...(customLoading && { customLoading: '[Custom Loading Component]' }),
+      ...(customError && { customError: '[Custom Error Component]' }),
     };
 
     return mergedProps;
@@ -111,6 +117,8 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
     contrastAmount,
     overrideBackground,
     currentSandboxTheme,
+    customLoading,
+    customError,
   ]);
 
   return (
