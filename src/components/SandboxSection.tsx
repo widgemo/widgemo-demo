@@ -12,6 +12,7 @@ import { JsonConfigTab } from './sandbox/JsonConfigTab';
 import { ThemingTab } from './sandbox/ThemingTab';
 import { PropsOverridesTab } from './sandbox/PropsOverridesTab';
 import { IconsTab } from './sandbox/IconsTab';
+import { SampleDataTab } from './sandbox/SampleDataTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -771,6 +772,74 @@ export default App;`
     setTimeout(() => setExportStatus(null), 3000);
   }, []);
 
+  // Sample Data handlers
+  const handleJsonEditorTextChange = useCallback((text: string) => {
+    setJsonEditorText(text);
+  }, []);
+
+  const handleGenerateClick = useCallback(() => {
+    setShowGenerateModal(true);
+  }, []);
+
+  const handleSampleDataFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const content = e.target?.result as string;
+          const parsed = JSON.parse(content);
+          if (Array.isArray(parsed)) {
+            setCustomData(parsed);
+            if (onDataChange) onDataChange(parsed);
+            setExportStatus('Data uploaded successfully!');
+            setTimeout(() => setExportStatus(null), 3000);
+          } else {
+            throw new Error('Data must be an array of objects');
+          }
+        } catch (error) {
+          setExportStatus(`Error: ${(error as Error).message}`);
+          setTimeout(() => setExportStatus(null), 5000);
+        }
+      };
+      reader.readAsText(file);
+    }
+  }, [onDataChange]);
+
+  const handleSaveChanges = useCallback(() => {
+    try {
+      const parsed = JSON.parse(jsonEditorText);
+      if (Array.isArray(parsed)) {
+        setCustomData(parsed);
+        if (onDataChange) onDataChange(parsed);
+        // Update entity labels based on data structure
+        if (parsed.length > 0) {
+          const firstItem = parsed[0];
+          if (typeof firstItem === 'object' && firstItem !== null) {
+            const keys = Object.keys(firstItem);
+            if (keys.includes('name') && keys.includes('email')) {
+              setEntityLabel('User');
+              setEntityLabelPlural('Users');
+            } else if (keys.includes('title') && keys.includes('body')) {
+              setEntityLabel('Post');
+              setEntityLabelPlural('Posts');
+            } else {
+              setEntityLabel('Record');
+              setEntityLabelPlural('Records');
+            }
+          }
+        }
+        setExportStatus('Data updated successfully!');
+        setTimeout(() => setExportStatus(null), 3000);
+      } else {
+        throw new Error('Data must be an array');
+      }
+    } catch (error) {
+      setExportStatus(`Error parsing JSON: ${(error as Error).message}`);
+      setTimeout(() => setExportStatus(null), 5000);
+    }
+  }, [jsonEditorText, onDataChange]);
+
   return (
     <div className="h-100 d-flex flex-column">
       <Card className="shadow theme-aware-card flex-grow-1">
@@ -907,89 +976,16 @@ export default App;`
                 )}
 
                 {activeTab === 'sample-data' && (
-                  <div className="d-flex flex-column h-100">
-                    <div className="flex-shrink-0">
-                      <p className="small text-muted mb-2">Sample Source Data <small className="ms-2">{customData.length} {entityLabelPlural.toLowerCase()}</small></p>
-                      <div className="d-flex gap-2 flex-wrap mb-3">
-                        <Button
-                          variant="outline-success"
-                          size="sm"
-                          onClick={() => setShowGenerateModal(true)}
-                        >
-                          <FaRandom className="me-1" />
-                          Generate
-                        </Button>
-                        <Form.Control
-                          type="file"
-                          accept=".json"
-                          onChange={handleFileUpload}
-                          style={{ display: 'none' }}
-                          id="data-upload"
-                        />
-                        <Button
-                          variant="outline-primary"
-                          size="sm"
-                          onClick={() => document.getElementById('data-upload')?.click()}
-                        >
-                          <FaUpload className="me-1" />
-                          Upload JSON
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex-grow-1 d-flex flex-column">
-                      <Form.Label className="small fw-bold flex-shrink-0">JSON Data</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        value={jsonEditorText}
-                        onChange={(e) => setJsonEditorText(e.target.value)}
-                        style={{ fontFamily: 'monospace', fontSize: '0.75rem', minHeight: '200px' }}
-                        className="flex-grow-1"
-                        spellCheck={false}
-                      />
-                    </div>
-                    <div className="flex-shrink-0 mt-2">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => {
-                          try {
-                            const parsed = JSON.parse(jsonEditorText);
-                            if (Array.isArray(parsed)) {
-                              setCustomData(parsed);
-                              if (onDataChange) onDataChange(parsed);
-                              // Update entity labels based on data structure
-                              if (parsed.length > 0) {
-                                const firstItem = parsed[0];
-                                if (typeof firstItem === 'object' && firstItem !== null) {
-                                  const keys = Object.keys(firstItem);
-                                  if (keys.includes('name') && keys.includes('email')) {
-                                    setEntityLabel('User');
-                                    setEntityLabelPlural('Users');
-                                  } else if (keys.includes('title') && keys.includes('body')) {
-                                    setEntityLabel('Post');
-                                    setEntityLabelPlural('Posts');
-                                  } else {
-                                    setEntityLabel('Record');
-                                    setEntityLabelPlural('Records');
-                                  }
-                                }
-                              }
-                              setExportStatus('Data updated successfully!');
-                              setTimeout(() => setExportStatus(null), 3000);
-                            } else {
-                              throw new Error('Data must be an array');
-                            }
-                          } catch (error) {
-                            setExportStatus(`Error parsing JSON: ${(error as Error).message}`);
-                            setTimeout(() => setExportStatus(null), 5000);
-                          }
-                        }}
-                      >
-                        <FaCheck className="me-1" />
-                        Save Changes
-                      </Button>
-                    </div>
-                  </div>
+                  <SampleDataTab
+                    currentData={customData}
+                    jsonEditorText={jsonEditorText}
+                    onJsonEditorTextChange={handleJsonEditorTextChange}
+                    entityLabel={entityLabel}
+                    entityLabelPlural={entityLabelPlural}
+                    onGenerateClick={handleGenerateClick}
+                    onFileUpload={handleSampleDataFileUpload}
+                    onSaveChanges={handleSaveChanges}
+                  />
                 )}
               </div>
             </Panel>
