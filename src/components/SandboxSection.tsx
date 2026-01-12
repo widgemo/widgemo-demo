@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
+import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
+import { FaUpload, FaRandom, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
 import { generatePalette } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
@@ -9,6 +9,7 @@ import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { PreviewPanel } from './sandbox/PreviewPanel';
+import { JsonConfigTab } from './sandbox/JsonConfigTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -704,83 +705,23 @@ export default App;`
                 </div>
 
                 {activeTab === 'config-editor' && (
-                  <div className="d-flex flex-column h-100">
-                    <div className="d-flex justify-content-between align-items-center mb-3 flex-shrink-0">
-                      <h5 className="mb-0">Configuration Editor</h5>
-                      <div className="d-flex gap-2">
-                        <Dropdown>
-                          <Dropdown.Toggle variant="outline-secondary" size="sm" id="preset-dropdown">
-                            Load Preset
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                            {galleryConfigs.map((item, index) => (
-                              <Dropdown.Item
-                                key={index}
-                                onClick={() => loadPreset(item.config, item.name)}
-                              >
-                                {item.name}
-                              </Dropdown.Item>
-                            ))}
-                          </Dropdown.Menu>
-                        </Dropdown>
-                        <Button
-                          variant="outline-info"
-                          size="sm"
-                          onClick={() => setShowReferenceModal(true)}
-                        >
-                          Reference
-                        </Button>
-                      </div>
-                    </div>
-                    {jsonError && (
-                      <div className="alert alert-danger small mb-3 flex-shrink-0">
-                        <strong>JSON Error:</strong> {jsonError}
-                      </div>
-                    )}
-                    <textarea
-                      className="form-control flex-grow-1 mb-3"
-                      style={{ fontFamily: 'monospace', fontSize: '0.875rem', minHeight: '200px' }}
-                      value={configJson}
-                      onChange={(e) => {
-                        setConfigJson(e.target.value);
-                        if (jsonError) {
-                          setJsonError(null);
-                        }
-                      }}
-                      spellCheck={false}
-                    />
-                    <div className="d-flex gap-2 flex-shrink-0">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={applyConfig}
-                        disabled={!!jsonError}
-                        className="flex-grow-1"
-                      >
-                        Apply Changes
-                      </Button>
-                      <Dropdown>
-                        <Dropdown.Toggle variant="outline-secondary" size="sm" id="export-dropdown">
-                          <FaDownload className="me-1" />
-                          Export
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={copyToClipboard}>
-                            <FaCopy className="me-2" />
-                            Copy JSON
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={downloadConfig}>
-                            <FaDownload className="me-2" />
-                            Download JSON
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={() => setShowCodeSandboxModal(true)}>
-                            <FaExternalLinkAlt className="me-2" />
-                            CodeSandbox
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                  </div>
+                  <JsonConfigTab
+                    currentJson={configJson}
+                    onJsonChange={(newJson) => {
+                      setConfigJson(newJson);
+                      if (jsonError) {
+                        setJsonError(null);
+                      }
+                    }}
+                    onApply={applyConfig}
+                    presets={galleryConfigs}
+                    onLoadPreset={loadPreset}
+                    jsonError={jsonError}
+                    onShowReference={() => setShowReferenceModal(true)}
+                    onShowCodeSandbox={() => setShowCodeSandboxModal(true)}
+                    onCopyToClipboard={copyToClipboard}
+                    onDownloadConfig={downloadConfig}
+                  />
                 )}
 
                 {activeTab === 'advanced-properties' && (
