@@ -176,7 +176,7 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
               <Alert variant="warning" className="mt-2 py-2">
                 <small>
                   <FaExclamationTriangle className="me-1" />
-                  🚨 Custom error shows gradient background with star icon, retry button, and distinctive styling!
+                  Custom error shows elegant red-themed design with error icon, bordered error message box, and retry button.
                 </small>
               </Alert>
             )}

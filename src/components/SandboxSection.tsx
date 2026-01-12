@@ -35,27 +35,22 @@ const CustomErrorComponent: React.FC<{
   className?: string;
   style?: React.CSSProperties;
 }> = ({ error, onRetry, className, style }) => (
-  <div className={`d-flex flex-column align-items-center justify-content-center p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-3 shadow-lg ${className || ''}`} style={style}>
-    <div className="mb-3">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" className="text-white opacity-90">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  <div className={`d-flex flex-column align-items-center justify-content-center p-4 ${className || ''}`} style={style}>
+    <div className="text-danger mb-3">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
       </svg>
     </div>
-    <h4 className="mb-2 fw-bold">🚨 Custom Error Display 🚨</h4>
-    <div className="bg-white bg-opacity-20 p-3 rounded-2 mb-3 w-100">
-      <p className="mb-2 text-center">
-        <strong>This is your CUSTOM ERROR COMPONENT!</strong>
-      </p>
-      <p className="mb-0 text-center small">
-        Error components allow you to create completely custom error displays for your Widgemo instances.
-      </p>
-    </div>
-    <div className="bg-white text-dark p-2 rounded-1 w-100 text-center mb-3">
+    <h5 className="text-danger mb-2">Custom Error Component</h5>
+    <p className="text-center text-muted small mb-3">
+      This is a custom error component that can be passed to Widgemo via the customError prop.
+    </p>
+    <div className="bg-light border border-danger p-3 rounded w-100 text-center mb-3">
       <code className="text-danger fw-bold">{typeof error === 'string' ? error : error.message}</code>
     </div>
     {onRetry && (
-      <button className="btn btn-light" onClick={onRetry}>
-        🔄 Retry
+      <button className="btn btn-outline-danger btn-sm" onClick={onRetry}>
+        Retry
       </button>
     )}
   </div>
