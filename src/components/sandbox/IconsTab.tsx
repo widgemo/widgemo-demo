@@ -50,7 +50,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
             >
               <option value="none">None (Widgemo Defaults)</option>
               <option value="react-icons">React Icons</option>
-              <option value="lucide">Lucide (Coming Soon)</option>
+              <option value="lucide">Lucide</option>
               <option value="heroicons">Heroicons (Coming Soon)</option>
             </Form.Select>
           </div>
@@ -72,11 +72,20 @@ export const IconsTab: React.FC<IconsTabProps> = ({
             </div>
           )}
 
-          {(iconLibrary === 'lucide' || iconLibrary === 'heroicons') && (
+          {iconLibrary === 'lucide' && (
+            <div className="col-12">
+              <Alert variant="success" className="py-2 small">
+                <strong>Lucide:</strong> Maps common icon names to Lucide icons from react-icons. 
+                Features a clean, modern design with excellent readability and consistency.
+              </Alert>
+            </div>
+          )}
+
+          {iconLibrary === 'heroicons' && (
             <div className="col-12">
               <Alert variant="warning" className="py-2 small">
-                <strong>Coming Soon:</strong> {iconLibrary} integration will be available in a future update.
-                For now, use React Icons or Widgemo defaults.
+                <strong>Coming Soon:</strong> Heroicons integration will be available in a future update.
+                For now, use React Icons, Lucide, or Widgemo defaults.
               </Alert>
             </div>
           )}
@@ -100,6 +109,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
                 <div className="small text-muted">
                   {iconLibrary === 'none' ? 'Using default inline SVGs from widgemo-core' :
                    iconLibrary === 'react-icons' ? 'Using FontAwesome icons from react-icons library' :
+                   iconLibrary === 'lucide' ? 'Using Lucide icons from react-icons library' :
                    'Custom icon renderer'}
                 </div>
               </div>

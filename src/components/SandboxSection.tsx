@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaRandom, FaBook, FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
+import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
@@ -210,6 +211,39 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
           'chevron-right': FaChevronRight,
           'chevron-down': FaChevronDown,
           'ellipsis-vertical': FaEllipsisV,
+        };
+        
+        const IconComponent = iconMap[name];
+        if (IconComponent) {
+          return <IconComponent size={size} className={className} color={color} />;
+        } else {
+          // Fallback to a generic icon or default
+          return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⚠️</span>;
+        }
+      };
+    }
+    if (iconLibrary === 'lucide') {
+      // Create a renderIcon function that uses Lucide icons from react-icons
+      return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
+        // Map common icon names to Lucide react-icons components
+        const iconMap: Record<string, React.ComponentType<any>> = {
+          'copy': LuCopy,
+          'view': LuEye,
+          'eye': LuEye,
+          'eye-slash': LuEyeOff,
+          'table': LuTable,
+          'grid': LuLayoutGrid,
+          'chart-bar': LuChartBar,
+          'chart-line': LuChartLine,
+          'chart-pie': LuChartPie,
+          'settings': LuSettings,
+          'refresh': LuRefreshCw,
+          'sync': LuRefreshCw,
+          'plus': LuPlus,
+          'add': LuPlus,
+          'chevron-right': LuChevronRight,
+          'chevron-down': LuChevronDown,
+          'ellipsis-vertical': LuEllipsisVertical,
         };
         
         const IconComponent = iconMap[name];
