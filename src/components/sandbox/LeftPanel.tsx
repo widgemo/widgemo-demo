@@ -58,12 +58,13 @@ export interface LeftPanelProps {
   onResetAll: () => void;
 
   // ThemingTab props
+  themeMode: 'defaults' | 'config' | 'custom';
   primaryColor: string;
-  useThemeDefaults: boolean;
   customTheme: Partial<WidgemoTheme>;
   darkMode: boolean;
+  configTheme?: Partial<WidgemoTheme>;
+  onThemeModeChange: (mode: 'defaults' | 'config' | 'custom') => void;
   onPrimaryColorChange: (color: string) => void;
-  onUseDefaultsChange: (useDefaults: boolean) => void;
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   onDarkModeChange: (dark: boolean) => void;
   onApplyTheme: () => void;
@@ -132,12 +133,13 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onApplyAdvancedProperties,
   onResetAll,
   // ThemingTab props
+  themeMode,
   primaryColor,
-  useThemeDefaults,
   customTheme,
   darkMode,
+  configTheme,
+  onThemeModeChange,
   onPrimaryColorChange,
-  onUseDefaultsChange,
   onCustomThemeChange,
   onDarkModeChange,
   onApplyTheme,
@@ -245,12 +247,13 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
 
         {activeTab === 'theming' && (
           <ThemingTab
+            themeMode={themeMode}
             primaryColor={primaryColor}
-            useThemeDefaults={useThemeDefaults}
             customTheme={customTheme}
             darkMode={darkMode}
+            configTheme={configTheme}
+            onThemeModeChange={onThemeModeChange}
             onPrimaryColorChange={onPrimaryColorChange}
-            onUseDefaultsChange={onUseDefaultsChange}
             onCustomThemeChange={onCustomThemeChange}
             onDarkModeChange={onDarkModeChange}
             onApplyTheme={onApplyTheme}

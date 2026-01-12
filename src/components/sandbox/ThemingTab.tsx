@@ -4,19 +4,23 @@ import { FaCheck } from 'react-icons/fa';
 import { generatePalette } from 'widgemo-core';
 import type { WidgemoTheme } from 'widgemo-core';
 
+type ThemeMode = 'defaults' | 'config' | 'custom';
+
 interface ThemingTabProps {
-  /** Current primary color */
+  /** Current theme mode */
+  themeMode: ThemeMode;
+  /** Current primary color (for custom mode) */
   primaryColor: string;
-  /** Whether to use Widgemo defaults */
-  useThemeDefaults: boolean;
-  /** Custom theme properties */
+  /** Custom theme properties (for custom mode) */
   customTheme: Partial<WidgemoTheme>;
-  /** Whether dark mode is enabled */
+  /** Whether dark mode is enabled (for custom mode) */
   darkMode: boolean;
+  /** Current config theme (for display in config mode) */
+  configTheme?: Partial<WidgemoTheme>;
+  /** Callback when theme mode changes */
+  onThemeModeChange: (mode: ThemeMode) => void;
   /** Callback when primary color changes */
   onPrimaryColorChange: (color: string) => void;
-  /** Callback when defaults toggle changes */
-  onUseDefaultsChange: (useDefaults: boolean) => void;
   /** Callback when custom theme changes */
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   /** Callback when dark mode changes */
@@ -29,11 +33,11 @@ interface ThemingTabProps {
  * ThemingTab - A focused component for theme configuration and visualization
  *
  * Features:
- * - Primary color picker with hex input
+ * - Three theme modes: Use Widgemo Defaults, Use Config, Custom Theme
+ * - Primary color picker with hex input (Custom mode)
  * - Auto palette generation preview with color swatches
- * - Custom theme property editors (border radius, spacing, fonts)
- * - Dark mode toggle
- * - Use defaults switch
+ * - Custom theme property editors (border radius, spacing, fonts) (Custom mode)
+ * - Dark mode toggle (Custom mode)
  * - Apply theme button with feedback
  * - Live preview integration
  *
@@ -46,12 +50,13 @@ interface ThemingTabProps {
  * - Theme validation
  */
 export const ThemingTab: React.FC<ThemingTabProps> = ({
+  themeMode,
   primaryColor,
-  useThemeDefaults,
   customTheme,
   darkMode,
+  configTheme,
+  onThemeModeChange,
   onPrimaryColorChange,
-  onUseDefaultsChange,
   onCustomThemeChange,
   onDarkModeChange,
   onApplyTheme,
@@ -63,27 +68,74 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
     });
   };
 
-  const palette = useThemeDefaults
-    ? generatePalette('#0066cc', { dark: false })
-    : generatePalette(primaryColor, { dark: darkMode });
+  // Generate palette based on current mode
+  const getPaletteForMode = () => {
+    switch (themeMode) {
+      case 'defaults':
+        return generatePalette('#0066cc', { dark: false });
+      case 'config':
+        return configTheme ? generatePalette(
+          configTheme.primary || '#0066cc',
+          { dark: configTheme.dark || false }
+        ) : generatePalette('#0066cc', { dark: false });
+      case 'custom':
+        return generatePalette(primaryColor, { dark: darkMode });
+      default:
+        return generatePalette('#0066cc', { dark: false });
+    }
+  };
+
+  const palette = getPaletteForMode();
 
   return (
     <div className="d-flex flex-column h-100">
       <div className="flex-grow-1 overflow-auto">
         <div className="row g-3">
           <div className="col-12">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h6 className="mb-0">Theme Configuration</h6>
+            <h6 className="mb-3">Theme Mode</h6>
+            <Form.Group>
               <Form.Check
-                type="switch"
+                type="radio"
                 label="Use Widgemo Defaults"
-                checked={useThemeDefaults}
-                onChange={(e) => onUseDefaultsChange(e.target.checked)}
+                name="themeMode"
+                value="defaults"
+                checked={themeMode === 'defaults'}
+                onChange={(e) => onThemeModeChange(e.target.value as ThemeMode)}
+                className="mb-2"
               />
-            </div>
+              <Form.Text className="text-muted small mb-3 d-block">
+                Ignore theme property in JSON config and use Widgemo's built-in default theme.
+              </Form.Text>
+
+              <Form.Check
+                type="radio"
+                label="Use Config"
+                name="themeMode"
+                value="config"
+                checked={themeMode === 'config'}
+                onChange={(e) => onThemeModeChange(e.target.value as ThemeMode)}
+                className="mb-2"
+              />
+              <Form.Text className="text-muted small mb-3 d-block">
+                Use theming information directly from the Config JSON in the config editor.
+              </Form.Text>
+
+              <Form.Check
+                type="radio"
+                label="Custom Theme"
+                name="themeMode"
+                value="custom"
+                checked={themeMode === 'custom'}
+                onChange={(e) => onThemeModeChange(e.target.value as ThemeMode)}
+                className="mb-2"
+              />
+              <Form.Text className="text-muted small mb-3 d-block">
+                Override the JSON config and apply custom theme settings below.
+              </Form.Text>
+            </Form.Group>
           </div>
 
-          {!useThemeDefaults && (
+          {themeMode === 'custom' && (
             <>
               <div className="col-md-6">
                 <Form.Label className="small fw-bold">Primary Color</Form.Label>
@@ -163,6 +215,15 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 </div>
               </div>
             </>
+          )}
+
+          {themeMode === 'config' && configTheme && (
+            <div className="col-12">
+              <Alert variant="info" className="py-2">
+                <strong>Current Config Theme:</strong>
+                <pre className="mt-2 mb-0 small">{JSON.stringify(configTheme, null, 2)}</pre>
+              </Alert>
+            </div>
           )}
 
           <div className="col-12">
@@ -275,7 +336,9 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
           <div className="col-12">
             <Alert variant="info" className="py-2 small">
               <strong>Theme Integration:</strong> Changes here will be applied to the live preview on the right.
-              The palette is automatically generated from your primary color using WCAG-compliant contrast calculations.
+              {themeMode === 'defaults' && ' Using Widgemo\'s built-in default theme.'}
+              {themeMode === 'config' && ' Using theme configuration from the JSON config editor.'}
+              {themeMode === 'custom' && ' The palette is automatically generated from your primary color using WCAG-compliant contrast calculations.'}
             </Alert>
           </div>
         </div>
