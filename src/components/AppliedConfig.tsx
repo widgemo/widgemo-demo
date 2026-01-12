@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Card, Button, Collapse, Alert } from 'react-bootstrap';
-import { FaCopy, FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import React from 'react';
+import { AppliedConfigViewer } from './sandbox/AppliedConfigViewer';
 
 interface AppliedConfigProps {
   config: any;
@@ -37,11 +36,8 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
   currentSandboxTheme,
   currentIconRenderer,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
   // Build the effective configuration object
-  const effectiveConfig = React.useMemo(() => {
+  const resolvedProps = React.useMemo(() => {
     // Helper to truncate large arrays/objects
     const truncateData = (data: any, maxItems = 3): any => {
       if (Array.isArray(data)) {
@@ -117,95 +113,11 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
     currentSandboxTheme,
   ]);
 
-  const handleCopyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(effectiveConfig, null, 2));
-      setCopyStatus('success');
-      setTimeout(() => setCopyStatus('idle'), 2000);
-    } catch (err) {
-      setCopyStatus('error');
-      setTimeout(() => setCopyStatus('idle'), 2000);
-    }
-  };
-
   return (
-    <Card className="mt-3">
-      <Card.Header
-        className="d-flex justify-content-between align-items-center"
-        style={{ cursor: 'pointer' }}
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="d-flex align-items-center">
-          {isExpanded ? <FaChevronDown className="me-2" /> : <FaChevronRight className="me-2" />}
-          <h6 className="mb-0">Applied Configuration</h6>
-        </div>
-        <Button
-          variant="outline-secondary"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleCopyToClipboard();
-          }}
-          disabled={!isExpanded}
-          aria-label="Copy configuration to clipboard"
-        >
-          <FaCopy className="me-1" />
-          {copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Failed' : 'Copy'}
-        </Button>
-      </Card.Header>
-      <Collapse in={isExpanded}>
-        <div>
-          <Card.Body>
-            <Alert variant="info" className="mb-3">
-              <small>
-                This shows the effective, resolved configuration after defaults + overrides + auto-generation.
-                Data adapters are shown as function references for brevity.
-              </small>
-            </Alert>
-            <pre
-              style={{
-                backgroundColor: 'var(--bs-gray-900)',
-                color: 'var(--bs-light)',
-                border: '1px solid var(--bs-gray-700)',
-                borderRadius: '0.375rem',
-                padding: '1rem',
-                fontSize: '0.875rem',
-                lineHeight: '1.5',
-                overflow: 'auto',
-                maxHeight: '400px',
-                margin: 0,
-                fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
-              }}
-            >
-              <code
-                style={{
-                  color: 'var(--bs-light)',
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify(effectiveConfig, null, 2)
-                    .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
-                      let style = 'color: #6f42c1;'; // purple for strings
-                      if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                          style = 'color: #0d6efd;'; // blue for keys
-                        } else {
-                          style = 'color: #198754;'; // green for string values
-                        }
-                      } else if (/true|false/.test(match)) {
-                        style = 'color: #fd7e14;'; // orange for booleans
-                      } else if (/null/.test(match)) {
-                        style = 'color: #6c757d;'; // gray for null
-                      } else if (/^\d/.test(match)) {
-                        style = 'color: #dc3545;'; // red for numbers
-                      }
-                      return `<span style="${style}">${match}</span>`;
-                    })
-                }}
-              />
-            </pre>
-          </Card.Body>
-        </div>
-      </Collapse>
-    </Card>
+    <AppliedConfigViewer
+      resolvedProps={resolvedProps}
+      title="Applied Configuration"
+      note="This shows the effective, resolved configuration after defaults + overrides + auto-generation. Data adapters are shown as function references for brevity."
+    />
   );
 };
