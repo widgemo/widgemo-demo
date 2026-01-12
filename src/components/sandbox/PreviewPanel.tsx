@@ -38,7 +38,7 @@ interface PreviewPanelProps {
   appliedOverrideBackground?: string;
   appliedAutoContrast?: boolean;
   appliedContrastAmount?: number;
-  customLoadingComponent?: () => React.ReactElement;
+  customLoadingComponent?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customErrorComponent?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
 }
 
@@ -145,7 +145,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           renderIcon={currentIconRenderer}
           {...((appliedLoading || customLoadingComponent) && { loading: appliedLoading || !!customLoadingComponent })}
           {...(appliedError && { error: appliedError })}
-          {...(customLoadingComponent && { loadingComponent: customLoadingComponent })}
+          {...(customLoadingComponent && { customLoading: customLoadingComponent })}
           {...(customErrorComponent && { customError: customErrorComponent })}
           {...(applyAdvancedProps && {
             ...(Object.keys(appliedOverrides || {}).length > 0 && { overrides: appliedOverrides }),

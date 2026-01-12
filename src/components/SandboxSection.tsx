@@ -15,15 +15,15 @@ import { IconsTab } from './sandbox/IconsTab';
 import { SampleDataTab } from './sandbox/SampleDataTab';
 import { LoadingStatesTab } from './sandbox/LoadingStatesTab';
 
-// Custom loading and error components for the sandbox
-const CustomLoadingComponent: React.FC = () => (
-  <div className="d-flex flex-column align-items-center justify-content-center p-4">
+// Custom loading component that matches widgemo-core's expected interface
+const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
+  <div className={`d-flex flex-column align-items-center justify-content-center p-4 ${className || ''}`} style={style}>
     <div className="spinner-border text-primary mb-3" role="status">
       <span className="visually-hidden">Loading...</span>
     </div>
     <h5 className="text-muted">Custom Loading Component</h5>
     <p className="text-center text-muted small">
-      This is a custom loading component that can be passed to Widgemo via the loadingComponent prop.
+      This is a custom loading component that can be passed to Widgemo via the customLoading prop.
     </p>
   </div>
 );
@@ -200,9 +200,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     }
     if (iconLibrary === 'react-icons') {
       // For demo purposes, return a mock renderer
-      return ({ name: _name, size = 16, className, color }: { name: string; size?: number; className?: string; color?: string }) => {
+      return ({ name, size = 16, className, color }: { name: string; size?: number; className?: string; color?: string }) => {
         // This would normally import and render from react-icons
-        return <span className={className} style={{ fontSize: `${size}px`, color }}>⭐</span>;
+        return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⭐</span>;
       };
     }
     return fontAwesomeRenderIcon;
@@ -1064,7 +1064,7 @@ export default App;`
                 appliedOverrideBackground={appliedOverrideBackground}
                 appliedAutoContrast={appliedAutoContrast}
                 appliedContrastAmount={appliedContrastAmount}
-                customLoadingComponent={useCustomLoading ? () => <CustomLoadingComponent /> : undefined}
+                customLoadingComponent={useCustomLoading ? CustomLoadingComponent : undefined}
                 customErrorComponent={useCustomError ? CustomErrorComponent : undefined}
               />
             </Panel>
