@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppliedConfigViewer } from './sandbox/AppliedConfigViewer';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { ResolvedWidgemoProps } from 'widgemo-core';
 
 interface AppliedConfigProps {
   config: any;
@@ -20,7 +20,7 @@ interface AppliedConfigProps {
   currentIconRenderer?: any;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
-  resolvedConfig?: Omit<WidgemoConfig, 'data'> | null;
+  resolvedConfig?: ResolvedWidgemoProps | null;
 }
 
 export function AppliedConfig(props: AppliedConfigProps) {
@@ -29,7 +29,7 @@ export function AppliedConfig(props: AppliedConfigProps) {
   let resolvedProps;
   if (resolvedConfig) {
     resolvedProps = {
-      config: resolvedConfig,
+      ...resolvedConfig,
       adapters: {
         fetchData: '[Function: fetchData]',
         createRecord: '[Function: createRecord]',

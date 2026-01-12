@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters, ResolvedWidgemoProps } from 'widgemo-core';
 import { applyThemeToElement } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../../utils/themeUtils';
 import { useMergedWidgemoProps } from '../../hooks/useMergedWidgemoProps';
@@ -73,11 +73,11 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  // State for resolved config from onResolvedProps
-  const [resolvedConfig, setResolvedConfig] = React.useState<Omit<WidgemoConfig, 'data'> | null>(null);
+  // State for resolved props from onResolvedProps
+  const [resolvedConfig, setResolvedConfig] = React.useState<ResolvedWidgemoProps | null>(null);
 
   // Memoize the callback to prevent infinite re-renders
-  const handleResolvedProps = React.useCallback((resolved: Omit<WidgemoConfig, 'data'>) => {
+  const handleResolvedProps = React.useCallback((resolved: ResolvedWidgemoProps) => {
     setResolvedConfig(resolved);
   }, []);
 

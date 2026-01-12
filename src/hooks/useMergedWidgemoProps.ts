@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../utils/themeUtils';
 
 interface UseMergedWidgemoPropsInput {
@@ -35,7 +35,7 @@ interface UseMergedWidgemoPropsInput {
 
   // Other options
   showConfigDetails?: boolean;
-  onResolvedProps?: (resolvedConfig: Omit<WidgemoConfig, 'data'>) => void;
+  onResolvedProps?: (resolved: ResolvedWidgemoProps) => void;
 }
 
 interface UseMergedWidgemoPropsOutput {
