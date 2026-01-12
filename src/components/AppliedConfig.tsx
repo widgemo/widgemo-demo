@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppliedConfigViewer } from './sandbox/AppliedConfigViewer';
+import type { WidgemoConfig } from 'widgemo-core';
 
 interface AppliedConfigProps {
   config: any;
@@ -19,30 +20,38 @@ interface AppliedConfigProps {
   currentIconRenderer?: any;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
+  resolvedConfig?: Omit<WidgemoConfig, 'data'> | null;
 }
 
-export const AppliedConfig: React.FC<AppliedConfigProps> = ({
-  config,
-  adapters,
-  showConfigDetails,
-  baseColor,
-  renderIcon,
-  overrides,
-  className,
-  style,
-  loading,
-  error,
-  autoContrast,
-  contrastAmount,
-  overrideBackground,
-  currentSandboxTheme,
-  currentIconRenderer,
-  customLoading,
-  customError,
-}) => {
+export function AppliedConfig(props: AppliedConfigProps) {
+  const { config, showConfigDetails, baseColor, renderIcon, overrides, className, style, loading, error, autoContrast, contrastAmount, overrideBackground, currentSandboxTheme, currentIconRenderer, customLoading, customError, resolvedConfig } = props;
   // Build the effective configuration object
-  const resolvedProps = React.useMemo(() => {
-    // Helper to truncate large arrays/objects
+  let resolvedProps;
+  if (resolvedConfig) {
+    resolvedProps = {
+      config: resolvedConfig,
+      adapters: {
+        fetchData: '[Function: fetchData]',
+        createRecord: '[Function: createRecord]',
+        updateRecord: '[Function: updateRecord]',
+        deleteRecord: '[Function: deleteRecord]',
+      },
+      ...(showConfigDetails && { showConfigDetails }),
+      ...(baseColor && { baseColor }),
+      ...(renderIcon && { renderIcon: currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer' }),
+      ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
+      ...(className && { className }),
+      ...(style && { style }),
+      ...(loading !== undefined && { loading }),
+      ...(error && { error: typeof error === 'string' ? error : error.message }),
+      ...(autoContrast !== undefined && { autoContrast }),
+      ...(contrastAmount !== undefined && { contrastAmount }),
+      ...(overrideBackground && { overrideBackground }),
+      ...(customLoading && { customLoading: '[Custom Loading Component]' }),
+      ...(customError && { customError: '[Custom Error Component]' }),
+    };
+  } else {
+    // Fallback
     const truncateData = (data: any, maxItems = 3): any => {
       if (Array.isArray(data)) {
         if (data.length > maxItems) {
@@ -64,37 +73,27 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
       return data;
     };
 
-    const mergedProps: any = {
-      // Main configuration
+    resolvedProps = {
       config: {
         ...config,
-        // Add theme info based on currentSandboxTheme logic
-        // - null: Use defaults (no theme)
-        // - undefined: Use config.theme as-is
-        // - object: Override with custom theme
         ...(currentSandboxTheme === null ? {} : 
             currentSandboxTheme !== undefined ? { theme: currentSandboxTheme } : 
             config.theme ? { theme: config.theme } : {}),
-        // Keep styling.themeOverrides for display
         styling: config.styling ? {
           ...config.styling,
           themeOverrides: config.styling.themeOverrides
         } : undefined,
-        // Truncate large data for display
         data: config.data ? truncateData(config.data) : undefined
       },
-      // Adapters (shown as function references)
       adapters: {
         fetchData: '[Function: fetchData]',
         createRecord: '[Function: createRecord]',
         updateRecord: '[Function: updateRecord]',
         deleteRecord: '[Function: deleteRecord]',
       },
-      // Display options
       showConfigDetails,
       baseColor,
       renderIcon: renderIcon ? (currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer') : undefined,
-      // Advanced props (only if applied)
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
       ...(style && { style }),
@@ -106,33 +105,13 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
       ...(customLoading && { customLoading: '[Custom Loading Component]' }),
       ...(customError && { customError: '[Custom Error Component]' }),
     };
-
-    return mergedProps;
-  }, [
-    config,
-    adapters,
-    showConfigDetails,
-    baseColor,
-    renderIcon,
-    currentIconRenderer,
-    overrides,
-    className,
-    style,
-    loading,
-    error,
-    autoContrast,
-    contrastAmount,
-    overrideBackground,
-    currentSandboxTheme,
-    customLoading,
-    customError,
-  ]);
+  }
 
   return (
     <AppliedConfigViewer
       resolvedProps={resolvedProps}
       title="Applied Configuration"
-      note="This shows the effective, resolved configuration after defaults + overrides + auto-generation. Data adapters are shown as function references for brevity."
+      note={resolvedConfig ? "This shows the actual resolved configuration from Widgemo's onResolvedProps callback (excludes data for privacy). Data adapters are shown as function references for brevity." : "This shows the effective, resolved configuration after defaults + overrides + auto-generation. Data adapters are shown as function references for brevity."}
     />
   );
 };

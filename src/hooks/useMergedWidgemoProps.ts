@@ -35,6 +35,7 @@ interface UseMergedWidgemoPropsInput {
 
   // Other options
   showConfigDetails?: boolean;
+  onResolvedProps?: (resolvedConfig: Omit<WidgemoConfig, 'data'>) => void;
 }
 
 interface UseMergedWidgemoPropsOutput {
@@ -102,6 +103,7 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     customLoadingComponent,
     customErrorComponent,
     showConfigDetails,
+    onResolvedProps,
   } = input;
 
   const mergedProps = useMemo(() => {
@@ -141,6 +143,11 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     // Add showConfigDetails if enabled
     if (showConfigDetails) {
       props.showConfigDetails = showConfigDetails;
+    }
+
+    // Add onResolvedProps if provided
+    if (onResolvedProps) {
+      props.onResolvedProps = onResolvedProps;
     }
 
     // Add base color from theme
@@ -218,6 +225,7 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     currentSandboxTheme,
     currentIconRenderer,
     showConfigDetails,
+    onResolvedProps,
     applyAdvancedProps,
     appliedOverrides,
     appliedClassName,
