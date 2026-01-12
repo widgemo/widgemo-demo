@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps } from 'widgemo-core';
-import { defaultTheme } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../utils/themeUtils';
 
 interface UseMergedWidgemoPropsInput {
@@ -235,7 +234,7 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
 
   // Memoize resolved theme from config
   const resolvedTheme = useMemo(() => 
-    config.theme ?? config.styling?.themeOverrides ?? defaultTheme,
+    config.theme ?? config.styling?.themeOverrides ?? {},
     [config.theme, config.styling?.themeOverrides]
   );
 
