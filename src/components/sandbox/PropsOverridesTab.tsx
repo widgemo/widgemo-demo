@@ -15,14 +15,6 @@ interface PropsOverridesTabProps {
   styleJson: string;
   /** Callback when style JSON changes */
   onStyleJsonChange: (value: string) => void;
-  /** Whether loading state is enabled */
-  loading: boolean;
-  /** Callback when loading state changes */
-  onLoadingChange: (value: boolean) => void;
-  /** Current error message */
-  error: string;
-  /** Callback when error message changes */
-  onErrorChange: (value: string) => void;
   /** Whether base color override is enabled */
   overrideBaseColorEnabled: boolean;
   /** Callback when base color override toggle changes */
@@ -63,7 +55,6 @@ interface PropsOverridesTabProps {
  * Features:
  * - Partial config overrides via JSON textarea
  * - CSS class name and inline styles configuration
- * - Loading and error state controls
  * - Base color and background overrides with toggles
  * - Contrast settings with auto/manual options
  * - Config details visibility toggle
@@ -87,10 +78,6 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
   onClassNameChange,
   styleJson,
   onStyleJsonChange,
-  loading,
-  onLoadingChange,
-  error,
-  onErrorChange,
   overrideBaseColorEnabled,
   onOverrideBaseColorEnabledChange,
   baseColor,
@@ -154,29 +141,6 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
               placeholder="{}"
               style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
               aria-label="Inline styles JSON"
-            />
-          </div>
-
-          <div className="col-md-6">
-            <Form.Label className="small fw-bold">Loading State</Form.Label>
-            <Form.Check
-              type="checkbox"
-              checked={loading}
-              onChange={(e) => onLoadingChange(e.target.checked)}
-              label="Show loading spinner"
-              aria-label="Toggle loading state"
-            />
-          </div>
-
-          <div className="col-md-6">
-            <Form.Label className="small fw-bold">Error Message</Form.Label>
-            <Form.Control
-              type="text"
-              size="sm"
-              value={error}
-              onChange={(e) => onErrorChange(e.target.value)}
-              placeholder="Error message (leave empty for no error)"
-              aria-label="Error message"
             />
           </div>
 

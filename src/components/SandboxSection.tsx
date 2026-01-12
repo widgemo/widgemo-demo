@@ -13,6 +13,7 @@ import { ThemingTab } from './sandbox/ThemingTab';
 import { PropsOverridesTab } from './sandbox/PropsOverridesTab';
 import { IconsTab } from './sandbox/IconsTab';
 import { SampleDataTab } from './sandbox/SampleDataTab';
+import { LoadingStatesTab } from './sandbox/LoadingStatesTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -677,8 +678,6 @@ export default App;`
       // Apply all current values to applied state
       setAppliedClassName(className);
       setAppliedStyleJson(styleJson);
-      setAppliedLoading(loading);
-      setAppliedError(error);
       if (overrideBaseColorEnabled) {
         setAppliedBaseColor(baseColor);
       } else {
@@ -699,14 +698,21 @@ export default App;`
       setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
       setTimeout(() => setExportStatus(null), 5000);
     }
-  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
+  }, [overridesJson, styleJson, className, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
+
+  const handleApplyLoadingStates = useCallback(() => {
+    // Apply loading and error states to applied state for preview
+    setAppliedLoading(loading);
+    setAppliedError(error);
+    setApplyAdvancedProps(true); // This ensures the preview uses the applied states
+    setExportStatus('Loading and error states applied successfully!');
+    setTimeout(() => setExportStatus(null), 3000);
+  }, [loading, error]);
 
   const handleResetAll = useCallback(() => {
     setOverridesJson('{}');
     setClassName('');
     setStyleJson('{}');
-    setLoading(false);
-    setError('');
     setBaseColor('#ffffff');
     setOverrideBackground('#f0f0f0');
     setAutoContrast(true);
@@ -863,6 +869,13 @@ export default App;`
                     >
                       Sample Data
                     </Button>
+                    <Button
+                      variant={activeTab === 'loading-states' ? 'primary' : 'outline-primary'}
+                      onClick={() => setActiveTab('loading-states')}
+                      className="rounded-0"
+                    >
+                      Loading & States
+                    </Button>
                   </div>
                 </div>
 
@@ -894,10 +907,6 @@ export default App;`
                     onClassNameChange={handleClassNameChange}
                     styleJson={styleJson}
                     onStyleJsonChange={handleStyleJsonChange}
-                    loading={loading}
-                    onLoadingChange={handleLoadingChange}
-                    error={error}
-                    onErrorChange={handleErrorChange}
                     overrideBaseColorEnabled={overrideBaseColorEnabled}
                     onOverrideBaseColorEnabledChange={handleOverrideBaseColorEnabledChange}
                     baseColor={baseColor}
@@ -956,6 +965,16 @@ export default App;`
                     onGenerateClick={handleGenerateClick}
                     onFileUpload={handleSampleDataFileUpload}
                     onSaveChanges={handleSaveChanges}
+                  />
+                )}
+
+                {activeTab === 'loading-states' && (
+                  <LoadingStatesTab
+                    showLoading={loading}
+                    onShowLoadingChange={handleLoadingChange}
+                    errorMessage={error}
+                    onErrorMessageChange={handleErrorChange}
+                    onApplyChanges={handleApplyLoadingStates}
                   />
                 )}
               </div>
