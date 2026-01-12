@@ -11,6 +11,7 @@ export const AppNavbar: React.FC = () => {
 
   const sections = [
     { id: 'teaser', label: 'Teaser', path: '/' },
+    { id: 'anatomy', label: 'Anatomy', path: '/' },
     { id: 'gallery', label: 'Gallery', path: '/' },
     { id: 'sandbox', label: 'Sandbox', path: '/sandbox' },
     { id: 'advanced', label: 'Advanced', path: '/' },

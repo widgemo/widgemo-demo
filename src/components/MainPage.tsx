@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { TeaserSection } from './TeaserSection';
+import { AnatomySection } from './AnatomySection';
 import { GallerySection } from './GallerySection';
 import { AdvancedSection } from './AdvancedSection';
 import { ResourcesSection } from './ResourcesSection';
@@ -36,6 +37,8 @@ export const MainPage: React.FC = () => {
         shouldHaveDarkText={shouldHaveDarkTeaserText}
         currentTheme={currentTheme}
       />
+
+      <AnatomySection />
 
       <GallerySection onLoadToSandbox={handleLoadToSandbox} currentTheme={currentTheme} />
 
