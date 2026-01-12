@@ -9,6 +9,7 @@ import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
+import { AppliedConfig } from './AppliedConfig';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -1541,6 +1542,23 @@ export default App;`
                     })}
                   />
                 </div>
+                <AppliedConfig
+                  config={config}
+                  adapters={dynamicAdapters}
+                  showConfigDetails={showConfigDetails}
+                  baseColor={getThemeBackgroundColor(currentTheme)}
+                  renderIcon={currentIconRenderer}
+                  overrides={applyAdvancedProps && Object.keys(appliedOverrides).length > 0 ? appliedOverrides : undefined}
+                  className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
+                  style={applyAdvancedProps && appliedStyleJson.trim() ? JSON.parse(appliedStyleJson) : undefined}
+                  loading={applyAdvancedProps ? appliedLoading : undefined}
+                  error={applyAdvancedProps ? appliedError : undefined}
+                  autoContrast={applyAdvancedProps && appliedAutoContrast !== true ? appliedAutoContrast : undefined}
+                  contrastAmount={applyAdvancedProps && Math.abs(appliedContrastAmount - 0.05) > 0.001 ? appliedContrastAmount : undefined}
+                  overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}
+                  currentSandboxTheme={currentSandboxTheme}
+                  currentIconRenderer={currentIconRenderer}
+                />
               </div>
             </Panel>
           </Group>
