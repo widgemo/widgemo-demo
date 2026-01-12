@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaUpload, FaRandom, FaBook, FaCheck } from 'react-icons/fa';
+import { FaRandom, FaBook } from 'react-icons/fa';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
@@ -383,34 +383,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       return fallbackData;
     }
   }, [configJson, onConfigChange, onDataChange, customEndpoint]);
-
-  // Handle file upload
-  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const jsonData = JSON.parse(e.target?.result as string);
-        if (Array.isArray(jsonData)) {
-          setCustomData(jsonData as Record<string, unknown>[]);
-          if (onDataChange) onDataChange(jsonData as Record<string, unknown>[]);
-          setExportStatus('Data uploaded successfully!');
-          setTimeout(() => setExportStatus(null), 3000);
-        } else {
-          setExportStatus('Error: Data must be an array of objects');
-          setTimeout(() => setExportStatus(null), 3000);
-        }
-      } catch {
-        setExportStatus('Error: Invalid JSON file');
-        setTimeout(() => setExportStatus(null), 3000);
-      }
-    };
-    reader.readAsText(file);
-    // Reset file input
-    event.target.value = '';
-  }, [onDataChange]);
 
   // Copy JSON to clipboard
   const copyToClipboard = useCallback(async () => {
