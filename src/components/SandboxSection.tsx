@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaUpload, FaRandom, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
+import { FaUpload, FaRandom, FaBook, FaCheck } from 'react-icons/fa';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
@@ -10,6 +10,7 @@ import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { JsonConfigTab } from './sandbox/JsonConfigTab';
 import { ThemingTab } from './sandbox/ThemingTab';
+import { PropsOverridesTab } from './sandbox/PropsOverridesTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -612,44 +613,6 @@ export default App;`
     setJsonError(null);
   };
 
-  const applyAdvancedProperties = useCallback(() => {
-    try {
-      // Parse overrides JSON
-      const parsedOverrides = overridesJson.trim() ? JSON.parse(overridesJson) : {};
-      setAppliedOverrides(parsedOverrides);
-
-      // Parse style JSON (though we don't store it separately, just validate)
-      if (styleJson.trim()) {
-        JSON.parse(styleJson);
-      }
-      
-      // Apply all current values to applied state
-      setAppliedClassName(className);
-      setAppliedStyleJson(styleJson);
-      setAppliedLoading(loading);
-      setAppliedError(error);
-      if (overrideBaseColorEnabled) {
-        setAppliedBaseColor(baseColor);
-      } else {
-        setAppliedBaseColor('');
-      }
-      setAppliedAutoContrast(autoContrast);
-      setAppliedContrastAmount(contrastAmount);
-      if (overrideBackgroundEnabled) {
-        setAppliedOverrideBackground(overrideBackground);
-      } else {
-        setAppliedOverrideBackground('');
-      }
-      
-      setApplyAdvancedProps(true);
-      setExportStatus('Advanced properties applied successfully!');
-      setTimeout(() => setExportStatus(null), 3000);
-    } catch (error) {
-      setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
-      setTimeout(() => setExportStatus(null), 5000);
-    }
-  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
-
   // Theming handlers
   const handlePrimaryColorChange = useCallback((color: string) => {
     setPrimaryColor(color);
@@ -676,6 +639,110 @@ export default App;`
     setExportStatus('Theme applied to preview!');
     setTimeout(() => setExportStatus(null), 3000);
   }, [useThemeDefaults]);
+
+  // Props & Overrides handlers
+  const handleOverridesJsonChange = useCallback((value: string) => {
+    setOverridesJson(value);
+  }, []);
+
+  const handleClassNameChange = useCallback((value: string) => {
+    setClassName(value);
+  }, []);
+
+  const handleStyleJsonChange = useCallback((value: string) => {
+    setStyleJson(value);
+  }, []);
+
+  const handleLoadingChange = useCallback((value: boolean) => {
+    setLoading(value);
+  }, []);
+
+  const handleErrorChange = useCallback((value: string) => {
+    setError(value);
+  }, []);
+
+  const handleOverrideBaseColorEnabledChange = useCallback((value: boolean) => {
+    setOverrideBaseColorEnabled(value);
+  }, []);
+
+  const handleBaseColorChange = useCallback((value: string) => {
+    setBaseColor(value);
+  }, []);
+
+  const handleOverrideBackgroundEnabledChange = useCallback((value: boolean) => {
+    setOverrideBackgroundEnabled(value);
+  }, []);
+
+  const handleOverrideBackgroundChange = useCallback((value: string) => {
+    setOverrideBackground(value);
+  }, []);
+
+  const handleAutoContrastChange = useCallback((value: boolean) => {
+    setAutoContrast(value);
+  }, []);
+
+  const handleContrastAmountChange = useCallback((value: number) => {
+    setContrastAmount(value);
+  }, []);
+
+  const handleShowConfigDetailsChange = useCallback((value: boolean) => {
+    setShowConfigDetails(value);
+  }, []);
+
+  const handleApplyAdvancedProperties = useCallback(() => {
+    try {
+      // Parse overrides JSON
+      const parsedOverrides = overridesJson.trim() ? JSON.parse(overridesJson) : {};
+      setAppliedOverrides(parsedOverrides);
+
+      // Parse style JSON (though we don't store it separately, just validate)
+      if (styleJson.trim()) {
+        JSON.parse(styleJson);
+      }
+
+      // Apply all current values to applied state
+      setAppliedClassName(className);
+      setAppliedStyleJson(styleJson);
+      setAppliedLoading(loading);
+      setAppliedError(error);
+      if (overrideBaseColorEnabled) {
+        setAppliedBaseColor(baseColor);
+      } else {
+        setAppliedBaseColor('');
+      }
+      setAppliedAutoContrast(autoContrast);
+      setAppliedContrastAmount(contrastAmount);
+      if (overrideBackgroundEnabled) {
+        setAppliedOverrideBackground(overrideBackground);
+      } else {
+        setAppliedOverrideBackground('');
+      }
+
+      setApplyAdvancedProps(true);
+      setExportStatus('Advanced properties applied successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
+    } catch (error) {
+      setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
+      setTimeout(() => setExportStatus(null), 5000);
+    }
+  }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
+
+  const handleResetAll = useCallback(() => {
+    setOverridesJson('{}');
+    setClassName('');
+    setStyleJson('{}');
+    setLoading(false);
+    setError('');
+    setBaseColor('#ffffff');
+    setOverrideBackground('#f0f0f0');
+    setAutoContrast(true);
+    setContrastAmount(0.05);
+    setOverrideBaseColorEnabled(false);
+    setOverrideBackgroundEnabled(false);
+    setApplyAdvancedProps(false);
+    setExportStatus('Advanced properties reset to defaults!');
+    setTimeout(() => setExportStatus(null), 3000);
+  }, []);
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -752,203 +819,34 @@ export default App;`
                 )}
 
                 {activeTab === 'advanced-properties' && (
-                  <div className="d-flex flex-column h-100">
-                    <div className="flex-grow-1 overflow-auto">
-                      <div className="row g-3">
-                        <div className="col-12">
-                          <Form.Label className="small fw-bold">Overrides (Partial Config)</Form.Label>
-                          <Form.Control
-                            as="textarea"
-                            size="sm"
-                            rows={3}
-                            value={overridesJson}
-                            onChange={(e) => setOverridesJson(e.target.value)}
-                            placeholder="{}"
-                            style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <Form.Label className="small fw-bold">CSS Class Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            size="sm"
-                            value={className}
-                            onChange={(e) => setClassName(e.target.value)}
-                            placeholder="custom-class"
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <Form.Label className="small fw-bold">Inline Styles (JSON)</Form.Label>
-                          <Form.Control
-                            as="textarea"
-                            size="sm"
-                            rows={2}
-                            value={styleJson}
-                            onChange={(e) => setStyleJson(e.target.value)}
-                            placeholder="{}"
-                            style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <Form.Label className="small fw-bold">Loading State</Form.Label>
-                          <Form.Check
-                            type="checkbox"
-                            checked={loading}
-                            onChange={(e) => setLoading(e.target.checked)}
-                            label="Show loading spinner"
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <Form.Label className="small fw-bold">Error Message</Form.Label>
-                          <Form.Control
-                            type="text"
-                            size="sm"
-                            value={error}
-                            onChange={(e) => setError(e.target.value)}
-                            placeholder="Error message (leave empty for no error)"
-                          />
-                        </div>
-                        <div className="col-md-4">
-                          <Form.Label className="small fw-bold">Base Color</Form.Label>
-                          <Form.Check
-                            type="checkbox"
-                            checked={overrideBaseColorEnabled}
-                            onChange={(e) => setOverrideBaseColorEnabled(e.target.checked)}
-                            label="Override base color"
-                            className="mb-2"
-                          />
-                          <div className="d-flex gap-2">
-                            <Form.Control
-                              type="color"
-                              size="sm"
-                              value={baseColor}
-                              onChange={(e) => setBaseColor(e.target.value)}
-                              style={{ width: '60px' }}
-                              disabled={!overrideBaseColorEnabled}
-                            />
-                            <Form.Control
-                              type="text"
-                              size="sm"
-                              value={baseColor}
-                              onChange={(e) => setBaseColor(e.target.value)}
-                              placeholder="#ffffff"
-                              className="flex-grow-1"
-                              disabled={!overrideBaseColorEnabled}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-4">
-                          <Form.Label className="small fw-bold">Override Background</Form.Label>
-                          <Form.Check
-                            type="checkbox"
-                            checked={overrideBackgroundEnabled}
-                            onChange={(e) => setOverrideBackgroundEnabled(e.target.checked)}
-                            label="Override background"
-                            className="mb-2"
-                          />
-                          <div className="d-flex gap-2">
-                            <Form.Control
-                              type="color"
-                              size="sm"
-                              value={overrideBackground}
-                              onChange={(e) => setOverrideBackground(e.target.value)}
-                              style={{ width: '60px' }}
-                              disabled={!overrideBackgroundEnabled}
-                            />
-                            <Form.Control
-                              type="text"
-                              size="sm"
-                              value={overrideBackground}
-                              onChange={(e) => setOverrideBackground(e.target.value)}
-                              placeholder="#f0f0f0"
-                              className="flex-grow-1"
-                              disabled={!overrideBackgroundEnabled}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-4">
-                          <Form.Label className="small fw-bold">Contrast Settings</Form.Label>
-                          <div className="d-flex gap-2 align-items-center">
-                            <Form.Check
-                              type="checkbox"
-                              checked={autoContrast}
-                              onChange={(e) => setAutoContrast(e.target.checked)}
-                              label="Auto"
-                              className="me-2"
-                            />
-                            <Form.Control
-                              type="number"
-                              size="sm"
-                              min="0.01"
-                              max="0.2"
-                              step="0.01"
-                              value={contrastAmount}
-                              onChange={(e) => setContrastAmount(parseFloat(e.target.value) || 0.05)}
-                              disabled={!autoContrast}
-                              style={{ width: '80px' }}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <Form.Check
-                            type="checkbox"
-                            checked={showConfigDetails}
-                            onChange={(e) => setShowConfigDetails(e.target.checked)}
-                            label="Show config details button (for development)"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <Alert variant="info" className="py-2 small">
-                            <strong>Note:</strong> Some properties are excluded from editing as they require function implementations or complex objects:
-                            <code className="ms-1">adapters</code>,
-                            <code className="ms-1">onReady</code>,
-                            <code className="ms-1">onDataChange</code>,
-                            <code className="ms-1">onRecordSelect</code>,
-                            <code className="ms-1">onCustomAction</code>,
-                            <code className="ms-1">customLoading</code>,
-                            <code className="ms-1">customError</code>,
-                            <code className="ms-1">customEmpty</code>
-                          </Alert>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-shrink-0 mt-3">
-                      <div className="d-flex gap-2">
-                        <Button
-                          variant="primary"
-                          size="sm"
-                          onClick={applyAdvancedProperties}
-                          className="flex-grow-1"
-                        >
-                          <FaCheck className="me-1" />
-                          Apply Advanced Properties
-                        </Button>
-                        <Button
-                          variant="outline-secondary"
-                          size="sm"
-                          onClick={() => {
-                            setOverridesJson('{}');
-                            setClassName('');
-                            setStyleJson('{}');
-                            setLoading(false);
-                            setError('');
-                            setBaseColor('#ffffff');
-                            setOverrideBackground('#f0f0f0');
-                            setAutoContrast(true);
-                            setContrastAmount(0.05);
-                            setOverrideBaseColorEnabled(false);
-                            setOverrideBackgroundEnabled(false);
-                            setApplyAdvancedProps(false);
-                            setExportStatus('Advanced properties reset to defaults!');
-                            setTimeout(() => setExportStatus(null), 3000);
-                          }}
-                        >
-                          <FaUndo className="me-1" />
-                          Reset All
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                  <PropsOverridesTab
+                    overridesJson={overridesJson}
+                    onOverridesJsonChange={handleOverridesJsonChange}
+                    className={className}
+                    onClassNameChange={handleClassNameChange}
+                    styleJson={styleJson}
+                    onStyleJsonChange={handleStyleJsonChange}
+                    loading={loading}
+                    onLoadingChange={handleLoadingChange}
+                    error={error}
+                    onErrorChange={handleErrorChange}
+                    overrideBaseColorEnabled={overrideBaseColorEnabled}
+                    onOverrideBaseColorEnabledChange={handleOverrideBaseColorEnabledChange}
+                    baseColor={baseColor}
+                    onBaseColorChange={handleBaseColorChange}
+                    overrideBackgroundEnabled={overrideBackgroundEnabled}
+                    onOverrideBackgroundEnabledChange={handleOverrideBackgroundEnabledChange}
+                    overrideBackground={overrideBackground}
+                    onOverrideBackgroundChange={handleOverrideBackgroundChange}
+                    autoContrast={autoContrast}
+                    onAutoContrastChange={handleAutoContrastChange}
+                    contrastAmount={contrastAmount}
+                    onContrastAmountChange={handleContrastAmountChange}
+                    showConfigDetails={showConfigDetails}
+                    onShowConfigDetailsChange={handleShowConfigDetailsChange}
+                    onApplyAdvancedProperties={handleApplyAdvancedProperties}
+                    onResetAll={handleResetAll}
+                  />
                 )}
 
                 {activeTab === 'theming' && (
