@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaUpload, FaRandom, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
-import { generatePalette } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
@@ -10,6 +9,7 @@ import { presetConfigs, widgemoConfigProperties } from '../data/configReference'
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { JsonConfigTab } from './sandbox/JsonConfigTab';
+import { ThemingTab } from './sandbox/ThemingTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -650,6 +650,33 @@ export default App;`
     }
   }, [overridesJson, styleJson, className, loading, error, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
 
+  // Theming handlers
+  const handlePrimaryColorChange = useCallback((color: string) => {
+    setPrimaryColor(color);
+  }, []);
+
+  const handleUseDefaultsChange = useCallback((useDefaults: boolean) => {
+    setUseThemeDefaults(useDefaults);
+  }, []);
+
+  const handleCustomThemeChange = useCallback((theme: Partial<WidgemoTheme>) => {
+    setCustomTheme(theme);
+  }, []);
+
+  const handleDarkModeChange = useCallback((dark: boolean) => {
+    setDarkMode(dark);
+  }, []);
+
+  const handleApplyTheme = useCallback(() => {
+    if (useThemeDefaults) {
+      setCustomTheme({});
+      setPrimaryColor('#0066cc');
+      setDarkMode(false);
+    }
+    setExportStatus('Theme applied to preview!');
+    setTimeout(() => setExportStatus(null), 3000);
+  }, [useThemeDefaults]);
+
   return (
     <div className="h-100 d-flex flex-column">
       <Card className="shadow theme-aware-card flex-grow-1">
@@ -925,235 +952,17 @@ export default App;`
                 )}
 
                 {activeTab === 'theming' && (
-                  <div className="d-flex flex-column h-100">
-                    <div className="flex-grow-1 overflow-auto">
-                      <div className="row g-3">
-                        <div className="col-12">
-                          <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h6 className="mb-0">Theme Configuration</h6>
-                            <Form.Check
-                              type="switch"
-                              label="Use Widgemo Defaults"
-                              checked={useThemeDefaults}
-                              onChange={(e) => setUseThemeDefaults(e.target.checked)}
-                            />
-                          </div>
-                        </div>
-
-                        {!useThemeDefaults && (
-                          <>
-                            <div className="col-md-6">
-                              <Form.Label className="small fw-bold">Primary Color</Form.Label>
-                              <div className="d-flex gap-2">
-                                <Form.Control
-                                  type="color"
-                                  value={primaryColor}
-                                  onChange={(e) => setPrimaryColor(e.target.value)}
-                                  style={{ width: '60px' }}
-                                />
-                                <Form.Control
-                                  type="text"
-                                  size="sm"
-                                  value={primaryColor}
-                                  onChange={(e) => setPrimaryColor(e.target.value)}
-                                  placeholder="#0066cc"
-                                  className="flex-grow-1"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <Form.Label className="small fw-bold">Dark Mode</Form.Label>
-                              <Form.Check
-                                type="switch"
-                                checked={darkMode}
-                                onChange={(e) => setDarkMode(e.target.checked)}
-                                label={darkMode ? 'Enabled' : 'Disabled'}
-                              />
-                            </div>
-
-                            <div className="col-12">
-                              <Form.Label className="small fw-bold">Custom Theme Properties</Form.Label>
-                              <div className="row g-2">
-                                <div className="col-md-6">
-                                  <Form.Control
-                                    type="text"
-                                    size="sm"
-                                    placeholder="Border Radius (e.g., 8px)"
-                                    value={customTheme.borderRadius || ''}
-                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, borderRadius: e.target.value }))}
-                                  />
-                                </div>
-                                <div className="col-md-6">
-                                  <Form.Control
-                                    type="text"
-                                    size="sm"
-                                    placeholder="Spacing (e.g., 16px)"
-                                    value={customTheme.spacing || ''}
-                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, spacing: e.target.value }))}
-                                  />
-                                </div>
-                                <div className="col-md-6">
-                                  <Form.Control
-                                    type="text"
-                                    size="sm"
-                                    placeholder="Font Family"
-                                    value={customTheme.fontFamily || ''}
-                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, fontFamily: e.target.value }))}
-                                  />
-                                </div>
-                                <div className="col-md-6">
-                                  <Form.Control
-                                    type="text"
-                                    size="sm"
-                                    placeholder="Font Size (e.g., 14px)"
-                                    value={customTheme.fontSize || ''}
-                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, fontSize: e.target.value }))}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                        )}
-
-                        <div className="col-12">
-                          <Form.Label className="small fw-bold">Generated Palette Preview</Form.Label>
-                          <div className="row g-2">
-                            {(() => {
-                              const palette = useThemeDefaults 
-                                ? generatePalette('#0066cc', { dark: false })
-                                : generatePalette(primaryColor, { dark: darkMode });
-                              
-                              return (
-                                <>
-                                  <div className="col-md-4">
-                                    <div className="border rounded p-2 text-center">
-                                      <div 
-                                        className="rounded mb-1" 
-                                        style={{ 
-                                          height: '40px', 
-                                          backgroundColor: palette.primary,
-                                          color: palette.text,
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          fontSize: '12px',
-                                          fontWeight: 'bold'
-                                        }}
-                                      >
-                                        Primary
-                                      </div>
-                                      <small className="text-muted d-block">{palette.primary}</small>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-4">
-                                    <div className="border rounded p-2 text-center">
-                                      <div 
-                                        className="rounded mb-1" 
-                                        style={{ 
-                                          height: '40px', 
-                                          backgroundColor: palette.primaryLight,
-                                          color: '#000',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          fontSize: '12px'
-                                        }}
-                                      >
-                                        Light
-                                      </div>
-                                      <small className="text-muted d-block">{palette.primaryLight}</small>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-4">
-                                    <div className="border rounded p-2 text-center">
-                                      <div 
-                                        className="rounded mb-1" 
-                                        style={{ 
-                                          height: '40px', 
-                                          backgroundColor: palette.primaryDark,
-                                          color: '#fff',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          fontSize: '12px'
-                                        }}
-                                      >
-                                        Dark
-                                      </div>
-                                      <small className="text-muted d-block">{palette.primaryDark}</small>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <div className="border rounded p-2 text-center">
-                                      <div 
-                                        className="rounded mb-1" 
-                                        style={{ 
-                                          height: '40px', 
-                                          backgroundColor: palette.accent,
-                                          color: '#000',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          fontSize: '12px'
-                                        }}
-                                      >
-                                        Accent
-                                      </div>
-                                      <small className="text-muted d-block">{palette.accent}</small>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <div className="border rounded p-2 text-center">
-                                      <div 
-                                        className="rounded mb-1" 
-                                        style={{ 
-                                          height: '40px', 
-                                          backgroundColor: palette.background,
-                                          color: palette.text === '#ffffff' ? '#000' : '#fff',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          fontSize: '12px'
-                                        }}
-                                      >
-                                        Background
-                                      </div>
-                                      <small className="text-muted d-block">{palette.background}</small>
-                                    </div>
-                                  </div>
-                                </>
-                              );
-                            })()}
-                          </div>
-                        </div>
-
-                        <div className="col-12">
-                          <Alert variant="info" className="py-2 small">
-                            <strong>Theme Integration:</strong> Changes here will be applied to the live preview on the right.
-                            The palette is automatically generated from your primary color using WCAG-compliant contrast calculations.
-                          </Alert>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-shrink-0 mt-3">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => {
-                          if (useThemeDefaults) {
-                            setCustomTheme({});
-                            setPrimaryColor('#0066cc');
-                            setDarkMode(false);
-                          }
-                          setExportStatus('Theme applied to preview!');
-                          setTimeout(() => setExportStatus(null), 3000);
-                        }}
-                      >
-                        <FaCheck className="me-1" />
-                        Apply Theme
-                      </Button>
-                    </div>
-                  </div>
+                  <ThemingTab
+                    primaryColor={primaryColor}
+                    useThemeDefaults={useThemeDefaults}
+                    customTheme={customTheme}
+                    darkMode={darkMode}
+                    onPrimaryColorChange={handlePrimaryColorChange}
+                    onUseDefaultsChange={handleUseDefaultsChange}
+                    onCustomThemeChange={handleCustomThemeChange}
+                    onDarkModeChange={handleDarkModeChange}
+                    onApplyTheme={handleApplyTheme}
+                  />
                 )}
 
                 {activeTab === 'icons' && (
