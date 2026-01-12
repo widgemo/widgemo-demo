@@ -70,10 +70,10 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
         ...config,
         // Add theme info if available - prioritize top-level theme
         theme: currentSandboxTheme || config.theme,
-        // Keep styling.themeConfig for backward compatibility display
+        // Keep styling.themeOverrides for display
         styling: config.styling ? {
           ...config.styling,
-          themeConfig: config.styling.themeConfig
+          themeOverrides: config.styling.themeOverrides
         } : undefined,
         // Truncate large data for display
         data: config.data ? truncateData(config.data) : undefined
