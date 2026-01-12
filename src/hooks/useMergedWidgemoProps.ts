@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../utils/themeUtils';
 
@@ -238,13 +238,29 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     [config.theme, config.styling?.themeOverrides]
   );
 
+  // Track system dark mode preference
+  const [systemDark, setSystemDark] = useState(() => 
+    window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
+  );
+
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
   // Memoize resolved dark mode
   const resolvedDark = useMemo(() => {
-    if (resolvedTheme.autoDetect) {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (resolvedTheme.dark !== undefined) {
+      return resolvedTheme.dark;
     }
-    return resolvedTheme.dark ?? false;
-  }, [resolvedTheme.autoDetect, resolvedTheme.dark]);
+    if (resolvedTheme.autoDetect) {
+      return systemDark;
+    }
+    return false;
+  }, [resolvedTheme.autoDetect, resolvedTheme.dark, systemDark]);
 
   return {
     mergedProps,
