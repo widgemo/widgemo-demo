@@ -102,7 +102,7 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="flex-grow-1 overflow-auto">
+      <div className="flex-grow-1 overflow-auto" style={{ overflowX: 'hidden' }}>
         <div className="row g-3">
           <div className="col-12">
             <Form.Label className="small fw-bold">Overrides (Partial Config)</Form.Label>

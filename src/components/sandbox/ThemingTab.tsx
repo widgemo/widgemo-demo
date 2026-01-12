@@ -84,7 +84,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="flex-grow-1 overflow-auto">
+      <div className="flex-grow-1 overflow-auto" style={{ overflowX: 'hidden' }}>
         <div className="row g-3">
           <div className="col-12">
             <h6 className="mb-3">Theme Mode</h6>

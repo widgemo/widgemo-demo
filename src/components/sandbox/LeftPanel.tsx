@@ -173,7 +173,22 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   ];
 
   return (
-    <div className="p-4 h-100 d-flex flex-column">
+    <div className="p-4 h-100 d-flex flex-column" style={{ overflow: 'hidden', maxWidth: '100%' }}>
+      <style>
+        {`
+          .left-panel-content * {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          .left-panel-content .form-control,
+          .left-panel-content .form-select,
+          .left-panel-content textarea,
+          .left-panel-content input {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+        `}
+      </style>
       {/* Export Status */}
       {exportStatus && (
         <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
@@ -188,7 +203,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
               key={tab.id}
               variant={activeTab === tab.id ? 'primary' : 'outline-primary'}
               onClick={() => onTabChange(tab.id)}
-              className="rounded-0"
+              className="rounded-0 text-nowrap"
+              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
               role="tab"
               aria-selected={activeTab === tab.id}
               aria-controls={`tabpanel-${tab.id}`}
@@ -200,7 +216,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
         </div>
       </div>
 
-      <div className="flex-grow-1" role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
+      <div className="flex-grow-1 overflow-hidden left-panel-content" role="tabpanel" aria-labelledby={`tab-${activeTab}`} style={{ maxWidth: '100%' }}>
         {activeTab === 'config-editor' && (
           <JsonConfigTab
             currentJson={currentJson}
