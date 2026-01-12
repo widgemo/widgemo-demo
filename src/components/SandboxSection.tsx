@@ -6,7 +6,6 @@ import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings,
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
-import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
@@ -147,9 +146,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const currentSandboxTheme = useMemo(() => {
     switch (themeMode) {
       case 'defaults':
-        return {};
+        return null; // null means use defaults, don't override
       case 'config':
-        return config.theme || {};
+        return undefined; // undefined means use config.theme as-is
       case 'custom':
         return {
           primary: primaryColor,
@@ -157,7 +156,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
           ...customTheme
         };
       default:
-        return {};
+        return null;
     }
   }, [themeMode, config.theme, primaryColor, darkMode, customTheme]);
 
@@ -358,63 +357,19 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   const lastAppliedThemeRef = useRef(currentTheme);
 
-  // Update JSON editor and apply changes when theme changes
+  // Update theme ref when currentTheme changes (but don't modify sandbox config)
   useEffect(() => {
-    if (lastAppliedThemeRef.current !== currentTheme) {
-      try {
-        // Parse current JSON (remove any comments first)
-        const cleanJson = configJson.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
-        const currentConfig = JSON.parse(cleanJson || '{}');
-
-        // Update theme in config using new dark/autoDetect structure
-        let isDark: boolean = false;
-        let autoDetect: boolean = false;
-
-        if (currentTheme.startsWith('theme-light')) {
-          isDark = false;
-          autoDetect = false;
-        } else if (currentTheme.startsWith('theme-dark')) {
-          isDark = true;
-          autoDetect = false;
-        } else if (currentTheme === 'auto') {
-          isDark = false;
-          autoDetect = true;
-        } else {
-          isDark = false;
-          autoDetect = false;
-        }
-
-        const updatedConfig = {
-          ...currentConfig,
-          theme: {
-            ...currentConfig.theme,
-            dark: isDark,
-            autoDetect: autoDetect
-          }
-        };
-        setConfigJson(JSON.stringify(updatedConfig, null, 2));
-
-        // Auto-apply the changes
-        setConfig(updatedConfig);
-        if (onConfigChange) onConfigChange(updatedConfig);
-        setJsonError(null);
-
-        lastAppliedThemeRef.current = currentTheme;
-      } catch {
-        // If JSON is invalid, just update the ref
-        lastAppliedThemeRef.current = currentTheme;
-      }
-    }
-  }, [currentTheme, configJson, onConfigChange]);
+    lastAppliedThemeRef.current = currentTheme;
+  }, [currentTheme]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
-    const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
-    const json = JSON.stringify(themedConfig, null, 2);
+    // Don't inject theme properties - let presets use their own themes or fall back to defaults
+    const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
-    setConfig(themedConfig);
-    if (onConfigChange) onConfigChange(themedConfig);
+    setConfig(presetConfig);
+    if (onConfigChange) onConfigChange(presetConfig);
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };

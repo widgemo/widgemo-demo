@@ -10,7 +10,7 @@ interface UseMergedWidgemoPropsInput {
 
   // Theme and styling
   currentTheme: string;
-  currentSandboxTheme?: Partial<WidgemoTheme>;
+  currentSandboxTheme?: Partial<WidgemoTheme> | null;
   currentIconRenderer?: RenderIcon;
 
   // Advanced props (applied state)
@@ -111,12 +111,22 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       config: WidgemoConfig;
       adapters: WidgemoAdapters;
     } = {
-      config: {
-        ...config,
-        theme: currentSandboxTheme || config.theme,
-      },
+      config: { ...config }, // Start with base config
       adapters,
     };
+
+    // Apply theme based on currentSandboxTheme
+    // - null: Use defaults (don't set theme)
+    // - undefined: Use config.theme as-is (don't override)
+    // - object: Override with the provided theme
+    if (currentSandboxTheme === null) {
+      // Use defaults - don't set theme property
+      delete props.config.theme;
+    } else if (currentSandboxTheme !== undefined) {
+      // Override with custom theme
+      props.config.theme = currentSandboxTheme;
+    }
+    // If currentSandboxTheme is undefined, keep config.theme as-is
 
     // Add theme-related props
     // Note: Theme is applied via CSS variables to container, not passed as prop to Widgemo

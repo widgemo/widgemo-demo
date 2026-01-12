@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData, galleryConfigs } from '../data/sampleData';
-import { mergeThemeIntoConfig } from '../utils/themeUtils';
 
 export const SandboxPage: React.FC = () => {
   const { currentTheme } = useContext(ThemeContext);
@@ -15,11 +14,13 @@ export const SandboxPage: React.FC = () => {
     if (configId) {
       const configItem = galleryConfigs.find(item => item.id === configId);
       if (configItem) {
-        return mergeThemeIntoConfig(configItem.config, currentTheme);
+        // For gallery configs, don't inject theme properties so they use core defaults
+        return configItem.config;
       }
     }
-    return mergeThemeIntoConfig(defaultSandboxConfig, currentTheme);
-  }, [searchParams, currentTheme]);
+    // For default sandbox, don't inject theme properties so it uses core defaults
+    return defaultSandboxConfig;
+  }, [searchParams]);
 
   const initialData = useMemo(() => {
     const configId = searchParams.get('config');

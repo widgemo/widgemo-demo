@@ -68,8 +68,13 @@ export const AppliedConfig: React.FC<AppliedConfigProps> = ({
       // Main configuration
       config: {
         ...config,
-        // Add theme info if available - prioritize top-level theme
-        theme: currentSandboxTheme || config.theme,
+        // Add theme info based on currentSandboxTheme logic
+        // - null: Use defaults (no theme)
+        // - undefined: Use config.theme as-is
+        // - object: Override with custom theme
+        ...(currentSandboxTheme === null ? {} : 
+            currentSandboxTheme !== undefined ? { theme: currentSandboxTheme } : 
+            config.theme ? { theme: config.theme } : {}),
         // Keep styling.themeOverrides for display
         styling: config.styling ? {
           ...config.styling,
