@@ -4,6 +4,7 @@ import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { applyThemeToElement } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../../utils/themeUtils';
+import { useMergedWidgemoProps } from '../../hooks/useMergedWidgemoProps';
 import { AppliedConfig } from '../AppliedConfig';
 
 interface PreviewPanelProps {
@@ -72,6 +73,28 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
+  // Use the merged props hook
+  const { mergedProps } = useMergedWidgemoProps({
+    config,
+    adapters,
+    currentTheme,
+    currentSandboxTheme,
+    currentIconRenderer,
+    showConfigDetails,
+    applyAdvancedProps,
+    appliedOverrides,
+    appliedClassName,
+    appliedStyleJson,
+    appliedLoading,
+    appliedError,
+    appliedBaseColor,
+    appliedOverrideBackground,
+    appliedAutoContrast,
+    appliedContrastAmount,
+    customLoadingComponent,
+    customErrorComponent,
+  });
+
   // Apply custom theme to preview container
   useEffect(() => {
     if (previewRef.current && currentSandboxTheme) {
@@ -137,26 +160,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           width: isAutoWidth ? 'auto' : `${width}px`
         }}
       >
-        <Widgemo
-          config={config}
-          adapters={adapters}
-          showConfigDetails={showConfigDetails}
-          baseColor={getThemeBackgroundColor(currentTheme)}
-          renderIcon={currentIconRenderer}
-          {...((appliedLoading || customLoadingComponent) && { loading: appliedLoading || !!customLoadingComponent })}
-          {...(appliedError && { error: appliedError })}
-          {...(customLoadingComponent && { customLoading: customLoadingComponent })}
-          {...(customErrorComponent && { customError: customErrorComponent })}
-          {...(applyAdvancedProps && {
-            ...(Object.keys(appliedOverrides || {}).length > 0 && { overrides: appliedOverrides }),
-            ...(appliedClassName && { className: appliedClassName }),
-            ...(appliedStyleJson?.trim() && { style: JSON.parse(appliedStyleJson) }),
-            ...(appliedBaseColor && { baseColor: appliedBaseColor }),
-            ...(appliedOverrideBackground && { overrideBackground: appliedOverrideBackground }),
-            ...(appliedAutoContrast !== true && { autoContrast: appliedAutoContrast }),
-            ...(appliedContrastAmount !== undefined && Math.abs(appliedContrastAmount - 0.05) > 0.001 && { contrastAmount: appliedContrastAmount }),
-          })}
-        />
+        <Widgemo {...mergedProps} />
       </div>
       <AppliedConfig
         config={config}
