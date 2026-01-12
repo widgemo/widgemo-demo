@@ -46,6 +46,8 @@ interface UseMergedWidgemoPropsOutput {
   };
   /** Resolved theme object (for debugging/display) */
   resolvedTheme?: Partial<WidgemoTheme>;
+  /** Resolved dark mode state */
+  resolvedDark?: boolean;
   /** Effective renderIcon function (for debugging/display) */
   effectiveRenderIcon?: RenderIcon;
 }
@@ -227,9 +229,18 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     [config.theme, config.styling?.themeOverrides]
   );
 
+  // Memoize resolved dark mode
+  const resolvedDark = useMemo(() => {
+    if (resolvedTheme.autoDetect) {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return resolvedTheme.dark ?? false;
+  }, [resolvedTheme.autoDetect, resolvedTheme.dark]);
+
   return {
     mergedProps,
     resolvedTheme,
+    resolvedDark,
     effectiveRenderIcon: currentIconRenderer,
   };
 };

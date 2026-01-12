@@ -360,15 +360,30 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         const cleanJson = configJson.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
         const currentConfig = JSON.parse(cleanJson || '{}');
 
-        // Update theme in config
-        const targetTheme = currentTheme.startsWith('theme-light') ? 'light' :
-                           currentTheme.startsWith('theme-dark') ? 'dark' : 'light';
+        // Update theme in config using new dark/autoDetect structure
+        let isDark: boolean = false;
+        let autoDetect: boolean = false;
+
+        if (currentTheme.startsWith('theme-light')) {
+          isDark = false;
+          autoDetect = false;
+        } else if (currentTheme.startsWith('theme-dark')) {
+          isDark = true;
+          autoDetect = false;
+        } else if (currentTheme === 'auto') {
+          isDark = false;
+          autoDetect = true;
+        } else {
+          isDark = false;
+          autoDetect = false;
+        }
 
         const updatedConfig = {
           ...currentConfig,
-          styling: {
-            ...currentConfig.styling,
-            theme: targetTheme
+          theme: {
+            ...currentConfig.theme,
+            dark: isDark,
+            autoDetect: autoDetect
           }
         };
         setConfigJson(JSON.stringify(updatedConfig, null, 2));

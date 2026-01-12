@@ -2,38 +2,46 @@ import type { WidgemoConfig } from 'widgemo-core';
 
 // Utility functions for theme management
 export const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): WidgemoConfig => {
-  // Convert demo theme format to Widgemo theme format (light, dark, auto)
-  let widgemoTheme: 'light' | 'dark' | 'auto' | undefined;
+  // Convert demo theme format to Widgemo theme format using dark and autoDetect booleans
+  let isDark: boolean = false;
+  let autoDetect: boolean = false;
 
-  // All light themes map to 'light'
+  // All light themes map to light mode
   if (demoTheme.startsWith('theme-light')) {
-    widgemoTheme = 'light';
+    isDark = false;
+    autoDetect = false;
   }
-  // All dark themes map to 'dark'
+  // All dark themes map to dark mode
   else if (demoTheme.startsWith('theme-dark')) {
-    widgemoTheme = 'dark';
+    isDark = true;
+    autoDetect = false;
   }
-  // Auto theme
+  // Auto theme enables auto-detection
   else if (demoTheme === 'auto') {
-    widgemoTheme = 'auto';
+    isDark = false; // Will be overridden by autoDetect
+    autoDetect = true;
   }
   // Simple theme names
   else if (demoTheme === 'light') {
-    widgemoTheme = 'light';
+    isDark = false;
+    autoDetect = false;
   }
   else if (demoTheme === 'dark') {
-    widgemoTheme = 'dark';
+    isDark = true;
+    autoDetect = false;
   }
-  // Fallback
+  // Fallback to light
   else {
-    widgemoTheme = 'light';
+    isDark = false;
+    autoDetect = false;
   }
 
   return {
     ...config,
-    styling: {
-      ...config.styling,
-      theme: widgemoTheme === 'auto' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : widgemoTheme
+    theme: {
+      ...config.theme,
+      dark: isDark,
+      autoDetect: autoDetect
     }
   };
 };

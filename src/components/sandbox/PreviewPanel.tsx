@@ -98,9 +98,10 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   // Apply custom theme to preview container
   useEffect(() => {
     if (previewRef.current && currentSandboxTheme) {
-      applyThemeToElement(previewRef.current, currentSandboxTheme);
+      const isDark = currentTheme === 'dark' || (currentTheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      applyThemeToElement(previewRef.current, currentSandboxTheme, isDark);
     }
-  }, [currentSandboxTheme]);
+  }, [currentSandboxTheme, currentTheme]);
 
   return (
     <div className="p-4 h-100">
