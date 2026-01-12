@@ -11,6 +11,7 @@ import { PreviewPanel } from './sandbox/PreviewPanel';
 import { JsonConfigTab } from './sandbox/JsonConfigTab';
 import { ThemingTab } from './sandbox/ThemingTab';
 import { PropsOverridesTab } from './sandbox/PropsOverridesTab';
+import { IconsTab } from './sandbox/IconsTab';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -744,6 +745,32 @@ export default App;`
     setTimeout(() => setExportStatus(null), 3000);
   }, []);
 
+  // Icons handlers
+  const handleIconLibraryChange = useCallback((library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => {
+    setIconLibrary(library);
+  }, []);
+
+  const handleTestIconNameChange = useCallback((name: string) => {
+    setTestIconName(name);
+  }, []);
+
+  const handleTestIconSizeChange = useCallback((size: number) => {
+    setTestIconSize(size);
+  }, []);
+
+  const handleTestIconClassNameChange = useCallback((className: string) => {
+    setTestIconClassName(className);
+  }, []);
+
+  const handleCustomRenderIconChange = useCallback((code: string) => {
+    setCustomRenderIcon(code);
+  }, []);
+
+  const handleApplyIcons = useCallback(() => {
+    setExportStatus('Icon settings applied to preview!');
+    setTimeout(() => setExportStatus(null), 3000);
+  }, []);
+
   return (
     <div className="h-100 d-flex flex-column">
       <Card className="shadow theme-aware-card flex-grow-1">
@@ -864,156 +891,19 @@ export default App;`
                 )}
 
                 {activeTab === 'icons' && (
-                  <div className="d-flex flex-column h-100">
-                    <div className="flex-grow-1 overflow-auto">
-                      <div className="row g-3">
-                        <div className="col-12">
-                          <Form.Label className="small fw-bold">Icon Library</Form.Label>
-                          <Form.Select
-                            size="sm"
-                            value={iconLibrary}
-                            onChange={(e) => setIconLibrary(e.target.value as typeof iconLibrary)}
-                          >
-                            <option value="none">None (Widgemo Defaults)</option>
-                            <option value="react-icons">React Icons</option>
-                            <option value="lucide">Lucide (Coming Soon)</option>
-                            <option value="heroicons">Heroicons (Coming Soon)</option>
-                          </Form.Select>
-                        </div>
-
-                        {iconLibrary === 'none' && (
-                          <div className="col-12">
-                            <Alert variant="info" className="py-2 small">
-                              <strong>Widgemo Defaults:</strong> Uses inline SVG icons or no icons. Perfect for zero-dependency setups.
-                            </Alert>
-                          </div>
-                        )}
-
-                        {iconLibrary === 'react-icons' && (
-                          <>
-                            <div className="col-md-6">
-                              <Form.Label className="small fw-bold">Icon Name</Form.Label>
-                              <Form.Control
-                                type="text"
-                                size="sm"
-                                value={testIconName}
-                                onChange={(e) => setTestIconName(e.target.value)}
-                                placeholder="FaStar, MdHome, etc."
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <Form.Label className="small fw-bold">Size</Form.Label>
-                              <Form.Control
-                                type="number"
-                                size="sm"
-                                value={testIconSize}
-                                onChange={(e) => setTestIconSize(Number(e.target.value))}
-                                min="8"
-                                max="48"
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <Form.Label className="small fw-bold">Class Name</Form.Label>
-                              <Form.Control
-                                type="text"
-                                size="sm"
-                                value={testIconClassName}
-                                onChange={(e) => setTestIconClassName(e.target.value)}
-                                placeholder="text-primary"
-                              />
-                            </div>
-
-                            <div className="col-12">
-                              <Form.Label className="small fw-bold">Icon Preview</Form.Label>
-                              <div className="border rounded p-3 text-center">
-                                {(() => {
-                                  try {
-                                    // Dynamic import of react-icons
-                                    const iconName = testIconName.trim();
-                                    if (iconName) {
-                                      // This is a simplified version - in real implementation you'd need to handle dynamic imports
-                                      return (
-                                        <div className="d-flex align-items-center justify-content-center gap-2">
-                                          <span style={{ fontSize: `${testIconSize}px` }}>⭐</span>
-                                          <small className="text-muted">Preview: {iconName} ({testIconSize}px)</small>
-                                        </div>
-                                      );
-                                    }
-                                    return <small className="text-muted">Enter an icon name to preview</small>;
-                                  } catch (error) {
-                                    return <small className="text-danger">Invalid icon name</small>;
-                                  }
-                                })()}
-                              </div>
-                            </div>
-
-                            <div className="col-12">
-                              <Form.Label className="small fw-bold">Custom renderIcon Function</Form.Label>
-                              <Form.Control
-                                as="textarea"
-                                size="sm"
-                                rows={3}
-                                value={customRenderIcon}
-                                onChange={(e) => setCustomRenderIcon(e.target.value)}
-                                placeholder={`(iconName, props) => {
-  // Your custom icon rendering logic
-  return <YourIconComponent {...props} />;
-}`}
-                                style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
-                              />
-                            </div>
-                          </>
-                        )}
-
-                        {(iconLibrary === 'lucide' || iconLibrary === 'heroicons') && (
-                          <div className="col-12">
-                            <Alert variant="warning" className="py-2 small">
-                              <strong>Coming Soon:</strong> {iconLibrary} integration will be available in a future update.
-                              For now, use React Icons or Widgemo defaults.
-                            </Alert>
-                          </div>
-                        )}
-
-                        <div className="col-12">
-                          <Form.Label className="small fw-bold">Example Integration</Form.Label>
-                          <div className="border rounded p-3">
-                            <small className="text-muted d-block mb-2">Mini Widgemo preview with current icon settings:</small>
-                            <div style={{ 
-                              border: '1px solid #dee2e6', 
-                              borderRadius: '4px', 
-                              padding: '8px',
-                              backgroundColor: '#f8f9fa',
-                              fontSize: '12px'
-                            }}>
-                              <div className="d-flex align-items-center gap-2 mb-1">
-                                <span>📊</span>
-                                <span className="fw-bold">Sample Data Table</span>
-                                <span>⚙️</span>
-                              </div>
-                              <div className="small text-muted">
-                                {iconLibrary === 'none' ? 'Using default inline SVGs' : 
-                                 iconLibrary === 'react-icons' ? `Using ${testIconName} from React Icons` : 
-                                 'Custom icon renderer'}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-shrink-0 mt-3">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => {
-                          setExportStatus('Icon settings applied to preview!');
-                          setTimeout(() => setExportStatus(null), 3000);
-                        }}
-                      >
-                        <FaCheck className="me-1" />
-                        Apply Icons
-                      </Button>
-                    </div>
-                  </div>
+                  <IconsTab
+                    iconLibrary={iconLibrary}
+                    onIconLibraryChange={handleIconLibraryChange}
+                    testIconName={testIconName}
+                    onTestIconNameChange={handleTestIconNameChange}
+                    testIconSize={testIconSize}
+                    onTestIconSizeChange={handleTestIconSizeChange}
+                    testIconClassName={testIconClassName}
+                    onTestIconClassNameChange={handleTestIconClassNameChange}
+                    customRenderIcon={customRenderIcon}
+                    onCustomRenderIconChange={handleCustomRenderIconChange}
+                    onApplyIcons={handleApplyIcons}
+                  />
                 )}
 
                 {activeTab === 'sample-data' && (
