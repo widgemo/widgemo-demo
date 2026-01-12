@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaRandom, FaBook } from 'react-icons/fa';
+import { FaRandom, FaBook, FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
-import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { JsonConfigTab } from './sandbox/JsonConfigTab';
 import { ThemingTab } from './sandbox/ThemingTab';
@@ -132,10 +131,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   // Icons state
   const [iconLibrary, setIconLibrary] = useState<'none' | 'react-icons' | 'lucide' | 'heroicons'>('none');
-  const [testIconName, setTestIconName] = useState('FaStar');
-  const [testIconSize, setTestIconSize] = useState(16);
-  const [testIconClassName, setTestIconClassName] = useState('');
-  const [customRenderIcon, setCustomRenderIcon] = useState('');
 
   // Handle navigation to complex type sections
   const navigateToSection = useCallback((sectionName: string) => {
@@ -191,16 +186,43 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   // Current icon renderer based on icons tab settings
   const currentIconRenderer = useMemo(() => {
     if (iconLibrary === 'none') {
-      return fontAwesomeRenderIcon; // or a default inline SVG renderer
+      return undefined; // Let Widgemo use its default renderIcon
     }
     if (iconLibrary === 'react-icons') {
-      // For demo purposes, return a mock renderer
-      return ({ name, size = 16, className, color }: { name: string; size?: number; className?: string; color?: string }) => {
-        // This would normally import and render from react-icons
-        return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⭐</span>;
+      // Create a renderIcon function that uses react-icons
+      return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
+        // Map common icon names to react-icons components
+        const iconMap: Record<string, React.ComponentType<any>> = {
+          'copy': FaCopy,
+          'view': FaEye,
+          'eye': FaEye,
+          'eye-slash': FaEyeSlash,
+          'table': FaTable,
+          'grid': FaTh,
+          'chart-bar': FaChartBar,
+          'chart-line': FaChartLine,
+          'chart-pie': FaChartPie,
+          'settings': FaCog,
+          'refresh': FaSync,
+          'sync': FaSync,
+          'plus': FaPlus,
+          'add': FaPlus,
+          'chevron-right': FaChevronRight,
+          'chevron-down': FaChevronDown,
+          'ellipsis-vertical': FaEllipsisV,
+        };
+        
+        const IconComponent = iconMap[name];
+        if (IconComponent) {
+          return <IconComponent size={size} className={className} color={color} />;
+        } else {
+          // Fallback to a generic icon or default
+          return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⚠️</span>;
+        }
       };
     }
-    return fontAwesomeRenderIcon;
+    // For other libraries (coming soon), fall back to undefined
+    return undefined;
   }, [iconLibrary]);
 
   // Generate random dataset
@@ -777,27 +799,6 @@ export default App;`
     setIconLibrary(library);
   }, []);
 
-  const handleTestIconNameChange = useCallback((name: string) => {
-    setTestIconName(name);
-  }, []);
-
-  const handleTestIconSizeChange = useCallback((size: number) => {
-    setTestIconSize(size);
-  }, []);
-
-  const handleTestIconClassNameChange = useCallback((className: string) => {
-    setTestIconClassName(className);
-  }, []);
-
-  const handleCustomRenderIconChange = useCallback((code: string) => {
-    setCustomRenderIcon(code);
-  }, []);
-
-  const handleApplyIcons = useCallback(() => {
-    setExportStatus('Icon settings applied to preview!');
-    setTimeout(() => setExportStatus(null), 3000);
-  }, []);
-
   // Sample Data handlers
   const handleJsonEditorTextChange = useCallback((text: string) => {
     setJsonEditorText(text);
@@ -992,15 +993,6 @@ export default App;`
                   <IconsTab
                     iconLibrary={iconLibrary}
                     onIconLibraryChange={handleIconLibraryChange}
-                    testIconName={testIconName}
-                    onTestIconNameChange={handleTestIconNameChange}
-                    testIconSize={testIconSize}
-                    onTestIconSizeChange={handleTestIconSizeChange}
-                    testIconClassName={testIconClassName}
-                    onTestIconClassNameChange={handleTestIconClassNameChange}
-                    customRenderIcon={customRenderIcon}
-                    onCustomRenderIconChange={handleCustomRenderIconChange}
-                    onApplyIcons={handleApplyIcons}
                   />
                 )}
 
