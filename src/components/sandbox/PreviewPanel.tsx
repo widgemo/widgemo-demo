@@ -39,7 +39,7 @@ interface PreviewPanelProps {
   appliedAutoContrast?: boolean;
   appliedContrastAmount?: number;
   customLoadingComponent?: () => React.ReactElement;
-  customErrorComponent?: (error: string) => React.ReactElement;
+  customErrorComponent?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
@@ -144,9 +144,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           baseColor={getThemeBackgroundColor(currentTheme)}
           renderIcon={currentIconRenderer}
           {...((appliedLoading || customLoadingComponent) && { loading: appliedLoading || !!customLoadingComponent })}
-          {...((appliedError || customErrorComponent) && { error: appliedError || (customErrorComponent ? 'Custom error' : '') })}
+          {...(appliedError && { error: appliedError })}
           {...(customLoadingComponent && { loadingComponent: customLoadingComponent })}
-          {...(customErrorComponent && { errorComponent: customErrorComponent })}
+          {...(customErrorComponent && { customError: customErrorComponent })}
           {...(applyAdvancedProps && {
             ...(Object.keys(appliedOverrides || {}).length > 0 && { overrides: appliedOverrides }),
             ...(appliedClassName && { className: appliedClassName }),
