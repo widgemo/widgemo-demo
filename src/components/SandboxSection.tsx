@@ -980,7 +980,6 @@ export default App;`
                     currentData={customData}
                     jsonEditorText={jsonEditorText}
                     onJsonEditorTextChange={handleJsonEditorTextChange}
-                    entityLabel={entityLabel}
                     entityLabelPlural={entityLabelPlural}
                     onGenerateClick={handleGenerateClick}
                     onFileUpload={handleSampleDataFileUpload}

@@ -9,8 +9,6 @@ interface SampleDataTabProps {
   jsonEditorText: string;
   /** Callback when JSON editor text changes */
   onJsonEditorTextChange: (text: string) => void;
-  /** Current entity label (singular) */
-  entityLabel: string;
   /** Current entity label (plural) */
   entityLabelPlural: string;
   /** Callback when generate button is clicked */
@@ -48,7 +46,6 @@ export const SampleDataTab: React.FC<SampleDataTabProps> = ({
   currentData,
   jsonEditorText,
   onJsonEditorTextChange,
-  entityLabel,
   entityLabelPlural,
   onGenerateClick,
   onFileUpload,
