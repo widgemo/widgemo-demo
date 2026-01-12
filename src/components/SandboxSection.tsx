@@ -2,14 +2,13 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
-import { Widgemo } from 'widgemo-core';
+import { generatePalette } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
-import { generatePalette, applyThemeToElement } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
-import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
-import { AppliedConfig } from './AppliedConfig';
+import { PreviewPanel } from './sandbox/PreviewPanel';
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -565,7 +564,6 @@ export default App;`
   }, [initialData]);
 
   const lastAppliedThemeRef = useRef(currentTheme);
-  const previewRef = useRef<HTMLDivElement>(null);
 
   // Update JSON editor and apply changes when theme changes
   useEffect(() => {
@@ -600,13 +598,6 @@ export default App;`
       }
     }
   }, [currentTheme, configJson, onConfigChange]);
-
-  // Apply custom theme to preview container
-  useEffect(() => {
-    if (previewRef.current && currentSandboxTheme) {
-      applyThemeToElement(previewRef.current, currentSandboxTheme);
-    }
-  }, [currentSandboxTheme]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
@@ -1466,100 +1457,32 @@ export default App;`
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={65} minSize={30}>
-              <div className="p-4 h-100">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="mb-0">Live Preview</h5>
-                  <div className="d-flex align-items-center gap-3">
-                    <Form.Check
-                      type="checkbox"
-                      label="Auto width"
-                      checked={isAutoWidth}
-                      onChange={(e) => setIsAutoWidth(e.target.checked)}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Auto height"
-                      checked={isAutoHeight}
-                      onChange={(e) => setIsAutoHeight(e.target.checked)}
-                    />
-                    <div className="d-flex gap-2 ms-3">
-                      {!isAutoWidth && (
-                        <div className="d-flex align-items-center gap-2">
-                          <Form.Label className="mb-0" style={{ width: '80px' }}>Width (px)</Form.Label>
-                          <Form.Control
-                            type="number"
-                            value={width}
-                            onChange={(e) => setWidth(Number(e.target.value))}
-                            min="100"
-                            max="1200"
-                            size="sm"
-                            style={{width: '70px'}}
-                          />
-                        </div>
-                      )}
-                      {!isAutoHeight && (
-                        <div className="d-flex align-items-center gap-2">
-                          <Form.Label className="mb-0" style={{ width: '80px' }}>Height (px)</Form.Label>
-                          <Form.Control
-                            type="number"
-                            value={height}
-                            onChange={(e) => setHeight(Number(e.target.value))}
-                            min="100"
-                            max="800"
-                            size="sm"
-                            style={{width: '70px'}}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div 
-                  ref={previewRef}
-                  style={{
-                    ...(isAutoHeight ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
-                    overflow: 'auto',
-                    padding: '8px',
-                    width: isAutoWidth ? 'auto' : `${width}px`
-                  }}
-                >
-                  <Widgemo
-                    config={config}
-                    adapters={dynamicAdapters}
-                    showConfigDetails={showConfigDetails}
-                    baseColor={getThemeBackgroundColor(currentTheme)}
-                    renderIcon={currentIconRenderer}
-                    {...(applyAdvancedProps && {
-                      ...(Object.keys(appliedOverrides).length > 0 && { overrides: appliedOverrides }),
-                      ...(appliedClassName && { className: appliedClassName }),
-                      ...(appliedStyleJson.trim() && { style: JSON.parse(appliedStyleJson) }),
-                      ...(appliedLoading && { loading: appliedLoading }),
-                      ...(appliedError && { error: appliedError }),
-                      ...(appliedBaseColor && { baseColor: appliedBaseColor }),
-                      ...(appliedOverrideBackground && { overrideBackground: appliedOverrideBackground }),
-                      ...(appliedAutoContrast !== true && { autoContrast: appliedAutoContrast }),
-                      ...(Math.abs(appliedContrastAmount - 0.05) > 0.001 && { contrastAmount: appliedContrastAmount }),
-                    })}
-                  />
-                </div>
-                <AppliedConfig
-                  config={config}
-                  adapters={dynamicAdapters}
-                  showConfigDetails={showConfigDetails}
-                  baseColor={getThemeBackgroundColor(currentTheme)}
-                  renderIcon={currentIconRenderer}
-                  overrides={applyAdvancedProps && Object.keys(appliedOverrides).length > 0 ? appliedOverrides : undefined}
-                  className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
-                  style={applyAdvancedProps && appliedStyleJson.trim() ? JSON.parse(appliedStyleJson) : undefined}
-                  loading={applyAdvancedProps ? appliedLoading : undefined}
-                  error={applyAdvancedProps ? appliedError : undefined}
-                  autoContrast={applyAdvancedProps && appliedAutoContrast !== true ? appliedAutoContrast : undefined}
-                  contrastAmount={applyAdvancedProps && Math.abs(appliedContrastAmount - 0.05) > 0.001 ? appliedContrastAmount : undefined}
-                  overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}
-                  currentSandboxTheme={currentSandboxTheme}
-                  currentIconRenderer={currentIconRenderer}
-                />
-              </div>
+              <PreviewPanel
+                config={config}
+                adapters={dynamicAdapters}
+                showConfigDetails={showConfigDetails}
+                currentTheme={currentTheme}
+                currentSandboxTheme={currentSandboxTheme}
+                currentIconRenderer={currentIconRenderer}
+                width={width}
+                height={height}
+                isAutoWidth={isAutoWidth}
+                isAutoHeight={isAutoHeight}
+                onWidthChange={setWidth}
+                onHeightChange={setHeight}
+                onAutoWidthChange={setIsAutoWidth}
+                onAutoHeightChange={setIsAutoHeight}
+                applyAdvancedProps={applyAdvancedProps}
+                appliedOverrides={appliedOverrides}
+                appliedClassName={appliedClassName}
+                appliedStyleJson={appliedStyleJson}
+                appliedLoading={appliedLoading}
+                appliedError={appliedError}
+                appliedBaseColor={appliedBaseColor}
+                appliedOverrideBackground={appliedOverrideBackground}
+                appliedAutoContrast={appliedAutoContrast}
+                appliedContrastAmount={appliedContrastAmount}
+              />
             </Panel>
           </Group>
         </Card.Body>
