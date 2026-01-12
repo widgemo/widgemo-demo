@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Button, Card, Dropdown, Alert, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaDownload, FaUpload, FaRandom, FaExternalLinkAlt, FaBook, FaCheck, FaUndo } from 'react-icons/fa';
 import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
+import { generatePalette, applyThemeToElement } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
@@ -76,6 +77,19 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAutoWidth, setIsAutoWidth] = useState<boolean>(true);
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
 
+  // Theming state
+  const [primaryColor, setPrimaryColor] = useState('#0066cc');
+  const [useThemeDefaults, setUseThemeDefaults] = useState(true);
+  const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Icons state
+  const [iconLibrary, setIconLibrary] = useState<'none' | 'react-icons' | 'lucide' | 'heroicons'>('none');
+  const [testIconName, setTestIconName] = useState('FaStar');
+  const [testIconSize, setTestIconSize] = useState(16);
+  const [testIconClassName, setTestIconClassName] = useState('');
+  const [customRenderIcon, setCustomRenderIcon] = useState('');
+
   // Handle navigation to complex type sections
   const navigateToSection = useCallback((sectionName: string) => {
     setCurrentReferenceSection(sectionName);
@@ -114,6 +128,33 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [recordCount, setRecordCount] = useState(10);
   const [adjustConfig, setAdjustConfig] = useState(false);
   const [customEndpoint, setCustomEndpoint] = useState('');
+
+  // Current theme based on theming tab settings
+  const currentSandboxTheme = useMemo(() => {
+    if (useThemeDefaults) {
+      return {};
+    }
+    return {
+      primary: primaryColor,
+      dark: darkMode,
+      ...customTheme
+    };
+  }, [useThemeDefaults, primaryColor, darkMode, customTheme]);
+
+  // Current icon renderer based on icons tab settings
+  const currentIconRenderer = useMemo(() => {
+    if (iconLibrary === 'none') {
+      return fontAwesomeRenderIcon; // or a default inline SVG renderer
+    }
+    if (iconLibrary === 'react-icons') {
+      // For demo purposes, return a mock renderer
+      return ({ name: _name, size = 16, className, color }: { name: string; size?: number; className?: string; color?: string }) => {
+        // This would normally import and render from react-icons
+        return <span className={className} style={{ fontSize: `${size}px`, color }}>⭐</span>;
+      };
+    }
+    return fontAwesomeRenderIcon;
+  }, [iconLibrary]);
 
   // Generate random dataset
   const generateRandomData = useCallback(async (type: string, count: number, shouldAdjustConfig: boolean) => {
@@ -523,6 +564,7 @@ export default App;`
   }, [initialData]);
 
   const lastAppliedThemeRef = useRef(currentTheme);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   // Update JSON editor and apply changes when theme changes
   useEffect(() => {
@@ -557,6 +599,13 @@ export default App;`
       }
     }
   }, [currentTheme, configJson, onConfigChange]);
+
+  // Apply custom theme to preview container
+  useEffect(() => {
+    if (previewRef.current && currentSandboxTheme) {
+      applyThemeToElement(previewRef.current, currentSandboxTheme);
+    }
+  }, [currentSandboxTheme]);
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     const themedConfig = mergeThemeIntoConfig(presetConfig, currentTheme);
@@ -637,6 +686,20 @@ export default App;`
                       className="rounded-0"
                     >
                       Advanced Properties
+                    </Button>
+                    <Button
+                      variant={activeTab === 'theming' ? 'primary' : 'outline-primary'}
+                      onClick={() => setActiveTab('theming')}
+                      className="rounded-0"
+                    >
+                      Theming
+                    </Button>
+                    <Button
+                      variant={activeTab === 'icons' ? 'primary' : 'outline-primary'}
+                      onClick={() => setActiveTab('icons')}
+                      className="rounded-0"
+                    >
+                      Icons
                     </Button>
                     <Button
                       variant={activeTab === 'sample-data' ? 'primary' : 'outline-primary'}
@@ -928,6 +991,391 @@ export default App;`
                   </div>
                 )}
 
+                {activeTab === 'theming' && (
+                  <div className="d-flex flex-column h-100">
+                    <div className="flex-grow-1 overflow-auto">
+                      <div className="row g-3">
+                        <div className="col-12">
+                          <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h6 className="mb-0">Theme Configuration</h6>
+                            <Form.Check
+                              type="switch"
+                              label="Use Widgemo Defaults"
+                              checked={useThemeDefaults}
+                              onChange={(e) => setUseThemeDefaults(e.target.checked)}
+                            />
+                          </div>
+                        </div>
+
+                        {!useThemeDefaults && (
+                          <>
+                            <div className="col-md-6">
+                              <Form.Label className="small fw-bold">Primary Color</Form.Label>
+                              <div className="d-flex gap-2">
+                                <Form.Control
+                                  type="color"
+                                  value={primaryColor}
+                                  onChange={(e) => setPrimaryColor(e.target.value)}
+                                  style={{ width: '60px' }}
+                                />
+                                <Form.Control
+                                  type="text"
+                                  size="sm"
+                                  value={primaryColor}
+                                  onChange={(e) => setPrimaryColor(e.target.value)}
+                                  placeholder="#0066cc"
+                                  className="flex-grow-1"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <Form.Label className="small fw-bold">Dark Mode</Form.Label>
+                              <Form.Check
+                                type="switch"
+                                checked={darkMode}
+                                onChange={(e) => setDarkMode(e.target.checked)}
+                                label={darkMode ? 'Enabled' : 'Disabled'}
+                              />
+                            </div>
+
+                            <div className="col-12">
+                              <Form.Label className="small fw-bold">Custom Theme Properties</Form.Label>
+                              <div className="row g-2">
+                                <div className="col-md-6">
+                                  <Form.Control
+                                    type="text"
+                                    size="sm"
+                                    placeholder="Border Radius (e.g., 8px)"
+                                    value={customTheme.borderRadius || ''}
+                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, borderRadius: e.target.value }))}
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <Form.Control
+                                    type="text"
+                                    size="sm"
+                                    placeholder="Spacing (e.g., 16px)"
+                                    value={customTheme.spacing || ''}
+                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, spacing: e.target.value }))}
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <Form.Control
+                                    type="text"
+                                    size="sm"
+                                    placeholder="Font Family"
+                                    value={customTheme.fontFamily || ''}
+                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, fontFamily: e.target.value }))}
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <Form.Control
+                                    type="text"
+                                    size="sm"
+                                    placeholder="Font Size (e.g., 14px)"
+                                    value={customTheme.fontSize || ''}
+                                    onChange={(e) => setCustomTheme(prev => ({ ...prev, fontSize: e.target.value }))}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        <div className="col-12">
+                          <Form.Label className="small fw-bold">Generated Palette Preview</Form.Label>
+                          <div className="row g-2">
+                            {(() => {
+                              const palette = useThemeDefaults 
+                                ? generatePalette('#0066cc', { dark: false })
+                                : generatePalette(primaryColor, { dark: darkMode });
+                              
+                              return (
+                                <>
+                                  <div className="col-md-4">
+                                    <div className="border rounded p-2 text-center">
+                                      <div 
+                                        className="rounded mb-1" 
+                                        style={{ 
+                                          height: '40px', 
+                                          backgroundColor: palette.primary,
+                                          color: palette.text,
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '12px',
+                                          fontWeight: 'bold'
+                                        }}
+                                      >
+                                        Primary
+                                      </div>
+                                      <small className="text-muted d-block">{palette.primary}</small>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="border rounded p-2 text-center">
+                                      <div 
+                                        className="rounded mb-1" 
+                                        style={{ 
+                                          height: '40px', 
+                                          backgroundColor: palette.primaryLight,
+                                          color: '#000',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '12px'
+                                        }}
+                                      >
+                                        Light
+                                      </div>
+                                      <small className="text-muted d-block">{palette.primaryLight}</small>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="border rounded p-2 text-center">
+                                      <div 
+                                        className="rounded mb-1" 
+                                        style={{ 
+                                          height: '40px', 
+                                          backgroundColor: palette.primaryDark,
+                                          color: '#fff',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '12px'
+                                        }}
+                                      >
+                                        Dark
+                                      </div>
+                                      <small className="text-muted d-block">{palette.primaryDark}</small>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="border rounded p-2 text-center">
+                                      <div 
+                                        className="rounded mb-1" 
+                                        style={{ 
+                                          height: '40px', 
+                                          backgroundColor: palette.accent,
+                                          color: '#000',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '12px'
+                                        }}
+                                      >
+                                        Accent
+                                      </div>
+                                      <small className="text-muted d-block">{palette.accent}</small>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="border rounded p-2 text-center">
+                                      <div 
+                                        className="rounded mb-1" 
+                                        style={{ 
+                                          height: '40px', 
+                                          backgroundColor: palette.background,
+                                          color: palette.text === '#ffffff' ? '#000' : '#fff',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          fontSize: '12px'
+                                        }}
+                                      >
+                                        Background
+                                      </div>
+                                      <small className="text-muted d-block">{palette.background}</small>
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            })()}
+                          </div>
+                        </div>
+
+                        <div className="col-12">
+                          <Alert variant="info" className="py-2 small">
+                            <strong>Theme Integration:</strong> Changes here will be applied to the live preview on the right.
+                            The palette is automatically generated from your primary color using WCAG-compliant contrast calculations.
+                          </Alert>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 mt-3">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => {
+                          if (useThemeDefaults) {
+                            setCustomTheme({});
+                            setPrimaryColor('#0066cc');
+                            setDarkMode(false);
+                          }
+                          setExportStatus('Theme applied to preview!');
+                          setTimeout(() => setExportStatus(null), 3000);
+                        }}
+                      >
+                        <FaCheck className="me-1" />
+                        Apply Theme
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'icons' && (
+                  <div className="d-flex flex-column h-100">
+                    <div className="flex-grow-1 overflow-auto">
+                      <div className="row g-3">
+                        <div className="col-12">
+                          <Form.Label className="small fw-bold">Icon Library</Form.Label>
+                          <Form.Select
+                            size="sm"
+                            value={iconLibrary}
+                            onChange={(e) => setIconLibrary(e.target.value as typeof iconLibrary)}
+                          >
+                            <option value="none">None (Widgemo Defaults)</option>
+                            <option value="react-icons">React Icons</option>
+                            <option value="lucide">Lucide (Coming Soon)</option>
+                            <option value="heroicons">Heroicons (Coming Soon)</option>
+                          </Form.Select>
+                        </div>
+
+                        {iconLibrary === 'none' && (
+                          <div className="col-12">
+                            <Alert variant="info" className="py-2 small">
+                              <strong>Widgemo Defaults:</strong> Uses inline SVG icons or no icons. Perfect for zero-dependency setups.
+                            </Alert>
+                          </div>
+                        )}
+
+                        {iconLibrary === 'react-icons' && (
+                          <>
+                            <div className="col-md-6">
+                              <Form.Label className="small fw-bold">Icon Name</Form.Label>
+                              <Form.Control
+                                type="text"
+                                size="sm"
+                                value={testIconName}
+                                onChange={(e) => setTestIconName(e.target.value)}
+                                placeholder="FaStar, MdHome, etc."
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Form.Label className="small fw-bold">Size</Form.Label>
+                              <Form.Control
+                                type="number"
+                                size="sm"
+                                value={testIconSize}
+                                onChange={(e) => setTestIconSize(Number(e.target.value))}
+                                min="8"
+                                max="48"
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <Form.Label className="small fw-bold">Class Name</Form.Label>
+                              <Form.Control
+                                type="text"
+                                size="sm"
+                                value={testIconClassName}
+                                onChange={(e) => setTestIconClassName(e.target.value)}
+                                placeholder="text-primary"
+                              />
+                            </div>
+
+                            <div className="col-12">
+                              <Form.Label className="small fw-bold">Icon Preview</Form.Label>
+                              <div className="border rounded p-3 text-center">
+                                {(() => {
+                                  try {
+                                    // Dynamic import of react-icons
+                                    const iconName = testIconName.trim();
+                                    if (iconName) {
+                                      // This is a simplified version - in real implementation you'd need to handle dynamic imports
+                                      return (
+                                        <div className="d-flex align-items-center justify-content-center gap-2">
+                                          <span style={{ fontSize: `${testIconSize}px` }}>⭐</span>
+                                          <small className="text-muted">Preview: {iconName} ({testIconSize}px)</small>
+                                        </div>
+                                      );
+                                    }
+                                    return <small className="text-muted">Enter an icon name to preview</small>;
+                                  } catch (error) {
+                                    return <small className="text-danger">Invalid icon name</small>;
+                                  }
+                                })()}
+                              </div>
+                            </div>
+
+                            <div className="col-12">
+                              <Form.Label className="small fw-bold">Custom renderIcon Function</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                size="sm"
+                                rows={3}
+                                value={customRenderIcon}
+                                onChange={(e) => setCustomRenderIcon(e.target.value)}
+                                placeholder={`(iconName, props) => {
+  // Your custom icon rendering logic
+  return <YourIconComponent {...props} />;
+}`}
+                                style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
+                              />
+                            </div>
+                          </>
+                        )}
+
+                        {(iconLibrary === 'lucide' || iconLibrary === 'heroicons') && (
+                          <div className="col-12">
+                            <Alert variant="warning" className="py-2 small">
+                              <strong>Coming Soon:</strong> {iconLibrary} integration will be available in a future update.
+                              For now, use React Icons or Widgemo defaults.
+                            </Alert>
+                          </div>
+                        )}
+
+                        <div className="col-12">
+                          <Form.Label className="small fw-bold">Example Integration</Form.Label>
+                          <div className="border rounded p-3">
+                            <small className="text-muted d-block mb-2">Mini Widgemo preview with current icon settings:</small>
+                            <div style={{ 
+                              border: '1px solid #dee2e6', 
+                              borderRadius: '4px', 
+                              padding: '8px',
+                              backgroundColor: '#f8f9fa',
+                              fontSize: '12px'
+                            }}>
+                              <div className="d-flex align-items-center gap-2 mb-1">
+                                <span>📊</span>
+                                <span className="fw-bold">Sample Data Table</span>
+                                <span>⚙️</span>
+                              </div>
+                              <div className="small text-muted">
+                                {iconLibrary === 'none' ? 'Using default inline SVGs' : 
+                                 iconLibrary === 'react-icons' ? `Using ${testIconName} from React Icons` : 
+                                 'Custom icon renderer'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 mt-3">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => {
+                          setExportStatus('Icon settings applied to preview!');
+                          setTimeout(() => setExportStatus(null), 3000);
+                        }}
+                      >
+                        <FaCheck className="me-1" />
+                        Apply Icons
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
                 {activeTab === 'sample-data' && (
                   <div className="d-flex flex-column h-100">
                     <div className="flex-shrink-0">
@@ -1065,18 +1513,21 @@ export default App;`
                     </div>
                   </div>
                 </div>
-                <div style={{
-                  ...(isAutoHeight ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
-                  overflow: 'auto',
-                  padding: '8px',
-                  width: isAutoWidth ? 'auto' : `${width}px`
-                }}>
+                <div 
+                  ref={previewRef}
+                  style={{
+                    ...(isAutoHeight ? { maxHeight: 'calc(100vh - 300px)' } : { height: `${height}px` }),
+                    overflow: 'auto',
+                    padding: '8px',
+                    width: isAutoWidth ? 'auto' : `${width}px`
+                  }}
+                >
                   <Widgemo
                     config={config}
                     adapters={dynamicAdapters}
                     showConfigDetails={showConfigDetails}
                     baseColor={getThemeBackgroundColor(currentTheme)}
-                    renderIcon={fontAwesomeRenderIcon}
+                    renderIcon={currentIconRenderer}
                     {...(applyAdvancedProps && {
                       ...(Object.keys(appliedOverrides).length > 0 && { overrides: appliedOverrides }),
                       ...(appliedClassName && { className: appliedClassName }),
