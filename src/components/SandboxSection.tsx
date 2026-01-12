@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { Button, Card, Alert, Form, Modal } from 'react-bootstrap';
+import { Button, Card, Form, Modal } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaRandom, FaBook, FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
@@ -9,12 +9,7 @@ import { galleryConfigs } from '../data/sampleData';
 import { mergeThemeIntoConfig } from '../utils/themeUtils';
 import { presetConfigs, widgemoConfigProperties } from '../data/configReference';
 import { PreviewPanel } from './sandbox/PreviewPanel';
-import { JsonConfigTab } from './sandbox/JsonConfigTab';
-import { ThemingTab } from './sandbox/ThemingTab';
-import { PropsOverridesTab } from './sandbox/PropsOverridesTab';
-import { IconsTab } from './sandbox/IconsTab';
-import { SampleDataTab } from './sandbox/SampleDataTab';
-import { LoadingStatesTab } from './sandbox/LoadingStatesTab';
+import { LeftPanel } from './sandbox/LeftPanel';
 
 // Custom loading component that matches widgemo-core's expected interface
 const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
@@ -184,6 +179,14 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       ...customTheme
     };
   }, [useThemeDefaults, primaryColor, darkMode, customTheme]);
+
+  // Transform galleryConfigs to PresetOption format for JsonConfigTab
+  const presetOptions = useMemo(() => {
+    return galleryConfigs.map(config => ({
+      name: config.name,
+      config: config.config
+    }));
+  }, []);
 
   // Current icon renderer based on icons tab settings
   const currentIconRenderer = useMemo(() => {
@@ -940,155 +943,81 @@ export default App;`
         <Card.Body className="p-0 theme-aware-card h-100 d-flex flex-column">
           <Group className="h-100">
             <Panel defaultSize={35} minSize={30}>
-              <div className="p-4 h-100 d-flex flex-column">
-                {/* Export Status */}
-                {exportStatus && (
-                  <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
-                    {exportStatus}
-                  </Alert>
-                )}
-
-                <div className="mb-3">
-                  <div className="btn-group w-100" role="group">
-                    <Button
-                      variant={activeTab === 'config-editor' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('config-editor')}
-                      className="rounded-0"
-                    >
-                      Config Editor
-                    </Button>
-                    <Button
-                      variant={activeTab === 'advanced-properties' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('advanced-properties')}
-                      className="rounded-0"
-                    >
-                      Advanced Properties
-                    </Button>
-                    <Button
-                      variant={activeTab === 'theming' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('theming')}
-                      className="rounded-0"
-                    >
-                      Theming
-                    </Button>
-                    <Button
-                      variant={activeTab === 'icons' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('icons')}
-                      className="rounded-0"
-                    >
-                      Icons
-                    </Button>
-                    <Button
-                      variant={activeTab === 'sample-data' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('sample-data')}
-                      className="rounded-0"
-                    >
-                      Sample Data
-                    </Button>
-                    <Button
-                      variant={activeTab === 'loading-states' ? 'primary' : 'outline-primary'}
-                      onClick={() => setActiveTab('loading-states')}
-                      className="rounded-0"
-                    >
-                      Loading & States
-                    </Button>
-                  </div>
-                </div>
-
-                {activeTab === 'config-editor' && (
-                  <JsonConfigTab
-                    currentJson={configJson}
-                    onJsonChange={(newJson) => {
-                      setConfigJson(newJson);
-                      if (jsonError) {
-                        setJsonError(null);
-                      }
-                    }}
-                    onApply={applyConfig}
-                    presets={galleryConfigs}
-                    onLoadPreset={loadPreset}
-                    jsonError={jsonError}
-                    onShowReference={() => setShowReferenceModal(true)}
-                    onShowCodeSandbox={() => setShowCodeSandboxModal(true)}
-                    onCopyToClipboard={copyToClipboard}
-                    onDownloadConfig={downloadConfig}
-                  />
-                )}
-
-                {activeTab === 'advanced-properties' && (
-                  <PropsOverridesTab
-                    overridesJson={overridesJson}
-                    onOverridesJsonChange={handleOverridesJsonChange}
-                    className={className}
-                    onClassNameChange={handleClassNameChange}
-                    styleJson={styleJson}
-                    onStyleJsonChange={handleStyleJsonChange}
-                    overrideBaseColorEnabled={overrideBaseColorEnabled}
-                    onOverrideBaseColorEnabledChange={handleOverrideBaseColorEnabledChange}
-                    baseColor={baseColor}
-                    onBaseColorChange={handleBaseColorChange}
-                    overrideBackgroundEnabled={overrideBackgroundEnabled}
-                    onOverrideBackgroundEnabledChange={handleOverrideBackgroundEnabledChange}
-                    overrideBackground={overrideBackground}
-                    onOverrideBackgroundChange={handleOverrideBackgroundChange}
-                    autoContrast={autoContrast}
-                    onAutoContrastChange={handleAutoContrastChange}
-                    contrastAmount={contrastAmount}
-                    onContrastAmountChange={handleContrastAmountChange}
-                    showConfigDetails={showConfigDetails}
-                    onShowConfigDetailsChange={handleShowConfigDetailsChange}
-                    onApplyAdvancedProperties={handleApplyAdvancedProperties}
-                    onResetAll={handleResetAll}
-                  />
-                )}
-
-                {activeTab === 'theming' && (
-                  <ThemingTab
-                    primaryColor={primaryColor}
-                    useThemeDefaults={useThemeDefaults}
-                    customTheme={customTheme}
-                    darkMode={darkMode}
-                    onPrimaryColorChange={handlePrimaryColorChange}
-                    onUseDefaultsChange={handleUseDefaultsChange}
-                    onCustomThemeChange={handleCustomThemeChange}
-                    onDarkModeChange={handleDarkModeChange}
-                    onApplyTheme={handleApplyTheme}
-                  />
-                )}
-
-                {activeTab === 'icons' && (
-                  <IconsTab
-                    iconLibrary={iconLibrary}
-                    onIconLibraryChange={handleIconLibraryChange}
-                  />
-                )}
-
-                {activeTab === 'sample-data' && (
-                  <SampleDataTab
-                    currentData={customData}
-                    jsonEditorText={jsonEditorText}
-                    onJsonEditorTextChange={handleJsonEditorTextChange}
-                    entityLabelPlural={entityLabelPlural}
-                    onGenerateClick={handleGenerateClick}
-                    onFileUpload={handleSampleDataFileUpload}
-                    onSaveChanges={handleSaveChanges}
-                  />
-                )}
-
-                {activeTab === 'loading-states' && (
-                  <LoadingStatesTab
-                    showLoading={loading}
-                    onShowLoadingChange={handleLoadingChange}
-                    errorMessage={error}
-                    onErrorMessageChange={handleErrorChange}
-                    onApplyChanges={handleApplyLoadingStates}
-                    useCustomLoading={useCustomLoading}
-                    onUseCustomLoadingChange={handleUseCustomLoadingChange}
-                    useCustomError={useCustomError}
-                    onUseCustomErrorChange={handleUseCustomErrorChange}
-                  />
-                )}
-              </div>
+              <LeftPanel
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                exportStatus={exportStatus}
+                // JsonConfigTab props
+                currentJson={configJson}
+                onJsonChange={(newJson) => {
+                  setConfigJson(newJson);
+                  if (jsonError) {
+                    setJsonError(null);
+                  }
+                }}
+                onApplyJson={applyConfig}
+                presets={presetOptions}
+                onLoadPreset={loadPreset}
+                jsonError={jsonError}
+                onShowReference={() => setShowReferenceModal(true)}
+                onShowCodeSandbox={() => setShowCodeSandboxModal(true)}
+                onCopyToClipboard={copyToClipboard}
+                onDownloadConfig={downloadConfig}
+                // PropsOverridesTab props
+                overridesJson={overridesJson}
+                onOverridesJsonChange={handleOverridesJsonChange}
+                className={className}
+                onClassNameChange={handleClassNameChange}
+                styleJson={styleJson}
+                onStyleJsonChange={handleStyleJsonChange}
+                overrideBaseColorEnabled={overrideBaseColorEnabled}
+                onOverrideBaseColorEnabledChange={handleOverrideBaseColorEnabledChange}
+                baseColor={baseColor}
+                onBaseColorChange={handleBaseColorChange}
+                overrideBackgroundEnabled={overrideBackgroundEnabled}
+                onOverrideBackgroundEnabledChange={handleOverrideBackgroundEnabledChange}
+                overrideBackground={overrideBackground}
+                onOverrideBackgroundChange={handleOverrideBackgroundChange}
+                autoContrast={autoContrast}
+                onAutoContrastChange={handleAutoContrastChange}
+                contrastAmount={contrastAmount}
+                onContrastAmountChange={handleContrastAmountChange}
+                showConfigDetails={showConfigDetails}
+                onShowConfigDetailsChange={handleShowConfigDetailsChange}
+                onApplyAdvancedProperties={handleApplyAdvancedProperties}
+                onResetAll={handleResetAll}
+                // ThemingTab props
+                primaryColor={primaryColor}
+                useThemeDefaults={useThemeDefaults}
+                customTheme={customTheme}
+                darkMode={darkMode}
+                onPrimaryColorChange={handlePrimaryColorChange}
+                onUseDefaultsChange={handleUseDefaultsChange}
+                onCustomThemeChange={handleCustomThemeChange}
+                onDarkModeChange={handleDarkModeChange}
+                onApplyTheme={handleApplyTheme}
+                // IconsTab props
+                iconLibrary={iconLibrary}
+                onIconLibraryChange={handleIconLibraryChange}
+                // SampleDataTab props
+                currentData={customData}
+                jsonEditorText={jsonEditorText}
+                onJsonEditorTextChange={handleJsonEditorTextChange}
+                entityLabelPlural={entityLabelPlural}
+                onGenerateClick={handleGenerateClick}
+                onFileUpload={handleSampleDataFileUpload}
+                onSaveChanges={handleSaveChanges}
+                // LoadingStatesTab props
+                showLoading={loading}
+                onShowLoadingChange={handleLoadingChange}
+                errorMessage={error}
+                onErrorMessageChange={handleErrorChange}
+                onApplyChanges={handleApplyLoadingStates}
+                useCustomLoading={useCustomLoading}
+                onUseCustomLoadingChange={handleUseCustomLoadingChange}
+                useCustomError={useCustomError}
+                onUseCustomErrorChange={handleUseCustomErrorChange}
+              />
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={65} minSize={30}>
