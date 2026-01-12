@@ -67,7 +67,6 @@ export interface LeftPanelProps {
   onPrimaryColorChange: (color: string) => void;
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   onDarkModeChange: (dark: boolean) => void;
-  onApplyTheme: () => void;
 
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
@@ -142,7 +141,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onPrimaryColorChange,
   onCustomThemeChange,
   onDarkModeChange,
-  onApplyTheme,
   // IconsTab props
   iconLibrary,
   onIconLibraryChange,
@@ -167,11 +165,11 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
 }) => {
   const tabs = [
     { id: 'config-editor', label: 'Config Editor' },
-    { id: 'advanced-properties', label: 'Advanced Properties' },
     { id: 'theming', label: 'Theming' },
     { id: 'icons', label: 'Icons' },
-    { id: 'sample-data', label: 'Sample Data' },
     { id: 'loading-states', label: 'Loading & States' },
+    { id: 'sample-data', label: 'Sample Data' },
+    { id: 'advanced-properties', label: 'Advanced Properties' },
   ];
 
   return (
@@ -256,7 +254,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             onPrimaryColorChange={onPrimaryColorChange}
             onCustomThemeChange={onCustomThemeChange}
             onDarkModeChange={onDarkModeChange}
-            onApplyTheme={onApplyTheme}
           />
         )}
 

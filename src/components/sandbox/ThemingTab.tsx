@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Form, Alert } from 'react-bootstrap';
-import { FaCheck } from 'react-icons/fa';
+import { Form, Alert } from 'react-bootstrap';
 import { generatePalette } from 'widgemo-core';
 import type { WidgemoTheme } from 'widgemo-core';
 
@@ -25,8 +24,6 @@ interface ThemingTabProps {
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   /** Callback when dark mode changes */
   onDarkModeChange: (dark: boolean) => void;
-  /** Callback when apply theme is clicked */
-  onApplyTheme: () => void;
 }
 
 /**
@@ -38,7 +35,6 @@ interface ThemingTabProps {
  * - Auto palette generation preview with color swatches
  * - Custom theme property editors (border radius, spacing, fonts) (Custom mode)
  * - Dark mode toggle (Custom mode)
- * - Apply theme button with feedback
  * - Live preview integration
  *
  * Future extensibility:
@@ -59,7 +55,6 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
   onPrimaryColorChange,
   onCustomThemeChange,
   onDarkModeChange,
-  onApplyTheme,
 }) => {
   const handleCustomThemeChange = (key: keyof WidgemoTheme, value: string) => {
     onCustomThemeChange({
@@ -342,17 +337,6 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
             </Alert>
           </div>
         </div>
-      </div>
-      <div className="flex-shrink-0 mt-3">
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={onApplyTheme}
-          aria-label="Apply theme changes to preview"
-        >
-          <FaCheck className="me-1" />
-          Apply Theme
-        </Button>
       </div>
     </div>
   );

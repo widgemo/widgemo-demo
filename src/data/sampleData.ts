@@ -70,7 +70,8 @@ export const galleryConfigs: Array<{
         ],
         actions: { create: true, edit: true, delete: true },
         header: { always: ['refresh', 'add'], onMenu: ['columnSelector', 'deletedToggle'] },
-        styling: { compact: true, shadow: true },
+        theme: { shadow: false },
+        styling: { compact: true },
         labels: { add: 'Add User' },
         collapsible: 'fixed',
       },
@@ -102,7 +103,7 @@ export const galleryConfigs: Array<{
             showItemCount: true,
             minColumnWidth: '200px',
             gap: '8px'
-          }, shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['add'] },
@@ -132,6 +133,7 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: false, dynamicBackground: false },
         styling: {
           grid: {
             columns: 3,
@@ -141,8 +143,7 @@ export const galleryConfigs: Array<{
             imageGrid: {
               masonry: false
             }
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -222,7 +223,8 @@ export const galleryConfigs: Array<{
           { name: 'department', label: 'Department', type: 'text' },
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
-        styling: { dynamicBackground: false, shadow: true },
+        theme: { dynamicBackground: false },
+        styling: {},
       },
       description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default',
       data: teaserSampleData
@@ -299,7 +301,8 @@ export const galleryConfigs: Array<{
             showLegend: true,
           },
         },
-        styling: { shadow: true },
+        theme: { shadow: true },
+        styling: {},
       },
       description: 'Line chart showing sales performance over time',
       data: [
@@ -333,13 +336,12 @@ export const galleryConfigs: Array<{
           { name: 'assignee', label: 'Assignee', type: 'text' },
         ],
         actions: { edit: true, delete: true },
+        theme: { shadow: true, dynamicBackground: false },
         styling: {
           board: {
             groupBy: 'status',
             swimlaneBy: 'priority',
           },
-          shadow: true,
-          dynamicBackground: false,
         },
         collapsible: 'fixed',
       },
@@ -373,6 +375,7 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: true },
         styling: {
           grid: {
             columns: 'auto',
@@ -381,8 +384,7 @@ export const galleryConfigs: Array<{
             imageGrid: {
               masonry: true
             }
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -411,6 +413,7 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: true },
         styling: {
           grid: {
             columns: 4,
@@ -419,8 +422,7 @@ export const galleryConfigs: Array<{
             imageGrid: {
               masonry: false // Fixed height grid
             }
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -448,6 +450,7 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: false },
         styling: {
           grid: {
             columns: 6,
@@ -457,7 +460,6 @@ export const galleryConfigs: Array<{
               masonry: false
             }
           },
-          shadow: false,
           compact: true
         },
         collapsible: 'fixed',
@@ -488,6 +490,7 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: true },
         styling: {
           grid: {
             columns: 2,
@@ -495,8 +498,7 @@ export const galleryConfigs: Array<{
             imageGrid: {
               masonry: true
             }
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -543,9 +545,9 @@ export const galleryConfigs: Array<{
             borderRadius: '8px',
             shadow: true,
             backgroundColor: 'rgba(255, 255, 255, 0.9)'
-          },
-          dynamicBackground: true
+          }
         },
+        theme: { dynamicBackground: true },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
       },
@@ -597,9 +599,9 @@ export const galleryConfigs: Array<{
             borderRadius: '12px',
             shadow: true,
             backgroundColor: '#ffffff'
-          },
-          dynamicBackground: false
+          }
         },
+        theme: { dynamicBackground: false },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
       },
@@ -634,7 +636,8 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
         },
-        styling: { compact: true, shadow: true },
+        theme: { shadow: true },
+        styling: { compact: true },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
       },
@@ -681,7 +684,8 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjxwYXRoIGQ9Im02MCA3MCAxMCAxMCAxMC0xMCIgc3Ryb2tlPSIjYWRiNWJkIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
         },
-        styling: { compact: true, shadow: true },
+        theme: { shadow: true },
+        styling: { compact: true },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
       },
@@ -716,11 +720,11 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiBy0iMjAiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
+        theme: { shadow: true },
         styling: {
           table: {
             // backgroundColor: 'rgba(255, 255, 255, 0.9)'
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -753,12 +757,12 @@ export const galleryConfigs: Array<{
           lazy: false,
           loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
         },
+        theme: { shadow: true },
         styling: {
           table: {
             cellBorder: true,
             borderColor: '#e9ecef'
-          },
-          shadow: true
+          }
         },
         collapsible: 'fixed',
         header: { always: ['refresh'] }
@@ -782,7 +786,8 @@ export const defaultSandboxConfig: WidgemoConfig = {
     { name: 'status', label: 'Active', type: 'boolean' },
   ],
   actions: { create: true, edit: true, delete: true },
-  styling: { shadow: true, showBorder: true },
+  theme: { shadow: true, showBorder: true },
+  styling: {},
 };
 
 // Teaser configurations with varying settings for each mode

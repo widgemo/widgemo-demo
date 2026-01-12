@@ -120,7 +120,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
 
   // Theming state
-  const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>('defaults');
+  const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>('config');
   const [primaryColor, setPrimaryColor] = useState('#0066cc');
   const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
   const [darkMode, setDarkMode] = useState(false);
@@ -390,16 +390,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const handleDarkModeChange = useCallback((dark: boolean) => {
     setDarkMode(dark);
   }, []);
-
-  const handleApplyTheme = useCallback(() => {
-    if (themeMode === 'defaults') {
-      setCustomTheme({});
-      setPrimaryColor('#0066cc');
-      setDarkMode(false);
-    }
-    setExportStatus('Theme applied to preview!');
-    setTimeout(() => setExportStatus(null), 3000);
-  }, [themeMode]);
 
   // Props & Overrides handlers
   const handleOverridesJsonChange = useCallback((value: string) => {
@@ -774,7 +764,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onPrimaryColorChange={handlePrimaryColorChange}
                 onCustomThemeChange={handleCustomThemeChange}
                 onDarkModeChange={handleDarkModeChange}
-                onApplyTheme={handleApplyTheme}
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}
