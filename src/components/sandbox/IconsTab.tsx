@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Alert, Card, Row, Col } from 'react-bootstrap';
-import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie, FaPencilAlt, FaTrash, FaTimes, FaChevronUp, FaChevronLeft, FaSearch, FaFilter, FaSort, FaColumns } from 'react-icons/fa';
-import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban } from 'react-icons/lu';
+import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie, FaPencilAlt, FaTrash, FaTimes, FaChevronUp, FaChevronLeft, FaSearch, FaFilter, FaSort, FaColumns, FaEllipsisH } from 'react-icons/fa';
+import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban, LuMoveHorizontal } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPresentationChartLine, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal, HiArrowUp, HiFilter } from 'react-icons/hi';
 import { defaultRenderIcon } from 'widgemo-core';
 
@@ -75,6 +75,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'board': FaColumns,
         'copy': FaCopy,
         'ellipsis-vertical': FaEllipsisV,
+        'ellipsis-horizontal': FaEllipsisH,
       };
       const IconComponent = iconMap[iconName];
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
@@ -113,6 +114,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'board': LuKanban,
         'copy': LuCopy,
         'ellipsis-vertical': LuEllipsisVertical,
+        'ellipsis-horizontal': LuMoveHorizontal,
       };
       const IconComponent = iconMap[iconName];
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
@@ -151,6 +153,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'board': HiViewGrid,
         'copy': HiClipboardCopy,
         'ellipsis-vertical': HiDotsVertical,
+        'ellipsis-horizontal': HiDotsHorizontal,
       };
       const IconComponent = iconMap[iconName];
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
@@ -186,6 +189,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'FaColumns': FaColumns,
         'FaCopy': FaCopy,
         'FaEllipsisV': FaEllipsisV,
+        'FaEllipsisH': FaEllipsisH,
       };
       const IconComponent = iconMap[libraryIconName];
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
@@ -215,6 +219,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'LuKanban': LuKanban,
         'LuCopy': LuCopy,
         'LuEllipsisVertical': LuEllipsisVertical,
+        'LuMoveHorizontal': LuMoveHorizontal,
       };
       const IconComponent = iconMap[libraryIconName];
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
@@ -283,6 +288,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
       { name: 'board', aliases: [], reactIcons: 'FaColumns', lucide: 'LuKanban', heroicons: 'HiViewGrid', suggested: false },
       { name: 'copy', aliases: [], reactIcons: 'FaCopy', lucide: 'LuCopy', heroicons: 'HiClipboardCopy', suggested: true },
       { name: 'ellipsis-vertical', aliases: [], reactIcons: 'FaEllipsisV', lucide: 'LuEllipsisVertical', heroicons: 'HiDotsVertical', suggested: true },
+      { name: 'ellipsis-horizontal', aliases: [], reactIcons: 'FaEllipsisH', lucide: 'LuMoveHorizontal', heroicons: 'HiDotsHorizontal', suggested: false },
     ];
 
     if (iconLibrary === 'none') {
