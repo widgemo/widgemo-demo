@@ -124,6 +124,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [primaryColor, setPrimaryColor] = useState('#0066cc');
   const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
   const [darkMode, setDarkMode] = useState(false);
+  const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
 
   // Icons state
   const [iconLibrary, setIconLibrary] = useState<'none' | 'react-icons' | 'lucide' | 'heroicons'>('none');
@@ -771,11 +772,13 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 primaryColor={primaryColor}
                 customTheme={customTheme}
                 darkMode={darkMode}
+                autoGeneratePalette={autoGeneratePalette}
                 configTheme={config.theme}
                 onThemeModeChange={handleThemeModeChange}
                 onPrimaryColorChange={handlePrimaryColorChange}
                 onCustomThemeChange={handleCustomThemeChange}
                 onDarkModeChange={handleDarkModeChange}
+                onAutoGeneratePaletteChange={setAutoGeneratePalette}
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}

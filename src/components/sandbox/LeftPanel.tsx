@@ -62,11 +62,13 @@ export interface LeftPanelProps {
   primaryColor: string;
   customTheme: Partial<WidgemoTheme>;
   darkMode: boolean;
+  autoGeneratePalette: boolean;
   configTheme?: Partial<WidgemoTheme>;
   onThemeModeChange: (mode: 'defaults' | 'config' | 'custom') => void;
   onPrimaryColorChange: (color: string) => void;
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   onDarkModeChange: (dark: boolean) => void;
+  onAutoGeneratePaletteChange: (auto: boolean) => void;
 
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
@@ -136,11 +138,13 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   primaryColor,
   customTheme,
   darkMode,
+  autoGeneratePalette,
   configTheme,
   onThemeModeChange,
   onPrimaryColorChange,
   onCustomThemeChange,
   onDarkModeChange,
+  onAutoGeneratePaletteChange,
   // IconsTab props
   iconLibrary,
   onIconLibraryChange,
@@ -265,11 +269,13 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             primaryColor={primaryColor}
             customTheme={customTheme}
             darkMode={darkMode}
+            autoGeneratePalette={autoGeneratePalette}
             configTheme={configTheme}
             onThemeModeChange={onThemeModeChange}
             onPrimaryColorChange={onPrimaryColorChange}
             onCustomThemeChange={onCustomThemeChange}
             onDarkModeChange={onDarkModeChange}
+            onAutoGeneratePaletteChange={onAutoGeneratePaletteChange}
           />
         )}
 

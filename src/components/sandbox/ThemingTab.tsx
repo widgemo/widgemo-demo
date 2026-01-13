@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Alert } from 'react-bootstrap';
+import { Form, Alert, Button } from 'react-bootstrap';
 import { generatePalette } from 'widgemo-core';
 import type { WidgemoTheme } from 'widgemo-core';
+import { defaultTheme } from 'widgemo-core';
 
 type ThemeMode = 'defaults' | 'config' | 'custom';
 
@@ -14,6 +15,8 @@ interface ThemingTabProps {
   customTheme: Partial<WidgemoTheme>;
   /** Whether dark mode is enabled (for custom mode) */
   darkMode: boolean;
+  /** Whether to auto-generate palette colors */
+  autoGeneratePalette: boolean;
   /** Current config theme (for display in config mode) */
   configTheme?: Partial<WidgemoTheme>;
   /** Callback when theme mode changes */
@@ -24,6 +27,8 @@ interface ThemingTabProps {
   onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
   /** Callback when dark mode changes */
   onDarkModeChange: (dark: boolean) => void;
+  /** Callback when auto-generate palette changes */
+  onAutoGeneratePaletteChange: (auto: boolean) => void;
 }
 
 /**
@@ -50,17 +55,26 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
   primaryColor,
   customTheme,
   darkMode,
+  autoGeneratePalette,
   configTheme,
   onThemeModeChange,
   onPrimaryColorChange,
   onCustomThemeChange,
   onDarkModeChange,
+  onAutoGeneratePaletteChange,
 }) => {
-  const handleCustomThemeChange = (key: keyof WidgemoTheme, value: string) => {
+  const handleCustomThemeChange = (key: keyof WidgemoTheme, value: string | boolean) => {
     onCustomThemeChange({
       ...customTheme,
       [key]: value || undefined
     });
+  };
+
+  const handleResetToDefaults = () => {
+    onCustomThemeChange({});
+    onPrimaryColorChange(defaultTheme.primary);
+    onDarkModeChange(defaultTheme.dark);
+    onAutoGeneratePaletteChange(true);
   };
 
   // Generate palette based on current mode
@@ -74,7 +88,27 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
           { dark: configTheme.dark || false }
         ) : generatePalette('#0066cc', { dark: false });
       case 'custom':
-        return generatePalette(primaryColor, { dark: darkMode });
+        if (autoGeneratePalette) {
+          return generatePalette(primaryColor, { dark: darkMode });
+        } else {
+          // Use custom theme values, with fallbacks to generated palette
+          const generated = generatePalette(primaryColor, { dark: darkMode });
+          return {
+            primary: customTheme.primary || primaryColor,
+            primaryLight: customTheme.primaryLight || generated.primaryLight,
+            primaryDark: customTheme.primaryDark || generated.primaryDark,
+            accent: customTheme.accent || generated.accent,
+            text: customTheme.text || generated.text,
+            background: customTheme.background || generated.background,
+            secondary: customTheme.secondary || defaultTheme.secondary,
+            success: customTheme.success || defaultTheme.success,
+            warning: customTheme.warning || defaultTheme.warning,
+            danger: customTheme.danger || defaultTheme.danger,
+            info: customTheme.info || defaultTheme.info,
+            light: customTheme.light || defaultTheme.light,
+            colorDark: customTheme.colorDark || defaultTheme.colorDark,
+          };
+        }
       default:
         return generatePalette('#0066cc', { dark: false });
     }
@@ -163,15 +197,248 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   aria-label="Toggle dark mode"
                 />
               </div>
+              <div className="col-md-6">
+                <Form.Label className="small fw-bold">Auto-Generate Palette</Form.Label>
+                <Form.Check
+                  type="switch"
+                  checked={autoGeneratePalette}
+                  onChange={(e) => onAutoGeneratePaletteChange(e.target.checked)}
+                  label={autoGeneratePalette ? 'Enabled' : 'Disabled'}
+                  aria-label="Toggle auto-generated palette"
+                />
+                <Form.Text className="text-muted small">
+                  When enabled, colors like accent, primaryLight are auto-generated from primary color.
+                </Form.Text>
+              </div>
+              <div className="col-12">
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={handleResetToDefaults}
+                  className="w-100"
+                >
+                  Reset to Defaults
+                </Button>
+                <Form.Text className="text-muted small">
+                  Reset all custom theme properties to Widgemo's default values.
+                </Form.Text>
+              </div>
 
               <div className="col-12">
-                <Form.Label className="small fw-bold">Custom Theme Properties</Form.Label>
+                <Form.Label className="small fw-bold">Color Palette</Form.Label>
+                <div className="row g-2">
+                  {!autoGeneratePalette && (
+                    <>
+                      <div className="col-md-6">
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Primary Light (e.g., #338fff)"
+                          value={customTheme.primaryLight || ''}
+                          onChange={(e) => handleCustomThemeChange('primaryLight', e.target.value)}
+                          aria-label="Primary light color"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Primary Dark (e.g., #004d99)"
+                          value={customTheme.primaryDark || ''}
+                          onChange={(e) => handleCustomThemeChange('primaryDark', e.target.value)}
+                          aria-label="Primary dark color"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Accent (e.g., #66a3ff)"
+                          value={customTheme.accent || ''}
+                          onChange={(e) => handleCustomThemeChange('accent', e.target.value)}
+                          aria-label="Accent color"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Text on Primary (e.g., #ffffff)"
+                          value={customTheme.text || ''}
+                          onChange={(e) => handleCustomThemeChange('text', e.target.value)}
+                          aria-label="Text color"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Background (e.g., #ffffff)"
+                          value={customTheme.background || ''}
+                          onChange={(e) => handleCustomThemeChange('background', e.target.value)}
+                          aria-label="Background color"
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Secondary</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.secondary || '#6c757d'}
+                        onChange={(e) => handleCustomThemeChange('secondary', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Secondary color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.secondary || ''}
+                        onChange={(e) => handleCustomThemeChange('secondary', e.target.value)}
+                        placeholder="#6c757d"
+                        className="flex-grow-1"
+                        aria-label="Secondary color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Success</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.success || '#28a745'}
+                        onChange={(e) => handleCustomThemeChange('success', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Success color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.success || ''}
+                        onChange={(e) => handleCustomThemeChange('success', e.target.value)}
+                        placeholder="#28a745"
+                        className="flex-grow-1"
+                        aria-label="Success color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Warning</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.warning || '#ffc107'}
+                        onChange={(e) => handleCustomThemeChange('warning', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Warning color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.warning || ''}
+                        onChange={(e) => handleCustomThemeChange('warning', e.target.value)}
+                        placeholder="#ffc107"
+                        className="flex-grow-1"
+                        aria-label="Warning color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Danger</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.danger || '#dc3545'}
+                        onChange={(e) => handleCustomThemeChange('danger', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Danger color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.danger || ''}
+                        onChange={(e) => handleCustomThemeChange('danger', e.target.value)}
+                        placeholder="#dc3545"
+                        className="flex-grow-1"
+                        aria-label="Danger color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Info</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.info || '#17a2b8'}
+                        onChange={(e) => handleCustomThemeChange('info', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Info color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.info || ''}
+                        onChange={(e) => handleCustomThemeChange('info', e.target.value)}
+                        placeholder="#17a2b8"
+                        className="flex-grow-1"
+                        aria-label="Info color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Light</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.light || '#f8f9fa'}
+                        onChange={(e) => handleCustomThemeChange('light', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Light color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.light || ''}
+                        onChange={(e) => handleCustomThemeChange('light', e.target.value)}
+                        placeholder="#f8f9fa"
+                        className="flex-grow-1"
+                        aria-label="Light color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Dark Text</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.colorDark || '#343a40'}
+                        onChange={(e) => handleCustomThemeChange('colorDark', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Dark text color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.colorDark || ''}
+                        onChange={(e) => handleCustomThemeChange('colorDark', e.target.value)}
+                        placeholder="#343a40"
+                        className="flex-grow-1"
+                        aria-label="Dark text color hex value"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12">
+                <Form.Label className="small fw-bold">Typography & Spacing</Form.Label>
                 <div className="row g-2">
                   <div className="col-md-6">
                     <Form.Control
                       type="text"
                       size="sm"
-                      placeholder="Border Radius (e.g., 8px)"
+                      placeholder="Border Radius (e.g., 6px)"
                       value={customTheme.borderRadius || ''}
                       onChange={(e) => handleCustomThemeChange('borderRadius', e.target.value)}
                       aria-label="Border radius"
@@ -205,6 +472,259 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       value={customTheme.fontSize || ''}
                       onChange={(e) => handleCustomThemeChange('fontSize', e.target.value)}
                       aria-label="Base font size"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12">
+                <Form.Label className="small fw-bold">Component Colors</Form.Label>
+                <div className="row g-2">
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Card Background</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.cardBg || '#ffffff'}
+                        onChange={(e) => handleCustomThemeChange('cardBg', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Card background color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.cardBg || ''}
+                        onChange={(e) => handleCustomThemeChange('cardBg', e.target.value)}
+                        placeholder="#ffffff"
+                        className="flex-grow-1"
+                        aria-label="Card background color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Card Border</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.cardBorder || '#dee2e6'}
+                        onChange={(e) => handleCustomThemeChange('cardBorder', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Card border color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.cardBorder || ''}
+                        onChange={(e) => handleCustomThemeChange('cardBorder', e.target.value)}
+                        placeholder="#dee2e6"
+                        className="flex-grow-1"
+                        aria-label="Card border color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Table Background</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.tableBg || '#ffffff'}
+                        onChange={(e) => handleCustomThemeChange('tableBg', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Table background color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.tableBg || ''}
+                        onChange={(e) => handleCustomThemeChange('tableBg', e.target.value)}
+                        placeholder="#ffffff"
+                        className="flex-grow-1"
+                        aria-label="Table background color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Table Border</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.tableBorder || '#dee2e6'}
+                        onChange={(e) => handleCustomThemeChange('tableBorder', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Table border color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.tableBorder || ''}
+                        onChange={(e) => handleCustomThemeChange('tableBorder', e.target.value)}
+                        placeholder="#dee2e6"
+                        className="flex-grow-1"
+                        aria-label="Table border color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Header Background</Form.Label>
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      value={customTheme.headerBg || ''}
+                      onChange={(e) => handleCustomThemeChange('headerBg', e.target.value)}
+                      placeholder="transparent"
+                      aria-label="Header background color"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12">
+                <Form.Label className="small fw-bold">Interactive Elements</Form.Label>
+                <div className="row g-2">
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Button Border Radius (e.g., 4px)"
+                      value={customTheme.buttonBorderRadius || ''}
+                      onChange={(e) => handleCustomThemeChange('buttonBorderRadius', e.target.value)}
+                      aria-label="Button border radius"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Button Padding (e.g., 4px 8px)"
+                      value={customTheme.buttonPadding || ''}
+                      onChange={(e) => handleCustomThemeChange('buttonPadding', e.target.value)}
+                      aria-label="Button padding"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Button Height (e.g., 32px)"
+                      value={customTheme.buttonHeight || ''}
+                      onChange={(e) => handleCustomThemeChange('buttonHeight', e.target.value)}
+                      aria-label="Button height"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Ghost Button Border (e.g., none)"
+                      value={customTheme.ghostButtonBorder || ''}
+                      onChange={(e) => handleCustomThemeChange('ghostButtonBorder', e.target.value)}
+                      aria-label="Ghost button border"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Ghost Button Hover</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.ghostButtonHoverBg || '#e9ecef'}
+                        onChange={(e) => handleCustomThemeChange('ghostButtonHoverBg', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Ghost button hover background color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.ghostButtonHoverBg || ''}
+                        onChange={(e) => handleCustomThemeChange('ghostButtonHoverBg', e.target.value)}
+                        placeholder="#e9ecef"
+                        className="flex-grow-1"
+                        aria-label="Ghost button hover background color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Input Border Radius (e.g., 4px)"
+                      value={customTheme.inputBorderRadius || ''}
+                      onChange={(e) => handleCustomThemeChange('inputBorderRadius', e.target.value)}
+                      aria-label="Input border radius"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      placeholder="Input Padding (e.g., 4px 8px)"
+                      value={customTheme.inputPadding || ''}
+                      onChange={(e) => handleCustomThemeChange('inputPadding', e.target.value)}
+                      aria-label="Input padding"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12">
+                <Form.Label className="small fw-bold">Effects & States</Form.Label>
+                <div className="row g-2">
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Shadow Color</Form.Label>
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      value={customTheme.shadowColor || ''}
+                      onChange={(e) => handleCustomThemeChange('shadowColor', e.target.value)}
+                      placeholder="rgba(0, 0, 0, 0.15)"
+                      aria-label="Shadow color"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Label className="small fw-bold">Focus Color</Form.Label>
+                    <div className="d-flex gap-2">
+                      <Form.Control
+                        type="color"
+                        value={customTheme.focusColor || '#0066cc'}
+                        onChange={(e) => handleCustomThemeChange('focusColor', e.target.value)}
+                        style={{ width: '60px' }}
+                        aria-label="Focus color picker"
+                      />
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        value={customTheme.focusColor || ''}
+                        onChange={(e) => handleCustomThemeChange('focusColor', e.target.value)}
+                        placeholder="#0066cc"
+                        className="flex-grow-1"
+                        aria-label="Focus color hex value"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Check
+                      type="switch"
+                      checked={customTheme.shadow !== undefined ? customTheme.shadow : defaultTheme.shadow}
+                      onChange={(e) => handleCustomThemeChange('shadow', e.target.checked)}
+                      label="Enable Shadows"
+                      aria-label="Toggle shadows"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Check
+                      type="switch"
+                      checked={customTheme.showBorder !== undefined ? customTheme.showBorder : defaultTheme.showBorder}
+                      onChange={(e) => handleCustomThemeChange('showBorder', e.target.checked)}
+                      label="Show Borders"
+                      aria-label="Toggle borders"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <Form.Check
+                      type="switch"
+                      checked={customTheme.dynamicBackground !== undefined ? customTheme.dynamicBackground : defaultTheme.dynamicBackground}
+                      onChange={(e) => handleCustomThemeChange('dynamicBackground', e.target.checked)}
+                      label="Dynamic Background"
+                      aria-label="Toggle dynamic background"
                     />
                   </div>
                 </div>
