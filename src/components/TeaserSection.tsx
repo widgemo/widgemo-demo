@@ -113,10 +113,10 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
           </Col>
           <Col lg={8}>
             <Card className="shadow-lg border-0 theme-aware-card" style={{ height: '500px', overflow: 'hidden' }}>
-              <Card.Body className="p-1 d-flex flex-column h-100">
+              <Card.Body className="p-3 d-flex flex-column h-100">
                 <div className="mb-3 flex-shrink-0">
-                  <small className="text-muted d-flex justify-content-between align-items-center">
-                    <strong>{currentTeaserItem.description}</strong>
+                  <small className="text-muted d-flex justify-content-between align-items-center ms-2">
+                    <strong>The same data presented as needed - {currentTeaserItem.description}</strong>
                     <div style={{ width: '120px' }}>
                       <div className="progress" style={{ height: '4px' }}>
                         <div

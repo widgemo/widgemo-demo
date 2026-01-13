@@ -810,7 +810,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       styling: { compact: true },
       labels: { add: 'Add User' }
     },
-    description: 'Full-featured user management table'
+    description: 'A table view with actions and custom labels'
   },
   {
     config: {
@@ -831,7 +831,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       },
       collapsible: 'fixed',
     },
-    description: 'User profile board with contact info'
+    description: 'A kanban-style board with contact info'
   },
   {
     config: {
@@ -857,7 +857,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         }
       },
     },
-    description: 'Department grid showing team leads'
+    description: 'A grid showing departments and leads'
   },
   {
     config: {
@@ -891,9 +891,9 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
           }
         }
       },
-      header: { always: ['refresh'] }
+      header: { always: ['refresh'] } 
     },
-    description: 'User avatar gallery with names and roles'
+    description: 'A gallery-style grid showing user avatars'
   },
 ];
 
