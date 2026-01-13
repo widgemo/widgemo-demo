@@ -187,6 +187,31 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     }
   }, [themeMode, currentTheme, primaryColor, darkMode, customTheme]);
 
+  // Determine if dark mode is actually active based on current theme
+  const isDarkModeActive = useMemo(() => {
+    if (currentSandboxTheme === null || currentSandboxTheme === undefined) {
+      // Check currentTheme directly for defaults mode
+      return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
+    }
+    if (typeof currentSandboxTheme === 'object' && currentSandboxTheme !== null) {
+      return currentSandboxTheme.dark === true;
+    }
+    return false;
+  }, [currentSandboxTheme, currentTheme]);
+
+  // Determine the effective theme key for styling purposes
+  const effectiveThemeKey = useMemo(() => {
+    if (themeMode === 'defaults') {
+      return currentTheme;
+    }
+    if (themeMode === 'custom') {
+      // For custom mode, use a dark or light theme based on darkMode
+      return darkMode ? 'theme-dark' : 'theme-light';
+    }
+    // For config mode, fall back to light theme
+    return 'theme-light';
+  }, [themeMode, currentTheme, darkMode]);
+
   // Transform galleryConfigs to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
     return galleryConfigs.map(config => ({
@@ -839,7 +864,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 themeMode={themeMode}
                 primaryColor={primaryColor}
                 customTheme={customTheme}
-                darkMode={darkMode}
+                darkMode={isDarkModeActive}
                 autoGeneratePalette={autoGeneratePalette}
                 configTheme={config.theme}
                 onThemeModeChange={handleThemeModeChange}
@@ -850,6 +875,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}
+                currentTheme={effectiveThemeKey}
                 // SampleDataTab props
                 currentData={customData}
                 jsonEditorText={jsonEditorText}

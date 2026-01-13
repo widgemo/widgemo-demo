@@ -73,6 +73,7 @@ export interface LeftPanelProps {
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
   onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
+  currentTheme: string;
 
   // SampleDataTab props
   currentData: Record<string, unknown>[];
@@ -148,6 +149,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   // IconsTab props
   iconLibrary,
   onIconLibraryChange,
+  currentTheme,
   // SampleDataTab props
   currentData,
   jsonEditorText,
@@ -319,6 +321,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
           <IconsTab
             iconLibrary={iconLibrary}
             onIconLibraryChange={onIconLibraryChange}
+            darkMode={darkMode}
+            currentTheme={currentTheme}
           />
         )}
 
