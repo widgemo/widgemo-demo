@@ -35,7 +35,7 @@ const CustomErrorComponent: React.FC<{
   <div className={`d-flex flex-column align-items-center justify-content-center p-4 ${className || ''}`} style={style}>
     <div className="text-danger mb-3">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
       </svg>
     </div>
     <h5 className="text-danger mb-2">Custom Error Component</h5>
@@ -209,7 +209,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
           'chevron-down': FaChevronDown,
           'ellipsis-vertical': FaEllipsisV,
         };
-        
+
         const IconComponent = iconMap[name];
         if (IconComponent) {
           return <IconComponent size={size} className={className} color={color} />;
@@ -242,7 +242,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
           'chevron-down': LuChevronDown,
           'ellipsis-vertical': LuEllipsisVertical,
         };
-        
+
         const IconComponent = iconMap[name];
         if (IconComponent) {
           return <IconComponent size={size} className={className} color={color} />;
@@ -274,7 +274,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
           'chevron-down': HiChevronDown,
           'ellipsis-vertical': HiDotsVertical,
         };
-        
+
         const IconComponent = iconMap[name];
         if (IconComponent) {
           return <IconComponent size={size} className={className} color={color} />;
@@ -337,7 +337,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     }),
     createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
     updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
-    deleteRecord: async () => {},
+    deleteRecord: async () => { },
   };
 
   const applyConfig = () => {
@@ -720,10 +720,15 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Card className="shadow theme-aware-card flex-grow-1">
-        <Card.Body className="p-0 theme-aware-card h-100 d-flex flex-column">
-          <Group className="h-100">
-            <Panel defaultSize={35} minSize={30}>
+      <Card className="shadow theme-aware-card h-100 d-flex flex-column">
+        <Card.Body className="p-0 theme-aware-card d-flex flex-column flex-grow-1" style={{ minHeight: 0 }}>
+          <Group className="h-100 d-flex" style={{ minHeight: 0 }}>
+            <Panel
+              defaultSize={35}
+              minSize={30}
+              className="d-flex flex-column h-100"
+              style={{ minHeight: 0 }}
+            >
               <LeftPanel
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
@@ -803,7 +808,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
               />
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
-            <Panel defaultSize={65} minSize={30}>
+            <Panel defaultSize={65} minSize={30} className="flex-grow-1 overflow-auto">
               <PreviewPanel
                 key={renderTrigger}
                 config={config}

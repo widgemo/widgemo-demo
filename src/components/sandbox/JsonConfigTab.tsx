@@ -67,8 +67,8 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
   };
 
   return (
-    <div className="d-flex flex-column h-100">
-      <div className="d-flex justify-content-between align-items-center mb-3 flex-shrink-0">
+    <div className="d-flex flex-column h-100" style={{ minHeight: 0 }}>
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="mb-0">Configuration Editor</h5>
         <div className="d-flex gap-2">
           <Dropdown>
@@ -105,25 +105,29 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
       </div>
 
       {jsonError && (
-        <div className="alert alert-danger small mb-3 flex-shrink-0" role="alert">
+        <div className="alert alert-danger small mb-3" role="alert">
           <strong>JSON Error:</strong> {jsonError}
         </div>
       )}
 
-      <textarea
-        className="form-control flex-grow-1 mb-3"
-        style={{
-          fontFamily: 'monospace',
-          fontSize: '0.875rem',
-          minHeight: '200px',
-          resize: 'vertical'
-        }}
-        value={currentJson}
-        onChange={handleJsonChange}
-        spellCheck={false}
-        aria-label="JSON configuration editor"
-        aria-describedby={jsonError ? "json-error" : undefined}
-      />
+      <div
+        className="flex-grow-1 d-flex flex-column overflow-hidden full-area"
+        style={{ minHeight: 0 }}
+      >
+        <textarea
+          className="form-control flex-grow-1 mb-2"
+          style={{
+            fontFamily: 'monospace',
+            fontSize: '0.875rem',
+            resize: 'none'
+          }}
+          value={currentJson}
+          onChange={handleJsonChange}
+          spellCheck={false}
+          aria-label="JSON configuration editor"
+          aria-describedby={jsonError ? "json-error" : undefined}
+        />
+      </div>
 
       <div className="d-flex gap-2 flex-shrink-0">
         <Button

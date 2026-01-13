@@ -177,7 +177,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   ];
 
   return (
-    <div className="p-4 h-100 d-flex flex-column" style={{ overflow: 'hidden', maxWidth: '100%' }}>
+    <div className="p-4 h-100 d-flex flex-column" >
       <style>
         {`
           .left-panel-content * {
@@ -200,7 +200,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
         </Alert>
       )}
 
-      <div className="mb-3">
+      <div className="mb-3 flex-shrink-0">
         <div className="btn-group w-100" role="tablist">
           {tabs.map((tab) => (
             <Button
