@@ -3,9 +3,7 @@ import { Form } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters, ResolvedWidgemoProps } from 'widgemo-core';
 import { applyThemeToElement } from 'widgemo-core';
-import { getThemeBackgroundColor } from '../../utils/themeUtils';
 import { useMergedWidgemoProps } from '../../hooks/useMergedWidgemoProps';
-import { AppliedConfig } from '../AppliedConfig';
 
 interface PreviewPanelProps {
   // Configuration
@@ -41,6 +39,7 @@ interface PreviewPanelProps {
   appliedContrastAmount?: number;
   customLoadingComponent?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customErrorComponent?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
+  onResolvedProps?: (resolved: ResolvedWidgemoProps) => void;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
@@ -70,16 +69,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   appliedContrastAmount,
   customLoadingComponent,
   customErrorComponent,
+  onResolvedProps,
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  // State for resolved props from onResolvedProps
-  const [resolvedConfig, setResolvedConfig] = React.useState<ResolvedWidgemoProps | null>(null);
-
   // Memoize the callback to prevent infinite re-renders
   const handleResolvedProps = React.useCallback((resolved: ResolvedWidgemoProps) => {
-    setResolvedConfig(resolved);
-  }, []);
+    onResolvedProps?.(resolved);
+  }, [onResolvedProps]);
 
   // Use the merged props hook
   const { mergedProps } = useMergedWidgemoProps({
@@ -172,26 +169,6 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       >
         <Widgemo {...mergedProps} />
       </div>
-      <AppliedConfig
-        config={config}
-        adapters={adapters}
-        showConfigDetails={showConfigDetails}
-        baseColor={getThemeBackgroundColor(currentTheme)}
-        renderIcon={currentIconRenderer}
-        loading={appliedLoading}
-        error={appliedError}
-        overrides={applyAdvancedProps && Object.keys(appliedOverrides || {}).length > 0 ? appliedOverrides : undefined}
-        className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
-        style={applyAdvancedProps && appliedStyleJson?.trim() ? JSON.parse(appliedStyleJson) : undefined}
-        autoContrast={applyAdvancedProps && appliedAutoContrast !== true ? appliedAutoContrast : undefined}
-        contrastAmount={applyAdvancedProps && appliedContrastAmount !== undefined && Math.abs(appliedContrastAmount - 0.05) > 0.001 ? appliedContrastAmount : undefined}
-        overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}
-        currentSandboxTheme={currentSandboxTheme}
-        currentIconRenderer={currentIconRenderer}
-        customLoading={customLoadingComponent}
-        customError={customErrorComponent}
-        resolvedConfig={resolvedConfig}
-      />
     </div>
   );
 };
