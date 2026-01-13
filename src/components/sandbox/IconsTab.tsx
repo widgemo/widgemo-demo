@@ -1,5 +1,8 @@
 import React from 'react';
 import { Form, Alert, Card, Row, Col } from 'react-bootstrap';
+import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie, FaPencilAlt, FaTrash, FaTimes, FaChevronUp, FaChevronLeft, FaSearch, FaFilter, FaSort, FaColumns } from 'react-icons/fa';
+import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban } from 'react-icons/lu';
+import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal } from 'react-icons/hi';
 
 interface IconsTabProps {
   /** Current icon library selection */
@@ -35,6 +38,289 @@ export const IconsTab: React.FC<IconsTabProps> = ({
   iconLibrary,
   onIconLibraryChange,
 }) => {
+
+  // Function to get the icon component for the selected library
+  const getIconComponent = (iconName: string) => {
+    if (iconLibrary === 'react-icons') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'plus': FaPlus,
+        'add': FaPlus,
+        'edit': FaPencilAlt,
+        'pencil': FaPencilAlt,
+        'delete': FaTrash,
+        'trash': FaTrash,
+        'view': FaEye,
+        'eye': FaEye,
+        'eye-slash': FaEyeSlash,
+        'refresh': FaSync,
+        'reload': FaSync,
+        'settings': FaCog,
+        'config': FaCog,
+        'cog': FaCog,
+        'close': FaTimes,
+        'x': FaTimes,
+        'chevron-down': FaChevronDown,
+        'chevron-up': FaChevronUp,
+        'chevron-left': FaChevronLeft,
+        'chevron-right': FaChevronRight,
+        'search': FaSearch,
+        'filter': FaFilter,
+        'sort': FaSort,
+        'chart-bar': FaChartBar,
+        'chart-line': FaChartLine,
+        'chart-pie': FaChartPie,
+        'table': FaTable,
+        'grid': FaTh,
+        'board': FaColumns,
+        'copy': FaCopy,
+        'ellipsis-vertical': FaEllipsisV,
+      };
+      const IconComponent = iconMap[iconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    if (iconLibrary === 'lucide') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'plus': LuPlus,
+        'add': LuPlus,
+        'edit': LuPencil,
+        'pencil': LuPencil,
+        'delete': LuTrash,
+        'trash': LuTrash,
+        'view': LuEye,
+        'eye': LuEye,
+        'eye-slash': LuEyeOff,
+        'refresh': LuRefreshCw,
+        'reload': LuRefreshCw,
+        'settings': LuSettings,
+        'config': LuSettings,
+        'cog': LuSettings,
+        'close': LuX,
+        'x': LuX,
+        'chevron-down': LuChevronDown,
+        'chevron-up': LuChevronUp,
+        'chevron-left': LuChevronLeft,
+        'chevron-right': LuChevronRight,
+        'search': LuSearch,
+        'filter': LuFilter,
+        'sort': LuArrowUpDown,
+        'chart-bar': LuChartBar,
+        'chart-line': LuChartLine,
+        'chart-pie': LuChartPie,
+        'table': LuTable,
+        'grid': LuLayoutGrid,
+        'board': LuKanban,
+        'copy': LuCopy,
+        'ellipsis-vertical': LuEllipsisVertical,
+      };
+      const IconComponent = iconMap[iconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    if (iconLibrary === 'heroicons') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'plus': HiPlus,
+        'add': HiPlus,
+        'edit': HiPencil,
+        'pencil': HiPencil,
+        'delete': HiTrash,
+        'trash': HiTrash,
+        'view': HiEye,
+        'eye': HiEye,
+        'eye-slash': HiEyeOff,
+        'refresh': HiRefresh,
+        'reload': HiRefresh,
+        'settings': HiCog,
+        'config': HiCog,
+        'cog': HiCog,
+        'close': HiX,
+        'x': HiX,
+        'chevron-down': HiChevronDown,
+        'chevron-up': HiChevronUp,
+        'chevron-left': HiChevronLeft,
+        'chevron-right': HiChevronRight,
+        'search': HiSearch,
+        'filter': HiDotsHorizontal,
+        'sort': HiTable,
+        'chart-bar': HiChartBar,
+        'chart-pie': HiChartPie,
+        'table': HiTable,
+        'grid': HiViewGrid,
+        'board': HiViewGrid,
+        'copy': HiClipboardCopy,
+        'ellipsis-vertical': HiDotsVertical,
+      };
+      const IconComponent = iconMap[iconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    // For 'none' or unknown, show default SVG
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <text x="12" y="16" textAnchor="middle" fontSize="12" fill="currentColor">?</text>
+      </svg>
+    );
+  };
+
+  // Function to get the icon component from a library icon name (e.g., 'FaPlus', 'LuPlus')
+  const getIconComponentFromLibraryName = (libraryIconName: string) => {
+    if (iconLibrary === 'react-icons') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'FaPlus': FaPlus,
+        'FaPencilAlt': FaPencilAlt,
+        'FaTrash': FaTrash,
+        'FaEye': FaEye,
+        'FaSync': FaSync,
+        'FaCog': FaCog,
+        'FaTimes': FaTimes,
+        'FaChevronDown': FaChevronDown,
+        'FaChevronUp': FaChevronUp,
+        'FaChevronLeft': FaChevronLeft,
+        'FaChevronRight': FaChevronRight,
+        'FaSearch': FaSearch,
+        'FaFilter': FaFilter,
+        'FaSort': FaSort,
+        'FaChartBar': FaChartBar,
+        'FaChartLine': FaChartLine,
+        'FaChartPie': FaChartPie,
+        'FaTable': FaTable,
+        'FaTh': FaTh,
+        'FaColumns': FaColumns,
+        'FaCopy': FaCopy,
+        'FaEllipsisV': FaEllipsisV,
+      };
+      const IconComponent = iconMap[libraryIconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    if (iconLibrary === 'lucide') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'LuPlus': LuPlus,
+        'LuPencil': LuPencil,
+        'LuTrash': LuTrash,
+        'LuEye': LuEye,
+        'LuRefreshCw': LuRefreshCw,
+        'LuSettings': LuSettings,
+        'LuX': LuX,
+        'LuChevronDown': LuChevronDown,
+        'LuChevronUp': LuChevronUp,
+        'LuChevronLeft': LuChevronLeft,
+        'LuChevronRight': LuChevronRight,
+        'LuSearch': LuSearch,
+        'LuFilter': LuFilter,
+        'LuArrowUpDown': LuArrowUpDown,
+        'LuChartBar': LuChartBar,
+        'LuChartLine': LuChartLine,
+        'LuChartPie': LuChartPie,
+        'LuTable': LuTable,
+        'LuLayoutGrid': LuLayoutGrid,
+        'LuKanban': LuKanban,
+        'LuCopy': LuCopy,
+        'LuEllipsisVertical': LuEllipsisVertical,
+      };
+      const IconComponent = iconMap[libraryIconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    if (iconLibrary === 'heroicons') {
+      const iconMap: Record<string, React.ComponentType<any>> = {
+        'HiPlus': HiPlus,
+        'HiPencil': HiPencil,
+        'HiTrash': HiTrash,
+        'HiEye': HiEye,
+        'HiRefresh': HiRefresh,
+        'HiCog': HiCog,
+        'HiX': HiX,
+        'HiChevronDown': HiChevronDown,
+        'HiChevronUp': HiChevronUp,
+        'HiChevronLeft': HiChevronLeft,
+        'HiChevronRight': HiChevronRight,
+        'HiSearch': HiSearch,
+        'HiDotsHorizontal': HiDotsHorizontal,
+        'HiTable': HiTable,
+        'HiChartBar': HiChartBar,
+        'HiChartPie': HiChartPie,
+        'HiViewGrid': HiViewGrid,
+        'HiClipboardCopy': HiClipboardCopy,
+        'HiDotsVertical': HiDotsVertical,
+      };
+      const IconComponent = iconMap[libraryIconName];
+      return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
+    }
+
+    // For 'none' or unknown, show default SVG
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <text x="12" y="16" textAnchor="middle" fontSize="12" fill="currentColor">?</text>
+      </svg>
+    );
+  };
+
+  // Get the icon data for the selected library
+  const getIconData = () => {
+    const baseIcons = [
+      { name: 'plus', aliases: ['add'], reactIcons: 'FaPlus', lucide: 'LuPlus', heroicons: 'HiPlus', suggested: true },
+      { name: 'edit', aliases: ['pencil'], reactIcons: 'FaPencilAlt', lucide: 'LuPencil', heroicons: 'HiPencil', suggested: false },
+      { name: 'delete', aliases: ['trash'], reactIcons: 'FaTrash', lucide: 'LuTrash', heroicons: 'HiTrash', suggested: false },
+      { name: 'view', aliases: ['eye'], reactIcons: 'FaEye', lucide: 'LuEye', heroicons: 'HiEye', suggested: true },
+      { name: 'refresh', aliases: ['reload'], reactIcons: 'FaSync', lucide: 'LuRefreshCw', heroicons: 'HiRefresh', suggested: true },
+      { name: 'settings', aliases: ['config', 'cog'], reactIcons: 'FaCog', lucide: 'LuSettings', heroicons: 'HiCog', suggested: true },
+      { name: 'close', aliases: ['x'], reactIcons: 'FaTimes', lucide: 'LuX', heroicons: 'HiX', suggested: false },
+      { name: 'chevron-down', aliases: [], reactIcons: 'FaChevronDown', lucide: 'LuChevronDown', heroicons: 'HiChevronDown', suggested: true },
+      { name: 'chevron-up', aliases: [], reactIcons: 'FaChevronUp', lucide: 'LuChevronUp', heroicons: 'HiChevronUp', suggested: false },
+      { name: 'chevron-left', aliases: [], reactIcons: 'FaChevronLeft', lucide: 'LuChevronLeft', heroicons: 'HiChevronLeft', suggested: false },
+      { name: 'chevron-right', aliases: [], reactIcons: 'FaChevronRight', lucide: 'LuChevronRight', heroicons: 'HiChevronRight', suggested: true },
+      { name: 'search', aliases: [], reactIcons: 'FaSearch', lucide: 'LuSearch', heroicons: 'HiSearch', suggested: false },
+      { name: 'filter', aliases: [], reactIcons: 'FaFilter', lucide: 'LuFilter', heroicons: 'HiFunnel', suggested: false },
+      { name: 'sort', aliases: [], reactIcons: 'FaSort', lucide: 'LuArrowUpDown', heroicons: 'HiBarsArrowUp', suggested: false },
+      { name: 'chart-bar', aliases: [], reactIcons: 'FaChartBar', lucide: 'LuChartBar', heroicons: 'HiChartBar', suggested: true },
+      { name: 'chart-line', aliases: [], reactIcons: 'FaChartLine', lucide: 'LuChartLine', heroicons: '', suggested: true },
+      { name: 'chart-pie', aliases: [], reactIcons: 'FaChartPie', lucide: 'LuChartPie', heroicons: 'HiChartPie', suggested: true },
+      { name: 'table', aliases: [], reactIcons: 'FaTable', lucide: 'LuTable', heroicons: 'HiTable', suggested: true },
+      { name: 'grid', aliases: [], reactIcons: 'FaTh', lucide: 'LuLayoutGrid', heroicons: 'HiViewGrid', suggested: true },
+      { name: 'board', aliases: [], reactIcons: 'FaColumns', lucide: 'LuKanban', heroicons: 'HiRectangleStack', suggested: false },
+      { name: 'copy', aliases: [], reactIcons: 'FaCopy', lucide: 'LuCopy', heroicons: 'HiClipboardCopy', suggested: true },
+      { name: 'ellipsis-vertical', aliases: [], reactIcons: 'FaEllipsisV', lucide: 'LuEllipsisVertical', heroicons: 'HiDotsVertical', suggested: true },
+    ];
+
+    if (iconLibrary === 'none') {
+      // Group all icons under 'Default SVG'
+      const allNames = baseIcons.flatMap(icon => [icon.name, ...icon.aliases]);
+      return [{
+        libraryIcon: 'Default SVG',
+        widgemoNames: allNames,
+        suggested: true
+      }];
+    }
+
+    // Group icons by their library icon
+    const groupedIcons: Record<string, { names: string[], suggested: boolean }> = {};
+
+    baseIcons.forEach(icon => {
+      const libraryKey = iconLibrary === 'react-icons' ? 'reactIcons' : 
+                        iconLibrary === 'lucide' ? 'lucide' : 'heroicons';
+      const libraryIcon = icon[libraryKey as keyof typeof icon] as string;
+
+      if (libraryIcon) {
+        if (!groupedIcons[libraryIcon]) {
+          groupedIcons[libraryIcon] = { names: [], suggested: icon.suggested };
+        }
+        groupedIcons[libraryIcon].names.push(icon.name, ...icon.aliases);
+        // If any icon in the group is suggested, mark the group as suggested
+        if (icon.suggested) {
+          groupedIcons[libraryIcon].suggested = true;
+        }
+      }
+    });
+
+    return Object.entries(groupedIcons).map(([libraryIcon, data]) => ({
+      libraryIcon,
+      widgemoNames: data.names,
+      suggested: data.suggested
+    }));
+  };
 
   return (
     <div className="d-flex flex-column h-100">
@@ -95,83 +381,23 @@ export const IconsTab: React.FC<IconsTabProps> = ({
             <Card className="border">
               <Card.Body className="p-3">
                 <small className="text-muted d-block mb-3">
-                  Below are all default Widgemo icons and their mappings to external icon libraries.
+                  Below are all available icons from the selected library, grouped by their library icon name.
+                  Each icon shows all Widgemo icon names that map to it.
                   <strong className="text-success"> Green badges</strong> indicate suggested mappings.
                 </small>
                 <Row className="g-2">
-                  {[
-                    { name: 'plus', aliases: ['add'], reactIcons: 'FaPlus', lucide: 'LuPlus', heroicons: 'HiPlus', suggested: true },
-                    { name: 'edit', aliases: ['pencil'], reactIcons: 'FaPencilAlt', lucide: 'LuEdit', heroicons: 'HiPencil', suggested: false },
-                    { name: 'delete', aliases: ['trash'], reactIcons: 'FaTrash', lucide: 'LuTrash', heroicons: 'HiTrash', suggested: false },
-                    { name: 'view', aliases: ['eye'], reactIcons: 'FaEye', lucide: 'LuEye', heroicons: 'HiEye', suggested: true },
-                    { name: 'refresh', aliases: ['reload'], reactIcons: 'FaSync', lucide: 'LuRefreshCw', heroicons: 'HiRefresh', suggested: true },
-                    { name: 'settings', aliases: ['config', 'cog'], reactIcons: 'FaCog', lucide: 'LuSettings', heroicons: 'HiCog', suggested: true },
-                    { name: 'close', aliases: ['x'], reactIcons: 'FaTimes', lucide: 'LuX', heroicons: 'HiX', suggested: false },
-                    { name: 'chevron-down', aliases: [], reactIcons: 'FaChevronDown', lucide: 'LuChevronDown', heroicons: 'HiChevronDown', suggested: true },
-                    { name: 'chevron-up', aliases: [], reactIcons: 'FaChevronUp', lucide: 'LuChevronUp', heroicons: 'HiChevronUp', suggested: false },
-                    { name: 'chevron-left', aliases: [], reactIcons: 'FaChevronLeft', lucide: 'LuChevronLeft', heroicons: 'HiChevronLeft', suggested: false },
-                    { name: 'chevron-right', aliases: [], reactIcons: 'FaChevronRight', lucide: 'LuChevronRight', heroicons: 'HiChevronRight', suggested: true },
-                    { name: 'search', aliases: [], reactIcons: 'FaSearch', lucide: 'LuSearch', heroicons: 'HiSearch', suggested: false },
-                    { name: 'filter', aliases: [], reactIcons: 'FaFilter', lucide: 'LuFilter', heroicons: 'HiFilter', suggested: false },
-                    { name: 'sort', aliases: [], reactIcons: 'FaSort', lucide: 'LuArrowUpDown', heroicons: 'HiBarsArrowUp', suggested: false },
-                    { name: 'chart-bar', aliases: [], reactIcons: 'FaChartBar', lucide: 'LuChartBar', heroicons: 'HiChartBar', suggested: true },
-                    { name: 'chart-line', aliases: [], reactIcons: 'FaChartLine', lucide: 'LuChartLine', heroicons: 'HiChartLine', suggested: true },
-                    { name: 'chart-pie', aliases: [], reactIcons: 'FaChartPie', lucide: 'LuChartPie', heroicons: 'HiChartPie', suggested: true },
-                    { name: 'table', aliases: [], reactIcons: 'FaTable', lucide: 'LuTable', heroicons: 'HiTable', suggested: true },
-                    { name: 'grid', aliases: [], reactIcons: 'FaTh', lucide: 'LuLayoutGrid', heroicons: 'HiViewGrid', suggested: true },
-                    { name: 'board', aliases: [], reactIcons: 'FaColumns', lucide: 'LuKanban', heroicons: 'HiQueueList', suggested: false },
-                    { name: 'copy', aliases: [], reactIcons: 'FaCopy', lucide: 'LuCopy', heroicons: 'HiClipboardCopy', suggested: true },
-                    { name: 'ellipsis-vertical', aliases: [], reactIcons: 'FaEllipsisV', lucide: 'LuEllipsisVertical', heroicons: 'HiDotsVertical', suggested: true },
-                  ].map((icon) => (
-                    <Col xs={12} sm={6} lg={4} key={icon.name} className="mb-2">
+                  {getIconData().map((icon) => (
+                    <Col xs={12} sm={6} lg={4} key={icon.libraryIcon} className="mb-2">
                       <div className="d-flex align-items-center p-2 border rounded bg-light">
                         <div className="me-3">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            {icon.name === 'plus' && <path d="M12 5v14M5 12h14" />}
-                            {icon.name === 'edit' && <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></>}
-                            {icon.name === 'delete' && <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />}
-                            {icon.name === 'view' && <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>}
-                            {icon.name === 'refresh' && <><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M8 16H3v5" /></>}
-                            {icon.name === 'settings' && <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></>}
-                            {icon.name === 'close' && <path d="M18 6L6 18M6 6l12 12" />}
-                            {icon.name === 'chevron-down' && <path d="M6 9l6 6 6-6" />}
-                            {icon.name === 'chevron-up' && <path d="M18 15l-6-6-6 6" />}
-                            {icon.name === 'chevron-left' && <path d="M15 18l-6-6 6-6" />}
-                            {icon.name === 'chevron-right' && <path d="M9 18l6-6-6-6" />}
-                            {icon.name === 'search' && <><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></>}
-                            {icon.name === 'filter' && <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3" />}
-                            {icon.name === 'sort' && <path d="M7 16V4m0 0L3 8m4-4 4 4m6 0v12m0 0 4-4m-4 4-4-4" />}
-                            {icon.name === 'chart-bar' && <><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></>}
-                            {icon.name === 'chart-line' && <><path d="M3 3v18h18" /><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14.2" /></>}
-                            {icon.name === 'chart-pie' && <><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10Z" /></>}
-                            {icon.name === 'table' && <path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18" />}
-                            {icon.name === 'grid' && <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></>}
-                            {icon.name === 'board' && <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="9" y1="3" x2="9" y2="21" /><line x1="15" y1="3" x2="15" y2="21" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="3" y1="15" x2="21" y2="15" /></>}
-                            {icon.name === 'copy' && <><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></>}
-                            {icon.name === 'ellipsis-vertical' && <><circle cx="12" cy="6" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="12" cy="18" r="2" /></>}
-                          </svg>
+                          {iconLibrary === 'none' ? getIconComponent('default') : getIconComponentFromLibraryName(icon.libraryIcon)}
                         </div>
                         <div className="flex-grow-1">
-                          <div className="fw-bold small">{icon.name}</div>
-                          {icon.aliases.length > 0 && (
-                            <div className="small text-muted">({icon.aliases.join(', ')})</div>
-                          )}
+                          <div className="fw-bold small">{icon.widgemoNames.join(', ')}</div>
                           <div className="d-flex gap-1 mt-1 flex-wrap">
-                            {icon.reactIcons && (
-                              <span className={`badge ${icon.suggested ? 'bg-success' : 'bg-secondary'} small`}>
-                                {icon.reactIcons}
-                              </span>
-                            )}
-                            {icon.lucide && (
-                              <span className={`badge ${icon.suggested ? 'bg-success' : 'bg-secondary'} small`}>
-                                {icon.lucide}
-                              </span>
-                            )}
-                            {icon.heroicons && (
-                              <span className={`badge ${icon.suggested ? 'bg-success' : 'bg-secondary'} small`}>
-                                {icon.heroicons}
-                              </span>
-                            )}
+                            <span className={`badge ${icon.suggested ? 'bg-success' : 'bg-secondary'} small`}>
+                              {icon.libraryIcon}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -182,32 +408,6 @@ export const IconsTab: React.FC<IconsTabProps> = ({
             </Card>
           </div>
 
-          <div className="col-12">
-            <Form.Label className="small fw-bold">Example Integration</Form.Label>
-            <div className="border rounded p-3">
-              <small className="text-muted d-block mb-2">Mini Widgemo preview with current icon settings:</small>
-              <div style={{
-                border: '1px solid #dee2e6',
-                borderRadius: '4px',
-                padding: '8px',
-                backgroundColor: '#f8f9fa',
-                fontSize: '12px'
-              }}>
-                <div className="d-flex align-items-center gap-2 mb-1">
-                  <span>📊</span>
-                  <span className="fw-bold">Sample Data Table</span>
-                  <span>⚙️</span>
-                </div>
-                <div className="small text-muted">
-                  {iconLibrary === 'none' ? 'Using default inline SVGs from widgemo-core' :
-                   iconLibrary === 'react-icons' ? 'Using FontAwesome icons from react-icons library' :
-                   iconLibrary === 'lucide' ? 'Using Lucide icons from react-icons library' :
-                   iconLibrary === 'heroicons' ? 'Using Heroicons from react-icons library' :
-                   'Custom icon renderer'}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
