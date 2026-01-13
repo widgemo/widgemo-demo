@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Button, Alert, Nav } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
 import { ThemingTab } from './ThemingTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
@@ -191,6 +191,19 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             word-wrap: break-word !important;
             overflow-wrap: break-word !important;
           }
+          .left-panel-tabs .nav-link {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          .left-panel-tabs .nav-link.active {
+            background-color: transparent !important;
+            color: #fff !important;
+            box-shadow: none !important;
+          }
+          .left-panel-tabs .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+          }
         `}
       </style>
       {/* Export Status */}
@@ -201,22 +214,45 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
       )}
 
       <div className="mb-3 flex-shrink-0">
-        <div className="btn-group w-100" role="tablist">
-          {tabs.map((tab) => (
-            <Button
-              key={tab.id}
-              variant={activeTab === tab.id ? 'primary' : 'outline-primary'}
-              onClick={() => onTabChange(tab.id)}
-              className="rounded-0 text-nowrap"
-              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              aria-controls={`tabpanel-${tab.id}`}
-              id={`tab-${tab.id}`}
-            >
-              {tab.label}
-            </Button>
-          ))}
+        <div className="bg-dark rounded" style={{ padding: '2px' }}>
+          <Nav className="bg-dark rounded px-1 left-panel-tabs" role="tablist">
+            {tabs.map((tab) => (
+              <Nav.Link
+                key={tab.id}
+                active={activeTab === tab.id}
+                onClick={() => onTabChange(tab.id)}
+                className="text-nowrap mx-1"
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  fontSize: '0.875rem',
+                  padding: '6px 12px',
+                  color: activeTab === tab.id ? '#fff' : '#adb5bd',
+                  backgroundColor: activeTab === tab.id ? 'transparent' : 'transparent',
+                  border: 'none',
+                  transition: 'all 0.15s ease-in-out'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== tab.id) {
+                    e.currentTarget.style.color = '#fff';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== tab.id) {
+                    e.currentTarget.style.color = '#adb5bd';
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
+                }}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                aria-controls={`tabpanel-${tab.id}`}
+                id={`tab-${tab.id}`}
+              >
+                {tab.label}
+              </Nav.Link>
+            ))}
+          </Nav>
         </div>
       </div>
 
