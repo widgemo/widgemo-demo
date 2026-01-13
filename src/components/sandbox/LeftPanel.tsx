@@ -177,7 +177,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   ];
 
   return (
-    <div className="p-4 h-100 d-flex flex-column" >
+    <div className="p-3 h-100 d-flex flex-column" >
       <style>
         {`
           .left-panel-content * {
