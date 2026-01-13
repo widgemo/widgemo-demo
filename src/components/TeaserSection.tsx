@@ -116,7 +116,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
               <Card.Body className="p-3 d-flex flex-column h-100">
                 <div className="mb-3 flex-shrink-0">
                   <small className="text-muted d-flex justify-content-between align-items-center ms-2">
-                    <strong>The same data presented as needed - {currentTeaserItem.description}</strong>
+                    <span style={{fontSize: '1.2rem'}}>Present your data as - <strong>{currentTeaserItem.description}</strong></span>
                     <div style={{ width: '120px' }}>
                       <div className="progress" style={{ height: '4px' }}>
                         <div

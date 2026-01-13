@@ -659,7 +659,7 @@ export const galleryConfigs: Array<{
         ],
         mediaConfig: {
           fields: [
-                        {
+            {
               field: 'thumbnail',
               label: '',
               placement: 'cell',
@@ -881,17 +881,14 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         compact: true,
         grid: {
           columns: 5,
-          cellSize: {
-            width: 120,
-            height: 120
-          },
+          cellSize: { width: 120, height: 150 },
           gap: '8px',
           imageGrid: {
             masonry: false
           }
         }
       },
-      header: { always: ['refresh'] } 
+      header: { always: ['refresh'] }
     },
     description: 'A gallery-style grid showing user avatars'
   },
