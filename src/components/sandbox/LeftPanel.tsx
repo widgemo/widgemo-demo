@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Alert, Nav } from 'react-bootstrap';
+import { Alert, Nav } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
 import { ThemingTab } from './ThemingTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
