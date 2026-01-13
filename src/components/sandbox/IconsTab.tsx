@@ -3,6 +3,7 @@ import { Form, Alert, Card, Row, Col } from 'react-bootstrap';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie, FaPencilAlt, FaTrash, FaTimes, FaChevronUp, FaChevronLeft, FaSearch, FaFilter, FaSort, FaColumns } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal } from 'react-icons/hi';
+import { defaultRenderIcon } from 'widgemo-core';
 
 interface IconsTabProps {
   /** Current icon library selection */
@@ -154,13 +155,8 @@ export const IconsTab: React.FC<IconsTabProps> = ({
       return IconComponent ? <IconComponent size={16} /> : <span>?</span>;
     }
 
-    // For 'none' or unknown, show default SVG
-    return (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <text x="12" y="16" textAnchor="middle" fontSize="12" fill="currentColor">?</text>
-      </svg>
-    );
+    // For 'none' or unknown, show default widgemo-core SVG
+    return defaultRenderIcon({ name: iconName, size: 16 });
   };
 
   // Function to get the icon component from a library icon name (e.g., 'FaPlus', 'LuPlus')
@@ -286,13 +282,12 @@ export const IconsTab: React.FC<IconsTabProps> = ({
     ];
 
     if (iconLibrary === 'none') {
-      // Group all icons under 'Default SVG'
-      const allNames = baseIcons.flatMap(icon => [icon.name, ...icon.aliases]);
-      return [{
+      // For 'none', show each widgemo icon individually with its actual SVG
+      return baseIcons.map(icon => ({
         libraryIcon: 'Default SVG',
-        widgemoNames: allNames,
-        suggested: true
-      }];
+        widgemoNames: [icon.name, ...icon.aliases],
+        suggested: icon.suggested
+      }));
     }
 
     // Group icons by their library icon
@@ -344,7 +339,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
           {iconLibrary === 'none' && (
             <div className="col-12">
               <Alert variant="info" className="py-2 small">
-                <strong>Widgemo Defaults:</strong> Uses inline SVG icons or no icons. Perfect for zero-dependency setups.
+                <strong>Widgemo Defaults:</strong> Shows the actual inline SVG icons used by widgemo-core for zero-dependency setups.
               </Alert>
             </div>
           )}
@@ -381,16 +376,18 @@ export const IconsTab: React.FC<IconsTabProps> = ({
             <Card className="border">
               <Card.Body className="p-3">
                 <small className="text-muted d-block mb-3">
-                  Below are all available icons from the selected library, grouped by their library icon name.
-                  Each icon shows all Widgemo icon names that map to it.
+                  {iconLibrary === 'none' 
+                    ? 'Below are all available widgemo-core default SVG icons. Each icon shows the widgemo icon names that use it.'
+                    : 'Below are all available icons from the selected library, grouped by their library icon name. Each icon shows all Widgemo icon names that map to it.'
+                  }
                   <strong className="text-success"> Green badges</strong> indicate suggested mappings.
                 </small>
                 <Row className="g-2">
                   {getIconData().map((icon) => (
-                    <Col xs={12} sm={6} lg={4} key={icon.libraryIcon} className="mb-2">
+                    <Col xs={12} sm={6} lg={4} key={`${iconLibrary}-${icon.libraryIcon}-${icon.widgemoNames.join(',')}`} className="mb-2">
                       <div className="d-flex align-items-center p-2 border rounded bg-light">
                         <div className="me-3">
-                          {iconLibrary === 'none' ? getIconComponent('default') : getIconComponentFromLibraryName(icon.libraryIcon)}
+                          {iconLibrary === 'none' ? getIconComponent(icon.widgemoNames[0]) : getIconComponentFromLibraryName(icon.libraryIcon)}
                         </div>
                         <div className="flex-grow-1">
                           <div className="fw-bold small">{icon.widgemoNames.join(', ')}</div>
