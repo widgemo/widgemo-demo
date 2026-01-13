@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Alert } from 'react-bootstrap';
-import { FaCopy } from 'react-icons/fa';
+import React from 'react';
+import { Alert } from 'react-bootstrap';
 
 interface AppliedConfigViewerProps {
   /** The resolved/merged props object to display */
   resolvedProps: Record<string, any>;
-  /** Optional: custom title for the section */
-  title?: string;
   /** Optional: explanatory note below the title */
   note?: string;
 }
@@ -30,37 +27,11 @@ interface AppliedConfigViewerProps {
  */
 export const AppliedConfigViewer: React.FC<AppliedConfigViewerProps> = ({
   resolvedProps,
-  title = "Applied Configuration",
   note = "This shows the effective, resolved configuration after defaults + overrides + auto-generation"
 }) => {
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleCopyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(resolvedProps, null, 2));
-      setCopyStatus('success');
-      setTimeout(() => setCopyStatus('idle'), 2000);
-    } catch (err) {
-      setCopyStatus('error');
-      setTimeout(() => setCopyStatus('idle'), 2000);
-    }
-  };
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="d-flex justify-content-between align-items-center mb-3 flex-shrink-0">
-        <h6 className="mb-0 fw-bold">{title}</h6>
-        <Button
-          variant="outline-secondary"
-          size="sm"
-          onClick={handleCopyToClipboard}
-          aria-label="Copy configuration to clipboard"
-        >
-          <FaCopy className="me-1" />
-          {copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Failed' : 'Copy'}
-        </Button>
-      </div>
-
       {note && (
         <Alert variant="info" className="mb-3 flex-shrink-0">
           <small>{note}</small>

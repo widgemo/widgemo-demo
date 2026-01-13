@@ -110,7 +110,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
   return (
     <AppliedConfigViewer
       resolvedProps={resolvedProps}
-      title="Applied Configuration"
       note={resolvedConfig ? "This shows the actual resolved configuration from Widgemo's onResolvedProps callback (excludes data for privacy). Data adapters are shown as function references for brevity." : "This shows the effective, resolved configuration after defaults + overrides + auto-generation. Data adapters are shown as function references for brevity."}
     />
   );

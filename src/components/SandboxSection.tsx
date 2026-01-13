@@ -93,9 +93,15 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   // Applied Configuration panel state
   const [isAppliedConfigCollapsed, setIsAppliedConfigCollapsed] = useState(false);
+  const [appliedConfigCopyStatus, setAppliedConfigCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // State for resolved props from onResolvedProps
   const [resolvedConfig, setResolvedConfig] = useState<any>(null);
+
+  // Debug: Log when resolvedConfig changes
+  useEffect(() => {
+    console.log('resolvedConfig changed:', resolvedConfig);
+  }, [resolvedConfig]);
 
   // Active tab state
   const [activeTab, setActiveTab] = useState(() => {
@@ -324,7 +330,56 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     }
   }, [configJson]);
 
-
+  // Copy applied configuration to clipboard
+  const copyAppliedConfigToClipboard = useCallback(async () => {
+    console.log('Copy button clicked, resolvedConfig:', resolvedConfig);
+    
+    if (!resolvedConfig || Object.keys(resolvedConfig).length === 0) {
+      console.log('No resolvedConfig available or empty');
+      setAppliedConfigCopyStatus('error');
+      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
+      return;
+    }
+    
+    const configText = JSON.stringify(resolvedConfig, null, 2);
+    console.log('Config text to copy:', configText.substring(0, 100) + '...');
+    
+    // Try fallback first (more reliable in localhost/development)
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = configText;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const success = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      if (success) {
+        console.log('Fallback copy succeeded');
+        setAppliedConfigCopyStatus('success');
+        setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
+        return;
+      } else {
+        throw new Error('execCommand returned false');
+      }
+    } catch (fallbackError) {
+      console.log('Fallback copy failed, trying modern API:', fallbackError);
+    }
+    
+    // Try modern clipboard API as fallback
+    try {
+      await navigator.clipboard.writeText(configText);
+      console.log('Modern clipboard API succeeded');
+      setAppliedConfigCopyStatus('success');
+      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
+    } catch (error) {
+      console.log('Both copy methods failed:', error);
+      setAppliedConfigCopyStatus('error');
+      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
+    }
+  }, [resolvedConfig]);
 
   // Download config as JSON file
   const downloadConfig = useCallback(() => {
@@ -852,15 +907,27 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
               <>
                 <Separator className="bg-secondary" style={{ width: '1.5px' }} />
                 <Panel defaultSize={15} minSize={10} className="d-flex flex-column">
-                  <div className="d-flex align-items-center justify-content-between p-2 border-bottom bg-light">
-                    <h6 className="mb-0 fw-bold">Applied Configuration</h6>
-                    <button
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => setIsAppliedConfigCollapsed(true)}
-                      title="Collapse panel"
-                    >
-                      ✕
-                    </button>
+                  <div className="d-flex align-items-center justify-content-between p-2 border-bottom theme-aware-card">
+                    <h6 className="mb-0 fw-bold">Applied Config</h6>
+                    <div className="d-flex gap-1">
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={copyAppliedConfigToClipboard}
+                        disabled={!resolvedConfig || Object.keys(resolvedConfig).length === 0}
+                        title="Copy configuration to clipboard"
+                        aria-label="Copy configuration to clipboard"
+                      >
+                        <FaCopy className="me-1" />
+                        {appliedConfigCopyStatus === 'success' ? 'Copied!' : appliedConfigCopyStatus === 'error' ? 'Failed' : 'Copy'}
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setIsAppliedConfigCollapsed(true)}
+                        title="Collapse panel"
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
                   <div className="flex-grow-1 overflow-auto p-2">
                     <AppliedConfig
