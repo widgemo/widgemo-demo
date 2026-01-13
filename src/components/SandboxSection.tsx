@@ -146,7 +146,19 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const currentSandboxTheme = useMemo(() => {
     switch (themeMode) {
       case 'defaults':
-        return null; // null means use defaults, don't override
+        // For defaults mode, merge the main theme selection into the theme
+        if (currentTheme.startsWith('theme-dark')) {
+          return { dark: true, autoDetect: false };
+        } else if (currentTheme.startsWith('theme-light')) {
+          return { dark: false, autoDetect: false };
+        } else if (currentTheme === 'auto') {
+          return { dark: false, autoDetect: true };
+        } else if (currentTheme === 'dark') {
+          return { dark: true, autoDetect: false };
+        } else if (currentTheme === 'light') {
+          return { dark: false, autoDetect: false };
+        }
+        return null; // fallback to defaults
       case 'config':
         return undefined; // undefined means use config.theme as-is
       case 'custom':
@@ -158,7 +170,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       default:
         return null;
     }
-  }, [themeMode, config.theme, primaryColor, darkMode, customTheme]);
+  }, [themeMode, currentTheme, primaryColor, darkMode, customTheme]);
 
   // Transform galleryConfigs to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
