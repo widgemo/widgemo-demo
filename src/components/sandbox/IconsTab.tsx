@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Alert, Card, Row, Col } from 'react-bootstrap';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie, FaPencilAlt, FaTrash, FaTimes, FaChevronUp, FaChevronLeft, FaSearch, FaFilter, FaSort, FaColumns } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban } from 'react-icons/lu';
-import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal } from 'react-icons/hi';
+import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPresentationChartLine, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal, HiArrowUp, HiFilter } from 'react-icons/hi';
 import { defaultRenderIcon } from 'widgemo-core';
 
 interface IconsTabProps {
@@ -141,9 +141,10 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'chevron-left': HiChevronLeft,
         'chevron-right': HiChevronRight,
         'search': HiSearch,
-        'filter': HiDotsHorizontal,
-        'sort': HiTable,
+        'filter': HiFilter,
+        'sort': HiArrowUp,
         'chart-bar': HiChartBar,
+        'chart-line': HiPresentationChartLine,
         'chart-pie': HiChartPie,
         'table': HiTable,
         'grid': HiViewGrid,
@@ -234,8 +235,11 @@ export const IconsTab: React.FC<IconsTabProps> = ({
         'HiChevronRight': HiChevronRight,
         'HiSearch': HiSearch,
         'HiDotsHorizontal': HiDotsHorizontal,
+        'HiFilter': HiFilter,
+        'HiArrowUp': HiArrowUp,
         'HiTable': HiTable,
         'HiChartBar': HiChartBar,
+        'HiPresentationChartLine': HiPresentationChartLine,
         'HiChartPie': HiChartPie,
         'HiViewGrid': HiViewGrid,
         'HiClipboardCopy': HiClipboardCopy,
@@ -269,14 +273,14 @@ export const IconsTab: React.FC<IconsTabProps> = ({
       { name: 'chevron-left', aliases: [], reactIcons: 'FaChevronLeft', lucide: 'LuChevronLeft', heroicons: 'HiChevronLeft', suggested: false },
       { name: 'chevron-right', aliases: [], reactIcons: 'FaChevronRight', lucide: 'LuChevronRight', heroicons: 'HiChevronRight', suggested: true },
       { name: 'search', aliases: [], reactIcons: 'FaSearch', lucide: 'LuSearch', heroicons: 'HiSearch', suggested: false },
-      { name: 'filter', aliases: [], reactIcons: 'FaFilter', lucide: 'LuFilter', heroicons: 'HiFunnel', suggested: false },
-      { name: 'sort', aliases: [], reactIcons: 'FaSort', lucide: 'LuArrowUpDown', heroicons: 'HiBarsArrowUp', suggested: false },
+      { name: 'filter', aliases: [], reactIcons: 'FaFilter', lucide: 'LuFilter', heroicons: 'HiFilter', suggested: false },
+      { name: 'sort', aliases: [], reactIcons: 'FaSort', lucide: 'LuArrowUpDown', heroicons: 'HiArrowUp', suggested: false },
       { name: 'chart-bar', aliases: [], reactIcons: 'FaChartBar', lucide: 'LuChartBar', heroicons: 'HiChartBar', suggested: true },
-      { name: 'chart-line', aliases: [], reactIcons: 'FaChartLine', lucide: 'LuChartLine', heroicons: '', suggested: true },
+      { name: 'chart-line', aliases: [], reactIcons: 'FaChartLine', lucide: 'LuChartLine', heroicons: 'HiPresentationChartLine', suggested: true },
       { name: 'chart-pie', aliases: [], reactIcons: 'FaChartPie', lucide: 'LuChartPie', heroicons: 'HiChartPie', suggested: true },
       { name: 'table', aliases: [], reactIcons: 'FaTable', lucide: 'LuTable', heroicons: 'HiTable', suggested: true },
       { name: 'grid', aliases: [], reactIcons: 'FaTh', lucide: 'LuLayoutGrid', heroicons: 'HiViewGrid', suggested: true },
-      { name: 'board', aliases: [], reactIcons: 'FaColumns', lucide: 'LuKanban', heroicons: 'HiRectangleStack', suggested: false },
+      { name: 'board', aliases: [], reactIcons: 'FaColumns', lucide: 'LuKanban', heroicons: 'HiViewGrid', suggested: false },
       { name: 'copy', aliases: [], reactIcons: 'FaCopy', lucide: 'LuCopy', heroicons: 'HiClipboardCopy', suggested: true },
       { name: 'ellipsis-vertical', aliases: [], reactIcons: 'FaEllipsisV', lucide: 'LuEllipsisVertical', heroicons: 'HiDotsVertical', suggested: true },
     ];
