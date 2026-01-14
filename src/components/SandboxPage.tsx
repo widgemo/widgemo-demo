@@ -46,7 +46,9 @@ export const SandboxPage: React.FC = () => {
       bottom: 0,
       width: '100vw',
       height: 'calc(100vh - 56px)',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      background: `linear-gradient(to bottom, var(--border-color) 0%, var(--bg-color) 100%) fixed`,
+      backgroundSize: '100% 100vh'
     }}>
       <SandboxSection
         key={searchParams.get('config') || 'default'}

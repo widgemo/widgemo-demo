@@ -28,12 +28,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     // Also set CSS variables on document root for global access
     const themeConfig = THEME_CONFIGS[currentTheme];
+    console.log('ThemeContext: Setting CSS variables for theme:', currentTheme, themeConfig);
     if (themeConfig && document.documentElement) {
       document.documentElement.style.setProperty('--bg-color', themeConfig.backgroundColor);
       document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
       document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
       document.documentElement.style.setProperty('--button-bg', themeConfig.buttonBg);
       document.documentElement.style.setProperty('--button-hover', themeConfig.buttonHover);
+      console.log('CSS variables set:', {
+        '--bg-color': themeConfig.backgroundColor,
+        '--text-color': themeConfig.textColor,
+        '--border-color': themeConfig.borderColor
+      });
     }
     
     // Apply theme class to document body for proper inheritance

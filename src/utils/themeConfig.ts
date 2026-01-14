@@ -102,14 +102,29 @@ export const generateThemeCSS = (): string => {
   --button-hover: ${theme.buttonHover};
 }
 
-.${theme.key} .theme-aware-card {
+.${theme.key} .theme-aware-card:not(.sandbox-card) {
   background-color: ${theme.backgroundColor} !important;
   color: ${theme.textColor} !important;
   border: 1px solid ${theme.borderColor} !important;
 }
 
+.${theme.key} .theme-aware-card.sandbox-card {
+  background: transparent !important;
+  color: ${theme.textColor} !important;
+  border: 1px solid ${theme.borderColor} !important;
+}
+
+.${theme.key} .theme-aware-card.sandbox-card.card {
+  background: transparent !important;
+}
+
 .${theme.key} .theme-aware-card .card-body {
   background-color: ${theme.backgroundColor} !important;
+  color: ${theme.textColor} !important;
+}
+
+.${theme.key} .theme-aware-card.sandbox-card .card-body {
+  background: transparent !important;
   color: ${theme.textColor} !important;
 }
 

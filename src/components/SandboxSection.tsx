@@ -802,8 +802,17 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Card className="shadow theme-aware-card h-100 d-flex flex-column">
-        <Card.Body className="p-0 theme-aware-card d-flex flex-column flex-grow-1" style={{ minHeight: 0 }}>
+      <Card 
+        className="shadow theme-aware-card sandbox-card h-100 d-flex flex-column"
+        ref={(el) => {
+          if (el) {
+            const computedStyle = window.getComputedStyle(el);
+            console.log('Sandbox Card background:', computedStyle.background);
+            console.log('Sandbox Card background-color:', computedStyle.backgroundColor);
+          }
+        }}
+      >
+        <Card.Body className="p-0 theme-aware-card sandbox-card d-flex flex-column flex-grow-1" style={{ minHeight: 0 }}>
           <Group className="h-100 d-flex" style={{ minHeight: 0 }}>
             <Panel
               defaultSize={35}
@@ -1014,6 +1023,20 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         onClose={() => setShowSampleGen(false)}
         onGenerate={handleGenerateData}
       />
+
+      <style>
+        {`
+          .sandbox-card [data-panel] {
+            background: transparent !important;
+          }
+          .sandbox-card [data-panel-group] {
+            background: transparent !important;
+          }
+          .sandbox-card .panel-background {
+            background: transparent !important;
+          }
+        `}
+      </style>
     </div>
   );
 };
