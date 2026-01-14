@@ -61,6 +61,7 @@ interface SandboxSectionProps {
   onConfigChange?: (config: WidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: string;
+  initialThemeMode?: 'defaults' | 'config' | 'custom';
 }
 
 export const SandboxSection: React.FC<SandboxSectionProps> = ({
@@ -68,7 +69,8 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   initialData,
   onConfigChange,
   onDataChange,
-  currentTheme
+  currentTheme,
+  initialThemeMode = 'config'
 }) => {
   const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
   const [config, setConfig] = useState(initialConfig);
@@ -134,7 +136,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
 
   // Theming state
-  const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>('config');
+  const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
   const [primaryColor, setPrimaryColor] = useState('#0066cc');
   const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
   const [darkMode, setDarkMode] = useState(false);

@@ -22,6 +22,12 @@ export const SandboxPage: React.FC = () => {
     return defaultSandboxConfig;
   }, [searchParams]);
 
+  // Get initial theme mode - use 'defaults' for gallery configs, 'config' for default
+  const initialThemeMode = useMemo(() => {
+    const configId = searchParams.get('config');
+    return configId ? 'defaults' : 'config';
+  }, [searchParams]);
+
   const initialData = useMemo(() => {
     const configId = searchParams.get('config');
     if (configId) {
@@ -46,6 +52,7 @@ export const SandboxPage: React.FC = () => {
         key={searchParams.get('config') || 'default'}
         initialConfig={initialConfig}
         initialData={initialData}
+        initialThemeMode={initialThemeMode}
         currentTheme={currentTheme}
       />
     </div>
