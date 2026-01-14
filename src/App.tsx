@@ -4,12 +4,20 @@ import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { useContext } from 'react';
+import { getThemeBorderColor, getThemeBackgroundColor } from './utils/themeConfig';
 
 function AppContent() {
   const { currentTheme } = useContext(ThemeContext);
   
   return (
-    <div className={`App ${currentTheme}`}>
+    <div 
+      className={`App ${currentTheme}`}
+      style={{
+        background: `linear-gradient(to bottom, ${getThemeBorderColor(currentTheme)} 0%, ${getThemeBackgroundColor(currentTheme)} 100%)`,
+        backgroundAttachment: 'fixed',
+        minHeight: '100vh'
+      }}
+    >
       <AppNavbar />
 
       <Routes>

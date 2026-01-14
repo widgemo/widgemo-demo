@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
 import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
-import { mergeThemeIntoConfig, getThemeBackgroundColor, getThemeBorderColor } from '../utils/themeUtils';
+import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 
 interface TeaserSectionProps {
   onExploreGallery: () => void;
@@ -75,7 +75,6 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
 
   return (
     <section id="teaser" className="py-5 theme-aware-section" style={{
-      background: `linear-gradient(to bottom, ${getThemeBorderColor(currentTheme)} 0%, ${getThemeBackgroundColor(currentTheme)} 100%)`,
       color: shouldHaveDarkText ? '#161616' : 'white',
       height: isLargeScreen ? '800px' : '1200px' // Responsive height based on screen size
     }}>
