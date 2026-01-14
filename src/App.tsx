@@ -4,32 +4,42 @@ import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { useContext } from 'react';
-import { getThemeBorderColor, getThemeBackgroundColor } from './utils/themeConfig';
 
 function AppContent() {
   const { currentTheme } = useContext(ThemeContext);
   
+  console.log('AppContent rendering with theme:', currentTheme);
+  
   return (
     <div 
       className={`App ${currentTheme}`}
+      ref={(el) => {
+        if (el) {
+          const computedStyle = window.getComputedStyle(el);
+          console.log('App background:', computedStyle.background);
+          console.log('App background-image:', computedStyle.backgroundImage);
+        }
+      }}
       style={{
-        background: `linear-gradient(to bottom, ${getThemeBorderColor(currentTheme)} 0%, ${getThemeBackgroundColor(currentTheme)} 100%)`,
-        backgroundAttachment: 'fixed',
+        background: `linear-gradient(to bottom, var(--border-color) 0%, var(--bg-color) 100%) fixed`,
+        backgroundSize: '100% 100vh',
         minHeight: '100vh'
       }}
     >
-      <AppNavbar />
+      <div>
+        <AppNavbar />
 
-      <Routes>
-        <Route
-          path="/"
-          element={<MainPage />}
-        />
-        <Route
-          path="/sandbox"
-          element={<SandboxPage />}
-        />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainPage />}
+          />
+          <Route
+            path="/sandbox"
+            element={<SandboxPage />}
+          />
+        </Routes>
+      </div>
     </div>
   );
 }

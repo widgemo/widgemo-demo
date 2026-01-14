@@ -23,6 +23,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Inject theme CSS on mount and theme change
   useEffect(() => {
+    console.log('ThemeContext: Injecting CSS for theme:', currentTheme);
     injectThemeCSS();
   }, [currentTheme]);
 

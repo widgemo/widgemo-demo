@@ -26,7 +26,10 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <Dropdown.Item
             key={theme.key}
             active={currentTheme === theme.key}
-            onClick={() => onThemeChange(theme.key)}
+            onClick={() => {
+              console.log('ThemeSelector: Selecting theme:', theme.key);
+              onThemeChange(theme.key);
+            }}
             className="d-flex align-items-center"
           >
             <div

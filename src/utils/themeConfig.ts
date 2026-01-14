@@ -122,14 +122,14 @@ export const generateThemeCSS = (): string => {
 
   // Add common styles for all themes
   css += `
-.theme-light,
-.theme-light-blue,
-.theme-light-green,
-.theme-light-purple,
-.theme-dark,
-.theme-dark-red,
-.theme-dark-purple,
-.theme-dark-teal {
+.theme-light:not(.App),
+.theme-light-blue:not(.App),
+.theme-light-green:not(.App),
+.theme-light-purple:not(.App),
+.theme-dark:not(.App),
+.theme-dark-red:not(.App),
+.theme-dark-purple:not(.App),
+.theme-dark-teal:not(.App) {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
