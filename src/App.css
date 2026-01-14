@@ -81,6 +81,13 @@
   background-color: var(--bg-color) !important;
 }
 
+/* Theme-aware text */
+.theme-aware-text,
+h2.theme-aware-text,
+p.theme-aware-text {
+  color: var(--text-color) !important;
+}
+
 /* Resizable panels */
 [data-panel-group-direction="horizontal"] [data-panel-resize-handle] {
   background-color: #dee2e6;

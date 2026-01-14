@@ -1,17 +1,17 @@
 import React from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
-import { DemoSection } from './DemoSection';
 
 interface AdvancedSectionProps {
   currentTheme: string;
 }
 
 export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
-  <DemoSection
-    id="advanced"
-    title="Advanced Usage"
-    subtitle="Compositions, nesting, parent-controls, dashboards, and special configurations"
-  >
+  <section id="advanced" className="py-5 theme-aware-section">
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+      <div className="text-center mb-5">
+        <h2 className="display-4 fw-bold mb-3 theme-aware-text">Advanced Usage</h2>
+        <p className="lead theme-aware-text">Compositions, nesting, parent-controls, dashboards, and special configurations</p>
+      </div>
     <Row className="justify-content-center">
       <Col lg={8} className="text-center">
         <Card className="shadow theme-aware-card border-0 bg-transparent">
@@ -46,5 +46,6 @@ export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
         </Card>
       </Col>
     </Row>
-  </DemoSection>
+  </div>
+</section>
 );

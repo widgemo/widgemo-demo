@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Col, Card, Badge } from 'react-bootstrap';
 import { FaLayerGroup, FaCog, FaCodeBranch, FaPuzzlePiece } from 'react-icons/fa';
-import { DemoSection } from './DemoSection';
 
 interface AnatomySectionProps {
   currentTheme?: string;
@@ -9,11 +8,12 @@ interface AnatomySectionProps {
 
 export const AnatomySection: React.FC<AnatomySectionProps> = () => {
   return (
-    <DemoSection
-      id="anatomy"
-      title="Anatomy of a Widgemo"
-      subtitle="Understanding the configurable layers of the primitive"
-    >
+    <section id="anatomy" className="py-5 theme-aware-section">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+        <div className="text-center mb-5">
+          <h2 className="display-4 fw-bold mb-3 theme-aware-text">Anatomy of a Widgemo</h2>
+          <p className="lead theme-aware-text">Understanding the configurable layers of the primitive</p>
+        </div>
       <div className="mb-5">
         <Row className="g-4">
           {/* The Single Primitive */}
@@ -220,6 +220,7 @@ const customAdapters = {
           </Col>
         </Row>
       </div>
-    </DemoSection>
+    </div>
+  </section>
   );
 };

@@ -5,7 +5,6 @@ import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs, mockAdapters } from '../data/sampleData';
 import { getThemeBackgroundColor, mergeThemeIntoConfig } from '../utils/themeUtils';
-import { DemoSection } from './DemoSection';
 import type { SampleData } from '../data/sampleData';
 
 interface GallerySectionProps {
@@ -132,11 +131,12 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   };
 
   return (
-    <DemoSection
-      id="gallery"
-      title="Gallery"
-      subtitle="Explore different configurations and modes"
-    >
+    <section id="gallery" className="py-5 theme-aware-section">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+        <div className="text-center mb-5">
+          <h2 className="display-4 fw-bold mb-3 theme-aware-text">Gallery</h2>
+          <p className="lead theme-aware-text">Explore different configurations and modes</p>
+        </div>
       {/* Controls */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex gap-2">
@@ -224,6 +224,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
         </Modal>
       )}
 
+    </div>
+
       <style dangerouslySetInnerHTML={{
         __html: `
           .gallery-item:hover .gallery-overlay {
@@ -292,6 +294,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           }
         `
       }} />
-    </DemoSection>
+    </section>
   );
 };
