@@ -426,6 +426,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
         .trim();
 
       const parsed = JSON.parse(cleanJson);
+      
+      // Apply current theme settings if not in 'config' mode
+      if (currentSandboxTheme !== undefined) {
+        parsed.theme = currentSandboxTheme;
+      }
+      
       setConfig(parsed);
       if (onConfigChange) onConfigChange(parsed);
       setJsonError(null);
