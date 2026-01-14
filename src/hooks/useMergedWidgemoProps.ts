@@ -142,14 +142,27 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       if (appliedContrastAmount !== undefined) {
         appliedThemeProps.contrastAmount = appliedContrastAmount;
       }
-      if (Object.keys(appliedThemeProps).length > 0) {
+      
+      // For 'config' mode, merge applied props with config.theme
+      // For other modes, merge with currentSandboxTheme
+      if (currentSandboxTheme === undefined) {
+        // 'config' mode: use config.theme as base
+        themeToApply = { ...config.theme, ...appliedThemeProps };
+      } else {
+        // Other modes: use currentSandboxTheme as base
         themeToApply = { ...currentSandboxTheme, ...appliedThemeProps };
       }
     } else {
       // Even without advanced props, include baseColor
       const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
       if (baseColorFromTheme) {
-        themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
+        if (currentSandboxTheme === undefined) {
+          // 'config' mode: merge baseColor with config.theme
+          themeToApply = { ...config.theme, baseColor: baseColorFromTheme };
+        } else {
+          // Other modes: merge baseColor with currentSandboxTheme
+          themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
+        }
       }
     }
 
@@ -159,11 +172,8 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     } else if (themeToApply !== undefined) {
       // Override with custom theme
       props.config.theme = themeToApply;
-    } else {
-      // themeToApply is undefined (Use Config): merge baseColor with config.theme
-      const baseColor = config.theme?.background || getThemeBackgroundColor(currentTheme);
-      props.config.theme = { baseColor, ...config.theme };
     }
+    // Note: themeToApply is never undefined now due to the logic above
 
     // Add icon renderer if available
     if (currentIconRenderer) {
