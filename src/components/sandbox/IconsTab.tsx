@@ -395,7 +395,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
 
           <div className="col-12">
             <Form.Label className="small fw-bold">Available Icons & Mappings</Form.Label>
-            <Card style={{ border: `1px solid ${themeBorderColor}` }}>
+            <Card style={{ background: 'transparent', border: `1px solid ${themeBorderColor}` }}>
               <Card.Body className="p-3">
                 <small className="text-muted d-block mb-3">
                   {iconLibrary === 'none' 
