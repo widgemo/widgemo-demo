@@ -125,11 +125,16 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     if (applyAdvancedProps) {
       // Merge applied theme props into the theme
       const appliedThemeProps: Partial<WidgemoTheme> = {};
-      // Always set baseColor from current theme
-      const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
-      if (baseColorFromTheme) {
-        appliedThemeProps.baseColor = baseColorFromTheme;
+      
+      // For 'config' mode, don't include default baseColor to preserve config.theme.baseColor
+      if (currentSandboxTheme !== undefined) {
+        // Always set baseColor from current theme for non-config modes
+        const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
+        if (baseColorFromTheme) {
+          appliedThemeProps.baseColor = baseColorFromTheme;
+        }
       }
+      
       if (appliedBaseColor?.trim()) {
         appliedThemeProps.baseColor = appliedBaseColor;
       }
@@ -157,8 +162,8 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
       if (baseColorFromTheme) {
         if (currentSandboxTheme === undefined) {
-          // 'config' mode: merge baseColor with config.theme
-          themeToApply = { ...config.theme, baseColor: baseColorFromTheme };
+          // 'config' mode: merge baseColor with config.theme only if not already present
+          themeToApply = { baseColor: baseColorFromTheme, ...config.theme };
         } else {
           // Other modes: merge baseColor with currentSandboxTheme
           themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
