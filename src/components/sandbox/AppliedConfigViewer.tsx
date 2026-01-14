@@ -1,5 +1,6 @@
-import React from 'react';
-import { Alert } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Alert, Collapse } from 'react-bootstrap';
+import { BsInfoCircle } from 'react-icons/bs';
 
 interface AppliedConfigViewerProps {
   /** The resolved/merged props object to display */
@@ -29,13 +30,23 @@ export const AppliedConfigViewer: React.FC<AppliedConfigViewerProps> = ({
   resolvedProps,
   note = "This shows the effective, resolved configuration after defaults + overrides + auto-generation"
 }) => {
+  const [showNote, setShowNote] = useState(false);
 
   return (
     <div className="d-flex flex-column h-100">
       {note && (
-        <Alert variant="info" className="mb-3 flex-shrink-0">
-          <small>{note}</small>
-        </Alert>
+        <div className="mb-3 flex-shrink-0">
+          <button className="btn btn-sm btn-outline-info" onClick={() => setShowNote(!showNote)}>
+            <BsInfoCircle className="me-1" /> {showNote ? 'Hide Note' : 'Show Note'}
+          </button>
+          <Collapse in={showNote}>
+            <div>
+              <Alert variant="info" className="mt-2">
+                <small>{note}</small>
+              </Alert>
+            </div>
+          </Collapse>
+        </div>
       )}
 
       <div className="flex-grow-1 overflow-auto">
@@ -61,7 +72,7 @@ export const AppliedConfigViewer: React.FC<AppliedConfigViewerProps> = ({
             }}
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(resolvedProps, null, 2)
-                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, (match) => {
                   let style = 'color: #6f42c1;'; // purple for strings
                   if (/^"/.test(match)) {
                     if (/:$/.test(match)) {
