@@ -6,7 +6,6 @@ import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings,
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
-import { getThemeBackgroundColor } from '../utils/themeUtils';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { AppliedConfig } from './AppliedConfig';
@@ -949,16 +948,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                       config={config}
                       adapters={dynamicAdapters}
                       showConfigDetails={showConfigDetails}
-                      baseColor={getThemeBackgroundColor(currentTheme)}
                       renderIcon={currentIconRenderer}
                       loading={loading}
                       error={error}
                       overrides={applyAdvancedProps && Object.keys(appliedOverrides || {}).length > 0 ? appliedOverrides : undefined}
                       className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
                       style={applyAdvancedProps && appliedStyleJson?.trim() ? JSON.parse(appliedStyleJson) : undefined}
-                      autoContrast={applyAdvancedProps && appliedAutoContrast !== true ? appliedAutoContrast : undefined}
-                      contrastAmount={applyAdvancedProps && appliedContrastAmount !== undefined && Math.abs(appliedContrastAmount - 0.05) > 0.001 ? appliedContrastAmount : undefined}
-                      overrideBackground={applyAdvancedProps ? appliedOverrideBackground : undefined}
                       currentSandboxTheme={currentSandboxTheme}
                       currentIconRenderer={currentIconRenderer}
                       customLoading={useCustomLoading ? CustomLoadingComponent : undefined}

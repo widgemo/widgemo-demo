@@ -6,16 +6,12 @@ interface AppliedConfigProps {
   config: any;
   adapters: any;
   showConfigDetails?: boolean;
-  baseColor?: string;
   renderIcon?: any;
   overrides?: any;
   className?: string;
   style?: any;
   loading?: boolean;
   error?: string | Error;
-  autoContrast?: boolean;
-  contrastAmount?: number;
-  overrideBackground?: string;
   currentSandboxTheme?: any;
   currentIconRenderer?: any;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
@@ -24,7 +20,7 @@ interface AppliedConfigProps {
 }
 
 export function AppliedConfig(props: AppliedConfigProps) {
-  const { config, showConfigDetails, baseColor, renderIcon, overrides, className, style, loading, error, autoContrast, contrastAmount, overrideBackground, currentSandboxTheme, currentIconRenderer, customLoading, customError, resolvedConfig } = props;
+  const { config, showConfigDetails, renderIcon, overrides, className, style, loading, error, currentSandboxTheme, currentIconRenderer, customLoading, customError, resolvedConfig } = props;
   // Build the effective configuration object
   let resolvedProps;
   if (resolvedConfig) {
@@ -37,16 +33,12 @@ export function AppliedConfig(props: AppliedConfigProps) {
         deleteRecord: '[Function: deleteRecord]',
       },
       ...(showConfigDetails && { showConfigDetails }),
-      ...(baseColor && { baseColor }),
       ...(renderIcon && { renderIcon: currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer' }),
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
       ...(style && { style }),
       ...(loading !== undefined && { loading }),
       ...(error && { error: typeof error === 'string' ? error : error.message }),
-      ...(autoContrast !== undefined && { autoContrast }),
-      ...(contrastAmount !== undefined && { contrastAmount }),
-      ...(overrideBackground && { overrideBackground }),
       ...(customLoading && { customLoading: '[Custom Loading Component]' }),
       ...(customError && { customError: '[Custom Error Component]' }),
     };
@@ -73,12 +65,15 @@ export function AppliedConfig(props: AppliedConfigProps) {
       return data;
     };
 
+    // Build theme with baseColor included
+    const effectiveTheme = currentSandboxTheme === null ? undefined :
+      currentSandboxTheme !== undefined ? currentSandboxTheme :
+      config.theme ? config.theme : undefined;
+
     resolvedProps = {
       config: {
         ...config,
-        ...(currentSandboxTheme === null ? {} : 
-            currentSandboxTheme !== undefined ? { theme: currentSandboxTheme } : 
-            config.theme ? { theme: config.theme } : {}),
+        ...(effectiveTheme && { theme: effectiveTheme }),
         styling: config.styling ? {
           ...config.styling,
           themeOverrides: config.styling.themeOverrides
@@ -92,16 +87,12 @@ export function AppliedConfig(props: AppliedConfigProps) {
         deleteRecord: '[Function: deleteRecord]',
       },
       showConfigDetails,
-      baseColor,
       renderIcon: renderIcon ? (currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer') : undefined,
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
       ...(style && { style }),
       ...(loading !== undefined && { loading }),
       ...(error && { error: typeof error === 'string' ? error : error.message }),
-      ...(autoContrast !== undefined && { autoContrast }),
-      ...(contrastAmount !== undefined && { contrastAmount }),
-      ...(overrideBackground && { overrideBackground }),
       ...(customLoading && { customLoading: '[Custom Loading Component]' }),
       ...(customError && { customError: '[Custom Error Component]' }),
     };

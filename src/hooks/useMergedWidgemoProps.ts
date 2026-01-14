@@ -120,20 +120,50 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     // - null: Use defaults (don't set theme)
     // - undefined: Use config.theme as-is (don't override)
     // - object: Override with the provided theme
-    if (currentSandboxTheme === null) {
+    let themeToApply = currentSandboxTheme;
+    
+    if (applyAdvancedProps) {
+      // Merge applied theme props into the theme
+      const appliedThemeProps: Partial<WidgemoTheme> = {};
+      // Always set baseColor from current theme
+      const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
+      if (baseColorFromTheme) {
+        appliedThemeProps.baseColor = baseColorFromTheme;
+      }
+      if (appliedBaseColor?.trim()) {
+        appliedThemeProps.baseColor = appliedBaseColor;
+      }
+      if (appliedOverrideBackground?.trim()) {
+        appliedThemeProps.overrideBackground = appliedOverrideBackground;
+      }
+      if (appliedAutoContrast !== undefined) {
+        appliedThemeProps.autoContrast = appliedAutoContrast;
+      }
+      if (appliedContrastAmount !== undefined) {
+        appliedThemeProps.contrastAmount = appliedContrastAmount;
+      }
+      if (Object.keys(appliedThemeProps).length > 0) {
+        themeToApply = { ...currentSandboxTheme, ...appliedThemeProps };
+      }
+    } else {
+      // Even without advanced props, include baseColor
+      const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
+      if (baseColorFromTheme) {
+        themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
+      }
+    }
+
+    if (themeToApply === null) {
       // Use defaults - don't set theme property
       delete props.config.theme;
-    } else if (currentSandboxTheme !== undefined) {
+    } else if (themeToApply !== undefined) {
       // Override with custom theme
-      props.config.theme = currentSandboxTheme;
+      props.config.theme = themeToApply;
+    } else {
+      // themeToApply is undefined (Use Config): merge baseColor with config.theme
+      const baseColor = config.theme?.background || getThemeBackgroundColor(currentTheme);
+      props.config.theme = { baseColor, ...config.theme };
     }
-    // If currentSandboxTheme is undefined, keep config.theme as-is
-
-    // Add theme-related props
-    // Note: Theme is applied via CSS variables to container, not passed as prop to Widgemo
-    // if (currentSandboxTheme) {
-    //   props.theme = currentSandboxTheme;
-    // }
 
     // Add icon renderer if available
     if (currentIconRenderer) {
@@ -148,12 +178,6 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     // Add onResolvedProps if provided
     if (onResolvedProps) {
       props.onResolvedProps = onResolvedProps;
-    }
-
-    // Add base color from theme
-    const baseColor = getThemeBackgroundColor(currentTheme);
-    if (baseColor) {
-      props.baseColor = baseColor;
     }
 
     // Handle loading states
@@ -195,26 +219,6 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
           console.warn('Failed to parse style JSON:', error);
         }
       }
-
-      // Base color override
-      if (appliedBaseColor?.trim()) {
-        props.baseColor = appliedBaseColor;
-      }
-
-      // Background override
-      if (appliedOverrideBackground?.trim()) {
-        props.overrideBackground = appliedOverrideBackground;
-      }
-
-      // Auto contrast (only if different from default)
-      if (appliedAutoContrast !== undefined && appliedAutoContrast !== true) {
-        props.autoContrast = appliedAutoContrast;
-      }
-
-      // Contrast amount (only if different from default 0.05)
-      if (appliedContrastAmount !== undefined && Math.abs(appliedContrastAmount - 0.05) > 0.001) {
-        props.contrastAmount = appliedContrastAmount;
-      }
     }
 
     return props;
@@ -232,10 +236,6 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
     appliedStyleJson,
     appliedLoading,
     appliedError,
-    appliedBaseColor,
-    appliedOverrideBackground,
-    appliedAutoContrast,
-    appliedContrastAmount,
     customLoadingComponent,
     customErrorComponent,
   ]);

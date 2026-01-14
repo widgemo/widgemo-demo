@@ -76,8 +76,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
 
   const handleResetToDefaults = () => {
     onCustomThemeChange({});
-    onPrimaryColorChange(defaultTheme.primary);
-    onDarkModeChange(defaultTheme.dark);
+    onPrimaryColorChange(defaultTheme.primary!);
+    onDarkModeChange(defaultTheme.dark!);
     onAutoGeneratePaletteChange(true);
   };
 

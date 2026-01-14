@@ -137,10 +137,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                 <div inert className="flex-grow-1 overflow-auto" style={{ padding: '8px' }}>
                   <Widgemo
                     key={currentConfigIndex}
-                    config={teaserConfig}
+                    config={{ ...teaserConfig, theme: { ...teaserConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
                     adapters={teaserAdapters}
                     showConfigDetails={false}
-                    baseColor={getThemeBackgroundColor(currentTheme)}
                   />
                 </div>
               </Card.Body>
