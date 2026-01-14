@@ -38,7 +38,7 @@ interface ThemingTabProps {
  * ThemingTab - A focused component for theme configuration and visualization
  *
  * Features:
- * - Three theme modes: Use Widgemo Defaults, Use Config, Custom Theme
+ * - Three theme modes: Use Widgemo Defaults, Use Config theme properties, Custom Theme
  * - Primary color picker with hex input (Custom mode)
  * - Auto palette generation preview with color swatches
  * - Custom theme property editors (border radius, spacing, fonts) (Custom mode)
@@ -145,7 +145,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
 
               <Form.Check
                 type="radio"
-                label="Use Config"
+                label="Use Config theme properties"
                 name="themeMode"
                 value="config"
                 checked={themeMode === 'config'}
@@ -153,7 +153,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 className="mb-2"
               />
               <Form.Text className="text-muted small mb-3 d-block">
-                Use theming information directly from the Config JSON in the config editor.
+                Use theme properties directly from the Config JSON in the config editor.
               </Form.Text>
 
               <Form.Check
