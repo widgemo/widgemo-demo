@@ -3,6 +3,7 @@ import { Form, Alert, Button } from 'react-bootstrap';
 import { generatePalette } from 'widgemo-core';
 import type { WidgemoTheme } from 'widgemo-core';
 import { defaultTheme } from 'widgemo-core';
+import { getThemeBorderColor } from '../../utils/themeConfig';
 
 type ThemeMode = 'defaults' | 'config' | 'custom';
 
@@ -29,6 +30,8 @@ interface ThemingTabProps {
   onDarkModeChange: (dark: boolean) => void;
   /** Callback when auto-generate palette changes */
   onAutoGeneratePaletteChange: (auto: boolean) => void;
+  /** Current global theme key for border styling */
+  currentTheme: string;
 }
 
 /**
@@ -62,6 +65,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
   onCustomThemeChange,
   onDarkModeChange,
   onAutoGeneratePaletteChange,
+  currentTheme,
 }) => {
   const handleCustomThemeChange = (key: keyof WidgemoTheme, value: string | boolean) => {
     onCustomThemeChange({
@@ -115,6 +119,9 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
   };
 
   const palette = getPaletteForMode();
+
+  // Get theme border color for styling the preview cards
+  const themeBorderColor = getThemeBorderColor(currentTheme);
 
   return (
     <div className="d-flex flex-column h-100">
@@ -745,7 +752,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
             <Form.Label className="small fw-bold">Generated Palette Preview</Form.Label>
             <div className="row g-2">
               <div className="col-md-4">
-                <div className="border rounded p-2 text-center">
+                <div className="rounded p-2 text-center" style={{ border: `1px solid ${themeBorderColor}` }}>
                   <div
                     className="rounded mb-1"
                     style={{
@@ -766,7 +773,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="border rounded p-2 text-center">
+                <div className="rounded p-2 text-center" style={{ border: `1px solid ${themeBorderColor}` }}>
                   <div
                     className="rounded mb-1"
                     style={{
@@ -786,7 +793,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="border rounded p-2 text-center">
+                <div className="rounded p-2 text-center" style={{ border: `1px solid ${themeBorderColor}` }}>
                   <div
                     className="rounded mb-1"
                     style={{
@@ -806,7 +813,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="border rounded p-2 text-center">
+                <div className="rounded p-2 text-center" style={{ border: `1px solid ${themeBorderColor}` }}>
                   <div
                     className="rounded mb-1"
                     style={{
@@ -826,7 +833,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="border rounded p-2 text-center">
+                <div className="rounded p-2 text-center" style={{ border: `1px solid ${themeBorderColor}` }}>
                   <div
                     className="rounded mb-1"
                     style={{

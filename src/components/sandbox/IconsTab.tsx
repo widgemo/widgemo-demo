@@ -43,7 +43,6 @@ interface IconsTabProps {
 export const IconsTab: React.FC<IconsTabProps> = ({
   iconLibrary,
   onIconLibraryChange,
-  darkMode = false,
   currentTheme = 'theme-light',
 }) => {
 

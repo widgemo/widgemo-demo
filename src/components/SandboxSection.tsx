@@ -199,23 +199,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     return false;
   }, [currentSandboxTheme, currentTheme]);
 
-  // Determine the effective theme key for styling purposes
-  const effectiveThemeKey = useMemo(() => {
-    if (themeMode === 'defaults') {
-      return currentTheme;
-    }
-    if (themeMode === 'custom') {
-      // For custom mode, use a dark or light theme based on darkMode
-      return darkMode ? 'theme-dark' : 'theme-light';
-    }
-    // For config mode, check if config has dark theme
-    if (themeMode === 'config' && config.theme && config.theme.dark) {
-      return 'theme-dark';
-    }
-    // For config mode with light theme or unknown, fall back to light theme
-    return 'theme-light';
-  }, [themeMode, currentTheme, darkMode, config.theme]);
-
   // Transform galleryConfigs to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
     return galleryConfigs.map(config => ({

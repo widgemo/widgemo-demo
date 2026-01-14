@@ -309,6 +309,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             darkMode={darkMode}
             autoGeneratePalette={autoGeneratePalette}
             configTheme={configTheme}
+            currentTheme={currentTheme}
             onThemeModeChange={onThemeModeChange}
             onPrimaryColorChange={onPrimaryColorChange}
             onCustomThemeChange={onCustomThemeChange}
