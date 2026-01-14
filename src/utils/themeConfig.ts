@@ -183,6 +183,10 @@ export const getThemeBorderColor = (themeKey: string): string => {
   return THEME_CONFIGS[themeKey]?.borderColor || '#cccccc';
 };
 
+export const isThemeDark = (themeKey: string): boolean => {
+  return themeKey.includes('dark');
+};
+
 export const getAllThemeKeys = (): string[] => {
   return Object.keys(THEME_CONFIGS);
 };

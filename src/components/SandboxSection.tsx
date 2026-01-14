@@ -208,9 +208,13 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       // For custom mode, use a dark or light theme based on darkMode
       return darkMode ? 'theme-dark' : 'theme-light';
     }
-    // For config mode, fall back to light theme
+    // For config mode, check if config has dark theme
+    if (themeMode === 'config' && config.theme && config.theme.dark) {
+      return 'theme-dark';
+    }
+    // For config mode with light theme or unknown, fall back to light theme
     return 'theme-light';
-  }, [themeMode, currentTheme, darkMode]);
+  }, [themeMode, currentTheme, darkMode, config.theme]);
 
   // Transform galleryConfigs to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
@@ -875,7 +879,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}
-                currentTheme={effectiveThemeKey}
+                currentTheme={currentTheme}
                 // SampleDataTab props
                 currentData={customData}
                 jsonEditorText={jsonEditorText}
