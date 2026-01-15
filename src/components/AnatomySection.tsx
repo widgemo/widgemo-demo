@@ -80,24 +80,13 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
                     <span className="small">Features, interactions, and behaviors</span>
                   </div>
                 </div>
-                {/* Placeholder for annotated screenshot */}
-                <div style={{
-                  height: '150px',
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px dashed rgba(255,255,255,0.3)'
-                }}>
-                  <div className="text-center">
-                    <FaCog size={32} className="text-muted mb-2" />
-                    <p className="text-muted small mb-0">
-                      [Annotated Screenshot]<br/>
-                      <em>Future: Screenshot with callouts for each layer</em>
-                    </p>
-                  </div>
-                </div>
+                {/* Annotated screenshot of configuration layers */}
+                <img
+                  src="/annotated.jpg"
+                  alt="Annotated screenshot showing the four layers of Widgemo configuration: Header, Content, Theme, and Capabilities"
+                  className="img-fluid rounded shadow-sm"
+                  style={{ maxHeight: '400px', width: '100%', objectFit: 'contain' }}
+                />
               </Card.Body>
             </Card>
           </Col>
