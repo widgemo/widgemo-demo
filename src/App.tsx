@@ -3,6 +3,7 @@ import { ThemeProvider, ThemeContext } from './contexts/ThemeContext';
 import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
+import { SimplifiedTest } from './components/SimplifiedTest';
 import { useContext } from 'react';
 
 function AppContent() {
@@ -37,6 +38,10 @@ function AppContent() {
           <Route
             path="/sandbox"
             element={<SandboxPage />}
+          />
+          <Route
+            path="/simplified-test"
+            element={<SimplifiedTest />}
           />
         </Routes>
       </div>

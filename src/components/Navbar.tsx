@@ -14,6 +14,7 @@ export const AppNavbar: React.FC = () => {
     { id: 'anatomy', label: 'Anatomy', path: '/' },
     { id: 'gallery', label: 'Gallery', path: '/' },
     { id: 'sandbox', label: 'Sandbox', path: '/sandbox' },
+    { id: 'simplified-test', label: 'Simplified Test', path: '/simplified-test' },
     { id: 'advanced', label: 'Advanced', path: '/' },
     { id: 'resources', label: 'Resources', path: '/' },
   ];
