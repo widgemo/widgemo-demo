@@ -22,7 +22,27 @@ export const SimplifiedTest: React.FC = () => {
                       icon: { src: 'database', size: 24 },
                       title: (data) => `User Database (${data.length} users)`,
                       subtitle: 'Manage your team members',
-                      actions: [{ id: 'add-user', label: 'Add User' }]
+                      actions: [
+                        {
+                          id: 'add-user',
+                          label: 'Add User',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add User clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          onTrigger: () => alert('Refresh clicked!')
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export Data',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!')
+                        }
+                      ]
                     },
                     content: {
                       enabled: true,
@@ -68,15 +88,47 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Minimal Configuration</h5>
-              <p className="card-text">Testing ZoneRenderer with minimal configuration (compassionate defaults).</p>
+              <h5 className="card-title">Actions System Test</h5>
+              <p className="card-text">Testing ActionsRenderer with core actions registry and menu dropdown.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData}
                 config={{
                   zones: {
-                    header: { enabled: true },
+                    header: {
+                      enabled: true,
+                      title: 'Actions Demo',
+                      subtitle: 'Core actions with menu',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          onTrigger: () => alert('Refresh clicked!')
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: true
+                        },
+                        {
+                          id: 'settings',
+                          label: 'Settings',
+                          icon: 'settings',
+                          onTrigger: () => alert('Settings clicked!')
+                        }
+                      ]
+                    },
                     content: { enabled: true },
-                    footer: { enabled: true }
+                    footer: { enabled: false }
                   }
                 }}
               />
