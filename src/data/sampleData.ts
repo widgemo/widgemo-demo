@@ -68,11 +68,39 @@ export const galleryConfigs: Array<{
           { name: 'department', label: 'Department', type: 'text' },
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
-        actions: { create: true, edit: true, delete: true },
-        header: { always: ['refresh', 'add'], onMenu: ['columnSelector', 'deletedToggle'] },
+        actions: {
+          definitions: [
+            { id: 'add', label: 'Add User' },
+            { id: 'refresh' },
+            { id: 'columnSelector' },
+            { id: 'deletedToggle' },
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              variant: 'secondary',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'trash',
+              variant: 'danger',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            }
+          ],
+          header: {
+            always: ['refresh', 'add'],
+            onMenu: ['columnSelector', 'deletedToggle']
+          },
+          item: {
+            onMenu: ['edit', 'delete']
+          }
+        },
         theme: { shadow: false },
         styling: { compact: true },
-        labels: { add: 'Add User' },
         collapsible: 'fixed',
       },
       description: 'Full-featured data management table with CRUD operations',
@@ -93,7 +121,25 @@ export const galleryConfigs: Array<{
           { name: 'department', label: 'Department', type: 'text', visible: false },
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
-        actions: { view: true },
+        actions: {
+          definitions: [
+            { id: 'add', label: 'Add User Profile' },
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'eye',
+              variant: 'secondary',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            }
+          ],
+          header: {
+            always: ['add']
+          },
+          item: {
+            always: ['view']
+          }
+        },
         styling: {
           board: {
             groupBy: 'role',
@@ -106,8 +152,6 @@ export const galleryConfigs: Array<{
           }
         },
         collapsible: 'fixed',
-        header: { always: ['add'] },
-        labels: { add: 'Add User Profile' }
       },
       description: 'Kanban style board with configurable columns and swimlanes. Drag and drop to rearrange cards.',
       data: teaserSampleData
@@ -145,8 +189,15 @@ export const galleryConfigs: Array<{
             }
           }
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Image grid using "contain" object-fit, showing full images with potential letterboxing/pillarboxing.',
       data: imageGalleryData.slice(0, 9)
@@ -200,10 +251,13 @@ export const galleryConfigs: Array<{
             aspectRatio: '1/1'
           }
         },
-        header: {
-          always: [
-            'refresh'
-          ]
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
         }
       },
       description: 'Department grid showing team leads and roles',
@@ -240,7 +294,14 @@ export const galleryConfigs: Array<{
           { name: 'name', label: 'Name', type: 'text' },
           { name: 'lastLogin', label: 'Last Login', type: 'date' },
         ],
-        header: { onMenu: ['refresh'] },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            onMenu: ['refresh']
+          }
+        },
         styling: { compact: true },
       },
       description: 'Simple table view without header and controls',
@@ -269,11 +330,41 @@ export const galleryConfigs: Array<{
           { name: 'status', label: 'Active', type: 'boolean', filterable: true },
           { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
         ],
-        actions: { create: true, edit: true, delete: true },
+        actions: {
+          definitions: [
+            { id: 'refresh' },
+            { id: 'viewToggle' },
+            { id: 'columnSelector' },
+            { id: 'add' },
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              variant: 'secondary',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'trash',
+              variant: 'danger',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            }
+          ],
+          header: {
+            always: ['refresh'],
+            discoverable: ['viewToggle'],
+            onMenu: ['columnSelector', 'add']
+          },
+          item: {
+            onMenu: ['edit', 'delete']
+          }
+        },
         pagination: { enabled: true, defaultPageSize: 5 },
         sorting: { enabled: true },
         filtering: { enabled: true },
-        header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
         styling: {},
       },
       description: 'Full-featured user management with pagination, sorting, and filtering',
@@ -335,7 +426,29 @@ export const galleryConfigs: Array<{
           { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
           { name: 'assignee', label: 'Assignee', type: 'text' },
         ],
-        actions: { edit: true, delete: true },
+        actions: {
+          definitions: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              variant: 'secondary',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'trash',
+              variant: 'danger',
+              iconOnly: true,
+              onTrigger: () => {} // Demo action
+            }
+          ],
+          item: {
+            onMenu: ['edit', 'delete']
+          }
+        },
         theme: { shadow: true, dynamicBackground: false },
         styling: {
           board: {
@@ -386,8 +499,15 @@ export const galleryConfigs: Array<{
             }
           }
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Image gallery with masonry layout, lazy loading, and hover overlays. Click images to view details.',
       data: imageGalleryData
@@ -424,8 +544,15 @@ export const galleryConfigs: Array<{
             }
           }
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Clean image grid without text overlays, fixed height layout with 4 columns.',
       data: imageGalleryData.slice(0, 8) // Use first 8 images
@@ -462,8 +589,15 @@ export const galleryConfigs: Array<{
           },
           compact: true
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Compact 6-column image grid with small cells, perfect for thumbnails or overview displays.',
       data: imageGalleryData
@@ -500,8 +634,15 @@ export const galleryConfigs: Array<{
             }
           }
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Large 2-column masonry layout showcasing images with detailed text overlays.',
       data: imageGalleryData
@@ -548,8 +689,15 @@ export const galleryConfigs: Array<{
           }
         },
         theme: { dynamicBackground: true },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Board view with images as card backgrounds, overlay text for readability, and dynamic color backgrounds',
       data: imageGalleryData
@@ -602,8 +750,15 @@ export const galleryConfigs: Array<{
           }
         },
         theme: { dynamicBackground: false },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Board view with images as card headers, custom column definitions, and static backgrounds with borders',
       data: imageGalleryData
@@ -638,8 +793,15 @@ export const galleryConfigs: Array<{
         },
         theme: { shadow: true },
         styling: { compact: true },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Table view with circular avatar images in cells, showing user profiles with online status',
       data: teaserSampleData
@@ -686,8 +848,15 @@ export const galleryConfigs: Array<{
         },
         theme: { shadow: true },
         styling: { compact: true },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Table with multiple image columns - thumbnail and full-size preview with different sizes and shapes',
       data: imageGalleryData.map(item => ({
@@ -726,8 +895,15 @@ export const galleryConfigs: Array<{
             // backgroundColor: 'rgba(255, 255, 255, 0.9)'
           }
         },
+        actions: {
+          definitions: [
+            { id: 'refresh' }
+          ],
+          header: {
+            always: ['refresh']
+          }
+        },
         collapsible: 'fixed',
-        header: { always: ['refresh'] }
       },
       description: 'Table with images displayed in cells with cover fit',
       data: imageGalleryData.slice(0, 6)
@@ -785,7 +961,35 @@ export const defaultSandboxConfig: WidgemoConfig = {
     { name: 'department', label: 'Department', type: 'text' },
     { name: 'status', label: 'Active', type: 'boolean' },
   ],
-  actions: { create: true, edit: true, delete: true },
+  actions: {
+    definitions: [
+      { id: 'add' },
+      { id: 'refresh' },
+      {
+        id: 'edit',
+        label: 'Edit',
+        icon: 'edit',
+        variant: 'secondary',
+        iconOnly: true,
+        onTrigger: () => {} // Demo action
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: 'trash',
+        variant: 'danger',
+        iconOnly: true,
+        onTrigger: () => {} // Demo action
+      }
+    ],
+    header: {
+      always: ['refresh', 'add'],
+      onMenu: ['deleteToggle']
+    },
+    item: {
+      onMenu: ['edit', 'delete']
+    }
+  },
   theme: { shadow: true, showBorder: true },
   styling: {},
 };
@@ -805,8 +1009,36 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'department', label: 'Department', type: 'text' },
         { name: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
       ],
-      actions: { create: true, edit: true, delete: true },
-      header: { always: ['refresh', 'add'], onMenu: ['deleteToggle'] },
+      actions: {
+        definitions: [
+          { id: 'add', label: 'Add User' },
+          { id: 'refresh' },
+          { id: 'deleteToggle' },
+          {
+            id: 'edit',
+            label: 'Edit',
+            icon: 'edit',
+            variant: 'secondary',
+            iconOnly: true,
+            onTrigger: () => {} // Demo action
+          },
+          {
+            id: 'delete',
+            label: 'Delete',
+            icon: 'trash',
+            variant: 'danger',
+            iconOnly: true,
+            onTrigger: () => {} // Demo action
+          }
+        ],
+        header: {
+          always: ['refresh', 'add'],
+          onMenu: ['deleteToggle']
+        },
+        item: {
+          onMenu: ['edit', 'delete']
+        }
+      },
       styling: { compact: true },
       labels: { add: 'Add User' }
     },
@@ -822,8 +1054,25 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'email', label: 'Email', type: 'text' },
         { name: 'department', label: 'Department', type: 'text' },
       ],
-      actions: { view: true },
-      header: { always: ['refresh'] },
+      actions: {
+        definitions: [
+          { id: 'refresh' },
+          {
+            id: 'view',
+            label: 'View',
+            icon: 'eye',
+            variant: 'secondary',
+            iconOnly: true,
+            onTrigger: () => {} // Demo action
+          }
+        ],
+        header: {
+          always: ['refresh']
+        },
+        item: {
+          always: ['view']
+        }
+      },
       styling: {
         board: {
           groupBy: "role",
@@ -843,7 +1092,14 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
         { name: 'name', label: 'Lead', type: 'text' },
         { name: 'role', label: 'Role', type: 'text' },
       ],
-      header: { always: ['refresh'] },
+      actions: {
+        definitions: [
+          { id: 'refresh' }
+        ],
+        header: {
+          always: ['refresh']
+        }
+      },
       styling: {
         compact: true,
         grid: {
@@ -888,7 +1144,14 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
           }
         }
       },
-      header: { always: ['refresh'] }
+      actions: {
+        definitions: [
+          { id: 'refresh' }
+        ],
+        header: {
+          always: ['refresh']
+        }
+      }
     },
     description: 'A gallery-style grid showing user avatars'
   },

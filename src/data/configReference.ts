@@ -25,7 +25,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'WidgemoConfig', property: 'drillDown', type: '(record: any) => void', status: 'not-implemented', description: 'Drill-down navigation function', usage: 'Partially implemented: Property exists, but no UI triggers or full integration.', example: '(record) => console.log(record)' },
   { category: 'WidgemoConfig', property: 'dataSource', type: "{ type?: 'static' | 'api' | 'graphql' | 'custom'; config?: Record<string, any> }", status: 'partial', description: 'Data source configuration', usage: "Used to determine data fetching; 'api' handled via adapters.", example: "{ type: 'api', config: { url: '/api/users' } }" },
   { category: 'WidgemoConfig', property: 'fields', type: 'FieldConfig[]', status: 'implemented', description: 'Field definitions (core functionality)', usage: 'Core to rendering in views like TableView.tsx.', example: "[{ name: 'id', label: 'ID', type: 'text' }]", isComplexType: true, complexTypeSection: 'FieldConfig' },
-  { category: 'WidgemoConfig', property: 'actions', type: "{ create?: boolean; edit?: boolean; delete?: boolean; view?: boolean; custom?: Array<{...}> }", status: 'partial', description: 'Action configuration', usage: 'CRUD modals exist; custom actions not fully wired.', example: "{ create: true, edit: true }" },
+  { category: 'WidgemoConfig', property: 'actions', type: 'ActionsConfig', status: 'partial', description: 'Unified action configuration system', usage: 'New action system with definitions and placements; replaces legacy boolean actions.', example: '{ definitions: [{ id: "add" }], header: { always: ["refresh"] } }', isComplexType: true, complexTypeSection: 'ActionsConfig' },
   { category: 'WidgemoConfig', property: 'chartConfig', type: "{ type: 'bar' | 'line' | 'pie' | 'area' | 'scatter'; xAxis?: string; yAxis?: string | string[]; groupBy?: string; settings?: Record<string, any> }", status: 'partial', description: 'Chart-specific config', usage: 'Basic types via Recharts in ChartView.tsx; advanced features like groupBy not implemented.', example: "{ type: 'bar', xAxis: 'name', yAxis: 'value' }", isComplexType: true, complexTypeSection: 'ChartConfig' },
   { category: 'WidgemoConfig', property: 'pagination', type: '{ enabled?: boolean; defaultPageSize?: number; pageSizeOptions?: number[] }', status: 'implemented', description: 'Pagination config', usage: 'Handled with PaginationControls.tsx.', example: '{ enabled: true, defaultPageSize: 10 }', isComplexType: true, complexTypeSection: 'PaginationConfig' },
   { category: 'WidgemoConfig', property: 'sorting', type: "{ enabled?: boolean; defaultSort?: { field: string; direction: 'asc' | 'desc' } }", status: 'partial', description: 'Sorting config', usage: 'Default sort applied; UI toggles incomplete.', example: "{ enabled: true, defaultSort: { field: 'name', direction: 'asc' } }", isComplexType: true, complexTypeSection: 'SortingConfig' },
@@ -236,8 +236,35 @@ export const presetConfigs = {
       { name: 'name', label: 'Name', type: 'text' as const },
       { name: 'status', label: 'Active', type: 'boolean' as const },
     ],
-    actions: { create: true, edit: true, delete: true },
-    header: { always: ['refresh'], onMenu: ['add'] },
+    actions: {
+      definitions: [
+        { id: 'refresh' },
+        { id: 'add' },
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          variant: 'secondary',
+          iconOnly: true,
+          onTrigger: () => {} // Demo action
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'trash',
+          variant: 'danger',
+          iconOnly: true,
+          onTrigger: () => {} // Demo action
+        }
+      ],
+      header: {
+        always: ['refresh'],
+        onMenu: ['add']
+      },
+      item: {
+        onMenu: ['edit', 'delete']
+      }
+    },
     styling: { shadow: true },
   },
   advanced: {
@@ -251,11 +278,38 @@ export const presetConfigs = {
       { name: 'status', label: 'Active', type: 'boolean' as const, filterable: true },
       { name: 'createdAt', label: 'Created', type: 'date' as const, sortable: true },
     ],
-    actions: { create: true, edit: true, delete: true },
-    pagination: { enabled: true, defaultPageSize: 10 },
-    sorting: { enabled: true },
-    filtering: { enabled: true },
-    header: { always: ['refresh'], discoverable: ['viewToggle'], onMenu: ['columnSelector', 'add'] },
+    actions: {
+      definitions: [
+        { id: 'refresh' },
+        { id: 'viewToggle' },
+        { id: 'columnSelector' },
+        { id: 'add' },
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          variant: 'secondary',
+          iconOnly: true,
+          onTrigger: () => {} // Demo action
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'trash',
+          variant: 'danger',
+          iconOnly: true,
+          onTrigger: () => {} // Demo action
+        }
+      ],
+      header: {
+        always: ['refresh'],
+        discoverable: ['viewToggle'],
+        onMenu: ['columnSelector', 'add']
+      },
+      item: {
+        onMenu: ['edit', 'delete']
+      }
+    },
     styling: { shadow: true },
   },
 };
