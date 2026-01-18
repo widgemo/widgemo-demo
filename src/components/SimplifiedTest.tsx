@@ -3,6 +3,86 @@ import { SimplifiedWidgemo, registerHook } from 'widgemo-core';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
 
+// Extend Window interface for performance metrics
+declare global {
+  interface Window {
+    lastRenderTime?: number;
+    lastRenderCount?: number;
+    performanceMeasured?: boolean;
+    updatePerformanceMetrics?: (time: number, count: number) => void;
+  }
+}
+
+// Register performance monitoring hooks at module level
+let renderCount = 0;
+let renderQueue: number[] = [];
+
+// Pre-render hook to start timing
+registerHook({
+  name: 'preRender',
+  hook: (...args: unknown[]) => {
+    const [componentName] = args as [string, { data: Entity[]; config?: SimplifiedWidgemoConfig; className?: string }];
+    if (componentName === 'Widgemo') {
+      renderCount++;
+      renderQueue.push(renderCount);
+      const markName = `widgemo-render-${renderCount}-start`;
+      performance.mark(markName);
+    }
+  }
+});
+
+// Post-render hook to measure and log performance
+registerHook({
+  name: 'postRender',
+  hook: (...args: unknown[]) => {
+    const renderId = renderQueue.shift();
+    if (renderId) {
+      const markName = `widgemo-render-${renderId}-end`;
+      performance.mark(markName);
+      try {
+        const measureName = `widgemo-render-${renderId}`;
+        performance.measure(measureName, `widgemo-render-${renderId}-start`, markName);
+        const measure = performance.getEntriesByName(measureName)[0];
+        const duration = measure.duration;
+        console.log(`⏱️ Render #${renderId} completed in ${duration.toFixed(2)}ms`);
+        // Store in global for potential display
+        window.lastRenderTime = duration;
+        window.lastRenderCount = renderId;
+      } catch (error) {
+        console.warn('Performance measurement error:', error);
+      }
+    }
+
+    // Also check for component-specific mark
+    if (performance.getEntriesByName('widgemo-start').length > 0) {
+      performance.mark('widgemo-end');
+      try {
+        performance.measure('widgemo-total', 'widgemo-start', 'widgemo-end');
+        const measure = performance.getEntriesByName('widgemo-total')[0];
+        const duration = measure.duration;
+        console.log(`⏱️ Total Widgemo render completed in ${duration.toFixed(2)}ms`);
+        // Call global callback to update component state
+        console.log('📊 Checking for updatePerformanceMetrics callback:', !!window.updatePerformanceMetrics);
+        if (window.updatePerformanceMetrics) {
+          window.updatePerformanceMetrics(duration, 1);
+        } else {
+          console.log('📊 updatePerformanceMetrics callback not found');
+        }
+        // Set flag to prevent further measurements
+        window.performanceMeasured = true;
+        // Clear marks to prevent repeated measurements
+        performance.clearMarks('widgemo-start');
+        performance.clearMarks('widgemo-end');
+        performance.clearMeasures('widgemo-total');
+      } catch (error) {
+        console.warn('Performance measurement error for widgemo-total:', error);
+      }
+    }
+
+    return args[1] as React.ReactElement;
+  }
+});
+
 // Extended ZoneConfig for board mode
 type BoardContentConfig = {
   enabled: boolean;
@@ -26,91 +106,29 @@ type BoardContentConfig = {
 };
 
 export const SimplifiedTest: React.FC = () => {
-  const [performanceMetrics, setPerformanceMetrics] = React.useState<{
-    renderTime: number;
-    renderCount: number;
-    lastRenderAt: Date;
-  } | null>(null);
+  const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
 
-  // Register performance monitoring hooks
+  // Set global callback immediately
+  window.updatePerformanceMetrics = React.useCallback((time: number, count: number) => {
+    console.log('📊 Performance metrics update called:', { time, count });
+    setLastRenderMetrics({ time, count });
+  }, []);
+
+  // Listen for performance update events
   React.useEffect(() => {
-    let renderCount = 0;
-    let renderQueue: number[] = [];
+    // Reset performance measurement flag on mount
+    window.performanceMeasured = false;
+    
+    console.log('📊 updatePerformanceMetrics callback set');
 
-    // Pre-render hook to start timing
-    registerHook({
-      name: 'preRender',
-      hook: (...args: unknown[]) => {
-        const [componentName] = args as [string, { data: Entity[]; config?: SimplifiedWidgemoConfig; className?: string }];
-        if (componentName === 'Widgemo') {
-          renderCount++;
-          renderQueue.push(renderCount);
-          const markName = `widgemo-render-${renderCount}-start`;
-          performance.mark(markName);
-          console.log(`⏱️ Started rendering ${componentName} component (render #${renderCount})`);
-        }
-      }
-    });
+    return () => {
+      // Clean up
+      window.updatePerformanceMetrics = undefined;
+    };
+  }, []);
 
-    // Post-render hook to measure and log performance
-    registerHook({
-      name: 'postRender',
-      hook: (...args: unknown[]) => {
-        console.log('PostRender hook called with args:', args);
-        const [componentName, element] = args as [string, React.ReactElement];
-        
-        if (componentName === 'Widgemo') {
-          console.log('🔄 Post-render hook called for Widgemo with args:', args);
-          
-          const currentRenderCount = renderQueue.shift();
-          if (currentRenderCount) {
-            const markName = `widgemo-render-${currentRenderCount}-start`;
-            const measureName = `widgemo-render-${currentRenderCount}`;
-            
-            try {
-              console.log(`🔍 Measuring performance for ${componentName}, renderCount: ${currentRenderCount}`);
-              performance.mark(`${measureName}-end`);
-              performance.measure(measureName, markName, `${measureName}-end`);
-              
-              const measure = performance.getEntriesByName(measureName)[0];
-              console.log(`📊 Measure found:`, measure);
-              const renderTime = measure.duration;
-              
-              console.log(`✅ ${componentName} render #${currentRenderCount} completed in ${renderTime.toFixed(2)}ms`);
-              
-              // Log performance warnings
-              if (renderTime > 100) {
-                console.warn(`🐌 Slow render detected: ${renderTime.toFixed(2)}ms - consider optimization`);
-              } else if (renderTime > 16.67) {
-                console.log(`⚡ Render time: ${renderTime.toFixed(2)}ms (above 60fps threshold)`);
-              }
-              
-              // Update component state with performance metrics (deferred to avoid re-render loop)
-              setTimeout(() => {
-                setPerformanceMetrics({
-                  renderTime,
-                  renderCount: currentRenderCount,
-                  lastRenderAt: new Date()
-                });
-              }, 0);
-              
-              // Clean up performance entries
-              performance.clearMarks(markName);
-              performance.clearMarks(`${measureName}-end`);
-              performance.clearMeasures(measureName);
-            } catch (error) {
-              console.warn('Performance measurement failed:', error);
-            }
-          } else {
-            console.log('No currentRenderCount for Widgemo');
-          }
-        }
-        
-        return element; // Return unmodified element
-      }
-    });
-
-    // Cleanup on unmount
+  // Cleanup on unmount
+  React.useEffect(() => {
     return () => {
       // Clear any remaining performance entries
       renderQueue = [];
@@ -129,7 +147,7 @@ export const SimplifiedTest: React.FC = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive</h1>
+      <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
       <div className="row">
         <div className="col-12 mb-4">
           <div className="card">
@@ -619,8 +637,9 @@ export const SimplifiedTest: React.FC = () => {
                 data={teaserSampleData.slice(0, 8)}
                 config={{
                   preRender: () => {
-                    console.log('⏱️ Pre-render hook: Starting Widgemo render performance measurement');
-                    performance.mark('widgemo-start');
+                    if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
+                      performance.mark('widgemo-start');
+                    }
                   },
                   zones: {
                     header: {
@@ -642,23 +661,22 @@ export const SimplifiedTest: React.FC = () => {
                     footer: {
                       enabled: true,
                       title: 'Performance Stats',
-                      subtitle: performanceMetrics 
-                        ? `Last render: ${performanceMetrics.renderTime.toFixed(2)}ms (render #${performanceMetrics.renderCount})`
+                      subtitle: lastRenderMetrics 
+                        ? `Last render: ${lastRenderMetrics.time.toFixed(2)}ms (render #${lastRenderMetrics.count})`
                         : 'Check browser console for timing data'
                     }
                   }
                 }}
               />
-              {performanceMetrics && (
+              {lastRenderMetrics && (
                 <div className="mt-3 p-3 bg-light rounded">
                   <h6>Live Performance Metrics:</h6>
                   <ul className="mb-0">
-                    <li><strong>Render Time:</strong> {performanceMetrics.renderTime.toFixed(2)}ms</li>
-                    <li><strong>Render Count:</strong> #{performanceMetrics.renderCount}</li>
-                    <li><strong>Last Render:</strong> {performanceMetrics.lastRenderAt.toLocaleTimeString()}</li>
+                    <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
+                    <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
                     <li><strong>Status:</strong> 
-                      {performanceMetrics.renderTime > 100 ? '🐌 Slow (>100ms)' : 
-                       performanceMetrics.renderTime > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
+                      {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' : 
+                       lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
                     </li>
                   </ul>
                 </div>

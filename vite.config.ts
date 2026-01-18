@@ -15,7 +15,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      'widgemo-core': path.resolve(__dirname, '../widgemo-core/dist/index.es.js')
+      'widgemo-core': path.resolve(__dirname, '../widgemo-core/src/index.ts')
     }
   }
 })
