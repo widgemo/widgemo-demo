@@ -135,6 +135,60 @@ export const SimplifiedTest: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Mode System Test - Grid Mode</h5>
+              <p className="card-text">Testing ModeRenderer with grid mode and configurable columns.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Grid Mode Demo',
+                      subtitle: 'Configurable column layout'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 3 // 3 columns for the grid
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Mode System Test - 2 Column Grid</h5>
+              <p className="card-text">Testing ModeRenderer with 2-column grid configuration.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 4)} // Limit to 4 items
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: '2-Column Grid',
+                      subtitle: 'Different column configuration'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 2 // 2 columns for the grid
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
