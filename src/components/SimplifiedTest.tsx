@@ -334,6 +334,110 @@ export const SimplifiedTest: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">CarouselMode - Swipeable Carousel</h5>
+              <p className="card-text">Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'User Carousel',
+                      subtitle: 'Swipe or click to navigate through users'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'carousel',
+                      carousel: {
+                        itemWidth: 320,
+                        itemHeight: 240,
+                        gap: 16,
+                        showIndicators: true,
+                        showArrows: true,
+                        infinite: false,
+                        autoPlay: false,
+                        dragThreshold: 50
+                      },
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              title: 'Profile',
+                              fields: [
+                                { key: 'src', label: 'Photo', type: 'image', imageOptions: { width: 120, height: 120, lightbox: true } },
+                                { key: 'name', label: 'Name', type: 'text' },
+                                { key: 'role', label: 'Role', type: 'text' }
+                              ]
+                            },
+                            {
+                              title: 'Contact',
+                              fields: [
+                                { key: 'email', label: 'Email', type: 'email' },
+                                { key: 'department', label: 'Department', type: 'text' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Field Type Registry - Swatch Example</h5>
+              <p className="card-text">Testing the field type registry with custom 'swatch' field type for color display.</p>
+              <SimplifiedWidgemo
+                data={[
+                  { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
+                  { id: 2, name: 'Success Color', color: '#28a745', description: 'Success state color' },
+                  { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
+                  { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
+                ]}
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Color Swatches',
+                      subtitle: 'Custom field type registry demonstration'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 2,
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              fields: [
+                                { key: 'color', label: 'Swatch', type: 'swatch' },
+                                { key: 'name', label: 'Color Name', type: 'text' },
+                                { key: 'description', label: 'Description', type: 'text' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
