@@ -139,21 +139,42 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Mode System Test - Grid Mode</h5>
-              <p className="card-text">Testing ModeRenderer with grid mode and configurable columns.</p>
+              <h5 className="card-title">Mode System Test - Grid Mode with ItemRenderer</h5>
+              <p className="card-text">Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
                 config={{
                   zones: {
                     header: {
                       enabled: true,
-                      title: 'Grid Mode Demo',
-                      subtitle: 'Configurable column layout'
+                      title: 'Grid Mode with Item Templates',
+                      subtitle: 'ItemRenderer with custom field organization'
                     },
                     content: {
                       enabled: true,
                       mode: 'grid',
-                      columns: 3 // 3 columns for the grid
+                      columns: 3, // 3 columns for the grid
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              title: 'Profile',
+                              fields: [
+                                { key: 'name', label: 'Name' },
+                                { key: 'role', label: 'Role' }
+                              ]
+                            },
+                            {
+                              title: 'Contact',
+                              fields: [
+                                { key: 'email', label: 'Email' },
+                                { key: 'department', label: 'Department' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
                     },
                     footer: { enabled: false }
                   }
@@ -166,21 +187,36 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Mode System Test - 2 Column Grid</h5>
-              <p className="card-text">Testing ModeRenderer with 2-column grid configuration.</p>
+              <h5 className="card-title">Mode System Test - 2 Column Grid with Compact Items</h5>
+              <p className="card-text">Testing ModeRenderer with 2-column grid and compact ItemRenderer style.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 4)} // Limit to 4 items
                 config={{
                   zones: {
                     header: {
                       enabled: true,
-                      title: '2-Column Grid',
-                      subtitle: 'Different column configuration'
+                      title: 'Compact Item Style',
+                      subtitle: 'Different ItemRenderer configuration'
                     },
                     content: {
                       enabled: true,
                       mode: 'grid',
-                      columns: 2 // 2 columns for the grid
+                      columns: 2, // 2 columns for the grid
+                      item: {
+                        style: 'compact',
+                        template: {
+                          sections: [
+                            {
+                              fields: [
+                                { key: 'name', label: 'Name' },
+                                { key: 'email', label: 'Email' },
+                                { key: 'role', label: 'Role' },
+                                { key: 'status', label: 'Active' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
                     },
                     footer: { enabled: false }
                   }
