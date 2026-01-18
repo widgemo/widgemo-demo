@@ -1,38 +1,132 @@
 import React from 'react';
-import { SimplifiedWidgemo } from 'widgemo-core';
-import type { ActionContext, Entity, ZoneConfig } from 'widgemo-core';
+import { SimplifiedWidgemo, registerHook } from 'widgemo-core';
+import type { ActionContext, Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
 
 // Extended ZoneConfig for board mode
-type BoardZoneConfig = ZoneConfig & {
+type BoardContentConfig = {
+  enabled: boolean;
   mode: 'board';
-  columns: Array<{
-    id: string;
-    label: string;
-    filter: (item: Entity) => boolean;
-  }>;
-  swimlanes?: {
+  columns: { id: string; label: string; filter: (item: Entity) => boolean }[];
+  swimlanes: {
     groupBy: string;
     order: string[];
   };
-  dragEnabled?: boolean;
-  actionsPosition?: 'hover' | 'bottom';
-  sortWithinColumn?: string;
-  item?: {
+  dragEnabled: boolean;
+  actionsPosition: string;
+  sortWithinColumn: string;
+  item: {
     template: {
-      sections: Array<{
+      sections: {
         title: string;
-        fields: Array<{
-          key: string;
-          type: string;
-          label?: string;
-        }>;
-      }>;
+        fields: { key: string; label?: string; type: string }[];
+      }[];
     };
   };
 };
 
 export const SimplifiedTest: React.FC = () => {
+  const [performanceMetrics, setPerformanceMetrics] = React.useState<{
+    renderTime: number;
+    renderCount: number;
+    lastRenderAt: Date;
+  } | null>(null);
+
+  // Register performance monitoring hooks
+  React.useEffect(() => {
+    let renderCount = 0;
+    let renderQueue: number[] = [];
+
+    // Pre-render hook to start timing
+    registerHook({
+      name: 'preRender',
+      hook: (...args: unknown[]) => {
+        const [componentName] = args as [string, { data: Entity[]; config?: SimplifiedWidgemoConfig; className?: string }];
+        if (componentName === 'Widgemo') {
+          renderCount++;
+          renderQueue.push(renderCount);
+          const markName = `widgemo-render-${renderCount}-start`;
+          performance.mark(markName);
+          console.log(`⏱️ Started rendering ${componentName} component (render #${renderCount})`);
+        }
+      }
+    });
+
+    // Post-render hook to measure and log performance
+    registerHook({
+      name: 'postRender',
+      hook: (...args: unknown[]) => {
+        console.log('PostRender hook called with args:', args);
+        const [componentName, element] = args as [string, React.ReactElement];
+        
+        if (componentName === 'Widgemo') {
+          console.log('🔄 Post-render hook called for Widgemo with args:', args);
+          
+          const currentRenderCount = renderQueue.shift();
+          if (currentRenderCount) {
+            const markName = `widgemo-render-${currentRenderCount}-start`;
+            const measureName = `widgemo-render-${currentRenderCount}`;
+            
+            try {
+              console.log(`🔍 Measuring performance for ${componentName}, renderCount: ${currentRenderCount}`);
+              performance.mark(`${measureName}-end`);
+              performance.measure(measureName, markName, `${measureName}-end`);
+              
+              const measure = performance.getEntriesByName(measureName)[0];
+              console.log(`📊 Measure found:`, measure);
+              const renderTime = measure.duration;
+              
+              console.log(`✅ ${componentName} render #${currentRenderCount} completed in ${renderTime.toFixed(2)}ms`);
+              
+              // Log performance warnings
+              if (renderTime > 100) {
+                console.warn(`🐌 Slow render detected: ${renderTime.toFixed(2)}ms - consider optimization`);
+              } else if (renderTime > 16.67) {
+                console.log(`⚡ Render time: ${renderTime.toFixed(2)}ms (above 60fps threshold)`);
+              }
+              
+              // Update component state with performance metrics (deferred to avoid re-render loop)
+              setTimeout(() => {
+                setPerformanceMetrics({
+                  renderTime,
+                  renderCount: currentRenderCount,
+                  lastRenderAt: new Date()
+                });
+              }, 0);
+              
+              // Clean up performance entries
+              performance.clearMarks(markName);
+              performance.clearMarks(`${measureName}-end`);
+              performance.clearMeasures(measureName);
+            } catch (error) {
+              console.warn('Performance measurement failed:', error);
+            }
+          } else {
+            console.log('No currentRenderCount for Widgemo');
+          }
+        }
+        
+        return element; // Return unmodified element
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      // Clear any remaining performance entries
+      renderQueue = [];
+      try {
+        for (let i = 1; i <= 10; i++) {
+          performance.clearMarks(`widgemo-render-${i}-start`);
+          performance.clearMarks(`widgemo-render-${i}-end`);
+          performance.clearMeasures(`widgemo-render-${i}`);
+        }
+      } catch (error) {
+        // Ignore cleanup errors
+        console.warn('Cleanup error:', error);
+      }
+    };
+  }, []);
+
   return (
     <div className="container mt-5">
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive</h1>
@@ -519,6 +613,63 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <div className="card">
             <div className="card-body">
+              <h5 className="card-title">Performance Monitoring - Pre/Post Render Hooks</h5>
+              <p className="card-text">Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 8)}
+                config={{
+                  preRender: () => {
+                    console.log('⏱️ Pre-render hook: Starting Widgemo render performance measurement');
+                    performance.mark('widgemo-start');
+                  },
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Performance Monitored Component',
+                      subtitle: 'Pre/Post render hooks active'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' },
+                        { field: 'department', header: 'Department', sortable: true }
+                      ],
+                      pagination: { page: 1, pageSize: 5 }
+                    },
+                    footer: {
+                      enabled: true,
+                      title: 'Performance Stats',
+                      subtitle: performanceMetrics 
+                        ? `Last render: ${performanceMetrics.renderTime.toFixed(2)}ms (render #${performanceMetrics.renderCount})`
+                        : 'Check browser console for timing data'
+                    }
+                  }
+                }}
+              />
+              {performanceMetrics && (
+                <div className="mt-3 p-3 bg-light rounded">
+                  <h6>Live Performance Metrics:</h6>
+                  <ul className="mb-0">
+                    <li><strong>Render Time:</strong> {performanceMetrics.renderTime.toFixed(2)}ms</li>
+                    <li><strong>Render Count:</strong> #{performanceMetrics.renderCount}</li>
+                    <li><strong>Last Render:</strong> {performanceMetrics.lastRenderAt.toLocaleTimeString()}</li>
+                    <li><strong>Status:</strong> 
+                      {performanceMetrics.renderTime > 100 ? '🐌 Slow (>100ms)' : 
+                       performanceMetrics.renderTime > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
               <h5 className="card-title">BoardMode - Kanban Board</h5>
               <p className="card-text">Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
               <SimplifiedWidgemo
@@ -568,7 +719,7 @@ export const SimplifiedTest: React.FC = () => {
                           ]
                         }
                       }
-                    } as BoardZoneConfig,
+                    } as BoardContentConfig, // Board mode requires different column config
                     footer: { enabled: false }
                   }
                 }}
