@@ -86,7 +86,7 @@ export const SimplifiedTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-12">
+        <div className="col-12 mb-4">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Actions System Test</h5>
@@ -137,7 +137,7 @@ export const SimplifiedTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-12">
+        <div className="col-12 mb-4">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Mode System Test - Grid Mode with ItemRenderer</h5>
@@ -185,7 +185,7 @@ export const SimplifiedTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-12">
+        <div className="col-12 mb-4">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Mode System Test - Table Mode</h5>
