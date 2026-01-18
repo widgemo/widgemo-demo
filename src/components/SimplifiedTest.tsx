@@ -1,7 +1,7 @@
 import React from 'react';
 import { SimplifiedWidgemo } from 'widgemo-core';
 import type { ActionContext, Entity } from 'widgemo-core';
-import { teaserSampleData } from '../data/sampleData';
+import { teaserSampleData, imageGalleryData } from '../data/sampleData';
 
 export const SimplifiedTest: React.FC = () => {
   return (
@@ -233,6 +233,98 @@ export const SimplifiedTest: React.FC = () => {
                       hooks: {
                         onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
                         preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
+                      }
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">FieldRenderer Test - Type-Specific Rendering</h5>
+              <p className="card-text">Testing FieldRenderer with different field types including images with lightbox functionality.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'FieldRenderer Demo',
+                      subtitle: 'Type-specific field rendering with images'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 2,
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              title: 'Profile with Image',
+                              fields: [
+                                { key: 'src', label: 'Photo', type: 'image' },
+                                { key: 'name', label: 'Name', type: 'text' },
+                                { key: 'role', label: 'Role', type: 'text' }
+                              ]
+                            },
+                            {
+                              title: 'Details',
+                              fields: [
+                                { key: 'email', label: 'Email', type: 'email' },
+                                { key: 'department', label: 'Department', type: 'text' },
+                                { key: 'status', label: 'Active', type: 'boolean' },
+                                { key: 'lastLogin', label: 'Last Login', type: 'date' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Image Gallery - FieldRenderer Lightbox</h5>
+              <p className="card-text">Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
+              <SimplifiedWidgemo
+                data={imageGalleryData.slice(0, 6)} // Use first 6 images
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Image Gallery',
+                      subtitle: 'Click images to open lightbox'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 3,
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              fields: [
+                                { key: 'src', label: 'Image', type: 'image' },
+                                { key: 'name', label: 'Title', type: 'text' },
+                                { key: 'category', label: 'Category', type: 'text' }
+                              ]
+                            }
+                          ]
+                        }
                       }
                     },
                     footer: { enabled: false }
