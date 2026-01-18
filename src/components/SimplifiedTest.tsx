@@ -1,7 +1,36 @@
 import React from 'react';
 import { SimplifiedWidgemo } from 'widgemo-core';
-import type { ActionContext, Entity } from 'widgemo-core';
+import type { ActionContext, Entity, ZoneConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
+
+// Extended ZoneConfig for board mode
+type BoardZoneConfig = ZoneConfig & {
+  mode: 'board';
+  columns: Array<{
+    id: string;
+    label: string;
+    filter: (item: Entity) => boolean;
+  }>;
+  swimlanes?: {
+    groupBy: string;
+    order: string[];
+  };
+  dragEnabled?: boolean;
+  actionsPosition?: 'hover' | 'bottom';
+  sortWithinColumn?: string;
+  item?: {
+    template: {
+      sections: Array<{
+        title: string;
+        fields: Array<{
+          key: string;
+          type: string;
+          label?: string;
+        }>;
+      }>;
+    };
+  };
+};
 
 export const SimplifiedTest: React.FC = () => {
   return (
@@ -438,6 +467,68 @@ export const SimplifiedTest: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">BoardMode - Kanban Board</h5>
+              <p className="card-text">Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
+              <SimplifiedWidgemo
+                data={[
+                  { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
+                  { id: 2, name: 'Implement user authentication', status: 'in-progress', priority: 'high', assignee: 'Bob' },
+                  { id: 3, name: 'Write API documentation', status: 'review', priority: 'medium', assignee: 'Alice' },
+                  { id: 4, name: 'Fix mobile responsiveness', status: 'done', priority: 'low', assignee: 'Charlie' },
+                  { id: 5, name: 'Add unit tests', status: 'todo', priority: 'medium', assignee: 'Bob' },
+                  { id: 6, name: 'Setup CI/CD pipeline', status: 'in-progress', priority: 'high', assignee: 'Alice' },
+                  { id: 7, name: 'Database optimization', status: 'review', priority: 'medium', assignee: 'Charlie' },
+                  { id: 8, name: 'User feedback integration', status: 'todo', priority: 'low', assignee: 'Bob' }
+                ]}
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Project Kanban Board',
+                      subtitle: 'Drag tasks between columns to update status'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'board',
+                      columns: [
+                        { id: 'todo', label: 'To Do', filter: (item: Entity) => item.status === 'todo' },
+                        { id: 'in-progress', label: 'In Progress', filter: (item: Entity) => item.status === 'in-progress' },
+                        { id: 'review', label: 'Review', filter: (item: Entity) => item.status === 'review' },
+                        { id: 'done', label: 'Done', filter: (item: Entity) => item.status === 'done' }
+                      ],
+                      swimlanes: {
+                        groupBy: 'assignee',
+                        order: ['Alice', 'Bob', 'Charlie']
+                      },
+                      dragEnabled: true,
+                      actionsPosition: 'hover',
+                      sortWithinColumn: 'priority',
+                      item: {
+                        template: {
+                          sections: [
+                            {
+                              title: 'Task',
+                              fields: [
+                                { key: 'name', label: 'Title', type: 'text' },
+                                { key: 'priority', label: 'Priority', type: 'text' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    } as BoardZoneConfig,
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
