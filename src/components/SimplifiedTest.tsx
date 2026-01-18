@@ -471,6 +471,54 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <div className="card">
             <div className="card-body">
+              <h5 className="card-title">Hooks System Test - Pre/Post Render</h5>
+              <p className="card-text">Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 4)}
+                config={{
+                  preRender: () => {
+                    console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
+                  },
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: 'Hooks Demo',
+                      subtitle: 'Pre/Post render hooks active'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'grid',
+                      columns: 2,
+                      item: {
+                        style: 'card',
+                        template: {
+                          sections: [
+                            {
+                              title: 'User Info',
+                              fields: [
+                                { key: 'name', label: 'Name' },
+                                { key: 'email', label: 'Email' }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    footer: {
+                      enabled: true,
+                      title: 'Hook Status',
+                      subtitle: 'Hooks executed successfully'
+                    }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
               <h5 className="card-title">BoardMode - Kanban Board</h5>
               <p className="card-text">Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
               <SimplifiedWidgemo
