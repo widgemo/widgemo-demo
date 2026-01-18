@@ -1,5 +1,6 @@
 import React from 'react';
 import { SimplifiedWidgemo } from 'widgemo-core';
+import type { ActionContext, Entity } from 'widgemo-core';
 import { teaserSampleData } from '../data/sampleData';
 
 export const SimplifiedTest: React.FC = () => {
@@ -187,35 +188,51 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Mode System Test - 2 Column Grid with Compact Items</h5>
-              <p className="card-text">Testing ModeRenderer with 2-column grid and compact ItemRenderer style.</p>
+              <h5 className="card-title">Mode System Test - Table Mode</h5>
+              <p className="card-text">Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
               <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 4)} // Limit to 4 items
+                data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
                 config={{
                   zones: {
                     header: {
                       enabled: true,
-                      title: 'Compact Item Style',
-                      subtitle: 'Different ItemRenderer configuration'
+                      title: 'Table Mode Demo',
+                      subtitle: 'Sortable columns with pagination'
                     },
                     content: {
                       enabled: true,
-                      mode: 'grid',
-                      columns: 2, // 2 columns for the grid
-                      item: {
-                        style: 'compact',
-                        template: {
-                          sections: [
-                            {
-                              fields: [
-                                { key: 'name', label: 'Name' },
-                                { key: 'email', label: 'Email' },
-                                { key: 'role', label: 'Role' },
-                                { key: 'status', label: 'Active' }
-                              ]
-                            }
-                          ]
-                        }
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Full Name', sortable: true, width: '200px' },
+                        { field: 'email', header: 'Email Address', sortable: true, width: '250px' },
+                        { field: 'role', header: 'Role', sortable: true, align: 'center' },
+                        { field: 'department', header: 'Department', sortable: true },
+                        { field: 'status', header: 'Active', align: 'center' }
+                      ],
+                      sort: { field: 'name', direction: 'asc' },
+                      pagination: { page: 1, pageSize: 5 },
+                      tableActions: {
+                        item: [
+                          {
+                            id: 'edit',
+                            label: 'Edit',
+                            icon: 'edit',
+                            variant: 'ghost',
+                            handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                          },
+                          {
+                            id: 'delete',
+                            label: 'Delete',
+                            icon: 'delete',
+                            variant: 'danger',
+                            handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                          }
+                        ]
+                      },
+                      actionsColumn: true,
+                      hooks: {
+                        onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
+                        preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
                       }
                     },
                     footer: { enabled: false }
@@ -229,3 +246,54 @@ export const SimplifiedTest: React.FC = () => {
     </div>
   );
 };
+
+export default SimplifiedTest;
+
+// Story testing export - TableMode example
+export const TableModeExample = () => (
+  <div style={{ padding: '20px' }}>
+    <h3>TableMode Example</h3>
+    <SimplifiedWidgemo
+      data={teaserSampleData.slice(0, 5)}
+      config={{
+        zones: {
+          header: {
+            enabled: true,
+            title: 'User Management',
+            subtitle: 'Sortable table with actions'
+          },
+          content: {
+            enabled: true,
+            mode: 'table',
+            columns: [
+              { field: 'name', header: 'Name', sortable: true },
+              { field: 'email', header: 'Email', sortable: true },
+              { field: 'role', header: 'Role', align: 'center' },
+              { field: 'status', header: 'Status', align: 'center' }
+            ],
+            tableActions: {
+              item: [
+                {
+                  id: 'view',
+                  label: 'View',
+                  icon: 'view',
+                  variant: 'ghost',
+                  handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                },
+                {
+                  id: 'edit',
+                  label: 'Edit',
+                  icon: 'edit',
+                  variant: 'primary',
+                  handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                }
+              ]
+            },
+            actionsColumn: true
+          },
+          footer: { enabled: false }
+        }
+      }}
+    />
+  </div>
+);

@@ -4,7 +4,7 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, ResolvedWidgemoProps } from 'widgemo-core';
 import { galleryConfigs } from '../data/sampleData';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -97,7 +97,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [appliedConfigCopyStatus, setAppliedConfigCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // State for resolved props from onResolvedProps
-  const [resolvedConfig, setResolvedConfig] = useState<any>(null);
+  const [resolvedConfig, setResolvedConfig] = useState<ResolvedWidgemoProps | null>(null);
 
   // Debug: Log when resolvedConfig changes
   useEffect(() => {
@@ -209,6 +209,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   }, []);
 
   // Current icon renderer based on icons tab settings
+  interface IconProps {
+    size?: number;
+    className?: string;
+    color?: string;
+  }
+
   const currentIconRenderer = useMemo(() => {
     if (iconLibrary === 'none') {
       return undefined; // Let Widgemo use its default renderIcon
@@ -217,7 +223,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       // Create a renderIcon function that uses react-icons
       return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
         // Map common icon names to react-icons components
-        const iconMap: Record<string, React.ComponentType<any>> = {
+        const iconMap: Record<string, React.ComponentType<IconProps>> = {
           'copy': FaCopy,
           'view': FaEye,
           'eye': FaEye,
@@ -250,7 +256,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       // Create a renderIcon function that uses Lucide icons from react-icons
       return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
         // Map common icon names to Lucide react-icons components
-        const iconMap: Record<string, React.ComponentType<any>> = {
+        const iconMap: Record<string, React.ComponentType<IconProps>> = {
           'copy': LuCopy,
           'view': LuEye,
           'eye': LuEye,
@@ -283,7 +289,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       // Create a renderIcon function that uses Heroicons from react-icons
       return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
         // Map common icon names to Heroicons react-icons components
-        const iconMap: Record<string, React.ComponentType<any>> = {
+        const iconMap: Record<string, React.ComponentType<IconProps>> = {
           'copy': HiClipboardCopy,
           'view': HiEye,
           'eye': HiEye,
