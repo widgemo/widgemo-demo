@@ -136,6 +136,13 @@ export const SimplifiedTest: React.FC = () => {
 
   return (
     <div className="container mt-5">
+      <style>{`
+        .my-custom-widgemo {
+          border: 1px solid #e1e5e9;
+          border-radius: 0.375rem;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+      `}</style>
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
       <div className="row">
         <div className="col-12 mb-4">
@@ -145,6 +152,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing ZoneRenderer with collapse functionality, icon, and dynamic title.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData}
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
