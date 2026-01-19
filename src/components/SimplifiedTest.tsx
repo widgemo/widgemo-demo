@@ -363,7 +363,7 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       collapse: { initialState: 'expanded', button: true },
-                      icon: { src: 'database', size: 24 },
+                      icon: { src: 'database', size: 24, color: '#c4530d' },
                       title: (data) => `User Database (${data.length} users)`,
                       subtitle: 'Manage your team members',
                       actions: [
@@ -416,7 +416,7 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       collapse: { initialState: 'fixed' },
-                      icon: { src: 'users', size: 20, color: '#15abf0' },
+                      icon: { src: 'users', size: 24, color: '#15abf0' },
                       title: 'Team Overview',
                       subtitle: 'Quick stats and actions'
                     },
