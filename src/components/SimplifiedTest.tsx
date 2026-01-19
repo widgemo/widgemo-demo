@@ -456,6 +456,7 @@ export const SimplifiedTest: React.FC = () => {
                           id: 'refresh',
                           label: 'Refresh',
                           icon: 'refresh',
+                          variant: 'secondary',
                           onTrigger: () => alert('Refresh clicked!')
                         },
                         {
@@ -469,7 +470,23 @@ export const SimplifiedTest: React.FC = () => {
                           id: 'settings',
                           label: 'Settings',
                           icon: 'settings',
+                          variant: 'danger',
                           onTrigger: () => alert('Settings clicked!')
+                        },
+                        {
+                          id: 'all',
+                          label: 'View All',
+                          icon: 'eye',
+                          variant: 'success',
+                          onTrigger: () => alert('View All clicked!')
+                        },
+                        {
+                          id: 'chart',
+                          label: 'Chart Mode',
+                          icon: 'chart-pie',
+                          variant: 'primary',
+                          onTrigger: () => alert('Chart Mode clicked!'),
+                          iconOnly: true
                         }
                       ]
                     },
