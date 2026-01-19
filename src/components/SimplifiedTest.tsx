@@ -15,7 +15,8 @@ import {
   FaFilter,
   FaSort,
   FaChevronUp,
-  FaChevronDown
+  FaChevronDown,
+  FaUsers
 } from 'react-icons/fa';
 
 // Extend Window interface for performance metrics
@@ -196,6 +197,12 @@ registerIcon({
   name: 'chevron-down',
   component: FaChevronDown,
   defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'users',
+  component: FaUsers,
+  defaultProps: { size: 16}
 });
 
 // Extended ZoneConfig for board mode
@@ -408,7 +415,7 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       collapse: { initialState: 'fixed' },
-                      icon: { src: 'users', size: 20 },
+                      icon: { src: 'users', size: 20, color: '#15abf0' },
                       title: 'Team Overview',
                       subtitle: 'Quick stats and actions'
                     },
