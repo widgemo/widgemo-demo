@@ -495,7 +495,16 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       title: 'Grid Mode with Item Templates',
-                      subtitle: 'ItemRenderer with custom field organization'
+                      subtitle: 'ItemRenderer with custom field organization',
+                      actions: [
+                        {
+                          id: 'share',
+                          label: 'Share',
+                          icon: 'share',
+                          variant: 'primary',
+                          onTrigger: () => alert('Share clicked!')
+                        }
+                      ]
                     },
                     content: {
                       enabled: true,
