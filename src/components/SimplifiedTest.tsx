@@ -9,9 +9,11 @@ declare global {
     lastRenderTime?: number;
     lastRenderCount?: number;
     performanceMeasured?: boolean;
-    updatePerformanceMetrics?: (time: number, count: number) => void;
   }
 }
+
+// Global variable to store pending metrics
+let pendingMetrics: { time: number; count: number } | null = null;
 
 // Register performance monitoring hooks at module level
 let renderCount = 0;
@@ -61,13 +63,8 @@ registerHook({
         const measure = performance.getEntriesByName('widgemo-total')[0];
         const duration = measure.duration;
         console.log(`⏱️ Total Widgemo render completed in ${duration.toFixed(2)}ms`);
-        // Call global callback to update component state
-        console.log('📊 Checking for updatePerformanceMetrics callback:', !!window.updatePerformanceMetrics);
-        if (window.updatePerformanceMetrics) {
-          window.updatePerformanceMetrics(duration, 1);
-        } else {
-          console.log('📊 updatePerformanceMetrics callback not found');
-        }
+        // Store metrics in global variable for component to consume
+        pendingMetrics = { time: duration, count: 1 };
         // Set flag to prevent further measurements
         window.performanceMeasured = true;
         // Clear marks to prevent repeated measurements
@@ -108,27 +105,19 @@ type BoardContentConfig = {
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
 
-  // Set global callback immediately
-  window.updatePerformanceMetrics = React.useCallback((time: number, count: number) => {
-    console.log('📊 Performance metrics update called:', { time, count });
-    setLastRenderMetrics({ time, count });
-  }, []);
-
-  // Listen for performance update events
+  // Check for pending metrics after component mounts
   React.useEffect(() => {
-    // Reset performance measurement flag on mount
-    window.performanceMeasured = false;
-    
-    console.log('📊 updatePerformanceMetrics callback set');
-
-    return () => {
-      // Clean up
-      window.updatePerformanceMetrics = undefined;
-    };
+    if (pendingMetrics) {
+      setLastRenderMetrics(pendingMetrics);
+      pendingMetrics = null;
+    }
   }, []);
 
   // Cleanup on unmount
   React.useEffect(() => {
+    // Reset performance measurement flag on mount
+    window.performanceMeasured = false;
+    
     return () => {
       // Clear any remaining performance entries
       renderQueue = [];
