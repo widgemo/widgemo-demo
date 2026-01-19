@@ -345,7 +345,7 @@ export const SimplifiedTest: React.FC = () => {
           border: 1px solid #e1e5e9;
           border-radius: 0.375rem;
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-          padding: 1rem;
+          padding: 0.5rem;
         }
       `}</style>
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
@@ -411,6 +411,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 2)}
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -436,6 +437,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing ActionsRenderer with core actions registry and menu dropdown.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData}
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -487,6 +489,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -535,6 +538,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -837,6 +841,7 @@ export const SimplifiedTest: React.FC = () => {
               <p className="card-text">Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 8)}
+                className="my-custom-widgemo"
                 config={{
                   preRender: () => {
                     if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
