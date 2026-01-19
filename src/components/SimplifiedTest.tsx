@@ -345,6 +345,7 @@ export const SimplifiedTest: React.FC = () => {
           border: 1px solid #e1e5e9;
           border-radius: 0.375rem;
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+          padding: 1rem;
         }
       `}</style>
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
