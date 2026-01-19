@@ -1,7 +1,22 @@
 import React from 'react';
-import { SimplifiedWidgemo, registerHook } from 'widgemo-core';
+import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
+import { 
+  FaDatabase, 
+  FaPlus, 
+  FaSync, 
+  FaDownload, 
+  FaCog, 
+  FaTrash, 
+  FaEdit, 
+  FaEye, 
+  FaSearch,
+  FaFilter,
+  FaSort,
+  FaChevronUp,
+  FaChevronDown
+} from 'react-icons/fa';
 
 // Extend Window interface for performance metrics
 declare global {
@@ -80,6 +95,109 @@ registerHook({
   }
 });
 
+// Register icons for the demo
+registerIcon({
+  name: 'database',
+  component: FaDatabase,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'add',
+  component: FaPlus,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'plus',
+  component: FaPlus,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'refresh',
+  component: FaSync,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'sync',
+  component: FaSync,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'export',
+  component: FaDownload,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'download',
+  component: FaDownload,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'settings',
+  component: FaCog,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'delete',
+  component: FaTrash,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'trash',
+  component: FaTrash,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'edit',
+  component: FaEdit,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'view',
+  component: FaEye,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'search',
+  component: FaSearch,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'filter',
+  component: FaFilter,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'sort',
+  component: FaSort,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'chevron-up',
+  component: FaChevronUp,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'chevron-down',
+  component: FaChevronDown,
+  defaultProps: { size: 16 }
+});
+
 // Extended ZoneConfig for board mode
 type BoardContentConfig = {
   enabled: boolean;
@@ -101,6 +219,85 @@ type BoardContentConfig = {
     };
   };
 };
+
+// Register icons at module level
+registerIcon({
+  name: 'database',
+  component: FaDatabase,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'add',
+  component: FaPlus,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'refresh',
+  component: FaSync,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'export',
+  component: FaDownload,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'settings',
+  component: FaCog,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'delete',
+  component: FaTrash,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'edit',
+  component: FaEdit,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'view',
+  component: FaEye,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'search',
+  component: FaSearch,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'filter',
+  component: FaFilter,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'sort',
+  component: FaSort,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'chevron-up',
+  component: FaChevronUp,
+  defaultProps: { size: 16 }
+});
+
+registerIcon({
+  name: 'chevron-down',
+  component: FaChevronDown,
+  defaultProps: { size: 16 }
+});
 
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
