@@ -378,13 +378,15 @@ export const SimplifiedTest: React.FC = () => {
                           id: 'refresh',
                           label: 'Refresh',
                           icon: 'refresh',
-                          onTrigger: () => alert('Refresh clicked!')
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true
                         },
                         {
                           id: 'export',
                           label: 'Export Data',
                           icon: 'export',
-                          onTrigger: () => alert('Export clicked!')
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: true
                         }
                       ]
                     },
