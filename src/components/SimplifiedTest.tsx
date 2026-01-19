@@ -443,7 +443,7 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       title: 'Actions Demo',
-                      subtitle: 'Core actions with menu',
+                      //subtitle: 'Core actions with menu',
                       actions: [
                         {
                           id: 'add',
