@@ -619,7 +619,66 @@ export const SimplifiedTest: React.FC = () => {
                     header: {
                       enabled: true,
                       title: 'Table Mode Demo',
-                      subtitle: 'Sortable columns with pagination'
+                      subtitle: 'Default Header Layout with Actions',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: false,
+                          placement: 'menu'
+                        },
+                        {
+                          id: 'settings',
+                          label: 'Settings',
+                          icon: 'settings',
+                          variant: 'danger',
+                          onTrigger: () => alert('Settings clicked!'),
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'all',
+                          label: 'View All',
+                          icon: 'eye',
+                          variant: 'success',
+                          onTrigger: () => alert('View All clicked!'),
+                          placement: 'menu'
+                        },
+                        {
+                          id: 'chart',
+                          label: 'Chart Mode',
+                          icon: 'chart-pie',
+                          variant: 'primary',
+                          onTrigger: () => alert('Chart Mode clicked!'),
+                          iconOnly: false,
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'bar',
+                          label: 'Bar Chart Mode',
+                          icon: 'chart-bar',
+                          variant: 'primary',
+                          onTrigger: () => alert('Chart Mode clicked!'),
+                          placement: 'menu'
+                        }
+                      ]
                     },
                     content: {
                       enabled: true,
@@ -656,6 +715,303 @@ export const SimplifiedTest: React.FC = () => {
                         onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
                         preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
                       }
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Compact Layout</h5>
+              <p className="card-text">Testing compact header layout with smaller elements and actions.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'compact' },
+                      title: 'Compact Layout Demo',
+                      subtitle: 'Smaller header elements',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Centered Layout</h5>
+              <p className="card-text">Testing centered header layout with smaller elements and actions.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'centered' },
+                      title: 'Centered Layout Demo',
+                      subtitle: 'Smaller header elements',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Minimal Layout</h5>
+              <p className="card-text">Testing minimal header layout with title only and collapse button.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'minimal' },
+                      title: 'Minimal Layout Demo',
+                      subtitle: 'Title and collapse only',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Minimal Layout 2</h5>
+              <p className="card-text">Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'minimal' },
+                      collapse: { initialState: 'expanded', button: true },
+                      title: 'Minimal Layout Demo',
+                      subtitle: 'Title and collapse only'
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Actions-First Layout</h5>
+              <p className="card-text">Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'actions-first' },
+                      title: 'Actions-First Layout Demo',
+                      subtitle: 'Actions left, content center, collapse right',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Zone Layouts Test - Centered Layout</h5>
+              <p className="card-text">Testing centered header layout with title/subtitle in center and actions on the right.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 5)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      headerLayout: { preset: 'centered' },
+                      title: 'Centered Layout Demo',
+                      subtitle: 'Title/subtitle center, actions right',
+                      actions: [
+                        {
+                          id: 'add',
+                          label: 'Add Item',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add Item clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          variant: 'ghost',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
                     },
                     footer: { enabled: false }
                   }
