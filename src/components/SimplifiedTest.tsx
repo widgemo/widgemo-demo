@@ -475,7 +475,8 @@ export const SimplifiedTest: React.FC = () => {
                           label: 'Settings',
                           icon: 'settings',
                           variant: 'danger',
-                          onTrigger: () => alert('Settings clicked!')
+                          onTrigger: () => alert('Settings clicked!'),
+                          placement: 'discoverable'
                         },
                         {
                           id: 'all',
