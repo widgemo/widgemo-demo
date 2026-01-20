@@ -1028,6 +1028,61 @@ export const SimplifiedTest: React.FC = () => {
           </div>
         </div>
 
+        <div className="col-12 mb-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">React Element Title Example</h5>
+              <p className="card-text">Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
+              <SimplifiedWidgemo
+                data={teaserSampleData.slice(0, 3)}
+                className="my-custom-widgemo"
+                config={{
+                  zones: {
+                    header: {
+                      enabled: true,
+                      title: (
+                        <span>
+                          Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> - 
+                          <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
+                        </span>
+                      ),
+                      subtitle: (
+                        <div>
+                          <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or 
+                          <button 
+                            onClick={() => alert('Get Started clicked!')} 
+                            style={{ 
+                              background: '#007bff', 
+                              color: 'white', 
+                              border: 'none', 
+                              padding: '4px 8px', 
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              marginLeft: '4px'
+                            }}
+                          >
+                            Get Started
+                          </button>
+                        </div>
+                      )
+                    },
+                    content: {
+                      enabled: true,
+                      mode: 'table',
+                      columns: [
+                        { field: 'name', header: 'Name', sortable: true },
+                        { field: 'email', header: 'Email', sortable: true },
+                        { field: 'role', header: 'Role', align: 'center' }
+                      ]
+                    },
+                    footer: { enabled: false }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -1076,6 +1131,58 @@ export const TableModeExample = () => (
               ]
             },
             actionsColumn: true
+          },
+          footer: { enabled: false }
+        }
+      }}
+    />
+  </div>
+);
+
+// Story testing export - React Element Title Example
+export const ReactElementTitleExample = () => (
+  <div style={{ padding: '20px' }}>
+    <h3>React Element Title Example</h3>
+    <SimplifiedWidgemo
+      data={teaserSampleData.slice(0, 3)}
+      config={{
+        zones: {
+          header: {
+            enabled: true,
+            title: (
+              <span>
+                Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> - 
+                <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
+              </span>
+            ),
+            subtitle: (
+              <div>
+                <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or 
+                <button 
+                  onClick={() => alert('Get Started clicked!')} 
+                  style={{ 
+                    background: '#007bff', 
+                    color: 'white', 
+                    border: 'none', 
+                    padding: '4px 8px', 
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    marginLeft: '4px'
+                  }}
+                >
+                  Get Started
+                </button>
+              </div>
+            )
+          },
+          content: {
+            enabled: true,
+            mode: 'table',
+            columns: [
+              { field: 'name', header: 'Name', sortable: true },
+              { field: 'email', header: 'Email', sortable: true },
+              { field: 'role', header: 'Role', align: 'center' }
+            ]
           },
           footer: { enabled: false }
         }
