@@ -379,14 +379,16 @@ export const SimplifiedTest: React.FC = () => {
                           label: 'Refresh',
                           icon: 'refresh',
                           onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true
+                          iconOnly: true,
+                          placement: 'discoverable'
                         },
                         {
                           id: 'export',
                           label: 'Export Data',
                           icon: 'export',
                           onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true
+                          iconOnly: true,
+                          placement: 'discoverable'
                         }
                       ]
                     },
@@ -480,7 +482,8 @@ export const SimplifiedTest: React.FC = () => {
                           label: 'View All',
                           icon: 'eye',
                           variant: 'success',
-                          onTrigger: () => alert('View All clicked!')
+                          onTrigger: () => alert('View All clicked!'),
+                          placement: 'menu'
                         },
                         {
                           id: 'chart',
