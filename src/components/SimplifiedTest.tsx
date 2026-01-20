@@ -528,6 +528,14 @@ export const SimplifiedTest: React.FC = () => {
                           variant: 'primary',
                           onTrigger: () => alert('Chart Mode clicked!'),
                           iconOnly: true
+                        },
+                        {
+                          id: 'bar',
+                          label: 'Bar Chart Mode',
+                          icon: 'chart-bar',
+                          variant: 'primary',
+                          onTrigger: () => alert('Chart Mode clicked!'),
+                          placement: 'menu'
                         }
                       ]
                     },
