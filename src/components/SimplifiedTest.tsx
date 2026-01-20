@@ -418,7 +418,7 @@ export const SimplifiedTest: React.FC = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Fixed Header Zone</h5>
-              <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class.</p>
+              <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 2)}
                 className="my-custom-widgemo"
