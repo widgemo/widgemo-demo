@@ -1042,20 +1042,20 @@ export const SimplifiedTest: React.FC = () => {
                       enabled: true,
                       title: (
                         <span>
-                          Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> - 
+                          Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
                           <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
                         </span>
                       ),
                       subtitle: (
                         <div>
-                          <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or 
-                          <button 
-                            onClick={() => alert('Get Started clicked!')} 
-                            style={{ 
-                              background: '#007bff', 
-                              color: 'white', 
-                              border: 'none', 
-                              padding: '4px 8px', 
+                          <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
+                          <button
+                            onClick={() => alert('Get Started clicked!')}
+                            style={{
+                              background: '#007bff',
+                              color: 'white',
+                              border: 'none',
+                              padding: '4px 8px',
                               borderRadius: '4px',
                               cursor: 'pointer',
                               marginLeft: '4px'
@@ -1064,7 +1064,32 @@ export const SimplifiedTest: React.FC = () => {
                             Get Started
                           </button>
                         </div>
-                      )
+                      ),
+                      actions: [
+                        {
+                          id: 'add-user',
+                          label: 'Add User',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add User clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export Data',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
                     },
                     content: {
                       enabled: true,
@@ -1151,20 +1176,20 @@ export const ReactElementTitleExample = () => (
             enabled: true,
             title: (
               <span>
-                Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> - 
+                Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
                 <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
               </span>
             ),
             subtitle: (
               <div>
-                <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or 
-                <button 
-                  onClick={() => alert('Get Started clicked!')} 
-                  style={{ 
-                    background: '#007bff', 
-                    color: 'white', 
-                    border: 'none', 
-                    padding: '4px 8px', 
+                <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
+                <button
+                  onClick={() => alert('Get Started clicked!')}
+                  style={{
+                    background: '#007bff',
+                    color: 'white',
+                    border: 'none',
+                    padding: '4px 8px',
                     borderRadius: '4px',
                     cursor: 'pointer',
                     marginLeft: '4px'
@@ -1173,7 +1198,32 @@ export const ReactElementTitleExample = () => (
                   Get Started
                 </button>
               </div>
-            )
+            ),
+            actions: [
+              {
+                id: 'add-user',
+                label: 'Add User',
+                icon: 'add',
+                variant: 'primary',
+                onTrigger: () => alert('Add User clicked!')
+              },
+              {
+                id: 'refresh',
+                label: 'Refresh',
+                icon: 'refresh',
+                onTrigger: () => alert('Refresh clicked!'),
+                iconOnly: true,
+                placement: 'discoverable'
+              },
+              {
+                id: 'export',
+                label: 'Export Data',
+                icon: 'export',
+                onTrigger: () => alert('Export clicked!'),
+                iconOnly: true,
+                placement: 'discoverable'
+              }
+            ]
           },
           content: {
             enabled: true,
