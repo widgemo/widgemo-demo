@@ -2,15 +2,15 @@ import React from 'react';
 import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
-import { 
-  FaDatabase, 
-  FaPlus, 
-  FaSync, 
-  FaDownload, 
-  FaCog, 
-  FaTrash, 
-  FaEdit, 
-  FaEye, 
+import {
+  FaDatabase,
+  FaPlus,
+  FaSync,
+  FaDownload,
+  FaCog,
+  FaTrash,
+  FaEdit,
+  FaEye,
   FaSearch,
   FaFilter,
   FaSort,
@@ -202,7 +202,7 @@ registerIcon({
 registerIcon({
   name: 'users',
   component: FaUsers,
-  defaultProps: { size: 16}
+  defaultProps: { size: 16 }
 });
 
 // Extended ZoneConfig for board mode
@@ -321,7 +321,7 @@ export const SimplifiedTest: React.FC = () => {
   React.useEffect(() => {
     // Reset performance measurement flag on mount
     window.performanceMeasured = false;
-    
+
     return () => {
       // Clear any remaining performance entries
       renderQueue = [];
@@ -346,6 +346,11 @@ export const SimplifiedTest: React.FC = () => {
           border-radius: 0.375rem;
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
           padding: 0.5rem;
+        }
+        
+        .custom-footer-class .zone-title {
+          font-size: 14px; 
+          color: #0c7ee2;
         }
       `}</style>
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
@@ -399,7 +404,8 @@ export const SimplifiedTest: React.FC = () => {
                     footer: {
                       enabled: true,
                       collapse: { initialState: 'fixed' },
-                      title: 'Footer Information'
+                      title: 'Footer Information',
+                      subtitle: 'Additional details and links'
                     }
                   }
                 }}
@@ -412,7 +418,7 @@ export const SimplifiedTest: React.FC = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Fixed Header Zone</h5>
-              <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header.</p>
+              <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 2)}
                 className="my-custom-widgemo"
@@ -426,7 +432,36 @@ export const SimplifiedTest: React.FC = () => {
                       subtitle: 'Quick stats and actions'
                     },
                     content: { enabled: true },
-                    footer: { enabled: false }
+                    footer: {
+                      enabled: true,
+                      className: 'custom-footer-class',
+                      title: (data) => `Team Members (${data.length} users)`,
+                      actions: [
+                        {
+                          id: 'add-user',
+                          label: 'Add User',
+                          icon: 'add',
+                          variant: 'primary',
+                          onTrigger: () => alert('Add User clicked!')
+                        },
+                        {
+                          id: 'refresh',
+                          label: 'Refresh',
+                          icon: 'refresh',
+                          onTrigger: () => alert('Refresh clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        },
+                        {
+                          id: 'export',
+                          label: 'Export Data',
+                          icon: 'export',
+                          onTrigger: () => alert('Export clicked!'),
+                          iconOnly: true,
+                          placement: 'discoverable'
+                        }
+                      ]
+                    }
                   }
                 }}
               />
@@ -900,7 +935,7 @@ export const SimplifiedTest: React.FC = () => {
                     footer: {
                       enabled: true,
                       title: 'Performance Stats',
-                      subtitle: lastRenderMetrics 
+                      subtitle: lastRenderMetrics
                         ? `Last render: ${lastRenderMetrics.time.toFixed(2)}ms (render #${lastRenderMetrics.count})`
                         : 'Check browser console for timing data'
                     }
@@ -913,9 +948,9 @@ export const SimplifiedTest: React.FC = () => {
                   <ul className="mb-0">
                     <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
                     <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
-                    <li><strong>Status:</strong> 
-                      {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' : 
-                       lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
+                    <li><strong>Status:</strong>
+                      {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' :
+                        lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
                     </li>
                   </ul>
                 </div>
