@@ -926,6 +926,7 @@ export const SimplifiedTest: React.FC = () => {
               <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -972,6 +973,7 @@ export const SimplifiedTest: React.FC = () => {
               <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
               <SimplifiedWidgemo
                 data={imageGalleryData.slice(0, 6)} // Use first 6 images
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -1008,6 +1010,7 @@ export const SimplifiedTest: React.FC = () => {
               <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -1066,6 +1069,7 @@ export const SimplifiedTest: React.FC = () => {
                   { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
                   { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
                 ]}
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -1102,6 +1106,7 @@ export const SimplifiedTest: React.FC = () => {
               <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 4)}
+                className="my-custom-widgemo"
                 config={{
                   preRender: () => {
                     console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
@@ -1207,6 +1212,7 @@ export const SimplifiedTest: React.FC = () => {
                   { id: 7, name: 'Database optimization', status: 'review', priority: 'medium', assignee: 'Charlie' },
                   { id: 8, name: 'User feedback integration', status: 'todo', priority: 'low', assignee: 'Bob' }
                 ]}
+                className="my-custom-widgemo"
                 config={{
                   zones: {
                     header: {
@@ -1335,6 +1341,7 @@ export const TableModeExample = () => (
     <h3>TableMode Example</h3>
     <SimplifiedWidgemo
       data={teaserSampleData.slice(0, 5)}
+      className="my-custom-widgemo"
       config={{
         zones: {
           header: {
@@ -1383,6 +1390,7 @@ export const ReactElementTitleExample = () => (
     <h3>React Element Title Example</h3>
     <SimplifiedWidgemo
       data={teaserSampleData.slice(0, 3)}
+      className="my-custom-widgemo"
       config={{
         zones: {
           header: {
