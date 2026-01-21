@@ -308,7 +308,7 @@ export const SimplifiedTest: React.FC = () => {
           color: #0c7ee2;
         }
       `}</style>
-      <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
+      <h1 className="mb-4">Widgemo Product Primitive - ZoneRenderer Test</h1>
       <div className="row">
         <div className="col-12 mb-4">
           <h5>Collapsible Header Zone</h5>
