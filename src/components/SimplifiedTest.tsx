@@ -312,7 +312,7 @@ export const SimplifiedTest: React.FC = () => {
       <div className="row">
         <div className="col-12 mb-4">
           <h5>Collapsible Header Zone</h5>
-          <p>Testing ZoneRenderer with collapse functionality, icon, and dynamic title.</p>
+          <p>Testing ZoneRenderer with default header layout: collapse functionality, icon, and dynamic subtitle.</p>
           <SimplifiedWidgemo
             data={teaserSampleData}
             className="my-custom-widgemo"
