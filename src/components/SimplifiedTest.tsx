@@ -369,8 +369,8 @@ export const SimplifiedTest: React.FC = () => {
                       enabled: true,
                       collapse: { initialState: 'expanded', button: true },
                       icon: { src: 'database', size: 24, color: '#c4530d' },
-                      title: (data) => `User Database (${data.length} users)`,
-                      subtitle: 'Manage your team members',
+                      title: 'User Database',
+                      subtitle: (data) => `Manage your ${data.length} team member(s)`,
                       actions: [
                         {
                           id: 'add-user',
