@@ -18,7 +18,6 @@ import {
   FaChevronDown,
   FaUsers
 } from 'react-icons/fa';
-
 // Extend Window interface for performance metrics
 declare global {
   interface Window {
@@ -27,14 +26,11 @@ declare global {
     performanceMeasured?: boolean;
   }
 }
-
 // Global variable to store pending metrics
 let pendingMetrics: { time: number; count: number } | null = null;
-
 // Register performance monitoring hooks at module level
 let renderCount = 0;
 let renderQueue: number[] = [];
-
 // Pre-render hook to start timing
 registerHook({
   name: 'preRender',
@@ -48,7 +44,6 @@ registerHook({
     }
   }
 });
-
 // Post-render hook to measure and log performance
 registerHook({
   name: 'postRender',
@@ -70,7 +65,6 @@ registerHook({
         console.warn('Performance measurement error:', error);
       }
     }
-
     // Also check for component-specific mark
     if (performance.getEntriesByName('widgemo-start').length > 0) {
       performance.mark('widgemo-end');
@@ -91,120 +85,100 @@ registerHook({
         console.warn('Performance measurement error for widgemo-total:', error);
       }
     }
-
     return args[1] as React.ReactElement;
   }
 });
-
 // Register icons for the demo
 registerIcon({
   name: 'database',
   component: FaDatabase,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'add',
   component: FaPlus,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'plus',
   component: FaPlus,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'refresh',
   component: FaSync,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'sync',
   component: FaSync,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'export',
   component: FaDownload,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'download',
   component: FaDownload,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'settings',
   component: FaCog,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'delete',
   component: FaTrash,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'trash',
   component: FaTrash,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'edit',
   component: FaEdit,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'view',
   component: FaEye,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'search',
   component: FaSearch,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'filter',
   component: FaFilter,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'sort',
   component: FaSort,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'chevron-up',
   component: FaChevronUp,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'chevron-down',
   component: FaChevronDown,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'users',
   component: FaUsers,
   defaultProps: { size: 16 }
 });
-
 // Extended ZoneConfig for board mode
 type BoardContentConfig = {
   enabled: boolean;
@@ -226,89 +200,74 @@ type BoardContentConfig = {
     };
   };
 };
-
 // Register icons at module level
 registerIcon({
   name: 'database',
   component: FaDatabase,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'add',
   component: FaPlus,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'refresh',
   component: FaSync,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'export',
   component: FaDownload,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'settings',
   component: FaCog,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'delete',
   component: FaTrash,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'edit',
   component: FaEdit,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'view',
   component: FaEye,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'search',
   component: FaSearch,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'filter',
   component: FaFilter,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'sort',
   component: FaSort,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'chevron-up',
   component: FaChevronUp,
   defaultProps: { size: 16 }
 });
-
 registerIcon({
   name: 'chevron-down',
   component: FaChevronDown,
   defaultProps: { size: 16 }
 });
-
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
-
   // Check for pending metrics after component mounts
   React.useEffect(() => {
     if (pendingMetrics) {
@@ -316,12 +275,10 @@ export const SimplifiedTest: React.FC = () => {
       pendingMetrics = null;
     }
   }, []);
-
   // Cleanup on unmount
   React.useEffect(() => {
     // Reset performance measurement flag on mount
     window.performanceMeasured = false;
-
     return () => {
       // Clear any remaining performance entries
       renderQueue = [];
@@ -337,7 +294,6 @@ export const SimplifiedTest: React.FC = () => {
       }
     };
   }, []);
-
   return (
     <div className="container mt-5">
       <style>{`
@@ -347,7 +303,6 @@ export const SimplifiedTest: React.FC = () => {
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
           padding: 0.5rem;
         }
-        
         .custom-footer-class .zone-title {
           font-size: 14px; 
           color: #0c7ee2;
@@ -356,261 +311,239 @@ export const SimplifiedTest: React.FC = () => {
       <h1 className="mb-4">ZoneRenderer Test - Widgemo Product Primitive [CACHE BUST]</h1>
       <div className="row">
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Collapsible Header Zone</h5>
-              <p className="card-text">Testing ZoneRenderer with collapse functionality, icon, and dynamic title.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      collapse: { initialState: 'expanded', button: true },
-                      icon: { src: 'database', size: 24, color: '#c4530d' },
-                      title: 'User Database',
-                      subtitle: (data) => `Manage your ${data.length} team member(s)`,
-                      actions: [
-                        {
-                          id: 'add-user',
-                          label: 'Add User',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add User clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export Data',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
+          <h5>Collapsible Header Zone</h5>
+          <p>Testing ZoneRenderer with collapse functionality, icon, and dynamic title.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  collapse: { initialState: 'expanded', button: true },
+                  icon: { src: 'database', size: 24, color: '#c4530d' },
+                  title: 'User Database',
+                  subtitle: (data) => `Manage your ${data.length} team member(s)`,
+                  actions: [
+                    {
+                      id: 'add-user',
+                      label: 'Add User',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add User clicked!')
                     },
-                    content: {
-                      enabled: true,
-                      title: 'Data Overview'
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
                     },
-                    footer: {
-                      enabled: true,
-                      collapse: { initialState: 'fixed' },
-                      title: 'Footer Information',
-                      subtitle: 'Additional details and links'
+                    {
+                      id: 'export',
+                      label: 'Export Data',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
                     }
-                  }
-                }}
-              />
-            </div>
-          </div>
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  title: 'Data Overview'
+                },
+                footer: {
+                  enabled: true,
+                  collapse: { initialState: 'fixed' },
+                  title: 'Footer Information',
+                  subtitle: 'Additional details and links'
+                }
+              }
+            }}
+          />
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Fixed Header Zone</h5>
-              <p className="card-text">Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 2)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      collapse: { initialState: 'fixed' },
-                      icon: { src: 'users', size: 24, color: '#15abf0' },
-                      title: 'Team Overview',
-                      subtitle: 'Quick stats and actions'
+          <h5>Fixed Header Zone</h5>
+          <p>Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 2)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  collapse: { initialState: 'fixed' },
+                  icon: { src: 'users', size: 24, color: '#15abf0' },
+                  title: 'Team Overview',
+                  subtitle: 'Quick stats and actions'
+                },
+                content: { enabled: true },
+                footer: {
+                  enabled: true,
+                  className: 'custom-footer-class',
+                  title: (data) => `Team Members (${data.length} users)`,
+                  actions: [
+                    {
+                      id: 'add-user',
+                      label: 'Add User',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add User clicked!')
                     },
-                    content: { enabled: true },
-                    footer: {
-                      enabled: true,
-                      className: 'custom-footer-class',
-                      title: (data) => `Team Members (${data.length} users)`,
-                      actions: [
-                        {
-                          id: 'add-user',
-                          label: 'Add User',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add User clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export Data',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export Data',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
                     }
-                  }
-                }}
-              />
-            </div>
-          </div>
+                  ]
+                }
+              }
+            }}
+          />
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Actions System Test</h5>
-              <p className="card-text">Testing ActionsRenderer with core actions registry and menu dropdown.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Actions Demo',
-                      //subtitle: 'Core actions with menu',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'secondary',
-                          onTrigger: () => alert('Refresh clicked!')
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true
-                        },
-                        {
-                          id: 'settings',
-                          label: 'Settings',
-                          icon: 'settings',
-                          variant: 'danger',
-                          onTrigger: () => alert('Settings clicked!'),
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'all',
-                          label: 'View All',
-                          icon: 'eye',
-                          variant: 'success',
-                          onTrigger: () => alert('View All clicked!'),
-                          placement: 'menu'
-                        },
-                        {
-                          id: 'chart',
-                          label: 'Chart Mode',
-                          icon: 'chart-pie',
-                          variant: 'primary',
-                          onTrigger: () => alert('Chart Mode clicked!'),
-                          iconOnly: true
-                        },
-                        {
-                          id: 'bar',
-                          label: 'Bar Chart Mode',
-                          icon: 'chart-bar',
-                          variant: 'primary',
-                          onTrigger: () => alert('Chart Mode clicked!'),
-                          placement: 'menu'
-                        }
-                      ]
+          <h5>Actions System Test</h5>
+          <p>Testing ActionsRenderer with core actions registry and menu dropdown.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Actions Demo',
+                  //subtitle: 'Core actions with menu',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
                     },
-                    content: { enabled: true },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-            </div>
-          </div>
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Refresh clicked!')
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true
+                    },
+                    {
+                      id: 'settings',
+                      label: 'Settings',
+                      icon: 'settings',
+                      variant: 'danger',
+                      onTrigger: () => alert('Settings clicked!'),
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'all',
+                      label: 'View All',
+                      icon: 'eye',
+                      variant: 'success',
+                      onTrigger: () => alert('View All clicked!'),
+                      placement: 'menu'
+                    },
+                    {
+                      id: 'chart',
+                      label: 'Chart Mode',
+                      icon: 'chart-pie',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      iconOnly: true
+                    },
+                    {
+                      id: 'bar',
+                      label: 'Bar Chart Mode',
+                      icon: 'chart-bar',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      placement: 'menu'
+                    }
+                  ]
+                },
+                content: { enabled: true },
+                footer: { enabled: false }
+              }
+            }}
+          />
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Mode System Test - Grid Mode with ItemRenderer</h5>
-              <p className="card-text">Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Grid Mode with Item Templates',
-                      subtitle: 'ItemRenderer with custom field organization',
-                      actions: [
+          <h5>Mode System Test - Grid Mode with ItemRenderer</h5>
+          <p>Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Grid Mode with Item Templates',
+                  subtitle: 'ItemRenderer with custom field organization',
+                  actions: [
+                    {
+                      id: 'share',
+                      label: 'Share',
+                      icon: 'share',
+                      variant: 'primary',
+                      onTrigger: () => alert('Share clicked!')
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid',
+                  columns: 3, // 3 columns for the grid
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
                         {
-                          id: 'share',
-                          label: 'Share',
-                          icon: 'share',
-                          variant: 'primary',
-                          onTrigger: () => alert('Share clicked!')
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'grid',
-                      columns: 3, // 3 columns for the grid
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              title: 'Profile',
-                              fields: [
-                                { key: 'name', label: 'Name' },
-                                { key: 'role', label: 'Role' }
-                              ]
-                            },
-                            {
-                              title: 'Contact',
-                              fields: [
-                                { key: 'email', label: 'Email' },
-                                { key: 'department', label: 'Department' }
-                              ]
-                            }
+                          title: 'Profile',
+                          fields: [
+                            { key: 'name', label: 'Name' },
+                            { key: 'role', label: 'Role' }
+                          ]
+                        },
+                        {
+                          title: 'Contact',
+                          fields: [
+                            { key: 'email', label: 'Email' },
+                            { key: 'department', label: 'Department' }
                           ]
                         }
-                      }
-                    },
-                    footer: { enabled: false }
+                      ]
+                    }
                   }
-                }}
-              />
-            </div>
-          </div>
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Mode System Test - Table Mode</h5>
-              <p className="card-text">Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
+               <h5>Mode System Test - Table Mode</h5>
+              <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
                 className="my-custom-widgemo"
@@ -720,15 +653,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Compact Layout</h5>
-              <p className="card-text">Testing compact header layout with smaller elements and actions.</p>
+               <h5>Zone Layouts Test - Compact Layout</h5>
+              <p>Testing compact header layout with smaller elements and actions.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -771,15 +699,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Centered Layout</h5>
-              <p className="card-text">Testing centered header layout with smaller elements and actions.</p>
+               <h5>Zone Layouts Test - Centered Layout</h5>
+              <p>Testing centered header layout with smaller elements and actions.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -822,15 +745,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Minimal Layout</h5>
-              <p className="card-text">Testing minimal header layout with title only and collapse button.</p>
+               <h5>Zone Layouts Test - Minimal Layout</h5>
+              <p>Testing minimal header layout with title only and collapse button.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -873,15 +791,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Minimal Layout 2</h5>
-              <p className="card-text">Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
+               <h5>Zone Layouts Test - Minimal Layout 2</h5>
+              <p>Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -907,15 +820,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Actions-First Layout</h5>
-              <p className="card-text">Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+               <h5>Zone Layouts Test - Actions-First Layout</h5>
+              <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -966,15 +874,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Zone Layouts Test - Centered Layout</h5>
-              <p className="card-text">Testing centered header layout with title/subtitle in center and actions on the right.</p>
+               <h5>Zone Layouts Test - Centered Layout</h5>
+              <p>Testing centered header layout with title/subtitle in center and actions on the right.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)}
                 className="my-custom-widgemo"
@@ -1017,15 +920,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">FieldRenderer Test - Type-Specific Rendering</h5>
-              <p className="card-text">Testing FieldRenderer with different field types including images with lightbox functionality.</p>
+               <h5>FieldRenderer Test - Type-Specific Rendering</h5>
+              <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
                 config={{
@@ -1068,15 +966,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Image Gallery - FieldRenderer Lightbox</h5>
-              <p className="card-text">Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
+               <h5>Image Gallery - FieldRenderer Lightbox</h5>
+              <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
               <SimplifiedWidgemo
                 data={imageGalleryData.slice(0, 6)} // Use first 6 images
                 config={{
@@ -1109,15 +1002,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">CarouselMode - Swipeable Carousel</h5>
-              <p className="card-text">Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
+               <h5>CarouselMode - Swipeable Carousel</h5>
+              <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
                 config={{
@@ -1167,15 +1055,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Field Type Registry - Swatch Example</h5>
-              <p className="card-text">Testing the field type registry with custom 'swatch' field type for color display.</p>
+               <h5>Field Type Registry - Swatch Example</h5>
+              <p>Testing the field type registry with custom 'swatch' field type for color display.</p>
               <SimplifiedWidgemo
                 data={[
                   { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
@@ -1213,15 +1096,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Hooks System Test - Pre/Post Render</h5>
-              <p className="card-text">Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
+               <h5>Hooks System Test - Pre/Post Render</h5>
+              <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 4)}
                 config={{
@@ -1261,15 +1139,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Performance Monitoring - Pre/Post Render Hooks</h5>
-              <p className="card-text">Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
+               <h5>Performance Monitoring - Pre/Post Render Hooks</h5>
+              <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 8)}
                 className="my-custom-widgemo"
@@ -1319,15 +1192,10 @@ export const SimplifiedTest: React.FC = () => {
                   </ul>
                 </div>
               )}
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">BoardMode - Kanban Board</h5>
-              <p className="card-text">Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
+               <h5>BoardMode - Kanban Board</h5>
+              <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
               <SimplifiedWidgemo
                 data={[
                   { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
@@ -1380,15 +1248,10 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
         <div className="col-12 mb-4">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">React Element Title Example</h5>
-              <p className="card-text">Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
+               <h5>React Element Title Example</h5>
+              <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
               <SimplifiedWidgemo
                 data={teaserSampleData.slice(0, 3)}
                 className="my-custom-widgemo"
@@ -1460,17 +1323,12 @@ export const SimplifiedTest: React.FC = () => {
                   }
                 }}
               />
-            </div>
-          </div>
         </div>
-
       </div>
     </div>
   );
 };
-
 export default SimplifiedTest;
-
 // Story testing export - TableMode example
 export const TableModeExample = () => (
   <div style={{ padding: '20px' }}>
@@ -1519,7 +1377,6 @@ export const TableModeExample = () => (
     />
   </div>
 );
-
 // Story testing export - React Element Title Example
 export const ReactElementTitleExample = () => (
   <div style={{ padding: '20px' }}>
