@@ -32,6 +32,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       document.documentElement.style.setProperty('--bg-color', themeConfig.backgroundColor);
       document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
       document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
+      document.documentElement.style.setProperty('--shadow-color', themeConfig.shadowColor);
       document.documentElement.style.setProperty('--button-bg', themeConfig.buttonBg);
       document.documentElement.style.setProperty('--button-hover', themeConfig.buttonHover);
     }

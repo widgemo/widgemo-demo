@@ -9,6 +9,7 @@ export interface ThemeConfig {
   backgroundColor: string;
   textColor: string;
   borderColor: string;
+  shadowColor: string;
   buttonBg: string;
   buttonHover: string;
 }
@@ -20,6 +21,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#ffffff',
     textColor: '#161616',
     borderColor: '#cccccc',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#f0f0f0',
     buttonHover: '#e0e0e0',
   },
@@ -29,6 +31,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#f0f8ff',
     textColor: '#333333',
     borderColor: '#b3d9ff',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#cce7ff',
     buttonHover: '#99d6ff',
   },
@@ -38,6 +41,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#f0fff0',
     textColor: '#333333',
     borderColor: '#b3ffb3',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#ccffcc',
     buttonHover: '#99ff99',
   },
@@ -47,6 +51,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#f8f0ff',
     textColor: '#333333',
     borderColor: '#d9b3ff',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#e6ccff',
     buttonHover: '#d9b3ff',
   },
@@ -56,6 +61,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#1a1a1a',
     textColor: '#cccccc',
     borderColor: '#444444',
+    shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#333333',
     buttonHover: '#555555',
   },
@@ -65,6 +71,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#2a1a1a',
     textColor: '#cccccc',
     borderColor: '#664444',
+    shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#4a2a2a',
     buttonHover: '#6a4a4a',
   },
@@ -74,15 +81,17 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     backgroundColor: '#1a1a2a',
     textColor: '#cccccc',
     borderColor: '#444466',
+    shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#2a2a4a',
     buttonHover: '#4a4a6a',
   },
   'theme-dark-teal': {
     key: 'theme-dark-teal',
     label: 'Dark Teal',
-    backgroundColor: '#022833',
+    backgroundColor: '#053c4c',
     textColor: '#cccccc',
     borderColor: '#446166',
+    shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#2a4a48',
     buttonHover: '#4a6a6a',
   },
@@ -98,6 +107,7 @@ export const generateThemeCSS = (): string => {
   --bg-color: ${theme.backgroundColor};
   --text-color: ${theme.textColor};
   --border-color: ${theme.borderColor};
+  --shadow-color: ${theme.shadowColor};
   --button-bg: ${theme.buttonBg};
   --button-hover: ${theme.buttonHover};
 }

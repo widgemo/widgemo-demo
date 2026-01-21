@@ -298,9 +298,10 @@ export const SimplifiedTest: React.FC = () => {
     <div className="container mt-5">
       <style>{`
         .my-custom-widgemo {
-          border: 1px solid #e1e5e9;
+          background-color: var(--bg-color);
+          border: 1px solid var(--border-color);
           border-radius: 0.375rem;
-          box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.3);
+          box-shadow: 0px 0px 8px var(--shadow-color);
           padding: 0.5rem;
         }
         .custom-footer-class .zone-title {
