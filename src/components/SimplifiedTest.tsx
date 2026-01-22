@@ -1322,6 +1322,29 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>Mode System Test - Table Mode</h2>
           <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+              <li>Content Zone: Table Mode
+                <ul>
+                  <li>Alternating Background - Enabled</li>
+                  <li>Custom Choices for Active column - include icons</li>
+                  <li>Actions column - enabled</li>
+                  <ul>
+                    <li>Edit</li>
+                    <li>Delete</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
             className="my-custom-widgemo"
@@ -1330,7 +1353,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   title: 'Table Mode Demo',
-                  subtitle: 'Default Header Layout with Actions',
+                  subtitle: 'Default Header Layout with Actions - Alternating Row Backgrounds Enabled',
                   actions: [
                     {
                       id: 'add',
@@ -1423,9 +1446,82 @@ export const SimplifiedTest: React.FC = () => {
                     ]
                   },
                   actionsColumn: true,
+                  alternatingRows: true,
                   hooks: {
                     onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
                   }
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div style={{ padding: '20px' }}>
+          <h2>Mode System Test - Table Mode</h2>
+          <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+              <li>Content Zone: Table Mode
+                <ul>
+                  <li>Alternating Background - Disabled</li>
+                  <li>Custom Choices for Active column - include icons</li>
+                  <li>Actions column - enabled</li>
+                  <ul>
+                    <li>Edit</li>
+                    <li>Delete</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'User Management',
+                  subtitle: 'Sortable table with actions - Alternating Row Backgrounds Disabled'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' },
+                    { field: 'status', header: 'Status', align: 'center' }
+                  ],
+                  tableActions: {
+                    item: [
+                      {
+                        id: 'view',
+                        label: 'View',
+                        icon: 'view',
+                        variant: 'ghost',
+                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                      },
+                      {
+                        id: 'edit',
+                        label: 'Edit',
+                        icon: 'edit',
+                        variant: 'primary',
+                        handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                      }
+                    ]
+                  },
+                  actionsColumn: true,
+                  alternatingRows: false
                 },
                 footer: { enabled: false }
               }
@@ -1782,55 +1878,7 @@ export const SimplifiedTest: React.FC = () => {
   );
 };
 export default SimplifiedTest;
-// Story testing export - TableMode example
-export const TableModeExample = () => (
-  <div style={{ padding: '20px' }}>
-    <h3>TableMode Example</h3>
-    <SimplifiedWidgemo
-      data={teaserSampleData.slice(0, 5)}
-      className="my-custom-widgemo"
-      config={{
-        zones: {
-          header: {
-            enabled: true,
-            title: 'User Management',
-            subtitle: 'Sortable table with actions'
-          },
-          content: {
-            enabled: true,
-            mode: 'table',
-            columns: [
-              { field: 'name', header: 'Name', sortable: true },
-              { field: 'email', header: 'Email', sortable: true },
-              { field: 'role', header: 'Role', align: 'center' },
-              { field: 'status', header: 'Status', align: 'center' }
-            ],
-            tableActions: {
-              item: [
-                {
-                  id: 'view',
-                  label: 'View',
-                  icon: 'view',
-                  variant: 'ghost',
-                  handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                },
-                {
-                  id: 'edit',
-                  label: 'Edit',
-                  icon: 'edit',
-                  variant: 'primary',
-                  handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-                }
-              ]
-            },
-            actionsColumn: true
-          },
-          footer: { enabled: false }
-        }
-      }}
-    />
-  </div>
-);
+
 // Story testing export - React Element Title Example
 export const ReactElementTitleExample = () => (
   <div style={{ padding: '20px' }}>
