@@ -1077,6 +1077,7 @@ export const SimplifiedTest: React.FC = () => {
             </li>
           </ul>
           <SimplifiedWidgemo
+            id="grouped-layout-demo"
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
             config={{
@@ -1117,6 +1118,85 @@ export const SimplifiedTest: React.FC = () => {
                   icon: { src: 'table', size: 24, color: '#6f42c1' },
                   title: 'Grouped Layout Demo',
                   subtitle: 'Icon and title grouped together, actions in separate rows'
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Widgemo Instance ID Demo</h2>
+          <p>Testing widgemo instance ID support in action callbacks.</p>
+          <ul>
+            <li>Header Zone: Default layout with actions that log widgemoId
+              <ul>
+                <li>Actions demonstrate widgemoId parameter in onTrigger callbacks</li>
+                <li>Check browser console for logged widgemoId values</li>
+              </ul>
+            </li>
+            <li>Content Zone: Enabled
+            </li>
+            <li>Footer Zone: Disabled
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            id="instance-id-demo"
+            data={teaserSampleData.slice(0, 3)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Instance ID Demo',
+                  subtitle: 'Actions log widgemoId to console',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Add Item clicked on widgemo instance: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        if (context.record) {
+                          console.log(`👤 Item ID: ${context.record.id}`);
+                        }
+                        alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    },
+                    {
+                      id: 'edit',
+                      label: 'Edit',
+                      icon: 'edit',
+                      variant: 'secondary',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Edit clicked on widgemo instance: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        if (context.record) {
+                          console.log(`👤 Item ID: ${context.record.id}`);
+                        }
+                        alert(`Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    },
+                    {
+                      id: 'delete',
+                      label: 'Delete',
+                      icon: 'delete',
+                      variant: 'danger',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Delete clicked on widgemo instance: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        if (context.record) {
+                          console.log(`👤 Item ID: ${context.record.id}`);
+                        }
+                        alert(`Delete clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    }
+                  ]
                 },
                 content: {
                   enabled: true
