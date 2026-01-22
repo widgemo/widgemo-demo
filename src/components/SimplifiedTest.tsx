@@ -17,7 +17,8 @@ import {
   FaChevronUp,
   FaChevronDown,
   FaUsers,
-  FaTeamspeak
+  FaTeamspeak,
+  FaClock
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -183,6 +184,11 @@ registerIcon({
 registerIcon({
   name: 'teamspeak',
   component: FaTeamspeak,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'clock',
+  component: FaClock,
   defaultProps: { size: 16 }
 });
 // Extended ZoneConfig for board mode
@@ -1227,6 +1233,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
+                  icon: { src: 'clock', size: 24, color: '#06a10e' },
                   title: 'Performance Monitored Component',
                   subtitle: 'Pre/Post render hooks active'
                 },
