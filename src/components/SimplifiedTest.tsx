@@ -1060,6 +1060,88 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>Custom Layout with Groups</h2>
+          <p>Testing ZoneRenderer with grouped elements using type: 'group' for complex layouts.</p>
+          <ul>
+            <li>Header Zone: Custom Layout with Groups
+              <ul>
+                <li>Layout: Groups for icon+title together, and separate action rows</li>
+                <li>Group 1: Icon and title in same horizontal row</li>
+                <li>Subtitle: Below the icon+title group</li>
+                <li>Group 2: Primary actions in horizontal row</li>
+                <li>Group 3: Secondary actions in separate horizontal row</li>
+              </ul>
+            </li>
+            <li>Content Zone: Enabled
+            </li>
+            <li>Footer Zone: Disabled
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  layout: {
+                    custom: {
+                      order: [
+                        { type: 'group', elements: ['icon', 'title'], direction: 'horizontal' },
+                        'subtitle',
+                        { type: 'group', elements: ['actions'], direction: 'horizontal' }
+                      ],
+                      direction: 'vertical',
+                      align: 'center',
+                      gap: '0.5rem'
+                    }
+                  },
+                  icon: { src: 'table', size: 24, color: '#6f42c1' },
+                  title: 'Grouped Layout Demo',
+                  subtitle: 'Icon and title grouped together, actions in separate rows',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'edit',
+                      label: 'Edit',
+                      icon: 'edit',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Edit clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      variant: 'success',
+                      onTrigger: () => alert('Export clicked!'),
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>Mode System Test - Grid Mode with ItemRenderer</h2>
           <p>Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
           <SimplifiedWidgemo
