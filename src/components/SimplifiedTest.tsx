@@ -316,9 +316,19 @@ export const SimplifiedTest: React.FC = () => {
           box-shadow: 0px 0px 8px var(--shadow-color);
           padding: 0.5rem;
         }
+        .custom-footer-class {
+          background-color: #d5d5d5;
+          border-radius: 0.25rem;
+          padding: 0.3rem;
+        }
         .custom-footer-class .zone-title {
           font-size: 14px; 
-          color: #0c7ee2;
+          color: #065193;
+          padding-left: 0.5rem;
+        }
+        .custom-footer-class .zone-subtitle {
+          font-size: 14px; 
+          color: #333334;
         }
       `}</style>
       <h1 className="mb-4">Widgemo Product Primitive - ZoneRenderer Test</h1>
@@ -416,7 +426,7 @@ export const SimplifiedTest: React.FC = () => {
               <li>Footer Zone: Default Layout
                 <ul>
                   <li>Non-collapsible - Fixed</li>
-                  <li>Custom className - Colored text</li>
+                  <li>Custom className - Background color, round corners, colored text</li>
                   <li>Dynamic title (includes data length)</li>
                   <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export (icon only - ghost - discoverable)</li>
                 </ul>
