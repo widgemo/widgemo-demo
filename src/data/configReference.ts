@@ -126,13 +126,13 @@ export const widgemoConfigProperties: Array<{
 
   // FilteringConfig properties
   { category: 'FilteringConfig', property: 'enabled', type: 'boolean', status: 'not-implemented', description: 'Enable filtering', usage: 'Not implemented.', example: 'true' },
-  { category: 'FilteringConfig', property: 'filters', type: 'Array<{ field: string; type: "text" | "select" | "date" | "number" | "boolean"; options?: Array<{ value: any; label: string }> }>', status: 'not-implemented', description: 'Filter definitions', usage: 'Not implemented.', example: '[{ field: "status", type: "select", options: [{ value: "active", label: "Active" }] }]' },
+  { category: 'FilteringConfig', property: 'filters', type: 'Array<{ field: string; type: "text" | "select" | "date" | "number" | "boolean"; options?: Array<{ value: string | number | boolean; label: string }> }>', status: 'not-implemented', description: 'Filter definitions', usage: 'Not implemented.', example: '[{ field: "status", type: "select", options: [{ value: "active", label: "Active" }] }]' },
 
   // FieldConfig properties
   { category: 'FieldConfig', property: 'name', type: 'string', status: 'implemented', description: 'Unique field name', usage: 'Used in rendering and data mapping.', example: '"id"' },
   { category: 'FieldConfig', property: 'label', type: 'string', status: 'implemented', description: 'Human-readable label', usage: 'Displayed in headers/labels.', example: '"ID"' },
   { category: 'FieldConfig', property: 'type', type: "'text' | 'number' | 'date' | 'boolean' | 'select' | 'relation' | 'textarea' | 'email' | 'url'", status: 'partial', description: 'Data type', usage: "Basic types rendered; 'relation', 'textarea' not fully.", example: "'text'" },
-  { category: 'FieldConfig', property: 'options', type: 'Array<{ value: any; label: string }>', status: 'implemented', description: 'Options for select/relation', usage: 'For select fields.', example: '[{ value: "active", label: "Active" }]' },
+  { category: 'FieldConfig', property: 'options', type: 'Array<{ value: string | number | boolean; label: string }>', status: 'implemented', description: 'Options for select/relation', usage: 'For select fields.', example: '[{ value: "active", label: "Active" }]' },
   { category: 'FieldConfig', property: 'validation', type: 'Object', status: 'not-implemented', description: 'Validation rules', usage: 'Not implemented: Property exists but no validation logic.', example: '{ required: true }' },
   { category: 'FieldConfig', property: 'render', type: 'Object', status: 'not-implemented', description: 'Custom rendering', usage: 'Not implemented: Property exists but not used.', example: '{ component: MyComponent }' },
   { category: 'FieldConfig', property: 'renderAs', type: "'text' | 'boolean' | 'select' | 'custom'", status: 'not-implemented', description: 'Render type', usage: 'Defaults to type.', example: "'boolean'" },
