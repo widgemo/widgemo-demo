@@ -426,7 +426,7 @@ export const SimplifiedTest: React.FC = () => {
                   ]
                 },
                 content: {
-                  enabled: true,
+                  // enabled: true,
                   title: 'Data:'
                 },
                 footer: {
