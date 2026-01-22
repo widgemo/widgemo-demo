@@ -25,6 +25,7 @@ import {
   FaPuzzlePiece,
   FaWifi
 } from 'react-icons/fa';
+import { FaUserSlash } from 'react-icons/fa6';
 // Extend Window interface for performance metrics
 declare global {
   interface Window {
@@ -1398,7 +1399,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
                     { field: 'role', header: 'Role', sortable: true, align: 'center', type: 'text' },
                     { field: 'department', header: 'Department', sortable: true, type: 'text' },
-                    { field: 'status', header: 'Active', align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaWifi style={{ marginRight: '4px' }} /> Inactive</> },
+                    { field: 'status', header: 'Active', align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
                   ] as ColumnConfig[],
                   sort: { field: 'name', direction: 'asc' },
