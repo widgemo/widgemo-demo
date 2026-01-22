@@ -736,10 +736,10 @@ export const SimplifiedTest: React.FC = () => {
             <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Minimal Layout
               <ul>
+                <li>Collapsible - Expanded</li>
                 <li>Icon - ignored</li>
                 <li>Title only - Subtitle ignored</li>
-                <li>Actions - Ignored</li>
-                <li>Collapsible - Expanded</li>
+                <li>Actions - All as menu actions</li>
               </ul>
               <li>Content Zone: Table Mode
               </li>
