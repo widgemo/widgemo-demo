@@ -19,7 +19,8 @@ import {
   FaUsers,
   FaTeamspeak,
   FaClock,
-  FaSquare
+  FaSquare,
+  FaHtml5
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -195,6 +196,11 @@ registerIcon({
 registerIcon({
   name: 'square',
   component: FaSquare,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'html5',
+  component: FaHtml5,
   defaultProps: { size: 16 }
 });
 // Extended ZoneConfig for board mode
@@ -482,7 +488,23 @@ export const SimplifiedTest: React.FC = () => {
 
         <div className="col-12 mb-4">
           <h2>React Element Title Example</h2>
-          <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
+          <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and
+            <ul>
+              <li>Custom className: background-color, border, shadow, padding</li>
+              <li>Header Zone: Default Layout
+                <ul>
+                  <li>Collapsible - Expanded</li>
+                  <li>Icon</li>
+                  <li>Title and Subtitle - HTML/React Element</li>
+                  <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export Data (icon only - ghost - discoverable)</li>
+                </ul>
+                <li>Content Zone: Default Mode
+                </li>
+                <li>Footer Zone: Disabled
+                </li>
+              </li>
+            </ul>
+          </p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 4)}
             className="my-custom-widgemo"
@@ -490,6 +512,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
+                  icon: { src: 'html5', size: 24, color: '#ff0000' },
                   title: (
                     <span>
                       Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
@@ -559,7 +582,7 @@ export const SimplifiedTest: React.FC = () => {
               <ul>
                 <li>Collapsible - Collapsed</li>
                 <li>Icon</li>
-                <li>Title only</li>
+                <li>Title / Subtitle</li>
                 <li>Actions: Add Item (primary), Refresh (secondary), Export (icon only - ghost), Chart Mode (icon only - success), Settings (discoverable - danger), View All (menu), Bar Chart Mode (menu)</li>
               </ul>
               <li>Content Zone: Default Mode
@@ -578,6 +601,7 @@ export const SimplifiedTest: React.FC = () => {
                   collapse: { initialState: 'collapsed', button: true },
                   icon: { src: 'teamspeak', size: 24, color: '#b977d5' },
                   title: 'Actions Demo',
+                  subtitle: 'Variants, Placements, and Menu',
                   actions: [
                     {
                       id: 'add',
@@ -640,7 +664,7 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        
+
         <div className="col-12 mb-4">
           <h2>Zone Layouts Test - Compact Layout</h2>
           <p>Testing compact header layout with smaller elements and actions.</p>
@@ -1277,7 +1301,7 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        
+
         <div className="col-12 mb-4">
           <h2>Performance Monitoring - Pre/Post Render Hooks</h2>
           <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
@@ -1332,7 +1356,7 @@ export const SimplifiedTest: React.FC = () => {
             </div>
           )}
         </div>
-        
+
         <div className="col-12 mb-4">
           <h2>BoardMode - Kanban Board</h2>
           <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
