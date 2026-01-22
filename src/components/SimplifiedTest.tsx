@@ -21,7 +21,8 @@ import {
   FaClock,
   FaSquare,
   FaHtml5,
-  FaCentercode
+  FaCentercode,
+  FaPuzzlePiece
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -207,6 +208,16 @@ registerIcon({
 registerIcon({
   name: 'centercode',
   component: FaCentercode,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'centercode',
+  component: FaCentercode,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'puzzle-piece',
+  component: FaPuzzlePiece,
   defaultProps: { size: 16 }
 });
 // Extended ZoneConfig for board mode
@@ -865,21 +876,19 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
-          <h2>Zone Layouts Test - Actions-First Layout</h2>
-          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+          <h2>Custom Layout Test</h2>
+          <p>Testing ZoneRenderer with a custom layout configuration using the layout.custom property.</p>
           <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Action-First Layout
+            <li>Header Zone: Custom Layout
               <ul>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-                <li>Icon</li>
-                <li>Title & Subtitle - Top/Bottom</li>
-                <li>Collapsible - Expanded</li>
+                <li>Layout: Custom order [title, icon, collapse, spacer, subtitle, actions]</li>
+                <li>Title + Subtitle</li>
+                <li>Actions: Add Item (primary), Refresh (secondary)</li>
               </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Disabled
-              </li>
+            </li>
+            <li>Content Zone: Enabled
+            </li>
+            <li>Footer Zone: Disabled
             </li>
           </ul>
           <SimplifiedWidgemo
@@ -889,10 +898,16 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
-                  layout: { preset: 'actions-first' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
-                  title: 'Actions-First Layout Demo',
-                  subtitle: 'Actions left, content center, collapse right',
+                  layout: {
+                    custom: {
+                      order: ['title', 'icon', 'collapse', { type: 'spacer' }, 'subtitle','actions'],
+                      align: 'space-between',
+                      gap: '1rem'
+                    }
+                  },
+                  icon: { src: 'puzzle-piece', size: 24, color: '#019b93' },
+                  title: 'Custom Layout Demo',
+                  subtitle: 'Using layout.custom for flexible arrangements',
                   actions: [
                     {
                       id: 'add',
@@ -905,18 +920,8 @@ export const SimplifiedTest: React.FC = () => {
                       id: 'refresh',
                       label: 'Refresh',
                       icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export',
-                      icon: 'export',
-                      onTrigger: () => alert('Export clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
+                      variant: 'secondary',
+                      onTrigger: () => alert('Refresh clicked!')
                     }
                   ]
                 },
