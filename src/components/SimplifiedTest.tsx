@@ -1414,11 +1414,12 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true,
                   mode: 'table',
                   columns: [
-                    { field: 'name', header: 'Full Name', sortable: true, width: '200px' },
-                    { field: 'email', header: 'Email Address', sortable: true, width: '250px' },
-                    { field: 'role', header: 'Role', sortable: true, align: 'center' },
-                    { field: 'department', header: 'Department', sortable: true },
-                    { field: 'status', header: 'Active', align: 'center' }
+                    { field: 'name', header: 'Full Name', sortable: true, width: '200px', type: 'text' },
+                    { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
+                    { field: 'role', header: 'Role', sortable: true, align: 'center', type: 'text' },
+                    { field: 'department', header: 'Department', sortable: true, type: 'text' },
+                    { field: 'status', header: 'Active', align: 'center', type: 'boolean', booleanTrueLabel: 'Active', booleanFalseLabel: 'Inactive' },
+                    { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
                   ],
                   sort: { field: 'name', direction: 'asc' },
                   pagination: { page: 1, pageSize: 5 },
@@ -1442,8 +1443,7 @@ export const SimplifiedTest: React.FC = () => {
                   },
                   actionsColumn: true,
                   hooks: {
-                    onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
-                    preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
+                    onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
                   }
                 },
                 footer: { enabled: false }
