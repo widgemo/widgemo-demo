@@ -744,12 +744,12 @@ export const SimplifiedTest: React.FC = () => {
               <ul>
                 <li>Collapsible - Expanded</li>
                 <li>Icon</li>
-                <li>Title only - No Subtitle</li>
+                <li>Title only - Subtitle ignored</li>
                 <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
               </ul>
               <li>Content Zone: Table Mode
               </li>
-              <li>Footer Zone: Disables
+              <li>Footer Zone: Disabled
               </li>
             </li>
           </ul>
@@ -800,6 +800,25 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h5>Zone Layouts Test - Centered Layout</h5>
           <p>Testing centered header layout with smaller elements and actions.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Centered Layout
+              <ul>
+                <li>Icon</li>
+                <li>Title & Subtitle - Top/Bottom</li>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Enabled - Default layout
+                <ul>
+                  <li>Title</li>
+                  <li>Subtitle</li>
+                </ul>
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
@@ -808,6 +827,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   headerLayout: { preset: 'centered' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
                   title: 'Centered Layout Demo',
                   subtitle: 'Smaller header elements',
                   actions: [
@@ -838,7 +858,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'role', header: 'Role', align: 'center' }
                   ]
                 },
-                footer: { enabled: false }
+                footer: { enabled: true, title: 'Footer Enabled', subtitle: 'Footer zone active' }
               }
             }}
           />
@@ -846,6 +866,21 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h5>Zone Layouts Test - Minimal Layout</h5>
           <p>Testing minimal header layout with title only and collapse button.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Minimal Layout
+              <ul>
+                <li>Icon - ignored</li>
+                <li>Title only - Subtitle ignored</li>
+                <li>Actions - Ignored</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
@@ -854,6 +889,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   headerLayout: { preset: 'minimal' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
                   title: 'Minimal Layout Demo',
                   subtitle: 'Title and collapse only',
                   actions: [
@@ -889,38 +925,25 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Minimal Layout 2</h5>
-          <p>Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'minimal' },
-                  collapse: { initialState: 'expanded', button: true },
-                  title: 'Minimal Layout Demo',
-                  subtitle: 'Title and collapse only'
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
+
         <div className="col-12 mb-4">
           <h5>Zone Layouts Test - Actions-First Layout</h5>
           <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Action-First Layout
+              <ul>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Icon</li>
+                <li>Title & Subtitle - Top/Bottom</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
@@ -929,6 +952,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   headerLayout: { preset: 'actions-first' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
                   title: 'Actions-First Layout Demo',
                   subtitle: 'Actions left, content center, collapse right',
                   actions: [
@@ -972,52 +996,7 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Centered Layout</h5>
-          <p>Testing centered header layout with title/subtitle in center and actions on the right.</p>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'centered' },
-                  title: 'Centered Layout Demo',
-                  subtitle: 'Title/subtitle center, actions right',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
+
         <div className="col-12 mb-4">
           <h5>FieldRenderer Test - Type-Specific Rendering</h5>
           <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
