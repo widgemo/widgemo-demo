@@ -428,7 +428,7 @@ export const SimplifiedTest: React.FC = () => {
                   <li>Non-collapsible - Fixed</li>
                   <li>Custom className - Background color, round corners, colored text</li>
                   <li>Dynamic title (includes data length)</li>
-                  <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export (icon only - ghost - discoverable)</li>
+                  <li>Actions: Export Data (primary), Refresh (icon only - ghost - discoverable)</li>
                 </ul>
               </li>
             </li>
@@ -453,25 +453,17 @@ export const SimplifiedTest: React.FC = () => {
                   subtitle: '- "Manage your team efficiently"',
                   actions: [
                     {
-                      id: 'add-user',
-                      label: 'Add User',
-                      icon: 'add',
+                      id: 'export-data',
+                      label: 'Export Data',
+                      icon: 'export',
                       variant: 'primary',
-                      onTrigger: () => alert('Add User clicked!')
+                      onTrigger: () => alert('Export Data clicked!')
                     },
                     {
                       id: 'refresh',
                       label: 'Refresh',
                       icon: 'refresh',
                       onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export Data',
-                      icon: 'export',
-                      onTrigger: () => alert('Export clicked!'),
                       iconOnly: true,
                       placement: 'discoverable'
                     }
