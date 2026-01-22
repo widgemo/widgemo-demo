@@ -16,7 +16,8 @@ import {
   FaSort,
   FaChevronUp,
   FaChevronDown,
-  FaUsers
+  FaUsers,
+  FaTeamspeak
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -179,6 +180,11 @@ registerIcon({
   component: FaUsers,
   defaultProps: { size: 16 }
 });
+registerIcon({
+  name: 'teamspeak',
+  component: FaTeamspeak,
+  defaultProps: { size: 16 }
+});
 // Extended ZoneConfig for board mode
 type BoardContentConfig = {
   enabled: boolean;
@@ -313,7 +319,30 @@ export const SimplifiedTest: React.FC = () => {
       <div className="row">
         <div className="col-12 mb-4">
           <h5>Collapsible Header Zone</h5>
-          <p>Testing ZoneRenderer with default header layout: collapse functionality, icon, and dynamic subtitle.</p>
+          <p>Testing ZoneRenderer with default header layout:</p>
+          <ul>
+            <li>Custom className</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Icon</li>
+                <li>Dynamic subtitle (includes data length)</li>
+                <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export (icon only - ghost - discoverable)</li>
+              </ul>
+              <li>Content Zone: Default Mode
+                <ul>
+                  <li>Title</li>
+                </ul>
+              </li>
+              <li>Footer Zone: Default Layout
+                <ul>
+                  <li>Non-collapsible - Fixed</li>
+                  <li>Title</li>
+                  <li>Subtitle</li>
+                </ul>
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData}
             className="my-custom-widgemo"
@@ -368,6 +397,26 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h5>Fixed Header Zone</h5>
           <p>Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
+          <ul>
+            <li>Custom className</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Non-Collapsible - Fixed</li>
+                <li>Icon</li>
+                <li>Title and Subtitle</li>
+              </ul>
+              <li>Content Zone: Default Mode
+              </li>
+              <li>Footer Zone: Default Layout
+                <ul>
+                  <li>Non-collapsible - Fixed</li>
+                  <li>Custom className - Colored text</li>
+                  <li>Dynamic title (includes data length)</li>
+                  <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export (icon only - ghost - discoverable)</li>
+                </ul>
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 2)}
             className="my-custom-widgemo"
@@ -385,6 +434,7 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true,
                   className: 'custom-footer-class',
                   title: (data) => `Team Members (${data.length} users)`,
+                  subtitle: '- "Manage your team efficiently"',
                   actions: [
                     {
                       id: 'add-user',
@@ -418,6 +468,21 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h5>Actions System Test</h5>
           <p>Testing ActionsRenderer with core actions registry and menu dropdown.</p>
+          <ul>
+            <li>Custom className</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Collapsed</li>
+                <li>Icon</li>
+                <li>Title only</li>
+                <li>Actions: Add Item (primary), Refresh (secondary), Export (icon only - ghost), Chart Mode (icon only - success), Settings (discoverable - danger), View All (menu), Bar Chart Mode (menu)</li>
+              </ul>
+              <li>Content Zone: Default Mode
+              </li>
+              <li>Footer Zone: Not enabled
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData}
             className="my-custom-widgemo"
@@ -425,8 +490,9 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
+                  collapse: { initialState: 'collapsed', button: true },
+                  icon: { src: 'teamspeak', size: 24, color: '#b977d5' },
                   title: 'Actions Demo',
-                  //subtitle: 'Core actions with menu',
                   actions: [
                     {
                       id: 'add',
@@ -469,7 +535,7 @@ export const SimplifiedTest: React.FC = () => {
                       id: 'chart',
                       label: 'Chart Mode',
                       icon: 'chart-pie',
-                      variant: 'primary',
+                      variant: 'success',
                       onTrigger: () => alert('Chart Mode clicked!'),
                       iconOnly: true
                     },
@@ -543,793 +609,793 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
         <div className="col-12 mb-4">
-               <h5>Mode System Test - Table Mode</h5>
-              <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Table Mode Demo',
-                      subtitle: 'Default Header Layout with Actions',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: false,
-                          placement: 'menu'
-                        },
-                        {
-                          id: 'settings',
-                          label: 'Settings',
-                          icon: 'settings',
-                          variant: 'danger',
-                          onTrigger: () => alert('Settings clicked!'),
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'all',
-                          label: 'View All',
-                          icon: 'eye',
-                          variant: 'success',
-                          onTrigger: () => alert('View All clicked!'),
-                          placement: 'menu'
-                        },
-                        {
-                          id: 'chart',
-                          label: 'Chart Mode',
-                          icon: 'chart-pie',
-                          variant: 'primary',
-                          onTrigger: () => alert('Chart Mode clicked!'),
-                          iconOnly: false,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'bar',
-                          label: 'Bar Chart Mode',
-                          icon: 'chart-bar',
-                          variant: 'primary',
-                          onTrigger: () => alert('Chart Mode clicked!'),
-                          placement: 'menu'
-                        }
-                      ]
+          <h5>Mode System Test - Table Mode</h5>
+          <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Table Mode Demo',
+                  subtitle: 'Default Header Layout with Actions',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
                     },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Full Name', sortable: true, width: '200px' },
-                        { field: 'email', header: 'Email Address', sortable: true, width: '250px' },
-                        { field: 'role', header: 'Role', sortable: true, align: 'center' },
-                        { field: 'department', header: 'Department', sortable: true },
-                        { field: 'status', header: 'Active', align: 'center' }
-                      ],
-                      sort: { field: 'name', direction: 'asc' },
-                      pagination: { page: 1, pageSize: 5 },
-                      tableActions: {
-                        item: [
-                          {
-                            id: 'edit',
-                            label: 'Edit',
-                            icon: 'edit',
-                            variant: 'ghost',
-                            handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-                          },
-                          {
-                            id: 'delete',
-                            label: 'Delete',
-                            icon: 'delete',
-                            variant: 'danger',
-                            handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
-                          }
-                        ]
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: false,
+                      placement: 'menu'
+                    },
+                    {
+                      id: 'settings',
+                      label: 'Settings',
+                      icon: 'settings',
+                      variant: 'danger',
+                      onTrigger: () => alert('Settings clicked!'),
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'all',
+                      label: 'View All',
+                      icon: 'eye',
+                      variant: 'success',
+                      onTrigger: () => alert('View All clicked!'),
+                      placement: 'menu'
+                    },
+                    {
+                      id: 'chart',
+                      label: 'Chart Mode',
+                      icon: 'chart-pie',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      iconOnly: false,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'bar',
+                      label: 'Bar Chart Mode',
+                      icon: 'chart-bar',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      placement: 'menu'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Full Name', sortable: true, width: '200px' },
+                    { field: 'email', header: 'Email Address', sortable: true, width: '250px' },
+                    { field: 'role', header: 'Role', sortable: true, align: 'center' },
+                    { field: 'department', header: 'Department', sortable: true },
+                    { field: 'status', header: 'Active', align: 'center' }
+                  ],
+                  sort: { field: 'name', direction: 'asc' },
+                  pagination: { page: 1, pageSize: 5 },
+                  tableActions: {
+                    item: [
+                      {
+                        id: 'edit',
+                        label: 'Edit',
+                        icon: 'edit',
+                        variant: 'ghost',
+                        handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
                       },
-                      actionsColumn: true,
-                      hooks: {
-                        onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
-                        preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
+                      {
+                        id: 'delete',
+                        label: 'Delete',
+                        icon: 'delete',
+                        variant: 'danger',
+                        handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
                       }
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Compact Layout</h5>
-              <p>Testing compact header layout with smaller elements and actions.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'compact' },
-                      title: 'Compact Layout Demo',
-                      subtitle: 'Smaller header elements',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Centered Layout</h5>
-              <p>Testing centered header layout with smaller elements and actions.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'centered' },
-                      title: 'Centered Layout Demo',
-                      subtitle: 'Smaller header elements',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Minimal Layout</h5>
-              <p>Testing minimal header layout with title only and collapse button.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'minimal' },
-                      title: 'Minimal Layout Demo',
-                      subtitle: 'Title and collapse only',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Minimal Layout 2</h5>
-              <p>Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'minimal' },
-                      collapse: { initialState: 'expanded', button: true },
-                      title: 'Minimal Layout Demo',
-                      subtitle: 'Title and collapse only'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Actions-First Layout</h5>
-              <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'actions-first' },
-                      title: 'Actions-First Layout Demo',
-                      subtitle: 'Actions left, content center, collapse right',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Zone Layouts Test - Centered Layout</h5>
-              <p>Testing centered header layout with title/subtitle in center and actions on the right.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      headerLayout: { preset: 'centered' },
-                      title: 'Centered Layout Demo',
-                      subtitle: 'Title/subtitle center, actions right',
-                      actions: [
-                        {
-                          id: 'add',
-                          label: 'Add Item',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add Item clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          variant: 'ghost',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        }
-                      ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>FieldRenderer Test - Type-Specific Rendering</h5>
-              <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'FieldRenderer Demo',
-                      subtitle: 'Type-specific field rendering with images'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'grid',
-                      columns: 2,
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              title: 'Profile with Image',
-                              fields: [
-                                { key: 'src', label: 'Photo', type: 'image' },
-                                { key: 'name', label: 'Name', type: 'text' },
-                                { key: 'role', label: 'Role', type: 'text' }
-                              ]
-                            },
-                            {
-                              title: 'Details',
-                              fields: [
-                                { key: 'email', label: 'Email', type: 'email' },
-                                { key: 'department', label: 'Department', type: 'text' },
-                                { key: 'status', label: 'Active', type: 'boolean' },
-                                { key: 'lastLogin', label: 'Last Login', type: 'date' }
-                              ]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Image Gallery - FieldRenderer Lightbox</h5>
-              <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
-              <SimplifiedWidgemo
-                data={imageGalleryData.slice(0, 6)} // Use first 6 images
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Image Gallery',
-                      subtitle: 'Click images to open lightbox'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'grid',
-                      columns: 3,
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              fields: [
-                                { key: 'src', label: 'Image', type: 'image' },
-                                { key: 'name', label: 'Title', type: 'text' },
-                                { key: 'category', label: 'Category', type: 'text' }
-                              ]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>CarouselMode - Swipeable Carousel</h5>
-              <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'User Carousel',
-                      subtitle: 'Swipe or click to navigate through users'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'carousel',
-                      carousel: {
-                        itemWidth: 320,
-                        itemHeight: 240,
-                        gap: 16,
-                        showIndicators: true,
-                        showArrows: true,
-                        infinite: false,
-                        autoPlay: false,
-                        dragThreshold: 50
-                      },
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              title: 'Profile',
-                              fields: [
-                                { key: 'src', label: 'Photo', type: 'image', imageOptions: { width: 120, height: 120, lightbox: true } },
-                                { key: 'name', label: 'Name', type: 'text' },
-                                { key: 'role', label: 'Role', type: 'text' }
-                              ]
-                            },
-                            {
-                              title: 'Contact',
-                              fields: [
-                                { key: 'email', label: 'Email', type: 'email' },
-                                { key: 'department', label: 'Department', type: 'text' }
-                              ]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Field Type Registry - Swatch Example</h5>
-              <p>Testing the field type registry with custom 'swatch' field type for color display.</p>
-              <SimplifiedWidgemo
-                data={[
-                  { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
-                  { id: 2, name: 'Success Color', color: '#28a745', description: 'Success state color' },
-                  { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
-                  { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
-                ]}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Color Swatches',
-                      subtitle: 'Custom field type registry demonstration'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'grid',
-                      columns: 2,
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              fields: [
-                                { key: 'color', label: 'Swatch', type: 'swatch' },
-                                { key: 'name', label: 'Color Name', type: 'text' },
-                                { key: 'description', label: 'Description', type: 'text' }
-                              ]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    footer: { enabled: false }
-                  }
-                }}
-              />
-        </div>
-        <div className="col-12 mb-4">
-               <h5>Hooks System Test - Pre/Post Render</h5>
-              <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 4)}
-                className="my-custom-widgemo"
-                config={{
-                  preRender: () => {
-                    console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
+                    ]
                   },
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Hooks Demo',
-                      subtitle: 'Pre/Post render hooks active'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'grid',
-                      columns: 2,
-                      item: {
-                        style: 'card',
-                        template: {
-                          sections: [
-                            {
-                              title: 'User Info',
-                              fields: [
-                                { key: 'name', label: 'Name' },
-                                { key: 'email', label: 'Email' }
-                              ]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    footer: {
-                      enabled: true,
-                      title: 'Hook Status',
-                      subtitle: 'Hooks executed successfully'
-                    }
+                  actionsColumn: true,
+                  hooks: {
+                    onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
+                    preRowRender: (entity: Entity) => ({ ...entity, status: entity.status ? 'Yes' : 'No' })
                   }
-                }}
-              />
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
         </div>
         <div className="col-12 mb-4">
-               <h5>Performance Monitoring - Pre/Post Render Hooks</h5>
-              <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 8)}
-                className="my-custom-widgemo"
-                config={{
-                  preRender: () => {
-                    if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
-                      performance.mark('widgemo-start');
+          <h5>Zone Layouts Test - Compact Layout</h5>
+          <p>Testing compact header layout with smaller elements and actions.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'compact' },
+                  title: 'Compact Layout Demo',
+                  subtitle: 'Smaller header elements',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
                     }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Zone Layouts Test - Centered Layout</h5>
+          <p>Testing centered header layout with smaller elements and actions.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'centered' },
+                  title: 'Centered Layout Demo',
+                  subtitle: 'Smaller header elements',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Zone Layouts Test - Minimal Layout</h5>
+          <p>Testing minimal header layout with title only and collapse button.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'minimal' },
+                  title: 'Minimal Layout Demo',
+                  subtitle: 'Title and collapse only',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Zone Layouts Test - Minimal Layout 2</h5>
+          <p>Testing minimal header layout with title only and collapse button. Minimal configuration.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'minimal' },
+                  collapse: { initialState: 'expanded', button: true },
+                  title: 'Minimal Layout Demo',
+                  subtitle: 'Title and collapse only'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Zone Layouts Test - Actions-First Layout</h5>
+          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'actions-first' },
+                  title: 'Actions-First Layout Demo',
+                  subtitle: 'Actions left, content center, collapse right',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Zone Layouts Test - Centered Layout</h5>
+          <p>Testing centered header layout with title/subtitle in center and actions on the right.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'centered' },
+                  title: 'Centered Layout Demo',
+                  subtitle: 'Title/subtitle center, actions right',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>FieldRenderer Test - Type-Specific Rendering</h5>
+          <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'FieldRenderer Demo',
+                  subtitle: 'Type-specific field rendering with images'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid',
+                  columns: 2,
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
+                        {
+                          title: 'Profile with Image',
+                          fields: [
+                            { key: 'src', label: 'Photo', type: 'image' },
+                            { key: 'name', label: 'Name', type: 'text' },
+                            { key: 'role', label: 'Role', type: 'text' }
+                          ]
+                        },
+                        {
+                          title: 'Details',
+                          fields: [
+                            { key: 'email', label: 'Email', type: 'email' },
+                            { key: 'department', label: 'Department', type: 'text' },
+                            { key: 'status', label: 'Active', type: 'boolean' },
+                            { key: 'lastLogin', label: 'Last Login', type: 'date' }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Image Gallery - FieldRenderer Lightbox</h5>
+          <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
+          <SimplifiedWidgemo
+            data={imageGalleryData.slice(0, 6)} // Use first 6 images
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Image Gallery',
+                  subtitle: 'Click images to open lightbox'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid',
+                  columns: 3,
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
+                        {
+                          fields: [
+                            { key: 'src', label: 'Image', type: 'image' },
+                            { key: 'name', label: 'Title', type: 'text' },
+                            { key: 'category', label: 'Category', type: 'text' }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>CarouselMode - Swipeable Carousel</h5>
+          <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'User Carousel',
+                  subtitle: 'Swipe or click to navigate through users'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'carousel',
+                  carousel: {
+                    itemWidth: 320,
+                    itemHeight: 240,
+                    gap: 16,
+                    showIndicators: true,
+                    showArrows: true,
+                    infinite: false,
+                    autoPlay: false,
+                    dragThreshold: 50
                   },
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Performance Monitored Component',
-                      subtitle: 'Pre/Post render hooks active'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' },
-                        { field: 'department', header: 'Department', sortable: true }
-                      ],
-                      pagination: { page: 1, pageSize: 5 }
-                    },
-                    footer: {
-                      enabled: true,
-                      title: 'Performance Stats',
-                      subtitle: lastRenderMetrics
-                        ? `Last render: ${lastRenderMetrics.time.toFixed(2)}ms (render #${lastRenderMetrics.count})`
-                        : 'Check browser console for timing data'
-                    }
-                  }
-                }}
-              />
-              {lastRenderMetrics && (
-                <div className="mt-3 p-3 bg-light rounded">
-                  <h6>Live Performance Metrics:</h6>
-                  <ul className="mb-0">
-                    <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
-                    <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
-                    <li><strong>Status:</strong>
-                      {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' :
-                        lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
-                    </li>
-                  </ul>
-                </div>
-              )}
-        </div>
-        <div className="col-12 mb-4">
-               <h5>BoardMode - Kanban Board</h5>
-              <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
-              <SimplifiedWidgemo
-                data={[
-                  { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
-                  { id: 2, name: 'Implement user authentication', status: 'in-progress', priority: 'high', assignee: 'Bob' },
-                  { id: 3, name: 'Write API documentation', status: 'review', priority: 'medium', assignee: 'Alice' },
-                  { id: 4, name: 'Fix mobile responsiveness', status: 'done', priority: 'low', assignee: 'Charlie' },
-                  { id: 5, name: 'Add unit tests', status: 'todo', priority: 'medium', assignee: 'Bob' },
-                  { id: 6, name: 'Setup CI/CD pipeline', status: 'in-progress', priority: 'high', assignee: 'Alice' },
-                  { id: 7, name: 'Database optimization', status: 'review', priority: 'medium', assignee: 'Charlie' },
-                  { id: 8, name: 'User feedback integration', status: 'todo', priority: 'low', assignee: 'Bob' }
-                ]}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: 'Project Kanban Board',
-                      subtitle: 'Drag tasks between columns to update status'
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'board',
-                      columns: [
-                        { id: 'todo', label: 'To Do', filter: (item: Entity) => item.status === 'todo' },
-                        { id: 'in-progress', label: 'In Progress', filter: (item: Entity) => item.status === 'in-progress' },
-                        { id: 'review', label: 'Review', filter: (item: Entity) => item.status === 'review' },
-                        { id: 'done', label: 'Done', filter: (item: Entity) => item.status === 'done' }
-                      ],
-                      swimlanes: {
-                        groupBy: 'assignee',
-                        order: ['Alice', 'Bob', 'Charlie']
-                      },
-                      dragEnabled: true,
-                      actionsPosition: 'hover',
-                      sortWithinColumn: 'priority',
-                      item: {
-                        template: {
-                          sections: [
-                            {
-                              title: 'Task',
-                              fields: [
-                                { key: 'name', label: 'Title', type: 'text' },
-                                { key: 'priority', label: 'Priority', type: 'text' }
-                              ]
-                            }
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
+                        {
+                          title: 'Profile',
+                          fields: [
+                            { key: 'src', label: 'Photo', type: 'image', imageOptions: { width: 120, height: 120, lightbox: true } },
+                            { key: 'name', label: 'Name', type: 'text' },
+                            { key: 'role', label: 'Role', type: 'text' }
+                          ]
+                        },
+                        {
+                          title: 'Contact',
+                          fields: [
+                            { key: 'email', label: 'Email', type: 'email' },
+                            { key: 'department', label: 'Department', type: 'text' }
                           ]
                         }
-                      }
-                    } as BoardContentConfig, // Board mode requires different column config
-                    footer: { enabled: false }
+                      ]
+                    }
                   }
-                }}
-              />
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
         </div>
         <div className="col-12 mb-4">
-               <h5>React Element Title Example</h5>
-              <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
-              <SimplifiedWidgemo
-                data={teaserSampleData.slice(0, 3)}
-                className="my-custom-widgemo"
-                config={{
-                  zones: {
-                    header: {
-                      enabled: true,
-                      title: (
-                        <span>
-                          Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
-                          <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
-                        </span>
-                      ),
-                      subtitle: (
-                        <div>
-                          <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
-                          <button
-                            onClick={() => alert('Get Started clicked!')}
-                            style={{
-                              background: '#007bff',
-                              color: 'white',
-                              border: 'none',
-                              padding: '4px 8px',
-                              borderRadius: '4px',
-                              cursor: 'pointer',
-                              marginLeft: '4px'
-                            }}
-                          >
-                            Get Started
-                          </button>
-                        </div>
-                      ),
-                      actions: [
+          <h5>Field Type Registry - Swatch Example</h5>
+          <p>Testing the field type registry with custom 'swatch' field type for color display.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
+              { id: 2, name: 'Success Color', color: '#28a745', description: 'Success state color' },
+              { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
+              { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Color Swatches',
+                  subtitle: 'Custom field type registry demonstration'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid',
+                  columns: 2,
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
                         {
-                          id: 'add-user',
-                          label: 'Add User',
-                          icon: 'add',
-                          variant: 'primary',
-                          onTrigger: () => alert('Add User clicked!')
-                        },
-                        {
-                          id: 'refresh',
-                          label: 'Refresh',
-                          icon: 'refresh',
-                          onTrigger: () => alert('Refresh clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
-                        },
-                        {
-                          id: 'export',
-                          label: 'Export Data',
-                          icon: 'export',
-                          onTrigger: () => alert('Export clicked!'),
-                          iconOnly: true,
-                          placement: 'discoverable'
+                          fields: [
+                            { key: 'color', label: 'Swatch', type: 'swatch' },
+                            { key: 'name', label: 'Color Name', type: 'text' },
+                            { key: 'description', label: 'Description', type: 'text' }
+                          ]
                         }
                       ]
-                    },
-                    content: {
-                      enabled: true,
-                      mode: 'table',
-                      columns: [
-                        { field: 'name', header: 'Name', sortable: true },
-                        { field: 'email', header: 'Email', sortable: true },
-                        { field: 'role', header: 'Role', align: 'center' }
-                      ]
-                    },
-                    footer: { enabled: false }
+                    }
                   }
-                }}
-              />
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Hooks System Test - Pre/Post Render</h5>
+          <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 4)}
+            className="my-custom-widgemo"
+            config={{
+              preRender: () => {
+                console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
+              },
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Hooks Demo',
+                  subtitle: 'Pre/Post render hooks active'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid',
+                  columns: 2,
+                  item: {
+                    style: 'card',
+                    template: {
+                      sections: [
+                        {
+                          title: 'User Info',
+                          fields: [
+                            { key: 'name', label: 'Name' },
+                            { key: 'email', label: 'Email' }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                footer: {
+                  enabled: true,
+                  title: 'Hook Status',
+                  subtitle: 'Hooks executed successfully'
+                }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>Performance Monitoring - Pre/Post Render Hooks</h5>
+          <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 8)}
+            className="my-custom-widgemo"
+            config={{
+              preRender: () => {
+                if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
+                  performance.mark('widgemo-start');
+                }
+              },
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Performance Monitored Component',
+                  subtitle: 'Pre/Post render hooks active'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' },
+                    { field: 'department', header: 'Department', sortable: true }
+                  ],
+                  pagination: { page: 1, pageSize: 5 }
+                },
+                footer: {
+                  enabled: true,
+                  title: 'Performance Stats',
+                  subtitle: lastRenderMetrics
+                    ? `Last render: ${lastRenderMetrics.time.toFixed(2)}ms (render #${lastRenderMetrics.count})`
+                    : 'Check browser console for timing data'
+                }
+              }
+            }}
+          />
+          {lastRenderMetrics && (
+            <div className="mt-3 p-3 bg-light rounded">
+              <h6>Live Performance Metrics:</h6>
+              <ul className="mb-0">
+                <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
+                <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
+                <li><strong>Status:</strong>
+                  {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' :
+                    lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+        <div className="col-12 mb-4">
+          <h5>BoardMode - Kanban Board</h5>
+          <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
+              { id: 2, name: 'Implement user authentication', status: 'in-progress', priority: 'high', assignee: 'Bob' },
+              { id: 3, name: 'Write API documentation', status: 'review', priority: 'medium', assignee: 'Alice' },
+              { id: 4, name: 'Fix mobile responsiveness', status: 'done', priority: 'low', assignee: 'Charlie' },
+              { id: 5, name: 'Add unit tests', status: 'todo', priority: 'medium', assignee: 'Bob' },
+              { id: 6, name: 'Setup CI/CD pipeline', status: 'in-progress', priority: 'high', assignee: 'Alice' },
+              { id: 7, name: 'Database optimization', status: 'review', priority: 'medium', assignee: 'Charlie' },
+              { id: 8, name: 'User feedback integration', status: 'todo', priority: 'low', assignee: 'Bob' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Project Kanban Board',
+                  subtitle: 'Drag tasks between columns to update status'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'board',
+                  columns: [
+                    { id: 'todo', label: 'To Do', filter: (item: Entity) => item.status === 'todo' },
+                    { id: 'in-progress', label: 'In Progress', filter: (item: Entity) => item.status === 'in-progress' },
+                    { id: 'review', label: 'Review', filter: (item: Entity) => item.status === 'review' },
+                    { id: 'done', label: 'Done', filter: (item: Entity) => item.status === 'done' }
+                  ],
+                  swimlanes: {
+                    groupBy: 'assignee',
+                    order: ['Alice', 'Bob', 'Charlie']
+                  },
+                  dragEnabled: true,
+                  actionsPosition: 'hover',
+                  sortWithinColumn: 'priority',
+                  item: {
+                    template: {
+                      sections: [
+                        {
+                          title: 'Task',
+                          fields: [
+                            { key: 'name', label: 'Title', type: 'text' },
+                            { key: 'priority', label: 'Priority', type: 'text' }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                } as BoardContentConfig, // Board mode requires different column config
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+        <div className="col-12 mb-4">
+          <h5>React Element Title Example</h5>
+          <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 3)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: (
+                    <span>
+                      Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
+                      <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
+                    </span>
+                  ),
+                  subtitle: (
+                    <div>
+                      <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
+                      <button
+                        onClick={() => alert('Get Started clicked!')}
+                        style={{
+                          background: '#007bff',
+                          color: 'white',
+                          border: 'none',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                          marginLeft: '4px'
+                        }}
+                      >
+                        Get Started
+                      </button>
+                    </div>
+                  ),
+                  actions: [
+                    {
+                      id: 'add-user',
+                      label: 'Add User',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add User clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export Data',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' }
+                  ]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
         </div>
       </div>
     </div>
