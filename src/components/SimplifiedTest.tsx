@@ -793,71 +793,6 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
-          <h2>Zone Layouts Test - Actions-First Layout</h2>
-          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
-          <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Action-First Layout
-              <ul>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-                <li>Icon</li>
-                <li>Title & Subtitle - Top/Bottom</li>
-                <li>Collapsible - Expanded</li>
-              </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Disabled
-              </li>
-            </li>
-          </ul>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'actions-first' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
-                  title: 'Actions-First Layout Demo',
-                  subtitle: 'Actions left, content center, collapse right',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export',
-                      icon: 'export',
-                      onTrigger: () => alert('Export clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
-
-        <div className="col-12 mb-4">
           <h2>Zone Layouts Test - Centered Layout</h2>
           <p>Testing centered header layout with footer actions.</p>
           <ul>
@@ -924,6 +859,71 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   ]
                 }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Zone Layouts Test - Actions-First Layout</h2>
+          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Action-First Layout
+              <ul>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Icon</li>
+                <li>Title & Subtitle - Top/Bottom</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'actions-first' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
+                  title: 'Actions-First Layout Demo',
+                  subtitle: 'Actions left, content center, collapse right',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
               }
             }}
           />
