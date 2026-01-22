@@ -427,13 +427,12 @@ export const SimplifiedTest: React.FC = () => {
                 },
                 content: {
                   enabled: true,
-                  title: 'Data Overview'
+                  title: 'Data:'
                 },
                 footer: {
-                  enabled: true,
-                  collapse: { initialState: 'fixed' },
-                  title: 'Footer Information',
-                  subtitle: 'Additional details and links'
+                  // enabled: true,
+                  title: '* Data last updated',
+                  subtitle: '5 minutes ago'
                 }
               }
             }}
