@@ -18,7 +18,8 @@ import {
   FaChevronDown,
   FaUsers,
   FaTeamspeak,
-  FaClock
+  FaClock,
+  FaSquare
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -189,6 +190,11 @@ registerIcon({
 registerIcon({
   name: 'clock',
   component: FaClock,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'square',
+  component: FaSquare,
   defaultProps: { size: 16 }
 });
 // Extended ZoneConfig for board mode
@@ -732,6 +738,21 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h5>Zone Layouts Test - Compact Layout</h5>
           <p>Testing compact header layout with smaller elements and actions.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Compact Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Icon</li>
+                <li>Title only - No Subtitle</li>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disables
+              </li>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
@@ -740,6 +761,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   headerLayout: { preset: 'compact' },
+                  icon: { src: 'square', size: 20, color: '#d9b711' },
                   title: 'Compact Layout Demo',
                   subtitle: 'Smaller header elements',
                   actions: [
