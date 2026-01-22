@@ -20,7 +20,8 @@ import {
   FaTeamspeak,
   FaClock,
   FaSquare,
-  FaHtml5
+  FaHtml5,
+  FaCentercode
 } from 'react-icons/fa';
 // Extend Window interface for performance metrics
 declare global {
@@ -201,6 +202,11 @@ registerIcon({
 registerIcon({
   name: 'html5',
   component: FaHtml5,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'centercode',
+  component: FaCentercode,
   defaultProps: { size: 16 }
 });
 // Extended ZoneConfig for board mode
@@ -711,7 +717,7 @@ export const SimplifiedTest: React.FC = () => {
                       iconOnly: true,
                       placement: 'discoverable'
                     },
-                                        {
+                    {
                       id: 'delete',
                       label: 'Delete All',
                       icon: 'trash',
@@ -853,22 +859,20 @@ export const SimplifiedTest: React.FC = () => {
 
         <div className="col-12 mb-4">
           <h2>Zone Layouts Test - Centered Layout</h2>
-          <p>Testing centered header layout with smaller elements and actions.</p>
+          <p>Testing centered header layout with footer actions.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Centered Layout
               <ul>
+                <li>Collapsible - Expanded</li>
                 <li>Icon</li>
                 <li>Title & Subtitle - Top/Bottom</li>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-                <li>Collapsible - Expanded</li>
               </ul>
               <li>Content Zone: Table Mode
               </li>
-              <li>Footer Zone: Enabled - Default layout
+              <li>Footer Zone: Centered layout
                 <ul>
-                  <li>Title</li>
-                  <li>Subtitle</li>
+                  <li>Actions: Add Item (primary), Refresh (secondary), Export (secondary), Share (secondary)</li>
                 </ul>
               </li>
             </li>
@@ -881,10 +885,15 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   headerLayout: { preset: 'centered' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
+                  icon: { src: 'centercode', size: 20, color: '#a41540' },
                   title: 'Centered Layout Demo',
-                  subtitle: 'Smaller header elements',
-                  actions: [
+                  subtitle: 'Actions loaded as a centered layout on the foot zone'
+                },
+                content: {
+                  enabled: true
+                },
+                footer: {
+                  enabled: true, headerLayout: { preset: 'centered' }, actions: [
                     {
                       id: 'add',
                       label: 'Add Item',
@@ -896,17 +905,25 @@ export const SimplifiedTest: React.FC = () => {
                       id: 'refresh',
                       label: 'Refresh',
                       icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
+                      variant: 'secondary',
+                      onTrigger: () => alert('Refresh clicked!')
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Export clicked!')
+                    },
+                    {
+                      id: 'share',
+                      label: 'Share',
+                      icon: 'share',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Share clicked!')
                     }
                   ]
-                },
-                content: {
-                  enabled: true
-                },
-                footer: { enabled: true, title: 'Footer Enabled', subtitle: 'Footer zone active' }
+                }
               }
             }}
           />
