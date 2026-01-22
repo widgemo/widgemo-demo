@@ -340,7 +340,7 @@ export const SimplifiedTest: React.FC = () => {
       <h1 className="mb-4">Widgemo Product Primitive - ZoneRenderer Test</h1>
       <div className="row">
         <div className="col-12 mb-4">
-          <h5>Collapsible Header Zone</h5>
+          <h2>Collapsible Header Zone</h2>
           <p>Testing ZoneRenderer with default header layout:</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
@@ -417,7 +417,7 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
         <div className="col-12 mb-4">
-          <h5>Fixed Header Zone</h5>
+          <h2>Fixed Header Zone</h2>
           <p>Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
@@ -479,8 +479,79 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>Actions System Test</h5>
+          <h2>React Element Title Example</h2>
+          <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 3)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: (
+                    <span>
+                      Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
+                      <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
+                    </span>
+                  ),
+                  subtitle: (
+                    <div>
+                      <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
+                      <button
+                        onClick={() => alert('Get Started clicked!')}
+                        style={{
+                          background: '#007bff',
+                          color: 'white',
+                          border: 'none',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                          marginLeft: '4px'
+                        }}
+                      >
+                        Get Started
+                      </button>
+                    </div>
+                  ),
+                  actions: [
+                    {
+                      id: 'add-user',
+                      label: 'Add User',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add User clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export Data',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Actions System Test</h2>
           <p>Testing ActionsRenderer with core actions registry and menu dropdown.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
@@ -569,8 +640,249 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+        
         <div className="col-12 mb-4">
-          <h5>Mode System Test - Grid Mode with ItemRenderer</h5>
+          <h2>Zone Layouts Test - Compact Layout</h2>
+          <p>Testing compact header layout with smaller elements and actions.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Compact Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Icon</li>
+                <li>Title only - Subtitle ignored</li>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'compact' },
+                  icon: { src: 'square', size: 20, color: '#d9b711' },
+                  title: 'Compact Layout Demo',
+                  subtitle: 'Smaller header elements',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Zone Layouts Test - Minimal Layout</h2>
+          <p>Testing minimal header layout with title only and collapse button.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Minimal Layout
+              <ul>
+                <li>Icon - ignored</li>
+                <li>Title only - Subtitle ignored</li>
+                <li>Actions - Ignored</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'minimal' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
+                  title: 'Minimal Layout Demo',
+                  subtitle: 'Title and collapse only',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Zone Layouts Test - Actions-First Layout</h2>
+          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Action-First Layout
+              <ul>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Icon</li>
+                <li>Title & Subtitle - Top/Bottom</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'actions-first' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
+                  title: 'Actions-First Layout Demo',
+                  subtitle: 'Actions left, content center, collapse right',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Zone Layouts Test - Centered Layout</h2>
+          <p>Testing centered header layout with smaller elements and actions.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Centered Layout
+              <ul>
+                <li>Icon</li>
+                <li>Title & Subtitle - Top/Bottom</li>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Collapsible - Expanded</li>
+              </ul>
+              <li>Content Zone: Table Mode
+              </li>
+              <li>Footer Zone: Enabled - Default layout
+                <ul>
+                  <li>Title</li>
+                  <li>Subtitle</li>
+                </ul>
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  headerLayout: { preset: 'centered' },
+                  icon: { src: 'clock', size: 20, color: '#11a661' },
+                  title: 'Centered Layout Demo',
+                  subtitle: 'Smaller header elements',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: true, title: 'Footer Enabled', subtitle: 'Footer zone active' }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Mode System Test - Grid Mode with ItemRenderer</h2>
           <p>Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 6)} // Limit to 6 items for better demo
@@ -622,8 +934,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>Mode System Test - Table Mode</h5>
+          <h2>Mode System Test - Table Mode</h2>
           <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
@@ -735,270 +1048,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Compact Layout</h5>
-          <p>Testing compact header layout with smaller elements and actions.</p>
-          <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Compact Layout
-              <ul>
-                <li>Collapsible - Expanded</li>
-                <li>Icon</li>
-                <li>Title only - Subtitle ignored</li>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-              </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Disabled
-              </li>
-            </li>
-          </ul>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'compact' },
-                  icon: { src: 'square', size: 20, color: '#d9b711' },
-                  title: 'Compact Layout Demo',
-                  subtitle: 'Smaller header elements',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Centered Layout</h5>
-          <p>Testing centered header layout with smaller elements and actions.</p>
-          <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Centered Layout
-              <ul>
-                <li>Icon</li>
-                <li>Title & Subtitle - Top/Bottom</li>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-                <li>Collapsible - Expanded</li>
-              </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Enabled - Default layout
-                <ul>
-                  <li>Title</li>
-                  <li>Subtitle</li>
-                </ul>
-              </li>
-            </li>
-          </ul>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'centered' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
-                  title: 'Centered Layout Demo',
-                  subtitle: 'Smaller header elements',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: true, title: 'Footer Enabled', subtitle: 'Footer zone active' }
-              }
-            }}
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Minimal Layout</h5>
-          <p>Testing minimal header layout with title only and collapse button.</p>
-          <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Minimal Layout
-              <ul>
-                <li>Icon - ignored</li>
-                <li>Title only - Subtitle ignored</li>
-                <li>Actions - Ignored</li>
-                <li>Collapsible - Expanded</li>
-              </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Disabled
-              </li>
-            </li>
-          </ul>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'minimal' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
-                  title: 'Minimal Layout Demo',
-                  subtitle: 'Title and collapse only',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
 
         <div className="col-12 mb-4">
-          <h5>Zone Layouts Test - Actions-First Layout</h5>
-          <p>Testing actions-first header layout with actions on the left, title/subtitle centered, and collapse on the right.</p>
-          <ul>
-            <li>Custom className: background-color, border, shadow, padding</li>
-            <li>Header Zone: Action-First Layout
-              <ul>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
-                <li>Icon</li>
-                <li>Title & Subtitle - Top/Bottom</li>
-                <li>Collapsible - Expanded</li>
-              </ul>
-              <li>Content Zone: Table Mode
-              </li>
-              <li>Footer Zone: Disabled
-              </li>
-            </li>
-          </ul>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 5)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  headerLayout: { preset: 'actions-first' },
-                  icon: { src: 'clock', size: 20, color: '#11a661' },
-                  title: 'Actions-First Layout Demo',
-                  subtitle: 'Actions left, content center, collapse right',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export',
-                      icon: 'export',
-                      onTrigger: () => alert('Export clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
-
-        <div className="col-12 mb-4">
-          <h5>FieldRenderer Test - Type-Specific Rendering</h5>
+          <h2>FieldRenderer Test - Type-Specific Rendering</h2>
           <p>Testing FieldRenderer with different field types including images with lightbox functionality.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 4)} // Use first 4 users with images
@@ -1044,8 +1096,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>Image Gallery - FieldRenderer Lightbox</h5>
+          <h2>Image Gallery - FieldRenderer Lightbox</h2>
           <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
           <SimplifiedWidgemo
             data={imageGalleryData.slice(0, 6)} // Use first 6 images
@@ -1081,8 +1134,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>CarouselMode - Swipeable Carousel</h5>
+          <h2>CarouselMode - Swipeable Carousel</h2>
           <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
@@ -1135,8 +1189,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>Field Type Registry - Swatch Example</h5>
+          <h2>Field Type Registry - Swatch Example</h2>
           <p>Testing the field type registry with custom 'swatch' field type for color display.</p>
           <SimplifiedWidgemo
             data={[
@@ -1177,8 +1232,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+
         <div className="col-12 mb-4">
-          <h5>Hooks System Test - Pre/Post Render</h5>
+          <h2>Hooks System Test - Pre/Post Render</h2>
           <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 4)}
@@ -1221,8 +1277,9 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
+        
         <div className="col-12 mb-4">
-          <h5>Performance Monitoring - Pre/Post Render Hooks</h5>
+          <h2>Performance Monitoring - Pre/Post Render Hooks</h2>
           <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 8)}
@@ -1275,8 +1332,9 @@ export const SimplifiedTest: React.FC = () => {
             </div>
           )}
         </div>
+        
         <div className="col-12 mb-4">
-          <h5>BoardMode - Kanban Board</h5>
+          <h2>BoardMode - Kanban Board</h2>
           <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
           <SimplifiedWidgemo
             data={[
@@ -1332,81 +1390,7 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
         </div>
-        <div className="col-12 mb-4">
-          <h5>React Element Title Example</h5>
-          <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
-          <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 3)}
-            className="my-custom-widgemo"
-            config={{
-              zones: {
-                header: {
-                  enabled: true,
-                  title: (
-                    <span>
-                      Welcome to <a href="#" style={{ color: '#007bff', textDecoration: 'none' }}>Widgemo</a> -
-                      <strong style={{ color: '#28a745' }}>Enhanced</strong> Experience
-                    </span>
-                  ),
-                  subtitle: (
-                    <div>
-                      <em>Click here</em> for <a href="#" style={{ color: '#dc3545' }}>help</a> or
-                      <button
-                        onClick={() => alert('Get Started clicked!')}
-                        style={{
-                          background: '#007bff',
-                          color: 'white',
-                          border: 'none',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          marginLeft: '4px'
-                        }}
-                      >
-                        Get Started
-                      </button>
-                    </div>
-                  ),
-                  actions: [
-                    {
-                      id: 'add-user',
-                      label: 'Add User',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add User clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export Data',
-                      icon: 'export',
-                      onTrigger: () => alert('Export clicked!'),
-                      iconOnly: true,
-                      placement: 'discoverable'
-                    }
-                  ]
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' }
-                  ]
-                },
-                footer: { enabled: false }
-              }
-            }}
-          />
-        </div>
+
       </div>
     </div>
   );
