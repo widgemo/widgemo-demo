@@ -1068,8 +1068,8 @@ export const SimplifiedTest: React.FC = () => {
                 <li>Layout: Groups for icon+title together, and separate action rows</li>
                 <li>Group 1: Icon and title in same horizontal row</li>
                 <li>Subtitle: Below the icon+title group</li>
-                <li>Group 2: Primary actions in horizontal row</li>
-                <li>Group 3: Secondary actions in separate horizontal row</li>
+                <li>Group 2: Primary actions (Add, Edit) in horizontal row - via custom element</li>
+                <li>Group 3: Secondary actions (Refresh, Export) in separate horizontal row - via custom element</li>
               </ul>
             </li>
             <li>Content Zone: Enabled
@@ -1089,7 +1089,26 @@ export const SimplifiedTest: React.FC = () => {
                       order: [
                         { type: 'group', elements: ['icon', 'title'], direction: 'horizontal' },
                         'subtitle',
-                        { type: 'group', elements: ['actions'], direction: 'horizontal' }
+                        { type: 'custom', content: (
+                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <button className="btn btn-primary btn-sm" onClick={() => alert('Add Item clicked!')}>
+                              <FaPlus style={{ marginRight: '0.25rem' }} /> Add Item
+                            </button>
+                            <button className="btn btn-secondary btn-sm" onClick={() => alert('Edit clicked!')}>
+                              <FaEdit style={{ marginRight: '0.25rem' }} /> Edit
+                            </button>
+                          </div>
+                        )},
+                        { type: 'custom', content: (
+                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <button className="btn btn-ghost btn-sm" onClick={() => alert('Refresh clicked!')}>
+                              <FaSync style={{ marginRight: '0.25rem' }} /> Refresh
+                            </button>
+                            <button className="btn btn-success btn-sm" onClick={() => alert('Export clicked!')}>
+                              <FaDownload style={{ marginRight: '0.25rem' }} /> Export
+                            </button>
+                          </div>
+                        )}
                       ],
                       direction: 'vertical',
                       align: 'center',
@@ -1098,39 +1117,7 @@ export const SimplifiedTest: React.FC = () => {
                   },
                   icon: { src: 'table', size: 24, color: '#6f42c1' },
                   title: 'Grouped Layout Demo',
-                  subtitle: 'Icon and title grouped together, actions in separate rows',
-                  actions: [
-                    {
-                      id: 'add',
-                      label: 'Add Item',
-                      icon: 'add',
-                      variant: 'primary',
-                      onTrigger: () => alert('Add Item clicked!')
-                    },
-                    {
-                      id: 'edit',
-                      label: 'Edit',
-                      icon: 'edit',
-                      variant: 'secondary',
-                      onTrigger: () => alert('Edit clicked!')
-                    },
-                    {
-                      id: 'refresh',
-                      label: 'Refresh',
-                      icon: 'refresh',
-                      variant: 'ghost',
-                      onTrigger: () => alert('Refresh clicked!'),
-                      placement: 'discoverable'
-                    },
-                    {
-                      id: 'export',
-                      label: 'Export',
-                      icon: 'export',
-                      variant: 'success',
-                      onTrigger: () => alert('Export clicked!'),
-                      placement: 'discoverable'
-                    }
-                  ]
+                  subtitle: 'Icon and title grouped together, actions in separate rows'
                 },
                 content: {
                   enabled: true
