@@ -675,7 +675,7 @@ export const SimplifiedTest: React.FC = () => {
                 <li>Collapsible - Expanded</li>
                 <li>Icon</li>
                 <li>Title only - Subtitle ignored</li>
-                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable)</li>
+                <li>Actions: Add Item (primary), Refresh (icon only - ghost - discoverable), Delete All (menu) - Discoverable and Fixed actions are all discoverable and icon only.</li>
               </ul>
               <li>Content Zone: Table Mode
               </li>
@@ -710,6 +710,13 @@ export const SimplifiedTest: React.FC = () => {
                       onTrigger: () => alert('Refresh clicked!'),
                       iconOnly: true,
                       placement: 'discoverable'
+                    },
+                                        {
+                      id: 'delete',
+                      label: 'Delete All',
+                      icon: 'trash',
+                      onTrigger: () => alert('Delete clicked!'),
+                      placement: 'menu'
                     }
                   ]
                 },
