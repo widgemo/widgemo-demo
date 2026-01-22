@@ -899,7 +899,7 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true,
                   layout: {
                     custom: {
-                      order: ['title', 'icon', 'collapse', { type: 'spacer' }, 'subtitle','actions'],
+                      order: ['title', 'icon', 'collapse', { type: 'spacer' }, 'subtitle', 'actions'],
                       align: 'space-between',
                       gap: '1rem'
                     }
@@ -1089,26 +1089,30 @@ export const SimplifiedTest: React.FC = () => {
                       order: [
                         { type: 'group', elements: ['icon', 'title'], direction: 'horizontal' },
                         'subtitle',
-                        { type: 'custom', content: (
-                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                            <button className="btn btn-primary btn-sm" onClick={() => alert('Add Item clicked!')}>
-                              <FaPlus style={{ marginRight: '0.25rem' }} /> Add Item
-                            </button>
-                            <button className="btn btn-secondary btn-sm" onClick={() => alert('Edit clicked!')}>
-                              <FaEdit style={{ marginRight: '0.25rem' }} /> Edit
-                            </button>
-                          </div>
-                        )},
-                        { type: 'custom', content: (
-                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                            <button className="btn btn-ghost btn-sm" onClick={() => alert('Refresh clicked!')}>
-                              <FaSync style={{ marginRight: '0.25rem' }} /> Refresh
-                            </button>
-                            <button className="btn btn-success btn-sm" onClick={() => alert('Export clicked!')}>
-                              <FaDownload style={{ marginRight: '0.25rem' }} /> Export
-                            </button>
-                          </div>
-                        )}
+                        {
+                          type: 'custom', content: (
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                              <button className="btn btn-primary btn-sm" onClick={() => alert('Add Item clicked!')}>
+                                <FaPlus style={{ marginRight: '0.25rem' }} /> Add Item
+                              </button>
+                              <button className="btn btn-secondary btn-sm" onClick={() => alert('Edit clicked!')}>
+                                <FaEdit style={{ marginRight: '0.25rem' }} /> Edit
+                              </button>
+                            </div>
+                          )
+                        },
+                        {
+                          type: 'custom', content: (
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                              <button className="btn btn-ghost btn-sm" onClick={() => alert('Refresh clicked!')}>
+                                <FaSync style={{ marginRight: '0.25rem' }} /> Refresh
+                              </button>
+                              <button className="btn btn-success btn-sm" onClick={() => alert('Export clicked!')}>
+                                <FaDownload style={{ marginRight: '0.25rem' }} /> Export
+                              </button>
+                            </div>
+                          )
+                        }
                       ],
                       direction: 'vertical',
                       align: 'center',
@@ -1123,6 +1127,79 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true
                 },
                 footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Headless Widgemo Example</h2>
+          <p>Testing a widgemo with no header zone enabled - exploring how to make actions available.</p>
+          <ul>
+            <li>Header Zone: Disabled (headless)
+            </li>
+            <li>Content Zone: Enabled with Grid mode
+            </li>
+            <li>Footer Zone: Enabled with actions (exploring alternative action placement)
+              <ul>
+                <li>Footer contains actions since header is disabled</li>
+                <li>This demonstrates how actions can be placed in footer when header is not available</li>
+              </ul>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            id="headless-demo"
+            data={teaserSampleData.slice(0, 6)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: false  // This makes it headless
+                },
+                content: {
+                  enabled: true,
+                  mode: 'grid'
+                },
+                footer: {
+                  enabled: true,
+                  title: 'Actions (Footer)',
+                  subtitle: 'Since header is disabled, actions are placed here',
+                  actions: [
+                    {
+                      id: 'add-item',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Add Item clicked on headless widgemo: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    },
+                    {
+                      id: 'bulk-edit',
+                      label: 'Bulk Edit',
+                      icon: 'edit',
+                      variant: 'secondary',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        alert(`Bulk Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    },
+                    {
+                      id: 'export-data',
+                      label: 'Export Data',
+                      icon: 'export',
+                      variant: 'success',
+                      onTrigger: (context) => {
+                        console.log(`🆔 Export Data clicked on headless widgemo: ${context.widgemoId}`);
+                        console.log(`📍 Placement: ${context.placement}`);
+                        alert(`Export Data clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+                      }
+                    }
+                  ]
+                }
               }
             }}
           />
@@ -1846,5 +1923,6 @@ export const ReactElementTitleExample = () => (
         }
       }}
     />
+
   </div>
 );
