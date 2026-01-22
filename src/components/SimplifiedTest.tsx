@@ -1017,7 +1017,7 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true,
                   layout: {
                     custom: {
-                      order: ['title', 'subtitle', 'actions'],
+                      order: ['icon', 'title', 'subtitle', 'actions'],
                       direction: 'vertical',
                       align: 'center',
                       gap: '0.5rem'
