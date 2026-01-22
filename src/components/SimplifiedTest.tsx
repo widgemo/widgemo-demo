@@ -935,6 +935,131 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>Custom Layout with Custom Element</h2>
+          <p>Testing ZoneRenderer with a custom layout that includes a custom React element using type: 'custom'.</p>
+          <ul>
+            <li>Header Zone: Custom Layout with Custom Element
+              <ul>
+                <li>Layout: Custom order [title, custom element, spacer, actions]</li>
+                <li>Custom Element: A styled badge showing "LIVE" status</li>
+                <li>Actions: Add Item (primary), Refresh (secondary)</li>
+              </ul>
+            </li>
+            <li>Content Zone: Enabled
+            </li>
+            <li>Footer Zone: Disabled
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  layout: {
+                    custom: {
+                      order: ['title', { type: 'custom', content: <span style={{ backgroundColor: '#ff4444', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold' }}>LIVE</span> }, { type: 'spacer' }, 'actions'],
+                      align: 'space-between',
+                      gap: '1rem'
+                    }
+                  },
+                  title: 'Live Dashboard',
+                  subtitle: 'Real-time data with custom status indicator',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Refresh clicked!')
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Custom Layout with Vertical Direction</h2>
+          <p>Testing ZoneRenderer with a custom layout using direction: 'vertical' for stacked elements.</p>
+          <ul>
+            <li>Header Zone: Vertical Custom Layout
+              <ul>
+                <li>Layout: direction: 'vertical', order [title, subtitle, actions]</li>
+                <li>All elements stacked vertically and centered</li>
+                <li>Actions: Add Item (primary), Refresh (secondary), Export (secondary)</li>
+              </ul>
+            </li>
+            <li>Content Zone: Enabled
+            </li>
+            <li>Footer Zone: Disabled
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 5)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  layout: {
+                    custom: {
+                      order: ['title', 'subtitle', 'actions'],
+                      direction: 'vertical',
+                      align: 'center',
+                      gap: '0.5rem'
+                    }
+                  },
+                  icon: { src: 'chart-line', size: 24, color: '#28a745' },
+                  title: 'Analytics Dashboard',
+                  subtitle: 'Vertical layout with centered alignment',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Metric',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Metric clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh Data',
+                      icon: 'refresh',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Refresh Data clicked!')
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export Report',
+                      icon: 'export',
+                      variant: 'secondary',
+                      onTrigger: () => alert('Export Report clicked!')
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>Mode System Test - Grid Mode with ItemRenderer</h2>
           <p>Testing ModeRenderer with grid mode, configurable columns, and ItemRenderer templates.</p>
           <SimplifiedWidgemo
