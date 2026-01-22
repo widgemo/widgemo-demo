@@ -696,7 +696,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
-                  headerLayout: { preset: 'compact' },
+                  layout: { preset: 'compact' },
                   icon: { src: 'square', size: 20, color: '#d9b711' },
                   title: 'Compact Layout Demo',
                   subtitle: 'Smaller header elements',
@@ -760,7 +760,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
-                  headerLayout: { preset: 'minimal' },
+                  layout: { preset: 'minimal' },
                   icon: { src: 'clock', size: 20, color: '#11a661' },
                   title: 'Minimal Layout Demo',
                   subtitle: 'Title and collapse only',
@@ -819,7 +819,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
-                  headerLayout: { preset: 'centered' },
+                  layout: { preset: 'centered' },
                   icon: { src: 'centercode', size: 20, color: '#a41540' },
                   title: 'Centered Layout Demo',
                   subtitle: 'Actions loaded as a centered layout on the foot zone'
@@ -828,7 +828,7 @@ export const SimplifiedTest: React.FC = () => {
                   enabled: true
                 },
                 footer: {
-                  enabled: true, headerLayout: { preset: 'centered' }, actions: [
+                  enabled: true, layout: { preset: 'centered' }, actions: [
                     {
                       id: 'add',
                       label: 'Add Item',
@@ -889,7 +889,7 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 header: {
                   enabled: true,
-                  headerLayout: { preset: 'actions-first' },
+                  layout: { preset: 'actions-first' },
                   icon: { src: 'clock', size: 20, color: '#11a661' },
                   title: 'Actions-First Layout Demo',
                   subtitle: 'Actions left, content center, collapse right',
