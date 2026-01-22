@@ -327,7 +327,7 @@ export const SimplifiedTest: React.FC = () => {
           <h5>Collapsible Header Zone</h5>
           <p>Testing ZoneRenderer with default header layout:</p>
           <ul>
-            <li>Custom className</li>
+            <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
               <ul>
                 <li>Collapsible - Expanded</li>
@@ -404,7 +404,7 @@ export const SimplifiedTest: React.FC = () => {
           <h5>Fixed Header Zone</h5>
           <p>Testing ZoneRenderer with fixed (non-collapsible) header and custom-footer-class with footer actions.</p>
           <ul>
-            <li>Custom className</li>
+            <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
               <ul>
                 <li>Non-Collapsible - Fixed</li>
@@ -475,7 +475,7 @@ export const SimplifiedTest: React.FC = () => {
           <h5>Actions System Test</h5>
           <p>Testing ActionsRenderer with core actions registry and menu dropdown.</p>
           <ul>
-            <li>Custom className</li>
+            <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
               <ul>
                 <li>Collapsible - Collapsed</li>
