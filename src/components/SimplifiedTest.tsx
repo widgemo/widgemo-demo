@@ -484,7 +484,7 @@ export const SimplifiedTest: React.FC = () => {
           <h2>React Element Title Example</h2>
           <p>Testing ZoneRenderer with React elements in title and subtitle for rich formatting and interactive content.</p>
           <SimplifiedWidgemo
-            data={teaserSampleData.slice(0, 3)}
+            data={teaserSampleData.slice(0, 4)}
             className="my-custom-widgemo"
             config={{
               zones: {
