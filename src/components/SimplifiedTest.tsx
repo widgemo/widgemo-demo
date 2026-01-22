@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
-import type { ActionContext, Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
+import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
 import {
   FaDatabase,
@@ -220,27 +220,6 @@ registerIcon({
   component: FaPuzzlePiece,
   defaultProps: { size: 16 }
 });
-// Extended ZoneConfig for board mode
-type BoardContentConfig = {
-  enabled: boolean;
-  mode: 'board';
-  columns: { id: string; label: string; filter: (item: Entity) => boolean }[];
-  swimlanes: {
-    groupBy: string;
-    order: string[];
-  };
-  dragEnabled: boolean;
-  actionsPosition: string;
-  sortWithinColumn: string;
-  item: {
-    template: {
-      sections: {
-        title: string;
-        fields: { key: string; label?: string; type: string }[];
-      }[];
-    };
-  };
-};
 // Register icons at module level
 registerIcon({
   name: 'database',
@@ -1420,7 +1399,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'department', header: 'Department', sortable: true, type: 'text' },
                     { field: 'status', header: 'Active', align: 'center', type: 'boolean', booleanTrueLabel: 'Active', booleanFalseLabel: 'Inactive' },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
-                  ],
+                  ] as ColumnConfig[],
                   sort: { field: 'name', direction: 'asc' },
                   pagination: { page: 1, pageSize: 5 },
                   tableActions: {
@@ -1766,14 +1745,16 @@ export const SimplifiedTest: React.FC = () => {
                     { id: 'in-progress', label: 'In Progress', filter: (item: Entity) => item.status === 'in-progress' },
                     { id: 'review', label: 'Review', filter: (item: Entity) => item.status === 'review' },
                     { id: 'done', label: 'Done', filter: (item: Entity) => item.status === 'done' }
-                  ],
-                  swimlanes: {
-                    groupBy: 'assignee',
-                    order: ['Alice', 'Bob', 'Charlie']
+                  ] as BoardColumnConfig[],
+                  board: {
+                    swimlanes: {
+                      groupBy: 'assignee',
+                      order: ['Alice', 'Bob', 'Charlie']
+                    },
+                    dragEnabled: true,
+                    actionsPosition: 'hover',
+                    sortWithinColumn: 'priority'
                   },
-                  dragEnabled: true,
-                  actionsPosition: 'hover',
-                  sortWithinColumn: 'priority',
                   item: {
                     template: {
                       sections: [
@@ -1787,7 +1768,7 @@ export const SimplifiedTest: React.FC = () => {
                       ]
                     }
                   }
-                } as BoardContentConfig, // Board mode requires different column config
+                },
                 footer: { enabled: false }
               }
             }}
