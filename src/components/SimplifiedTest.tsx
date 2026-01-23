@@ -1434,13 +1434,24 @@ export const SimplifiedTest: React.FC = () => {
                         label: 'Edit',
                         icon: 'edit',
                         variant: 'ghost',
+                        placement: 'always',
+                        iconOnly: true,
                         handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                      },
+                      {
+                        id: 'view',
+                        label: 'View Details',
+                        icon: 'eye',
+                        variant: 'secondary',
+                        placement: 'discoverable',
+                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
                       },
                       {
                         id: 'delete',
                         label: 'Delete',
                         icon: 'delete',
                         variant: 'danger',
+                        placement: 'menu',
                         handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
                       }
                     ]
@@ -1510,6 +1521,7 @@ export const SimplifiedTest: React.FC = () => {
                         label: 'View',
                         icon: 'view',
                         variant: 'ghost',
+                        placement: 'always',
                         handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
                       },
                       {
@@ -1517,7 +1529,17 @@ export const SimplifiedTest: React.FC = () => {
                         label: 'Edit',
                         icon: 'edit',
                         variant: 'primary',
+                        placement: 'always',
+                        iconOnly: true,
                         handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                      },
+                      {
+                        id: 'delete',
+                        label: 'Delete',
+                        icon: 'trash',
+                        variant: 'danger',
+                        placement: 'menu',
+                        handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
                       }
                     ]
                   },
@@ -1583,6 +1605,7 @@ export const SimplifiedTest: React.FC = () => {
                         label: 'View',
                         icon: 'view',
                         variant: 'ghost',
+                        // placement: 'always',
                         handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
                       },
                       {
@@ -1590,6 +1613,7 @@ export const SimplifiedTest: React.FC = () => {
                         label: 'Edit',
                         icon: 'edit',
                         variant: 'primary',
+                        placement: 'discoverable',
                         handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
                       }
                     ]
