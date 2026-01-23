@@ -1353,7 +1353,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   title: 'Table Mode Demo',
-                  subtitle: 'Default Header Layout with Actions - Alternating Row Backgrounds Enabled',
+                  subtitle: 'Default Header Layout with Actions - Alternating Row Backgrounds & Separators Enabled',
                   actions: [
                     {
                       id: 'add',
@@ -1447,6 +1447,7 @@ export const SimplifiedTest: React.FC = () => {
                   },
                   actionsColumn: true,
                   alternatingRows: true,
+                  rowSeparator: true,
                   hooks: {
                     onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
                   }
@@ -1491,7 +1492,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   title: 'User Management',
-                  subtitle: 'Sortable table with actions - Alternating Row Backgrounds Disabled'
+                  subtitle: 'Sortable table with actions - Alternating Row Backgrounds & Separators Disabled'
                 },
                 content: {
                   enabled: true,
@@ -1521,7 +1522,8 @@ export const SimplifiedTest: React.FC = () => {
                     ]
                   },
                   actionsColumn: true,
-                  alternatingRows: false
+                  alternatingRows: false,
+                  rowSeparator: false
                 },
                 footer: { enabled: false }
               }
