@@ -126,6 +126,18 @@ export const generateThemeCSS = (): string => {
   --button-bg: ${theme.buttonBg};
   --button-hover: ${theme.buttonHover};
   --row-alt-bg: ${lightenColor(theme.borderColor, 0.2)};
+  
+  /* widgemo-core specific variables */
+  --board-bg: ${theme.backgroundColor};
+  --swimlane-header-bg: ${lightenColor(theme.borderColor, 0.2)};
+  --column-bg: ${theme.backgroundColor};
+  --hover-shadow: 0 2px 8px ${theme.shadowColor};
+  --focus-color: #0066cc;
+  --table-border: ${theme.borderColor};
+  --table-header-bg: ${lightenColor(theme.borderColor, 0.1)};
+  --table-header-hover-bg: ${lightenColor(theme.borderColor, 0.2)};
+  --table-body-bg: ${theme.backgroundColor};
+  --row-hover-bg: ${lightenColor(theme.borderColor, 0.05)};
 }
 
 .${theme.key} .theme-aware-card:not(.sandbox-card) {
