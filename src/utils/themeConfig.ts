@@ -125,7 +125,7 @@ export const generateThemeCSS = (): string => {
   --shadow-color: ${theme.shadowColor};
   --button-bg: ${theme.buttonBg};
   --button-hover: ${theme.buttonHover};
-  --row-alt-bg: ${lightenColor(theme.borderColor, 0.2)};
+  --row-alt-bg: ${lightenColor(theme.backgroundColor, 0.05)};
   
   /* widgemo-core specific variables */
   --board-bg: ${theme.backgroundColor};
