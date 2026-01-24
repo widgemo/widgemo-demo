@@ -169,18 +169,18 @@ export const SimplifiedTest: React.FC = () => {
                 <li>Dynamic subtitle (includes data length)</li>
                 <li>Actions: Add User (primary), Refresh (icon only - ghost - discoverable), Export (icon only - ghost - discoverable)</li>
               </ul>
-              <li>Content Zone: Default Mode
-                <ul>
-                  <li>Title</li>
-                </ul>
-              </li>
-              <li>Footer Zone: Default Layout
-                <ul>
-                  <li>Non-collapsible - Fixed</li>
-                  <li>Title</li>
-                  <li>Subtitle</li>
-                </ul>
-              </li>
+            </li>
+            <li>Content Zone: Default Mode
+              <ul>
+                <li>Title</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Default Layout
+              <ul>
+                <li>Non-collapsible - Fixed</li>
+                <li>Title</li>
+                <li>Subtitle</li>
+              </ul>
             </li>
           </ul>
           <SimplifiedWidgemo

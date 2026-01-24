@@ -32,7 +32,13 @@ import {
   FaQuestionCircle,
   FaStar,
   FaHeart,
-  FaDollarSign
+  FaDollarSign,
+  FaDatabase,
+  FaUsers,
+  FaClock,
+  FaSquare,
+  FaHtml5,
+  FaPuzzlePiece
 } from 'react-icons/fa';
 import type { RenderIcon } from 'widgemo-core';
 
@@ -49,6 +55,33 @@ export const fontAwesomeRenderIcon: RenderIcon = ({ name, size = 16, className, 
   };
 
   switch (name) {
+    case 'database':
+    case 'db':
+      return <FaDatabase {...iconProps} />;
+
+    case 'users':
+      return <FaUsers {...iconProps} />;
+
+    case 'clock':
+      return <FaClock {...iconProps} />;
+
+    case 'square':
+      return <FaSquare {...iconProps} />;
+
+    case 'html5':
+      return <FaHtml5 {...iconProps} />;
+
+    case 'puzzle-piece':
+      return <FaPuzzlePiece {...iconProps} />;
+
+    case 'teamspeak':
+      // Fallback to users icon for teamspeak
+      return <FaUsers {...iconProps} />;
+
+    case 'centercode':
+      // Fallback to puzzle-piece for centercode
+      return <FaPuzzlePiece {...iconProps} />;
+
     case 'plus':
     case 'add':
       return <FaPlus {...iconProps} />;
@@ -121,6 +154,12 @@ export const fontAwesomeRenderIcon: RenderIcon = ({ name, size = 16, className, 
     case 'board':
       return <FaColumns {...iconProps} />;
 
+    case 'th':
+      return <FaTh {...iconProps} />;
+
+    case 'columns':
+      return <FaColumns {...iconProps} />;
+
     case 'copy':
       return <FaCopy {...iconProps} />;
 
@@ -156,6 +195,12 @@ export const fontAwesomeRenderIcon: RenderIcon = ({ name, size = 16, className, 
 
     case 'currency-dollar':
       return <FaDollarSign {...iconProps} />;
+
+    case 'dollar-sign':
+      return <FaDollarSign {...iconProps} />;
+
+    case 'question-circle':
+      return <FaQuestionCircle {...iconProps} />;
 
     default:
       // Fallback: question mark icon for unknown icons
