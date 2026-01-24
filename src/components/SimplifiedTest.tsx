@@ -1932,11 +1932,11 @@ export const SimplifiedTest: React.FC = () => {
           <p>Testing rating field type with star-based visual display, supporting half-stars and customizable options.</p>
           <SimplifiedWidgemo
             data={[
-              { id: 1, name: 'Product A', rating: 4.5, reviews: 128 },
-              { id: 2, name: 'Product B', rating: 3, reviews: 45 },
-              { id: 3, name: 'Product C', rating: 5, reviews: 89 },
-              { id: 4, name: 'Product D', rating: 0, reviews: 0 },
-              { id: 5, name: 'Product E', rating: 2.5, reviews: 67 }
+              { id: 1, name: 'Product A', rating: 4.5, hearts: 3, reviews: 128 },
+              { id: 2, name: 'Product B', rating: 3, hearts: 4.5, reviews: 45 },
+              { id: 3, name: 'Product C', rating: 5, hearts: 2, reviews: 89 },
+              { id: 4, name: 'Product D', rating: 0, hearts: 5, reviews: 0 },
+              { id: 5, name: 'Product E', rating: 2.5, hearts: 1.5, reviews: 67 }
             ]}
             className="my-custom-widgemo"
             config={{
@@ -1956,7 +1956,17 @@ export const SimplifiedTest: React.FC = () => {
                         //max: 8,
                         //color: '#ff5107',
                         emptyColor: 'var(--bg-color)',
-                        size: 20
+                        size: 20,
+                        iconName: 'star'
+                      }
+                     },
+                    { field: 'hearts', header: 'Hearts', type: 'rating', align: 'center',
+                      ratingOptions: {
+                        max: 5,
+                        color: '#e91e63',
+                        emptyColor: 'var(--bg-color)',
+                        size: 18,
+                        iconName: 'heart'
                       }
                      },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
