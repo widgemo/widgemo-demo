@@ -1964,7 +1964,7 @@ export const SimplifiedTest: React.FC = () => {
                       ratingOptions: {
                         max: 5,
                         color: '#e91e63',
-                        emptyColor: 'var(--bg-color)',
+                        emptyColor: '#fdbfd4',
                         size: 18,
                         iconName: 'heart'
                       }
