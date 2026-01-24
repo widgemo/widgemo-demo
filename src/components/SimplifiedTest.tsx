@@ -23,7 +23,8 @@ import {
   FaHtml5,
   FaCentercode,
   FaPuzzlePiece,
-  FaWifi
+  FaWifi,
+  FaDollarSign
 } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
 // Extend Window interface for performance metrics
@@ -286,6 +287,11 @@ registerIcon({
 registerIcon({
   name: 'chevron-down',
   component: FaChevronDown,
+  defaultProps: { size: 16 }
+});
+registerIcon({
+  name: 'dollar-sign',
+  component: FaDollarSign,
   defaultProps: { size: 16 }
 });
 interface TaskEntity {
@@ -1932,11 +1938,11 @@ export const SimplifiedTest: React.FC = () => {
           <p>Testing rating field type with star-based visual display, supporting half-stars and customizable options.</p>
           <SimplifiedWidgemo
             data={[
-              { id: 1, name: 'Product A', rating: 4.5, hearts: 3, reviews: 128 },
-              { id: 2, name: 'Product B', rating: 3, hearts: 4.5, reviews: 45 },
-              { id: 3, name: 'Product C', rating: 5, hearts: 2, reviews: 89 },
-              { id: 4, name: 'Product D', rating: 0, hearts: 5, reviews: 0 },
-              { id: 5, name: 'Product E', rating: 2.5, hearts: 1.5, reviews: 67 }
+              { id: 1, name: 'Product A', rating: 4.5, hearts: 3, cost: 5, reviews: 128 },
+              { id: 2, name: 'Product B', rating: 3, hearts: 4.5, cost: 1, reviews: 45 },
+              { id: 3, name: 'Product C', rating: 5, hearts: 2, cost: 1.6, reviews: 89 },
+              { id: 4, name: 'Product D', rating: 0, hearts: 5, cost: 2.1, reviews: 0 },
+              { id: 5, name: 'Product E', rating: 2.5, hearts: 1.5, cost: 0.8, reviews: 67 }
             ]}
             className="my-custom-widgemo"
             config={{
@@ -1967,6 +1973,15 @@ export const SimplifiedTest: React.FC = () => {
                         emptyColor: '#fdbfd4',
                         size: 18,
                         iconName: 'heart'
+                      }
+                     },
+                     { field: 'cost', header: 'Cost', type: 'rating', align: 'center',
+                      ratingOptions: {
+                        max: 5,
+                        color: '#0f6005',
+                        emptyColor: 'var(--bg-color)',
+                        //size: 18,
+                        iconName: 'currency-dollar'
                       }
                      },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
