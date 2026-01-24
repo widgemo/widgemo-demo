@@ -1556,7 +1556,10 @@ export const SimplifiedTest: React.FC = () => {
                   alternatingRows: false,
                   rowSeparator: true
                 },
-                footer: { enabled: false }
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
               }
             }}
           />
@@ -1631,7 +1634,10 @@ export const SimplifiedTest: React.FC = () => {
                   alternatingRows: false,
                   rowSeparator: false
                 },
-                footer: { enabled: false }
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
               }
             }}
           />
