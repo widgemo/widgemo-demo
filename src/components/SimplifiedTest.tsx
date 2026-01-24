@@ -1951,7 +1951,14 @@ export const SimplifiedTest: React.FC = () => {
                   mode: 'table',
                   columns: [
                     { field: 'name', header: 'Product Name', sortable: true },
-                    { field: 'rating', header: 'Rating', type: 'rating', align: 'center' },
+                    { field: 'rating', header: 'Rating', type: 'rating', align: 'center',
+                      ratingOptions: {
+                        //max: 8,
+                        //color: '#ff5107',
+                        emptyColor: 'var(--bg-color)',
+                        size: 24
+                      }
+                     },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
                   ] as ColumnConfig[]
                 },
