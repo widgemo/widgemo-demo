@@ -1789,6 +1789,82 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>FieldRenderer Test - Progress Bar Fields</h2>
+          <p>Testing FieldRenderer with progress bar field type showing completion percentages with custom styling.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'Task A', progress: 75, status: 'in-progress', priority: 'high' },
+              { id: 2, name: 'Task B', progress: 30, status: 'started', priority: 'medium' },
+              { id: 3, name: 'Task C', progress: 100, status: 'completed', priority: 'low' },
+              { id: 4, name: 'Task D', progress: 0, status: 'not-started', priority: 'high' },
+              { id: 5, name: 'Task E', progress: 45, status: 'in-progress', priority: 'medium' },
+              { id: 6, name: 'Task F', progress: 90, status: 'review', priority: 'low' },
+              { id: 7, name: 'Task G', progress: -5, status: 'error', priority: 'high' }, // Test negative value
+              { id: 8, name: 'Task H', progress: 150, status: 'overflow', priority: 'low' } // Test >100 value
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Progress Bar Demo',
+                  subtitle: 'FieldRenderer progress bars with custom colors and styling'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Task Name', sortable: true },
+                    { field: 'progress', header: 'Progress', type: 'progress', progressOptions: { color: '#28a745', showPercentage: true } },
+                    { field: 'status', header: 'Status', align: 'center' },
+                    { field: 'priority', header: 'Priority', align: 'center' }
+                  ] as ColumnConfig[]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>FieldRenderer Test - Progress Bar Variants</h2>
+          <p>Testing different progress bar configurations with custom colors, heights, and text options.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'Standard Progress', progress: 65, color: '#007bff' },
+              { id: 2, name: 'Success Progress', progress: 80, color: '#28a745' },
+              { id: 3, name: 'Warning Progress', progress: 45, color: '#ffc107' },
+              { id: 4, name: 'Danger Progress', progress: 25, color: '#dc3545' },
+              { id: 5, name: 'No Text Progress', progress: 70, color: '#6f42c1', showText: false },
+              { id: 6, name: 'Tall Progress', progress: 55, color: '#20c997', height: '30px' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Progress Bar Variants',
+                  subtitle: 'Different colors, heights, and text display options'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Variant', sortable: true },
+                    { 
+                      field: 'progress', 
+                      header: 'Progress Bar', 
+                      type: 'progress'
+                    }
+                  ] as ColumnConfig[]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>CarouselMode - Swipeable Carousel</h2>
           <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
           <SimplifiedWidgemo
