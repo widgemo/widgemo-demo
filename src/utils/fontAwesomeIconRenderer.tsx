@@ -31,8 +31,7 @@ import {
   FaEllipsisV,
   FaQuestionCircle,
   FaStar,
-  FaHeart,
-  FaSkull
+  FaHeart
 } from 'react-icons/fa';
 import type { RenderIcon } from 'widgemo-core';
 
@@ -153,9 +152,6 @@ export const fontAwesomeRenderIcon: RenderIcon = ({ name, size = 16, className, 
 
     case 'heart':
       return <FaHeart {...iconProps} />;
-
-    case 'skull':
-      return <FaSkull {...iconProps} />;
 
     default:
       // Fallback: question mark icon for unknown icons
