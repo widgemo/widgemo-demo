@@ -2,30 +2,8 @@ import React from 'react';
 import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { teaserSampleData, imageGalleryData } from '../data/sampleData';
-import {
-  FaDatabase,
-  FaPlus,
-  FaSync,
-  FaDownload,
-  FaCog,
-  FaTrash,
-  FaEdit,
-  FaEye,
-  FaSearch,
-  FaFilter,
-  FaSort,
-  FaChevronUp,
-  FaChevronDown,
-  FaUsers,
-  FaTeamspeak,
-  FaClock,
-  FaSquare,
-  FaHtml5,
-  FaCentercode,
-  FaPuzzlePiece,
-  FaWifi,
-  FaDollarSign
-} from 'react-icons/fa';
+import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
+import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
 // Extend Window interface for performance metrics
 declare global {
@@ -97,202 +75,24 @@ registerHook({
     return args[1] as React.ReactElement;
   }
 });
-// Register icons for the demo
-registerIcon({
-  name: 'database',
-  component: FaDatabase,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'add',
-  component: FaPlus,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'plus',
-  component: FaPlus,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'refresh',
-  component: FaSync,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'sync',
-  component: FaSync,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'export',
-  component: FaDownload,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'download',
-  component: FaDownload,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'settings',
-  component: FaCog,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'delete',
-  component: FaTrash,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'trash',
-  component: FaTrash,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'edit',
-  component: FaEdit,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'view',
-  component: FaEye,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'search',
-  component: FaSearch,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'filter',
-  component: FaFilter,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'sort',
-  component: FaSort,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'chevron-up',
-  component: FaChevronUp,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'chevron-down',
-  component: FaChevronDown,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'users',
-  component: FaUsers,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'teamspeak',
-  component: FaTeamspeak,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'clock',
-  component: FaClock,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'square',
-  component: FaSquare,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'html5',
-  component: FaHtml5,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'centercode',
-  component: FaCentercode,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'centercode',
-  component: FaCentercode,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'puzzle-piece',
-  component: FaPuzzlePiece,
-  defaultProps: { size: 16 }
-});
-// Register icons at module level
-registerIcon({
-  name: 'database',
-  component: FaDatabase,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'add',
-  component: FaPlus,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'refresh',
-  component: FaSync,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'export',
-  component: FaDownload,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'settings',
-  component: FaCog,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'delete',
-  component: FaTrash,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'edit',
-  component: FaEdit,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'view',
-  component: FaEye,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'search',
-  component: FaSearch,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'filter',
-  component: FaFilter,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'sort',
-  component: FaSort,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'chevron-up',
-  component: FaChevronUp,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'chevron-down',
-  component: FaChevronDown,
-  defaultProps: { size: 16 }
-});
-registerIcon({
-  name: 'dollar-sign',
-  component: FaDollarSign,
-  defaultProps: { size: 16 }
+// Register FontAwesome icons for the demo - overrides widgemo-core defaults
+
+// Register FontAwesome versions of common icons to override widgemo-core defaults
+const iconNames = [
+  'database', 'add', 'plus', 'refresh', 'sync', 'export', 'download', 'settings',
+  'delete', 'trash', 'edit', 'view', 'search', 'filter', 'sort', 'chevron-up',
+  'chevron-down', 'users', 'teamspeak', 'clock', 'square', 'html5', 'centercode',
+  'puzzle-piece', 'chart-line', 'chart-bar', 'chart-pie', 'table', 'th', 'columns',
+  'copy', 'upload', 'random', 'external-link-alt', 'book', 'check', 'undo',
+  'ellipsis-vertical', 'question-circle', 'star', 'heart', 'currency-dollar', 'dollar-sign'
+];
+
+iconNames.forEach(iconName => {
+  registerIcon({
+    name: iconName,
+    component: (props) => fontAwesomeRenderIcon({ name: iconName, ...props }), // Wrap to match expected signature
+    defaultProps: { size: 16, color: 'currentColor' }
+  });
 });
 interface TaskEntity {
   id: number;
