@@ -1956,7 +1956,7 @@ export const SimplifiedTest: React.FC = () => {
                         //max: 8,
                         //color: '#ff5107',
                         emptyColor: 'var(--bg-color)',
-                        size: 24
+                        size: 20
                       }
                      },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
