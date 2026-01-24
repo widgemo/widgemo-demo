@@ -288,6 +288,14 @@ registerIcon({
   component: FaChevronDown,
   defaultProps: { size: 16 }
 });
+interface TaskEntity {
+  id: number;
+  name: string;
+  progress: number;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  size: 'small' | 'medium' | 'large';
+}
+
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
   // Check for pending metrics after component mounts
@@ -1855,6 +1863,59 @@ export const SimplifiedTest: React.FC = () => {
                       field: 'progress', 
                       header: 'Progress Bar', 
                       type: 'progress'
+                    }
+                  ] as ColumnConfig[]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>FieldRenderer Test - Progress Bar Functions</h2>
+          <p>Testing function-based progressOptions that compute values dynamically based on entity data.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'High Priority Task', progress: 85, priority: 'high', size: 'large' },
+              { id: 2, name: 'Medium Priority Task', progress: 60, priority: 'medium', size: 'medium' },
+              { id: 3, name: 'Low Priority Task', progress: 30, priority: 'low', size: 'small' },
+              { id: 4, name: 'Critical Task', progress: 95, priority: 'critical', size: 'large' },
+              { id: 5, name: 'Normal Task', progress: 45, priority: 'medium', size: 'medium' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Progress Bar Functions',
+                  subtitle: 'Dynamic styling based on priority and size fields'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Task Name', sortable: true },
+                    { field: 'priority', header: 'Priority', align: 'center' },
+                    { field: 'size', header: 'Size', align: 'center' },
+                    { 
+                      field: 'progress', 
+                      header: 'Progress Bar', 
+                      type: 'progress',
+                      progressOptions: {
+                        color: (entity: TaskEntity) => {
+                          switch (entity.priority) {
+                            case 'critical': return '#dc3545';
+                            case 'high': return '#fd7e14';
+                            case 'medium': return '#ffc107';
+                            case 'low': return '#28a745';
+                            default: return '#007bff';
+                          }
+                        },
+                        height: (entity: TaskEntity) => entity.size === 'large' ? '30px' : entity.size === 'medium' ? '25px' : '20px',
+                        showPercentage: (entity: TaskEntity) => entity.priority === 'critical' || entity.progress > 80,
+                        textColor: (entity: TaskEntity) => entity.priority === 'critical' ? '#ffffff' : '#000000'
+                      }
                     }
                   ] as ColumnConfig[]
                 },
