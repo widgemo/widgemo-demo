@@ -1913,6 +1913,7 @@ export const SimplifiedTest: React.FC = () => {
                             default: return '#007bff';
                           }
                         },
+                        backgroundColor: 'var(--bg-color)',
                         height: (entity: TaskEntity) => entity.size === 'large' ? '30px' : entity.size === 'medium' ? '25px' : '20px',
                         showPercentage: (entity: TaskEntity) => entity.priority === 'critical' || entity.progress > 80,
                         textColor: (entity: TaskEntity) => entity.priority === 'critical' ? '#ffffff' : '#000000'
