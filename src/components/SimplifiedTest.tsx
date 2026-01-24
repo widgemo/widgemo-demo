@@ -1627,14 +1627,6 @@ export const SimplifiedTest: React.FC = () => {
                         variant: 'ghost',
                         // placement: 'always',
                         handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'edit',
-                        label: 'Edit',
-                        icon: 'edit',
-                        variant: 'primary',
-                        placement: 'discoverable',
-                        handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
                       }
                     ]
                   },
