@@ -1520,7 +1520,66 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   title: 'User Management',
-                  subtitle: 'Sortable table with actions - Alternating Row Backgrounds & Separators Disabled'
+                  subtitle: 'Sortable table with actions - Alternating Row Backgrounds & Separators Disabled',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: false,
+                      placement: 'menu'
+                    },
+                    {
+                      id: 'settings',
+                      label: 'Settings',
+                      icon: 'settings',
+                      variant: 'danger',
+                      onTrigger: () => alert('Settings clicked!'),
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'all',
+                      label: 'View All',
+                      icon: 'eye',
+                      variant: 'success',
+                      onTrigger: () => alert('View All clicked!'),
+                      placement: 'menu'
+                    },
+                    {
+                      id: 'chart',
+                      label: 'Chart Mode',
+                      icon: 'chart-pie',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      iconOnly: false,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'bar',
+                      label: 'Bar Chart Mode',
+                      icon: 'chart-bar',
+                      variant: 'primary',
+                      onTrigger: () => alert('Chart Mode clicked!'),
+                      placement: 'menu'
+                    }
+                  ]
                 },
                 content: {
                   enabled: true,
