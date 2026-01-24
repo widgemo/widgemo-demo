@@ -1895,6 +1895,7 @@ export const SimplifiedTest: React.FC = () => {
                 content: {
                   enabled: true,
                   mode: 'table',
+                  rowSeparator: false,
                   columns: [
                     { field: 'name', header: 'Name', sortable: true },
                     { field: 'email', header: 'Email', sortable: true },
