@@ -1313,7 +1313,8 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { enabled: false }
+                footer: { enabled: false}
+
               }
             }}
           />
@@ -1349,6 +1350,7 @@ export const SimplifiedTest: React.FC = () => {
             </li>
           </ul>
           <SimplifiedWidgemo
+            id='table-alternating-demo'
             data={teaserSampleData.slice(0, 8)} // Limit to 8 items for demo
             className="my-custom-widgemo"
             config={{
@@ -1466,7 +1468,10 @@ export const SimplifiedTest: React.FC = () => {
                     onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
                   }
                 },
-                footer: { enabled: false }
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
               }
             }}
           />
@@ -1499,6 +1504,7 @@ export const SimplifiedTest: React.FC = () => {
             </li>
           </ul>
           <SimplifiedWidgemo
+            id='table-row-dividers-demo'
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
             config={{
@@ -1582,6 +1588,7 @@ export const SimplifiedTest: React.FC = () => {
             </li>
           </ul>
           <SimplifiedWidgemo
+            id='table-plain-demo'
             data={teaserSampleData.slice(0, 5)}
             className="my-custom-widgemo"
             config={{
@@ -1863,6 +1870,7 @@ export const SimplifiedTest: React.FC = () => {
           <h2>Performance Monitoring - Pre/Post Render Hooks</h2>
           <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
           <SimplifiedWidgemo
+            id="performance-monitoring-demo"
             data={teaserSampleData.slice(0, 8)}
             className="my-custom-widgemo"
             config={{
