@@ -1458,6 +1458,14 @@ export const SimplifiedTest: React.FC = () => {
                         variant: 'danger',
                         placement: 'menu',
                         handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                      },
+                      {
+                        id: 'share',
+                        label: 'Share',
+                        icon: 'share',
+                        variant: 'primary',
+                        placement: 'menu',
+                        handler: (context: ActionContext) => alert(`Share ${context.entity?.name}`)
                       }
                     ]
                   },
