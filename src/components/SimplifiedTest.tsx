@@ -1320,7 +1320,7 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
-          <h2>Mode System Test - Table Mode</h2>
+          <h2>Mode System Test - Table Mode - Alternating</h2>
           <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
@@ -1470,7 +1470,7 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div style={{ padding: '20px' }}>
-          <h2>Mode System Test - Table Mode</h2>
+          <h2>Mode System Test - Table Mode - Row Dividers</h2>
           <p>Testing ModeRenderer with table mode, row dividers only.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
@@ -1554,7 +1554,7 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div style={{ padding: '20px' }}>
-          <h2>Mode System Test - Table Mode</h2>
+          <h2>Mode System Test - Table Mode - Plain</h2>
           <p>Testing ModeRenderer with table mode, no row markings.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
