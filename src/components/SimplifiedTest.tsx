@@ -1928,6 +1928,40 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>FieldRenderer Test - Rating Field</h2>
+          <p>Testing rating field type with star-based visual display, supporting half-stars and customizable options.</p>
+          <SimplifiedWidgemo
+            data={[
+              { id: 1, name: 'Product A', rating: 4.5, reviews: 128 },
+              { id: 2, name: 'Product B', rating: 3, reviews: 45 },
+              { id: 3, name: 'Product C', rating: 5, reviews: 89 },
+              { id: 4, name: 'Product D', rating: 0, reviews: 0 },
+              { id: 5, name: 'Product E', rating: 2.5, reviews: 67 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Rating Field Demo',
+                  subtitle: 'Star ratings with half-star support'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Product Name', sortable: true },
+                    { field: 'rating', header: 'Rating', type: 'rating', align: 'center' },
+                    { field: 'reviews', header: 'Reviews', align: 'center' }
+                  ] as ColumnConfig[]
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>CarouselMode - Swipeable Carousel</h2>
           <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
           <SimplifiedWidgemo
