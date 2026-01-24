@@ -1900,6 +1900,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'size', header: 'Size', align: 'center' },
                     { 
                       field: 'progress', 
+                      sortable: true,
                       header: 'Progress Bar', 
                       type: 'progress',
                       progressOptions: {
