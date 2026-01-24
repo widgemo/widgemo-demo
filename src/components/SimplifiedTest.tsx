@@ -1320,8 +1320,8 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
-          <h2>Mode System Test - Table Mode - Alternating</h2>
-          <p>Testing ModeRenderer with table mode, sortable columns, and pagination.</p>
+          <h2>Mode - Table - Alternating</h2>
+          <p>Table mode with alternating row backgrounds, sortable columns, and item actions.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
@@ -1333,11 +1333,14 @@ export const SimplifiedTest: React.FC = () => {
               <li>Content Zone: Table Mode
                 <ul>
                   <li>Alternating Background - Enabled</li>
+                  <li>Default Sorting - Last Login - Descending</li>
+                  <li>Sortable Columns - All</li>
                   <li>Custom Choices for Active column - include icons</li>
                   <li>Actions column - enabled</li>
                   <ul>
-                    <li>Edit</li>
-                    <li>Delete</li>
+                    <li>Edit - icons only - ghost</li>
+                    <li>View Details - discoverable - secondary</li>
+                    <li>Delete - menu</li>
                   </ul>
                 </ul>
               </li>
@@ -1422,10 +1425,10 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
                     { field: 'role', header: 'Role', sortable: true, align: 'center', type: 'text' },
                     { field: 'department', header: 'Department', sortable: true, type: 'text' },
-                    { field: 'status', header: 'Active', align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
+                    { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
                   ] as ColumnConfig[],
-                  sort: { field: 'name', direction: 'asc' },
+                  sort: { field: 'lastLogin', direction: 'desc' },
                   pagination: { page: 1, pageSize: 5 },
                   tableActions: {
                     item: [
@@ -1470,24 +1473,24 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div style={{ padding: '20px' }}>
-          <h2>Mode System Test - Table Mode - Row Dividers</h2>
-          <p>Testing ModeRenderer with table mode, row dividers only.</p>
+          <h2>Mode - Table Mode - Row Dividers</h2>
+          <p>Table mode with row dividers only, sortable columns, and item actions.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
               <ul>
                 <li>Collapsible - Expanded</li>
                 <li>Title + Subtitle</li>
-                <li>Actions</li>
               </ul>
               <li>Content Zone: Table Mode
                 <ul>
                   <li>Alternating Background - Disabled</li>
-                  <li>Custom Choices for Active column - include icons</li>
+                  <li>Sortable Columns (Name and Email)</li>
                   <li>Actions column - enabled</li>
                   <ul>
-                    <li>Edit</li>
-                    <li>Delete</li>
+                    <li>View Details - ghost</li>
+                    <li>Edit - icons only - primary</li>
+                    <li>Delete - menu</li>
                   </ul>
                 </ul>
               </li>
@@ -1554,8 +1557,8 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div style={{ padding: '20px' }}>
-          <h2>Mode System Test - Table Mode - Plain</h2>
-          <p>Testing ModeRenderer with table mode, no row markings.</p>
+          <h2>Mode - Table Mode - Plain</h2>
+          <p>Table mode with no row markings, sortable columns, and item actions.</p>
           <ul>
             <li>Custom className: background-color, border, shadow, padding</li>
             <li>Header Zone: Default Layout
@@ -1567,11 +1570,10 @@ export const SimplifiedTest: React.FC = () => {
               <li>Content Zone: Table Mode
                 <ul>
                   <li>Alternating Background - Disabled</li>
-                  <li>Custom Choices for Active column - include icons</li>
+                  <li>Sortable Columns (Name and Email)</li>
                   <li>Actions column - enabled</li>
                   <ul>
-                    <li>Edit</li>
-                    <li>Delete</li>
+                    <li>View - ghost</li>
                   </ul>
                 </ul>
               </li>
