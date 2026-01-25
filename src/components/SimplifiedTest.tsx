@@ -2814,6 +2814,16 @@ export const SimplifiedTest: React.FC = () => {
                     },
                     { 
                       field: 'price', 
+                      header: 'Parentheses', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        negativeFormat: 'parentheses'
+                      }
+                    },
+                    { 
+                      field: 'price', 
                       header: 'Compact', 
                       type: 'number',
                       renderAs: 'currency',
@@ -3392,7 +3402,8 @@ export const SimplifiedTest: React.FC = () => {
                       renderAs: 'currency',
                       currencyOptions: {
                         currency: 'USD',
-                        colorize: true
+                        colorize: true,
+                        negativeFormat: 'parentheses'
                       }
                     },
                     { 
@@ -3403,7 +3414,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'EUR',
                         locale: 'de-DE',
-                        colorize: true
+                        colorize: true,
+                        negativeFormat: 'parentheses'
                       }
                     },
                     { 
@@ -3415,7 +3427,8 @@ export const SimplifiedTest: React.FC = () => {
                         currency: 'USD',
                         compact: true,
                         compactThreshold: 1000000,
-                        colorize: true
+                        colorize: true,
+                        negativeFormat: 'parentheses'
                       }
                     }
                   ] as ColumnConfig[],
