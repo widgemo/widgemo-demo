@@ -1605,6 +1605,21 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>FieldRenderer Test - Progress Bar Fields</h2>
           <p>Testing FieldRenderer with progress bar field type showing completion percentages with custom styling.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Progress field rendered as progress bar with custom color and percentage display</li>
+                <li>Handles edge cases: negative values, values {'>'} 100%</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'Task A', progress: 75, status: 'in-progress', priority: 'high' },
@@ -1643,6 +1658,21 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>FieldRenderer Test - Progress Bar Variants</h2>
           <p>Testing different progress bar configurations with custom colors, heights, and text options.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Various progress bar configurations with different colors, heights, and text display options</li>
+                <li>Demonstrates custom styling options like height, color, and showText</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'Standard Progress', progress: 65, color: '#007bff' },
@@ -1682,6 +1712,23 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>FieldRenderer Test - Progress Bar Functions</h2>
           <p>Testing function-based progressOptions that compute values dynamically based on entity data.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Function-based progressOptions for dynamic styling based on priority and size fields</li>
+                <li>Color changes based on priority level</li>
+                <li>Height varies by task size</li>
+                <li>Percentage display conditional on priority or progress level</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'High Priority Task', progress: 85, priority: 'high', size: 'large' },
@@ -1738,6 +1785,22 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>FieldRenderer Test - Rating Field</h2>
           <p>Testing rating field type with star-based visual display, supporting half-stars and customizable options.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Rating fields with star icons (default), heart icons, and dollar sign icons</li>
+                <li>Supports half-star ratings and customizable max values</li>
+                <li>Different colors and sizes for various rating types</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'Product A', rating: 4.5, hearts: 3, cost: 5, reviews: 128 },
@@ -1798,6 +1861,23 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>CarouselMode - Swipeable Carousel</h2>
           <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Carousel Mode
+              <ul>
+                <li>Drag gestures for navigation</li>
+                <li>Navigation arrows and indicators</li>
+                <li>Card-style items with profile and contact sections</li>
+                <li>Configurable item dimensions and gap</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 5)} // Use first 5 users for carousel
             className="my-custom-widgemo"
@@ -1853,6 +1933,22 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>Field Type Registry - Swatch Example</h2>
           <p>Testing the field type registry with custom 'swatch' field type for color display.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Grid Mode
+              <ul>
+                <li>Custom 'swatch' field type for color display</li>
+                <li>2-column grid layout</li>
+                <li>Card-style items with color swatch, name, and description</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
@@ -1896,6 +1992,26 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>Hooks System Test - Pre/Post Render</h2>
           <p>Testing preRender and postRender hooks for customization. Check console for hook execution logs.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Grid Mode
+              <ul>
+                <li>preRender and postRender hooks for customization</li>
+                <li>Console logging for hook execution</li>
+                <li>2-column grid with user info cards</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+          </ul>
           <SimplifiedWidgemo
             data={teaserSampleData.slice(0, 4)}
             className="my-custom-widgemo"
@@ -1941,6 +2057,27 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>Performance Monitoring - Pre/Post Render Hooks</h2>
           <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Icon + Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Performance monitoring hooks</li>
+                <li>Table with pagination (5 items per page)</li>
+                <li>Alternating row colors disabled</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Default Layout
+              <ul>
+                <li>Dynamic subtitle with performance metrics</li>
+              </ul>
+            </li>
+            <li>Additional Elements: Live performance metrics display below the component</li>
+          </ul>
           <SimplifiedWidgemo
             id="performance-monitoring-demo"
             data={teaserSampleData.slice(0, 8)}
@@ -1987,8 +2124,8 @@ export const SimplifiedTest: React.FC = () => {
                 <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
                 <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
                 <li><strong>Status:</strong>
-                  {lastRenderMetrics.time > 100 ? '🐌 Slow (>100ms)' :
-                    lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast (<16.67ms)'}
+                  {lastRenderMetrics.time > 100 ? '🐌 Slow ({'>'}100ms)' :
+                    lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast ({'<'}16.67ms)'}
                 </li>
               </ul>
             </div>
@@ -1998,6 +2135,23 @@ export const SimplifiedTest: React.FC = () => {
         <div className="col-12 mb-4">
           <h2>BoardMode - Kanban Board</h2>
           <p>Testing BoardMode with drag-and-drop functionality, swimlanes, and configurable columns for task management.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Board Mode
+              <ul>
+                <li>Drag-and-drop functionality between columns</li>
+                <li>Swimlanes grouped by assignee</li>
+                <li>Configurable columns (To Do, In Progress, Review, Done)</li>
+                <li>Task cards with name and priority fields</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
           <SimplifiedWidgemo
             data={[
               { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
