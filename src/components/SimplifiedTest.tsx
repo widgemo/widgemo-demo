@@ -213,7 +213,7 @@ export const SimplifiedTest: React.FC = () => {
                     {
                       id: 'export',
                       label: 'Export Data',
-                      icon: 'export',
+                      icon: 'download',
                       onTrigger: () => alert('Export clicked!'),
                       iconOnly: true,
                       placement: 'discoverable'
@@ -1781,7 +1781,7 @@ export const SimplifiedTest: React.FC = () => {
                         color: '#0f6005',
                         emptyColor: 'var(--bg-color)',
                         //size: 18,
-                        iconName: 'currency-dollar'
+                        iconName: 'dollar-sign'
                       }
                      },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
