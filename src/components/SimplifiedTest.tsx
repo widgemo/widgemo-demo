@@ -3115,7 +3115,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        maximumFractionDigits: 2,
+                        decimalAlign: true
                       }
                     },
                     { 
@@ -3126,7 +3127,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
+                        maximumFractionDigits: 0,
+                        decimalAlign: true
                       }
                     },
                     { 
@@ -3137,7 +3139,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         minimumFractionDigits: 1,
-                        maximumFractionDigits: 3
+                        maximumFractionDigits: 3,
+                        decimalAlign: true
                       }
                     },
                     { 
@@ -3148,7 +3151,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         minimumFractionDigits: 4,
-                        maximumFractionDigits: 6
+                        maximumFractionDigits: 6,
+                        decimalAlign: true
                       }
                     }
                   ] as ColumnConfig[],
@@ -3216,7 +3220,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         compact: true,
-                        compactThreshold: 1000
+                        compactThreshold: 1000,
+                        decimalAlign: true
                       }
                     },
                     { 
@@ -3227,7 +3232,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         compact: true,
-                        compactThreshold: 1000000
+                        compactThreshold: 1000000,
+                        decimalAlign: true
                       }
                     },
                     { 
@@ -3238,7 +3244,8 @@ export const SimplifiedTest: React.FC = () => {
                       currencyOptions: {
                         currency: 'USD',
                         compact: true,
-                        compactThreshold: 10000000
+                        compactThreshold: 10000000,
+                        decimalAlign: true
                       }
                     }
                   ] as ColumnConfig[],
