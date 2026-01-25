@@ -2804,21 +2804,11 @@ export const SimplifiedTest: React.FC = () => {
                       groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
                         <span style={{ 
                           fontWeight: 'bold', 
-                          color: isExpanded ? '#28a745' : '#007bff',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px'
+                          color: isExpanded ? '#28a745' : '#007bff'
                         }}>
-                          <span style={{ 
-                            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                            transition: 'transform 0.2s ease',
-                            fontSize: '12px'
-                          }}>
-                            ▶
-                          </span>
                           {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
                         </span>
-                      )
+                      ) 
                     },
                     hooks: {
                       onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
@@ -3001,7 +2991,13 @@ export const SimplifiedTest: React.FC = () => {
                   ] as ColumnConfig[],
                   table: {
                     alternatingRows: true,
-                    rowSeparator: false
+                    rowSeparator: false,
+                    grouping: {
+                      groupBy: 'locale',
+                      initialExpanded: false,
+                      showExpandAll: true,
+                      collapsible: true
+                    },
                   }
                 },
                 footer: { enabled: false }
