@@ -1601,6 +1601,85 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
 
+        <div style={{ padding: '20px' }}>
+          <h2>Mode - Table Mode - Conditional Background Colors</h2>
+          <p>Table mode with conditional background colors based on data values, alternating rows disabled.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+              <li>Content Zone: Table Mode
+                <ul>
+                  <li>Alternating Background - Disabled</li>
+                  <li>Conditional Background - Enabled (based on status)</li>
+                  <li>Sortable Columns (Name and Email)</li>
+                  <li>Actions column - enabled</li>
+                  <ul>
+                    <li>View - ghost</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            id='table-conditional-bg-demo'
+            data={teaserSampleData.slice(0, 8)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'User Management',
+                  subtitle: 'Conditional background colors - Active: Green, Inactive: Red'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' },
+                    { field: 'status', header: 'Status', align: 'center' }
+                  ],
+                  tableActions: {
+                    item: [
+                      {
+                        id: 'view',
+                        label: 'View',
+                        icon: 'view',
+                        variant: 'ghost',
+                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                      }
+                    ]
+                  },
+                  actionsColumn: true,
+                  alternatingRows: false,
+                  rowSeparator: true,
+                  conditionalBackgroundColor: (entity: Entity) => {
+                    const status = entity.status as boolean;
+                    if (status === true) {
+                      return '#e8f5e8'; // Light green for active
+                    } else if (status === false) {
+                      return '#ffe8e8'; // Light red for inactive
+                    }
+                    return undefined;
+                  }
+                },
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
+              }
+            }}
+          />
+        </div>
+
         <div className="col-12 mb-4">
           <h2>Image Gallery - FieldRenderer Lightbox</h2>
           <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
