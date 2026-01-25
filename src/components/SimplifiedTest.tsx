@@ -2801,6 +2801,19 @@ export const SimplifiedTest: React.FC = () => {
                     },
                     { 
                       field: 'price', 
+                      header: 'Custom Colors', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        colorize: true,
+                        positiveColor: '#2e7d32', // Dark green
+                        negativeColor: '#d32f2f', // Dark red
+                        zeroColor: '#1976d2'      // Blue
+                      }
+                    },
+                    { 
+                      field: 'price', 
                       header: 'Compact', 
                       type: 'number',
                       renderAs: 'currency',
