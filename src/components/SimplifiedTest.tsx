@@ -1299,6 +1299,14 @@ export const SimplifiedTest: React.FC = () => {
                   table: {
                     sort: { field: 'lastLogin', direction: 'desc' },
                     pagination: { page: 1, pageSize: 5 },
+                    actionsColumn: true,
+                    alternatingRows: true,
+                    rowSeparator: false,
+                    hooks: {
+                      onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
+                    }
+                  },
+                  itemConfig: {
                     actions: {
                       item: [
                         {
@@ -1335,12 +1343,6 @@ export const SimplifiedTest: React.FC = () => {
                           handler: (context: ActionContext) => alert(`Share ${context.entity?.name}`)
                         }
                       ]
-                    },
-                    actionsColumn: true,
-                    alternatingRows: true,
-                    rowSeparator: false,
-                    hooks: {
-                      onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
                     }
                   }
                 },
@@ -1462,36 +1464,38 @@ export const SimplifiedTest: React.FC = () => {
                   table: {
                     actionsColumn: true,
                     alternatingRows: false,
-                    rowSeparator: true,
-                    actions: {
-                    item: [
-                      {
-                        id: 'view',
-                        label: 'View',
-                        icon: 'view',
-                        variant: 'ghost',
-                        placement: 'always',
-                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'edit',
-                        label: 'Edit',
-                        icon: 'edit',
-                        variant: 'primary',
-                        placement: 'always',
-                        iconOnly: true,
-                        handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'delete',
-                        label: 'Delete',
-                        icon: 'trash',
-                        variant: 'danger',
-                        placement: 'menu',
-                        handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
-                      }
-                    ]
+                    rowSeparator: true
                   },
+                  itemConfig: {
+                    actions: {
+                      item: [
+                        {
+                          id: 'view',
+                          label: 'View',
+                          icon: 'view',
+                          variant: 'ghost',
+                          placement: 'always',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'edit',
+                          label: 'Edit',
+                          icon: 'edit',
+                          variant: 'primary',
+                          placement: 'always',
+                          iconOnly: true,
+                          handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'delete',
+                          label: 'Delete',
+                          icon: 'trash',
+                          variant: 'danger',
+                          placement: 'menu',
+                          handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                        }
+                      ]
+                    }
                   }
                 },
                 footer: { 
@@ -1551,7 +1555,9 @@ export const SimplifiedTest: React.FC = () => {
                   table: {
                     actionsColumn: true,
                     alternatingRows: false,
-                    rowSeparator: false,
+                    rowSeparator: false
+                  },
+                  itemConfig: {
                     actions: {
                       item: [
                         {
@@ -1755,18 +1761,7 @@ export const SimplifiedTest: React.FC = () => {
                   table: {
                     actionsColumn: true,
                     alternatingRows: false,
-                    rowSeparator: true,
-                    actions: {
-                      item: [
-                        {
-                          id: 'view',
-                          label: 'View',
-                          icon: 'view',
-                          variant: 'ghost',
-                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                        }
-                      ]
-                    }
+                    rowSeparator: true
                   },
                   itemConfig: {
                     conditionalBorder: (entity: Entity) => {
@@ -1781,6 +1776,17 @@ export const SimplifiedTest: React.FC = () => {
                         default:
                           return undefined;
                       }
+                    },
+                    actions: {
+                      item: [
+                        {
+                          id: 'view',
+                          label: 'View',
+                          icon: 'view',
+                          variant: 'ghost',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        }
+                      ]
                     }
                   }
                 },
