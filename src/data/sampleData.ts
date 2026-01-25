@@ -28,6 +28,14 @@ export const teaserSampleData: SampleData[] = [
   { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13', src: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face' },
 ];
 
+// Sample data for link testing
+export const linkTestData: SampleData[] = [
+  { id: 1, name: 'Google', url: 'https://google.com', description: 'Search Engine' },
+  { id: 2, name: 'GitHub', url: 'https://github.com', description: 'Code Repository' },
+  { id: 3, name: 'Stack Overflow', url: 'https://stackoverflow.com', description: 'Developer Q&A' },
+  { id: 4, name: 'MDN Web Docs', url: 'https://developer.mozilla.org', description: 'Web Documentation' },
+];
+
 // Sample data for image gallery
 export const imageGalleryData: SampleData[] = [
   { id: 1, name: 'Mountain Landscape', src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop', category: 'Nature', description: 'Beautiful mountain vista' },
@@ -945,6 +953,39 @@ export const galleryConfigs: Array<{
       },
       description: 'Table with large rounded images using contain fit, showing full image content with borders',
       data: imageGalleryData.slice(0, 4)
+    },
+    {
+      id: 'link-rendering',
+      name: 'Link Rendering Test',
+      mode: 'table',
+      config: {
+        title: 'Clickable Links',
+        mode: 'table',
+        dataSource: { type: 'static' },
+        fields: [
+          { name: 'id', label: 'ID', type: 'number' },
+          { name: 'name', label: 'Name', type: 'text' },
+          { 
+            name: 'url', 
+            label: 'URL', 
+            type: 'text',
+            renderAs: 'link',
+            linkOptions: {
+              newTab: true,
+              externalWarning: true
+            }
+          },
+          { name: 'description', label: 'Description', type: 'text' },
+        ],
+        actions: {
+          definitions: [
+            { id: 'refresh' },
+          ]
+        },
+        header: { always: ['refresh'] }
+      },
+      description: 'Table demonstrating clickable link rendering with external link warnings',
+      data: linkTestData
     },
   ];
 

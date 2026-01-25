@@ -135,7 +135,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'FieldConfig', property: 'options', type: 'Array<{ value: string | number | boolean; label: string }>', status: 'implemented', description: 'Options for select/relation', usage: 'For select fields.', example: '[{ value: "active", label: "Active" }]' },
   { category: 'FieldConfig', property: 'validation', type: 'Object', status: 'not-implemented', description: 'Validation rules', usage: 'Not implemented: Property exists but no validation logic.', example: '{ required: true }' },
   { category: 'FieldConfig', property: 'render', type: 'Object', status: 'not-implemented', description: 'Custom rendering', usage: 'Not implemented: Property exists but not used.', example: '{ component: MyComponent }' },
-  { category: 'FieldConfig', property: 'renderAs', type: "'text' | 'boolean' | 'select' | 'custom'", status: 'not-implemented', description: 'Render type', usage: 'Defaults to type.', example: "'boolean'" },
+  { category: 'FieldConfig', property: 'renderAs', type: "'text' | 'boolean' | 'select' | 'custom' | 'link'", status: 'implemented', description: 'Render type', usage: 'Defaults to type. Use "link" to render text fields as clickable links.', example: "'link'" },
   { category: 'FieldConfig', property: 'booleanTrueLabel', type: 'string', status: 'implemented', description: 'True label for booleans', usage: 'Used in rendering.', example: '"Yes"' },
   { category: 'FieldConfig', property: 'booleanFalseLabel', type: 'string', status: 'implemented', description: 'False label for booleans', usage: 'Used in rendering.', example: '"No"' },
   { category: 'FieldConfig', property: 'sortable', type: 'boolean', status: 'not-implemented', description: 'Sortable flag', usage: 'Flag exists, but sorting UI incomplete.', example: 'true' },
@@ -145,6 +145,13 @@ export const widgemoConfigProperties: Array<{
   { category: 'FieldConfig', property: 'width', type: 'number | string', status: 'not-implemented', description: 'Width in table', usage: 'Not implemented in table view.', example: '100' },
   { category: 'FieldConfig', property: 'align', type: "'left' | 'center' | 'right'", status: 'implemented', description: 'Text alignment', usage: 'Applied in table cells.', example: "'center'" },
   { category: 'FieldConfig', property: 'showLabel', type: 'boolean', status: 'implemented', description: 'Show label in cards', usage: 'For card views.', example: 'true' },
+  { category: 'FieldConfig', property: 'linkOptions', type: 'Object', status: 'implemented', description: 'Link rendering options', usage: 'Used when renderAs is "link".', example: '{ newTab: true, externalWarning: true }', isComplexType: true, complexTypeSection: 'LinkOptions' },
+
+  // LinkOptions properties
+  { category: 'LinkOptions', property: 'text', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom link text', usage: 'If not provided, uses field value.', example: '"Click here"' },
+  { category: 'LinkOptions', property: 'newTab', type: 'boolean', status: 'implemented', description: 'Open in new tab', usage: 'Adds target="_blank" and rel attributes.', example: 'true' },
+  { category: 'LinkOptions', property: 'externalWarning', type: 'boolean', status: 'implemented', description: 'Show external link warning', usage: 'Adds visual indicator for external links.', example: 'true' },
+  { category: 'LinkOptions', property: 'url', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom URL', usage: 'If different from field value.', example: '"https://example.com"' },
 
   // MediaFieldConfig properties (for mediaConfig.fields array)
   { category: 'MediaFieldConfig', property: 'field', type: 'string', status: 'implemented', description: 'Field name/path to extract media source', usage: 'Dot notation path to media field in data items.', example: '"src"' },

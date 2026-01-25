@@ -2053,6 +2053,80 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
 
+        <div className="col-12 mb-4">
+          <h2>Link Rendering</h2>
+          <p>Text fields rendered as clickable links with external link warnings.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>URL field rendered as link with newTab and externalWarning</li>
+                <li>Automatic URL detection</li>
+                <li>External link indicator (↗)</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='link-rendering-demo'
+            data={[
+              { id: 1, name: 'Google', url: 'https://google.com', description: 'Search Engine' },
+              { id: 2, name: 'GitHub', url: 'https://github.com', description: 'Code Repository' },
+              { id: 3, name: 'Stack Overflow', url: 'https://stackoverflow.com', description: 'Developer Q&A' },
+              { id: 4, name: 'MDN Web Docs', url: 'https://developer.mozilla.org', description: 'Web Documentation' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Clickable Links Demo',
+                  subtitle: 'Text fields rendered as links with external warnings',
+                  actions: [
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '60px' },
+                    { field: 'name', header: 'Name', type: 'text' },
+                    { 
+                      field: 'url', 
+                      header: 'URL', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        newTab: true,
+                        externalWarning: true
+                      }
+                    },
+                    { field: 'description', header: 'Description', type: 'text' }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
       </div>
     </div>
   );
