@@ -1161,6 +1161,19 @@ export const SimplifiedTest: React.FC = () => {
                           ]
                         }
                       ]
+                    },
+                    conditionalBorder: (entity: Entity) => {
+                      const role = entity.role as string;
+                      switch (role) {
+                        case 'Manager':
+                          return { color: '#007bff', thickness: 3, placement: 'all' };
+                        case 'Developer':
+                          return { color: '#28a745', thickness: 2, placement: 'bottom' };
+                        case 'Analyst':
+                          return { color: '#dc3545', thickness: 2, placement: 'top' };
+                        default:
+                          return undefined;
+                      }
                     }
                   }
                 },
@@ -1281,50 +1294,52 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
                   ] as ColumnConfig[],
-                  sort: { field: 'lastLogin', direction: 'desc' },
-                  pagination: { page: 1, pageSize: 5 },
-                  tableActions: {
-                    item: [
-                      {
-                        id: 'edit',
-                        label: 'Edit',
-                        icon: 'edit',
-                        variant: 'ghost',
-                        placement: 'always',
-                        iconOnly: true,
-                        handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'view',
-                        label: 'View Details',
-                        icon: 'eye',
-                        variant: 'secondary',
-                        placement: 'discoverable',
-                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'delete',
-                        label: 'Delete',
-                        icon: 'delete',
-                        variant: 'danger',
-                        placement: 'menu',
-                        handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
-                      },
-                      {
-                        id: 'share',
-                        label: 'Share',
-                        icon: 'share',
-                        variant: 'primary',
-                        placement: 'menu',
-                        handler: (context: ActionContext) => alert(`Share ${context.entity?.name}`)
-                      }
-                    ]
-                  },
-                  actionsColumn: true,
-                  alternatingRows: true,
-                  rowSeparator: false,
-                  hooks: {
-                    onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
+                  table: {
+                    sort: { field: 'lastLogin', direction: 'desc' },
+                    pagination: { page: 1, pageSize: 5 },
+                    actions: {
+                      item: [
+                        {
+                          id: 'edit',
+                          label: 'Edit',
+                          icon: 'edit',
+                          variant: 'ghost',
+                          placement: 'always',
+                          iconOnly: true,
+                          handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'view',
+                          label: 'View Details',
+                          icon: 'eye',
+                          variant: 'secondary',
+                          placement: 'discoverable',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'delete',
+                          label: 'Delete',
+                          icon: 'delete',
+                          variant: 'danger',
+                          placement: 'menu',
+                          handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'share',
+                          label: 'Share',
+                          icon: 'share',
+                          variant: 'primary',
+                          placement: 'menu',
+                          handler: (context: ActionContext) => alert(`Share ${context.entity?.name}`)
+                        }
+                      ]
+                    },
+                    actionsColumn: true,
+                    alternatingRows: true,
+                    rowSeparator: false,
+                    hooks: {
+                      onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`)
+                    }
                   }
                 },
                 footer: { 
@@ -1470,9 +1485,11 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     ]
                   },
-                  actionsColumn: true,
-                  alternatingRows: false,
-                  rowSeparator: true
+                  table: {
+                    actionsColumn: true,
+                    alternatingRows: false,
+                    rowSeparator: true
+                  }
                 },
                 footer: { 
                   enabled: true, 
@@ -1528,21 +1545,23 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'role', header: 'Role', align: 'center' },
                     { field: 'status', header: 'Status', align: 'center' }
                   ],
-                  tableActions: {
-                    item: [
-                      {
-                        id: 'view',
-                        label: 'View',
-                        icon: 'view',
-                        variant: 'ghost',
-                        // placement: 'always',
-                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                      }
-                    ]
-                  },
-                  actionsColumn: true,
-                  alternatingRows: false,
-                  rowSeparator: false
+                  table: {
+                    actionsColumn: true,
+                    alternatingRows: false,
+                    rowSeparator: false,
+                    actions: {
+                      item: [
+                        {
+                          id: 'view',
+                          label: 'View',
+                          icon: 'view',
+                          variant: 'ghost',
+                          // placement: 'always',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        }
+                      ]
+                    }
+                  }
                 },
                 footer: { 
                   enabled: true, 
@@ -1647,28 +1666,119 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'role', header: 'Role', align: 'center' },
                     { field: 'status', header: 'Status', align: 'center' }
                   ],
-                  tableActions: {
-                    item: [
-                      {
-                        id: 'view',
-                        label: 'View',
-                        icon: 'view',
-                        variant: 'ghost',
-                        handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-                      }
-                    ]
-                  },
-                  actionsColumn: true,
-                  alternatingRows: false,
-                  rowSeparator: true,
-                  conditionalBackgroundColor: (entity: Entity) => {
-                    const status = entity.status as boolean;
-                    if (status === true) {
-                      return { backgroundColor: '#e8f5e8', color: '#2d5a2d' }; // Light green bg with dark green text
-                    } else if (status === false) {
-                      return { backgroundColor: '#ffe8e8', color: '#8b1a1a' }; // Light red bg with dark red text
+                  table: {
+                    actionsColumn: true,
+                    alternatingRows: false,
+                    rowSeparator: true,
+                    actions: {
+                      item: [
+                        {
+                          id: 'view',
+                          label: 'View',
+                          icon: 'view',
+                          variant: 'ghost',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        }
+                      ]
                     }
-                    return undefined;
+                  },
+                  itemConfig: {
+                    conditionalBackgroundColor: (entity: Entity) => {
+                      const status = entity.status as boolean;
+                      if (status === true) {
+                        return { backgroundColor: '#e8f5e8', color: '#2d5a2d' }; // Light green bg with dark green text
+                      } else if (status === false) {
+                        return { backgroundColor: '#ffe8e8', color: '#8b1a1a' }; // Light red bg with dark red text
+                      }
+                      return undefined;
+                    }
+                  }
+                },
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
+              }
+            }}
+          />
+        </div>
+
+        <div style={{ padding: '20px' }}>
+          <h2>Mode - Table Mode - Conditional Borders</h2>
+          <p>Table mode with conditional borders based on data values, alternating rows disabled.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+              <li>Content Zone: Table Mode
+                <ul>
+                  <li>Alternating Background - Disabled</li>
+                  <li>Conditional Border - Enabled (based on role)</li>
+                  <li>Sortable Columns (Name and Email)</li>
+                  <li>Actions column - enabled</li>
+                  <ul>
+                    <li>View - ghost</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            id='table-conditional-border-demo'
+            data={teaserSampleData.slice(0, 8)}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'User Management',
+                  subtitle: 'Conditional borders - Manager: Blue left border, Developer: Green top border, Analyst: Red right border'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Name', sortable: true },
+                    { field: 'email', header: 'Email', sortable: true },
+                    { field: 'role', header: 'Role', align: 'center' },
+                    { field: 'status', header: 'Status', align: 'center' }
+                  ],
+                  table: {
+                    actionsColumn: true,
+                    alternatingRows: false,
+                    rowSeparator: true,
+                    actions: {
+                      item: [
+                        {
+                          id: 'view',
+                          label: 'View',
+                          icon: 'view',
+                          variant: 'ghost',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        }
+                      ]
+                    }
+                  },
+                  itemConfig: {
+                    conditionalBorder: (entity: Entity) => {
+                      const role = entity.role as string;
+                      switch (role) {
+                        case 'Manager':
+                          return { color: '#007bff', thickness: 3, placement: 'left' };
+                        case 'Developer':
+                          return { color: '#28a745', thickness: 2, placement: 'top' };
+                        case 'Analyst':
+                          return { color: '#dc3545', thickness: 4, placement: 'right' };
+                        default:
+                          return undefined;
+                      }
+                    }
                   }
                 },
                 footer: { 
@@ -2214,14 +2324,16 @@ export const SimplifiedTest: React.FC = () => {
                 content: {
                   enabled: true,
                   mode: 'table',
-                  rowSeparator: false,
                   columns: [
                     { field: 'name', header: 'Name', sortable: true },
                     { field: 'email', header: 'Email', sortable: true },
                     { field: 'role', header: 'Role', align: 'center' },
                     { field: 'department', header: 'Department', sortable: true }
                   ],
-                  pagination: { page: 1, pageSize: 5 }
+                  table: {
+                    rowSeparator: false,
+                    pagination: { page: 1, pageSize: 5 }
+                  }
                 },
                 footer: {
                   enabled: true,
@@ -2390,8 +2502,10 @@ export const SimplifiedTest: React.FC = () => {
                     },
                     { field: 'description', header: 'Description', type: 'text' }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2494,8 +2608,10 @@ export const SimplifiedTest: React.FC = () => {
                     },
                     { field: 'category', header: 'Category', type: 'text', align: 'center' }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2576,8 +2692,10 @@ export const SimplifiedTest: React.FC = () => {
                       align: 'center'
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2695,8 +2813,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2752,8 +2872,10 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'currency', header: 'Code', type: 'text', align: 'center', width: '60px' },
                     { field: 'locale', header: 'Locale', type: 'text', align: 'center' }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2828,8 +2950,10 @@ export const SimplifiedTest: React.FC = () => {
                     },
                     { field: 'position', header: 'Position', type: 'text', align: 'center' }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -2915,8 +3039,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -3004,8 +3130,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -3092,8 +3220,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -3169,8 +3299,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -3250,8 +3382,10 @@ export const SimplifiedTest: React.FC = () => {
                       width: '80px'
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
@@ -3335,8 +3469,10 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     }
                   ] as ColumnConfig[],
-                  alternatingRows: true,
-                  rowSeparator: false
+                  table: {
+                    alternatingRows: true,
+                    rowSeparator: false
+                  }
                 },
                 footer: { enabled: false }
               }
