@@ -1629,7 +1629,7 @@ export const SimplifiedTest: React.FC = () => {
                   mode: 'table',
                   columns: [
                     { field: 'name', header: 'Task Name', sortable: true },
-                    { field: 'progress', header: 'Progress', type: 'progress', progressOptions: { color: '#28a745', showPercentage: true } },
+                    { field: 'progress', header: 'Progress', type: 'number', renderAs: 'progress', progressOptions: { color: '#28a745', showPercentage: true } },
                     { field: 'status', header: 'Status', align: 'center' },
                     { field: 'priority', header: 'Priority', align: 'center' }
                   ] as ColumnConfig[]
@@ -1668,7 +1668,8 @@ export const SimplifiedTest: React.FC = () => {
                     { 
                       field: 'progress', 
                       header: 'Progress Bar', 
-                      type: 'progress'
+                      type: 'number',
+                      renderAs: 'progress'
                     }
                   ] as ColumnConfig[]
                 },
@@ -1708,7 +1709,8 @@ export const SimplifiedTest: React.FC = () => {
                       field: 'progress', 
                       sortable: true,
                       header: 'Progress Bar', 
-                      type: 'progress',
+                      type: 'number',
+                      renderAs: 'progress',
                       progressOptions: {
                         color: (entity: TaskEntity) => {
                           switch (entity.priority) {
@@ -1757,7 +1759,7 @@ export const SimplifiedTest: React.FC = () => {
                   mode: 'table',
                   columns: [
                     { field: 'name', header: 'Product Name', sortable: true },
-                    { field: 'rating', header: 'Rating', type: 'rating', align: 'center',
+                    { field: 'rating', header: 'Rating', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         //max: 8,
                         //color: '#ff5107',
@@ -1766,7 +1768,7 @@ export const SimplifiedTest: React.FC = () => {
                         //iconName: 'star'
                       }
                      },
-                    { field: 'hearts', header: 'Hearts', type: 'rating', align: 'center',
+                    { field: 'hearts', header: 'Hearts', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         max: 5,
                         color: '#e91e63',
@@ -1775,7 +1777,7 @@ export const SimplifiedTest: React.FC = () => {
                         iconName: 'heart'
                       }
                      },
-                     { field: 'cost', header: 'Cost', type: 'rating', align: 'center',
+                     { field: 'cost', header: 'Cost', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         max: 5,
                         color: '#0f6005',
