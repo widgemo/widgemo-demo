@@ -2785,7 +2785,7 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'name', header: 'Full Name', sortable: true, width: '200px', type: 'text' },
                     { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
-                    { field: 'role', header: 'Role', sortable: true, align: 'center', type: 'text' },
+                    { field: 'role', header: 'Role', sortable: true, align: 'left', type: 'text' },
                     { field: 'department', header: 'Department', sortable: true, type: 'text' },
                     { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
