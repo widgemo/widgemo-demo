@@ -1636,7 +1636,7 @@ export const SimplifiedTest: React.FC = () => {
                 header: {
                   enabled: true,
                   title: 'User Management',
-                  subtitle: 'Conditional background colors - Active: Green, Inactive: Red'
+                  subtitle: 'Conditional background colors with matching text colors - Active: Green, Inactive: Red'
                 },
                 content: {
                   enabled: true,
@@ -1664,9 +1664,9 @@ export const SimplifiedTest: React.FC = () => {
                   conditionalBackgroundColor: (entity: Entity) => {
                     const status = entity.status as boolean;
                     if (status === true) {
-                      return '#e8f5e8'; // Light green for active
+                      return { backgroundColor: '#e8f5e8', color: '#2d5a2d' }; // Light green bg with dark green text
                     } else if (status === false) {
-                      return '#ffe8e8'; // Light red for inactive
+                      return { backgroundColor: '#ffe8e8', color: '#8b1a1a' }; // Light red bg with dark red text
                     }
                     return undefined;
                   }
