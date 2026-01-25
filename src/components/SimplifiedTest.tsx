@@ -1508,6 +1508,106 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div style={{ padding: '20px' }}>
+          <h2>Mode - Table Mode - Groupable Columns</h2>
+          <p>Table mode with groupable columns. Hover over column headers to see grouping options, click to group/ungroup.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Columns: name (groupable), email (groupable), role (groupable), department, status, lastLogin</li>
+                <li>Sortable columns</li>
+                <li>Groupable columns show bracket icon on hover</li>
+                <li>Currently grouped column shows filled bracket icon</li>
+                <li>Click column header to toggle grouping</li>
+                <li>Alternating row backgrounds</li>
+                <li>Row separators</li>
+                <li>Actions column</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Enabled with dynamic subtitle</li>
+          </ul>
+          <SimplifiedWidgemo
+            data={teaserSampleData.slice(0, 12)} // More items to show grouping better
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Table Mode - Groupable Columns',
+                  subtitle: 'Hover over groupable columns to see grouping options',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Full Name', sortable: true, groupable: true, width: '200px', type: 'text' },
+                    { field: 'email', header: 'Email Address', sortable: true, groupable: true, width: '250px', type: 'email' },
+                    { field: 'role', header: 'Role', sortable: true, groupable: true, align: 'center', type: 'text' },
+                    { field: 'department', header: 'Department', sortable: true, type: 'text' },
+                    { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
+                    { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
+                  ] as ColumnConfig[],
+                  table: {
+                    sort: { field: 'lastLogin', direction: 'desc' },
+                    pagination: { page: 1, pageSize: 10 },
+                    actionsColumn: true,
+                    alternatingRows: true,
+                    rowSeparator: true,
+                    hooks: {
+                      onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
+                      onGroup: (field: string | null) => console.log(`Group by ${field || 'none'}`)
+                    }
+                  },
+                  itemConfig: {
+                    actions: {
+                      item: [
+                        {
+                          id: 'edit',
+                          label: 'Edit',
+                          icon: 'edit',
+                          variant: 'ghost',
+                          placement: 'always',
+                          iconOnly: true,
+                          handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'delete',
+                          label: 'Delete',
+                          icon: 'trash',
+                          variant: 'danger',
+                          placement: 'menu',
+                          handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                        }
+                      ]
+                    }
+                  }
+                },
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
+              }
+            }}
+          />
+        </div>
+
+        <div style={{ padding: '20px' }}>
           <h2>Mode - Table Mode - Plain</h2>
           <p>Table mode with no row markings, sortable columns, and item actions.</p>
           <ul>
@@ -2786,7 +2886,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'name', header: 'Full Name', sortable: true, width: '200px', type: 'text' },
                     { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
                     { field: 'role', header: 'Role', sortable: true, align: 'left', type: 'text' },
-                    { field: 'department', header: 'Department', sortable: true, type: 'text' },
+                    { field: 'department', header: 'Department', sortable: true, groupable: true, type: 'text' },
                     { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
                     { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
                   ] as ColumnConfig[],
