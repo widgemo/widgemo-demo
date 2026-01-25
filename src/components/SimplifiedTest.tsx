@@ -79,7 +79,7 @@ registerHook({
 
 // Register FontAwesome versions of common icons to override widgemo-core defaults
 const iconNames = [
-  'database', 'add', 'plus', 'refresh', 'sync', 'export', 'download', 'settings',
+  'database', 'add', 'plus', 'refresh', 'sync', 'download', 'settings',
   'delete', 'trash', 'edit', 'view', 'search', 'filter', 'sort', 'chevron-up',
   'chevron-down', 'users', 'teamspeak', 'clock', 'square', 'html5', 'centercode',
   'puzzle-piece', 'chart-line', 'chart-bar', 'chart-pie', 'table', 'th', 'columns',
