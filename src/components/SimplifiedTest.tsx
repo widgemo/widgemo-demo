@@ -1170,9 +1170,9 @@ export const SimplifiedTest: React.FC = () => {
                         case 'Manager':
                           return { color: '#007bff', thickness: 3, placement: 'all' };
                         case 'Developer':
-                          return { color: '#28a745', thickness: 2, placement: 'bottom' };
+                          return { color: '#28a745', thickness: 4 };
                         case 'Analyst':
-                          return { color: '#dc3545', thickness: 2, placement: 'top' };
+                          return { color: '#dc3545', thickness: 6, placement: 'top' };
                         default:
                           return undefined;
                       }
