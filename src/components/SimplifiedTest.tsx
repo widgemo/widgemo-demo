@@ -1678,7 +1678,9 @@ export const SimplifiedTest: React.FC = () => {
                   table: {
                     actionsColumn: true,
                     alternatingRows: false,
-                    rowSeparator: true,
+                    rowSeparator: true
+                  },
+                  itemConfig: {
                     actions: {
                       item: [
                         {
@@ -1689,9 +1691,7 @@ export const SimplifiedTest: React.FC = () => {
                           handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
                         }
                       ]
-                    }
-                  },
-                  itemConfig: {
+                    },
                     conditionalBackgroundColor: (entity: Entity) => {
                       const status = entity.status as boolean;
                       if (status === true) {
@@ -1768,11 +1768,11 @@ export const SimplifiedTest: React.FC = () => {
                       const role = entity.role as string;
                       switch (role) {
                         case 'Manager':
-                          return { color: '#007bff', thickness: 3, placement: 'left' };
+                          return { color: '#007bff', thickness: 5 };
                         case 'Developer':
-                          return { color: '#28a745', thickness: 2, placement: 'top' };
+                          return { color: '#28a745', thickness: 5 };
                         case 'Analyst':
-                          return { color: '#dc3545', thickness: 4, placement: 'right' };
+                          return { color: '#dc3545', thickness: 5, placement: 'right' };
                         default:
                           return undefined;
                       }
@@ -2080,7 +2080,7 @@ export const SimplifiedTest: React.FC = () => {
                         max: 5,
                         color: '#0f6005',
                         emptyColor: 'var(--bg-color)',
-                        //size: 18,
+                        size: 20,
                         iconName: 'dollar-sign'
                       }
                      },
@@ -2355,7 +2355,7 @@ export const SimplifiedTest: React.FC = () => {
             }}
           />
           {lastRenderMetrics && (
-            <div className="mt-3 p-3 bg-light rounded">
+            <div className="mt-3 p-3 bg-dark text-white rounded">
               <h6>Live Performance Metrics:</h6>
               <ul className="mb-0">
                 <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
