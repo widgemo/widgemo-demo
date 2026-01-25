@@ -102,6 +102,23 @@ interface TaskEntity {
   size: 'small' | 'medium' | 'large';
 }
 
+interface LinkDemoEntity {
+  id: number;
+  name: string;
+  url: string;
+  displayText: string;
+  category: 'internal' | 'external';
+}
+
+interface ActionLinkEntity {
+  id: number;
+  name: string;
+  action: string;
+  target: string;
+  url: string;
+  text: string;
+}
+
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
   // Check for pending metrics after component mounts
@@ -2273,6 +2290,192 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     },
                     { field: 'description', header: 'Description', type: 'text' }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Link Rendering - Custom Text and URLs</h2>
+          <p>Examples showing custom link text, function-based URLs, and various link options combinations.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Demonstrates all linkOptions: text, url, newTab, externalWarning</li>
+                <li>Custom text different from URL</li>
+                <li>Function-based dynamic URLs and text</li>
+                <li>Various combinations of newTab and externalWarning</li>
+                <li>Internal vs external link handling</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='link-options-demo'
+            data={[
+              { id: 1, name: 'Google Search', url: 'https://google.com', displayText: 'Search the Web', category: 'external' },
+              { id: 2, name: 'GitHub Profile', url: 'https://github.com', displayText: 'View Code', category: 'external' },
+              { id: 3, name: 'Local Docs', url: '/docs', displayText: 'Documentation', category: 'internal' },
+              { id: 4, name: 'Company Site', url: 'https://example.com', displayText: 'Visit Company', category: 'external' },
+              { id: 5, name: 'Dashboard', url: '/dashboard', displayText: 'Go to Dashboard', category: 'internal' },
+              { id: 6, name: 'API Reference', url: 'https://api.example.com/docs', displayText: 'API Docs', category: 'external' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Advanced Link Options Demo',
+                  subtitle: 'Custom text, dynamic URLs, and link behaviors'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '60px' },
+                    { field: 'name', header: 'Name', type: 'text' },
+                    { 
+                      field: 'url', 
+                      header: 'Basic Link', 
+                      type: 'text',
+                      renderAs: 'link'
+                    },
+                    { 
+                      field: 'url', 
+                      header: 'Custom Text Link', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        text: 'Click Here',
+                        newTab: true
+                      }
+                    },
+                    { 
+                      field: 'displayText', 
+                      header: 'Dynamic Text', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        url: (entity: LinkDemoEntity) => entity.url,
+                        newTab: (entity: LinkDemoEntity) => entity.category === 'external'
+                      }
+                    },
+                    { 
+                      field: 'url', 
+                      header: 'External Warning', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        externalWarning: true,
+                        newTab: true
+                      }
+                    },
+                    { 
+                      field: 'url', 
+                      header: 'Function URL', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        text: (entity: LinkDemoEntity) => `${entity.name} (${entity.category})`,
+                        url: (entity: LinkDemoEntity) => entity.url,
+                        newTab: (entity: LinkDemoEntity) => entity.category === 'external',
+                        externalWarning: (entity: LinkDemoEntity) => entity.category === 'external'
+                      }
+                    },
+                    { field: 'category', header: 'Category', type: 'text', align: 'center' }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Link Rendering - Action Links</h2>
+          <p>Examples of links that perform actions rather than navigation, using custom URLs and text.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Action links with custom text and URLs</li>
+                <li>Links that trigger JavaScript actions</li>
+                <li>Mixed internal and external link behaviors</li>
+                <li>Contextual link options based on data</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='action-links-demo'
+            data={[
+              { id: 1, name: 'Edit Profile', action: 'edit', target: 'profile', url: '#edit-profile', text: 'Edit' },
+              { id: 2, name: 'Delete Item', action: 'delete', target: 'item', url: '#delete', text: 'Delete' },
+              { id: 3, name: 'Download File', action: 'download', target: 'report.pdf', url: '/api/download/report.pdf', text: 'Download' },
+              { id: 4, name: 'Send Email', action: 'email', target: 'user@example.com', url: 'mailto:user@example.com', text: 'Email User' },
+              { id: 5, name: 'Call Phone', action: 'call', target: '+1234567890', url: 'tel:+1234567890', text: 'Call Now' },
+              { id: 6, name: 'Open Chat', action: 'chat', target: 'support', url: '#chat-support', text: 'Start Chat' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Action Links Demo',
+                  subtitle: 'Links that perform actions or use special protocols'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '60px' },
+                    { field: 'name', header: 'Action', type: 'text' },
+                    { field: 'action', header: 'Type', type: 'text', align: 'center' },
+                    { 
+                      field: 'url', 
+                      header: 'Direct Link', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        newTab: (entity: ActionLinkEntity) => entity.action === 'download'
+                      }
+                    },
+                    { 
+                      field: 'text', 
+                      header: 'Custom Action Link', 
+                      type: 'text',
+                      renderAs: 'link',
+                      linkOptions: {
+                        url: (entity: ActionLinkEntity) => entity.url,
+                        text: (entity: ActionLinkEntity) => entity.text,
+                        newTab: (entity: ActionLinkEntity) => ['download', 'email'].includes(entity.action),
+                        externalWarning: (entity: ActionLinkEntity) => entity.action === 'download'
+                      }
+                    },
+                    { 
+                      field: 'target', 
+                      header: 'Target', 
+                      type: 'text',
+                      align: 'center'
+                    }
                   ] as ColumnConfig[],
                   alternatingRows: true,
                   rowSeparator: false
