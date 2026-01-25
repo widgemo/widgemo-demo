@@ -1161,7 +1161,9 @@ export const SimplifiedTest: React.FC = () => {
                           ]
                         }
                       ]
-                    },
+                    }
+                  },
+                  itemConfig: {
                     conditionalBorder: (entity: Entity) => {
                       const role = entity.role as string;
                       switch (role) {
@@ -1456,7 +1458,12 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'role', header: 'Role', align: 'center' },
                     { field: 'status', header: 'Status', align: 'center' }
                   ],
-                  tableActions: {
+                  
+                  table: {
+                    actionsColumn: true,
+                    alternatingRows: false,
+                    rowSeparator: true,
+                    actions: {
                     item: [
                       {
                         id: 'view',
@@ -1485,10 +1492,6 @@ export const SimplifiedTest: React.FC = () => {
                       }
                     ]
                   },
-                  table: {
-                    actionsColumn: true,
-                    alternatingRows: false,
-                    rowSeparator: true
                   }
                 },
                 footer: { 
