@@ -119,6 +119,26 @@ interface ActionLinkEntity {
   text: string;
 }
 
+interface CurrencyDemoEntity {
+  id: number;
+  name: string;
+  price: number;
+  currency: string;
+  locale: string;
+  country?: string;
+  amount?: number;
+  description?: string;
+  position?: string;
+  minFrac?: number;
+  maxFrac?: number;
+  threshold?: number;
+  category?: string;
+  product?: string;
+  region?: string;
+  discount?: number;
+  value?: number;
+}
+
 export const SimplifiedTest: React.FC = () => {
   const [lastRenderMetrics, setLastRenderMetrics] = React.useState<{ time: number; count: number } | null>(null);
   // Check for pending metrics after component mounts
@@ -2475,6 +2495,678 @@ export const SimplifiedTest: React.FC = () => {
                       header: 'Target', 
                       type: 'text',
                       align: 'center'
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field Rendering</h2>
+          <p>Examples demonstrating currency field formatting with various options and locales.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Title + Subtitle</li>
+              </ul>
+            </li>
+            <li>Content Zone: Table Mode
+              <ul>
+                <li>Demonstrates all currencyOptions: currency, locale, decimals, symbol positioning</li>
+                <li>Color coding for positive/negative values</li>
+                <li>Compact notation for large numbers</li>
+                <li>Different locales and currency formats</li>
+              </ul>
+            </li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-examples-demo'
+            data={[
+              { id: 1, name: 'US Product', price: 29.99, currency: 'USD', locale: 'en-US' },
+              { id: 2, name: 'EU Product', price: 24.50, currency: 'EUR', locale: 'de-DE' },
+              { id: 3, name: 'UK Product', price: 19.99, currency: 'GBP', locale: 'en-GB' },
+              { id: 4, name: 'JP Product', price: 3500, currency: 'JPY', locale: 'ja-JP' },
+              { id: 5, name: 'Large Amount', price: 1500000, currency: 'USD', locale: 'en-US' },
+              { id: 6, name: 'Negative Amount', price: -45.67, currency: 'USD', locale: 'en-US' },
+              { id: 7, name: 'Zero Amount', price: 0, currency: 'USD', locale: 'en-US' },
+              { id: 8, name: 'Fractional Price', price: 12.3456, currency: 'USD', locale: 'en-US' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Currency Field Examples',
+                  subtitle: 'Various currency formatting options and locales'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '60px' },
+                    { field: 'name', header: 'Product', type: 'text' },
+                    { 
+                      field: 'price', 
+                      header: 'Default USD', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        locale: 'en-US'
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: 'EUR (Germany)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        locale: (entity: CurrencyDemoEntity) => entity.locale
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: 'No Symbol', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        showSymbol: false,
+                        symbolPosition: 'suffix'
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: 'Colorized', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        colorize: true
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: 'Compact', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: true,
+                        compactThreshold: 100000
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: '1 Decimal', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
+                      }
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - International Showcase</h2>
+          <p>Demonstrating currency formatting across different countries and locales with proper symbols and formatting.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - International currency examples</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-international-demo'
+            data={[
+              { id: 1, country: 'United States', currency: 'USD', locale: 'en-US', amount: 1234.56 },
+              { id: 2, country: 'Germany', currency: 'EUR', locale: 'de-DE', amount: 1234.56 },
+              { id: 3, country: 'United Kingdom', currency: 'GBP', locale: 'en-GB', amount: 1234.56 },
+              { id: 4, country: 'Japan', currency: 'JPY', locale: 'ja-JP', amount: 1234.56 },
+              { id: 5, country: 'France', currency: 'EUR', locale: 'fr-FR', amount: 1234.56 },
+              { id: 6, country: 'Canada', currency: 'CAD', locale: 'en-CA', amount: 1234.56 },
+              { id: 7, country: 'Australia', currency: 'AUD', locale: 'en-AU', amount: 1234.56 },
+              { id: 8, country: 'Switzerland', currency: 'CHF', locale: 'de-CH', amount: 1234.56 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'International Currency Formatting',
+                  subtitle: 'Proper locale-specific formatting for different countries'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'country', header: 'Country', type: 'text' },
+                    { 
+                      field: 'amount', 
+                      header: 'Formatted Currency', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        locale: (entity: CurrencyDemoEntity) => entity.locale
+                      }
+                    },
+                    { field: 'currency', header: 'Code', type: 'text', align: 'center', width: '60px' },
+                    { field: 'locale', header: 'Locale', type: 'text', align: 'center' }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Symbol Positioning</h2>
+          <p>Examples showing different currency symbol positioning options (prefix vs suffix).</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Symbol positioning variations</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-positioning-demo'
+            data={[
+              { id: 1, description: 'USD Prefix (default)', currency: 'USD', position: 'prefix', amount: 123.45 },
+              { id: 2, description: 'EUR Prefix', currency: 'EUR', position: 'prefix', amount: 123.45 },
+              { id: 3, description: 'GBP Prefix', currency: 'GBP', position: 'prefix', amount: 123.45 },
+              { id: 4, description: 'USD Suffix', currency: 'USD', position: 'suffix', amount: 123.45 },
+              { id: 5, description: 'EUR Suffix', currency: 'EUR', position: 'suffix', amount: 123.45 },
+              { id: 6, description: 'GBP Suffix', currency: 'GBP', position: 'suffix', amount: 123.45 },
+              { id: 7, description: 'No Symbol', currency: 'USD', position: 'none', amount: 123.45 },
+              { id: 8, description: 'Custom Position', currency: 'EUR', position: 'custom', amount: 123.45 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Currency Symbol Positioning',
+                  subtitle: 'Prefix, suffix, and no symbol options'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { 
+                      field: 'amount', 
+                      header: 'Prefix', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        symbolPosition: 'prefix'
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Suffix', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        symbolPosition: 'suffix'
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'No Symbol', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        showSymbol: false
+                      }
+                    },
+                    { field: 'position', header: 'Position', type: 'text', align: 'center' }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Decimal Precision</h2>
+          <p>Examples showing different decimal precision settings and fraction digit control.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Various decimal precision settings</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-precision-demo'
+            data={[
+              { id: 1, description: 'Default (2 decimals)', amount: 123.456789, minFrac: 2, maxFrac: 2 },
+              { id: 2, description: 'No decimals', amount: 123.456789, minFrac: 0, maxFrac: 0 },
+              { id: 3, description: '1 decimal', amount: 123.456789, minFrac: 1, maxFrac: 1 },
+              { id: 4, description: '3 decimals', amount: 123.456789, minFrac: 3, maxFrac: 3 },
+              { id: 5, description: '0-2 decimals', amount: 123.456789, minFrac: 0, maxFrac: 2 },
+              { id: 6, description: '1-4 decimals', amount: 123.456789, minFrac: 1, maxFrac: 4 },
+              { id: 7, description: 'Crypto style (4-8)', amount: 0.12345678, minFrac: 4, maxFrac: 8 },
+              { id: 8, description: 'Stock prices (2-4)', amount: 123.456789, minFrac: 2, maxFrac: 4 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Decimal Precision Control',
+                  subtitle: 'Minimum and maximum fraction digits configuration'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { 
+                      field: 'amount', 
+                      header: '2 Decimals', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: '0 Decimals', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: '1-3 Decimals', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 3
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: '4-6 Decimals', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        minimumFractionDigits: 4,
+                        maximumFractionDigits: 6
+                      }
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Compact Notation</h2>
+          <p>Examples showing compact notation for large numbers (K, M, B suffixes).</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Large numbers with compact formatting</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-compact-demo'
+            data={[
+              { id: 1, description: 'Thousand', amount: 1500, threshold: 1000 },
+              { id: 2, description: 'Ten Thousand', amount: 12500, threshold: 1000 },
+              { id: 3, description: 'Hundred Thousand', amount: 250000, threshold: 1000 },
+              { id: 4, description: 'Million', amount: 1850000, threshold: 1000 },
+              { id: 5, description: 'Ten Million', amount: 12750000, threshold: 1000 },
+              { id: 6, description: 'Billion', amount: 2300000000, threshold: 1000 },
+              { id: 7, description: 'Higher Threshold', amount: 500000, threshold: 1000000 },
+              { id: 8, description: 'No Compact', amount: 1500000, threshold: 10000000 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Compact Notation for Large Numbers',
+                  subtitle: 'K, M, B suffixes for thousands, millions, billions'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { 
+                      field: 'amount', 
+                      header: 'Regular', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: false
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Compact (1K+)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: true,
+                        compactThreshold: 1000
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Compact (1M+)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: true,
+                        compactThreshold: 1000000
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Compact (10M+)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: true,
+                        compactThreshold: 10000000
+                      }
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Color Coding</h2>
+          <p>Examples showing color-coded currency values for positive, negative, and zero amounts.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Color-coded positive/negative/zero values</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-color-demo'
+            data={[
+              { id: 1, description: 'Large Profit', amount: 125000.50, category: 'profit' },
+              { id: 2, description: 'Small Profit', amount: 2500.75, category: 'profit' },
+              { id: 3, description: 'Break Even', amount: 0, category: 'neutral' },
+              { id: 4, description: 'Small Loss', amount: -1500.25, category: 'loss' },
+              { id: 5, description: 'Large Loss', amount: -87500.00, category: 'loss' },
+              { id: 6, description: 'Zero Balance', amount: 0.00, category: 'neutral' },
+              { id: 7, description: 'Negative Fee', amount: -25.99, category: 'fee' },
+              { id: 8, description: 'Positive Bonus', amount: 5000.00, category: 'bonus' }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Color-Coded Currency Values',
+                  subtitle: 'Visual differentiation for positive (green), negative (red), and zero (gray) amounts'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { field: 'category', header: 'Category', type: 'text', align: 'center' },
+                    { 
+                      field: 'amount', 
+                      header: 'Colorized USD', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        colorize: true
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Colorized EUR', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'EUR',
+                        locale: 'de-DE',
+                        colorize: true
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'No Color', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        colorize: false
+                      }
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Dynamic Options</h2>
+          <p>Examples showing function-based currency options that change based on data values.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Dynamic currency options based on data</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-dynamic-demo'
+            data={[
+              { id: 1, product: 'US Software', region: 'US', currency: 'USD', price: 99.99, discount: 0 },
+              { id: 2, product: 'EU Software', region: 'EU', currency: 'EUR', price: 89.99, discount: 10 },
+              { id: 3, product: 'UK Software', region: 'UK', currency: 'GBP', price: 79.99, discount: 5 },
+              { id: 4, product: 'JP Software', region: 'JP', currency: 'JPY', price: 12000, discount: 0 },
+              { id: 5, product: 'CA Hardware', region: 'CA', currency: 'CAD', price: 249.99, discount: 15 },
+              { id: 6, product: 'AU Service', region: 'AU', currency: 'AUD', price: 149.99, discount: 20 },
+              { id: 7, product: 'CH Premium', region: 'CH', currency: 'CHF', price: 199.99, discount: 0 },
+              { id: 8, product: 'Bulk Order', region: 'US', currency: 'USD', price: 50000, discount: 25 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Dynamic Currency Options',
+                  subtitle: 'Function-based options that adapt to data values'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'product', header: 'Product', type: 'text' },
+                    { field: 'region', header: 'Region', type: 'text', align: 'center', width: '60px' },
+                    { 
+                      field: 'price', 
+                      header: 'Regional Currency', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        locale: (entity: CurrencyDemoEntity) => {
+                          const localeMap: Record<string, string> = {
+                            'US': 'en-US', 'EU': 'de-DE', 'UK': 'en-GB',
+                            'JP': 'ja-JP', 'CA': 'en-CA', 'AU': 'en-AU', 'CH': 'de-CH'
+                          };
+                          return localeMap[entity.region || 'US'] || 'en-US';
+                        }
+                      }
+                    },
+                    { 
+                      field: 'price', 
+                      header: 'With Discount Color', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: (entity: CurrencyDemoEntity) => entity.currency,
+                        colorize: (entity: CurrencyDemoEntity) => (entity.discount || 0) > 0,
+                        compact: (entity: CurrencyDemoEntity) => entity.price > 10000,
+                        compactThreshold: 10000
+                      }
+                    },
+                    { 
+                      field: 'discount', 
+                      header: 'Discount %', 
+                      type: 'number',
+                      align: 'center',
+                      width: '80px'
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
+          <h2>Currency Field - Edge Cases</h2>
+          <p>Examples showing how currency fields handle edge cases and invalid values.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Edge cases and error handling</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-edge-cases-demo'
+            data={[
+              { id: 1, description: 'Normal positive', value: 123.45 },
+              { id: 2, description: 'Normal negative', value: -67.89 },
+              { id: 3, description: 'Zero', value: 0 },
+              { id: 4, description: 'Very small', value: 0.000001 },
+              { id: 5, description: 'Very large', value: 999999999.99 },
+              { id: 6, description: 'String number', value: '456.78' },
+              { id: 7, description: 'Invalid string', value: 'not-a-number' },
+              { id: 8, description: 'Null value', value: null },
+              { id: 9, description: 'Undefined value', value: undefined },
+              { id: 10, description: 'NaN', value: NaN }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Currency Edge Cases',
+                  subtitle: 'How currency fields handle various input types and edge cases'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { 
+                      field: 'value', 
+                      header: 'Raw Value', 
+                      type: 'text'
+                    },
+                    { 
+                      field: 'value', 
+                      header: 'Currency (USD)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        colorize: true
+                      }
+                    },
+                    { 
+                      field: 'value', 
+                      header: 'Currency (EUR)', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'EUR',
+                        locale: 'de-DE',
+                        colorize: true
+                      }
+                    },
+                    { 
+                      field: 'value', 
+                      header: 'Compact', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        compact: true,
+                        compactThreshold: 1000000,
+                        colorize: true
+                      }
                     }
                   ] as ColumnConfig[],
                   alternatingRows: true,
