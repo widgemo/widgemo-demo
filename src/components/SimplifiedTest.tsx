@@ -2713,6 +2713,160 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>Mode - Table - Grouping</h2>
+          <p>Table mode with row grouping by department, collapsible groups, and expand/collapse controls.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout
+              <ul>
+                <li>Collapsible - Expanded</li>
+                <li>Title + Subtitle</li>
+                <li>Actions</li>
+              </ul>
+              <li>Content Zone: Table Mode
+                <ul>
+                  <li>Grouping - By Department</li>
+                  <li>Initial Expanded - True</li>
+                  <li>Show Expand All - True</li>
+                  <li>Collapsible - True</li>
+                  <li>Sortable Columns - All</li>
+                  <li>Actions column - enabled</li>
+                  <ul>
+                    <li>Edit - icons only - ghost</li>
+                    <li>View Details - discoverable - secondary</li>
+                    <li>Delete - menu</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>Footer Zone: Disabled
+              </li>
+            </li>
+          </ul>
+          <SimplifiedWidgemo
+            id='table-grouping-demo'
+            data={teaserSampleData.slice(0, 12)} // Use more data to show grouping
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Table Grouping Demo',
+                  subtitle: 'Rows grouped by department with expand/collapse functionality',
+                  actions: [
+                    {
+                      id: 'add',
+                      label: 'Add Item',
+                      icon: 'add',
+                      variant: 'primary',
+                      onTrigger: () => alert('Add Item clicked!')
+                    },
+                    {
+                      id: 'refresh',
+                      label: 'Refresh',
+                      icon: 'refresh',
+                      variant: 'ghost',
+                      onTrigger: () => alert('Refresh clicked!'),
+                      iconOnly: true,
+                      placement: 'discoverable'
+                    },
+                    {
+                      id: 'export',
+                      label: 'Export',
+                      icon: 'export',
+                      onTrigger: () => alert('Export clicked!'),
+                      iconOnly: false,
+                      placement: 'menu'
+                    }
+                  ]
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Full Name', sortable: true, width: '200px', type: 'text' },
+                    { field: 'email', header: 'Email Address', sortable: true, width: '250px', type: 'email' },
+                    { field: 'role', header: 'Role', sortable: true, align: 'center', type: 'text' },
+                    { field: 'department', header: 'Department', sortable: true, type: 'text' },
+                    { field: 'status', header: 'Active', sortable: true, align: 'center', type: 'boolean', booleanTrueLabel: <><FaWifi style={{ marginRight: '4px' }} /> Active</>, booleanFalseLabel: <><FaUserSlash style={{ marginRight: '4px' }} /> Inactive</> },
+                    { field: 'lastLogin', header: 'Last Login', sortable: true, type: 'date' }
+                  ] as ColumnConfig[],
+                  table: {
+                    sort: { field: 'department', direction: 'asc' },
+                    pagination: { page: 1, pageSize: 20 },
+                    actionsColumn: true,
+                    alternatingRows: true,
+                    rowSeparator: false,
+                    grouping: {
+                      groupBy: 'department',
+                      initialExpanded: true,
+                      showExpandAll: true,
+                      collapsible: true,
+                      groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
+                        <span style={{ 
+                          fontWeight: 'bold', 
+                          color: isExpanded ? '#28a745' : '#007bff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          <span style={{ 
+                            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.2s ease',
+                            fontSize: '12px'
+                          }}>
+                            ▶
+                          </span>
+                          {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+                        </span>
+                      )
+                    },
+                    hooks: {
+                      onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
+                      onGroupToggle: (groupValue: unknown, isExpanded: boolean) => console.log(`Group ${String(groupValue)} ${isExpanded ? 'expanded' : 'collapsed'}`)
+                    }
+                  },
+                  itemConfig: {
+                    actions: {
+                      item: [
+                        {
+                          id: 'edit',
+                          label: 'Edit',
+                          icon: 'edit',
+                          variant: 'ghost',
+                          placement: 'always',
+                          iconOnly: true,
+                          handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'view',
+                          label: 'View Details',
+                          icon: 'eye',
+                          variant: 'secondary',
+                          placement: 'discoverable',
+                          handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+                        },
+                        {
+                          id: 'delete',
+                          label: 'Delete',
+                          icon: 'delete',
+                          variant: 'danger',
+                          placement: 'menu',
+                          handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+                        }
+                      ]
+                    }
+                  }
+                },
+                footer: { 
+                  enabled: true, 
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>Currency Field Rendering</h2>
           <p>Examples demonstrating currency field formatting with various options and locales.</p>
           <ul>
