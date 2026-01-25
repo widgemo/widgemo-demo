@@ -2759,6 +2759,93 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         <div className="col-12 mb-4">
+          <h2>Currency Field - Decimal Alignment</h2>
+          <p>Demonstrating decimal point alignment for consistent column formatting in financial tables.</p>
+          <ul>
+            <li>Custom className: background-color, border, shadow, padding</li>
+            <li>Header Zone: Default Layout</li>
+            <li>Content Zone: Table Mode - Decimal-aligned currency columns</li>
+            <li>Footer Zone: Disabled</li>
+          </ul>
+          <SimplifiedWidgemo
+            id='currency-decimal-align-demo'
+            data={[
+              { id: 1, description: 'Small amount', amount: 12.34 },
+              { id: 2, description: 'Medium amount', amount: 123.45 },
+              { id: 3, description: 'Large amount', amount: 1234.56 },
+              { id: 4, description: 'Very large', amount: 12345.67 },
+              { id: 5, description: 'Negative small', amount: -12.34 },
+              { id: 6, description: 'Negative large', amount: -1234.56 },
+              { id: 7, description: 'Zero amount', amount: 0.00 },
+              { id: 8, description: 'Fractional', amount: 0.12 }
+            ]}
+            className="my-custom-widgemo"
+            config={{
+              zones: {
+                header: {
+                  enabled: true,
+                  title: 'Decimal Point Alignment',
+                  subtitle: 'Currency values aligned to decimal points for consistent formatting'
+                },
+                content: {
+                  enabled: true,
+                  mode: 'table',
+                  columns: [
+                    { field: 'id', header: 'ID', type: 'number', width: '50px' },
+                    { field: 'description', header: 'Description', type: 'text' },
+                    { 
+                      field: 'amount', 
+                      header: 'Standard', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        decimalAlign: false
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'Decimal Aligned', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'USD',
+                        decimalAlign: true
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'EUR Aligned', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'EUR',
+                        locale: 'de-DE',
+                        decimalAlign: true
+                      }
+                    },
+                    { 
+                      field: 'amount', 
+                      header: 'JPY Aligned', 
+                      type: 'number',
+                      renderAs: 'currency',
+                      currencyOptions: {
+                        currency: 'JPY',
+                        locale: 'ja-JP',
+                        decimalAlign: true
+                      }
+                    }
+                  ] as ColumnConfig[],
+                  alternatingRows: true,
+                  rowSeparator: false
+                },
+                footer: { enabled: false }
+              }
+            }}
+          />
+        </div>
+
+        <div className="col-12 mb-4">
           <h2>Currency Field - Decimal Precision</h2>
           <p>Examples showing different decimal precision settings and fraction digit control.</p>
           <ul>
