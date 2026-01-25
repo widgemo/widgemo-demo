@@ -1179,7 +1179,7 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { enabled: false}
+                footer: { enabled: false }
 
               }
             }}
@@ -1346,9 +1346,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -1460,7 +1460,7 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'role', header: 'Role', align: 'center' },
                     { field: 'status', header: 'Status', align: 'center' }
                   ],
-                  
+
                   table: {
                     actionsColumn: true,
                     alternatingRows: false,
@@ -1498,9 +1498,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -1534,6 +1534,7 @@ export const SimplifiedTest: React.FC = () => {
             <li>Footer Zone: Enabled with dynamic subtitle</li>
           </ul>
           <SimplifiedWidgemo
+            id='table-groupable-demo'
             data={teaserSampleData.slice(0, 12)} // More items to show grouping better
             className="my-custom-widgemo"
             config={{
@@ -1598,9 +1599,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -1672,9 +1673,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -1803,9 +1804,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -1890,9 +1891,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -2030,9 +2031,9 @@ export const SimplifiedTest: React.FC = () => {
                   mode: 'table',
                   columns: [
                     { field: 'name', header: 'Variant', sortable: true },
-                    { 
-                      field: 'progress', 
-                      header: 'Progress Bar', 
+                    {
+                      field: 'progress',
+                      header: 'Progress Bar',
                       type: 'number',
                       renderAs: 'progress'
                     }
@@ -2087,10 +2088,10 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'name', header: 'Task Name', sortable: true },
                     { field: 'priority', header: 'Priority', align: 'center' },
                     { field: 'size', header: 'Size', align: 'center' },
-                    { 
-                      field: 'progress', 
+                    {
+                      field: 'progress',
                       sortable: true,
-                      header: 'Progress Bar', 
+                      header: 'Progress Bar',
                       type: 'number',
                       renderAs: 'progress',
                       progressOptions: {
@@ -2157,7 +2158,8 @@ export const SimplifiedTest: React.FC = () => {
                   mode: 'table',
                   columns: [
                     { field: 'name', header: 'Product Name', sortable: true },
-                    { field: 'rating', header: 'Rating', type: 'number', renderAs: 'rating', align: 'center',
+                    {
+                      field: 'rating', header: 'Rating', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         //max: 8,
                         //color: '#ff5107',
@@ -2165,8 +2167,9 @@ export const SimplifiedTest: React.FC = () => {
                         size: 20
                         //iconName: 'star'
                       }
-                     },
-                    { field: 'hearts', header: 'Hearts', type: 'number', renderAs: 'rating', align: 'center',
+                    },
+                    {
+                      field: 'hearts', header: 'Hearts', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         max: 5,
                         color: '#e91e63',
@@ -2174,8 +2177,9 @@ export const SimplifiedTest: React.FC = () => {
                         size: 18,
                         iconName: 'heart'
                       }
-                     },
-                     { field: 'cost', header: 'Cost', type: 'number', renderAs: 'rating', align: 'center',
+                    },
+                    {
+                      field: 'cost', header: 'Cost', type: 'number', renderAs: 'rating', align: 'center',
                       ratingOptions: {
                         max: 5,
                         color: '#0f6005',
@@ -2183,7 +2187,7 @@ export const SimplifiedTest: React.FC = () => {
                         size: 20,
                         iconName: 'dollar-sign'
                       }
-                     },
+                    },
                     { field: 'reviews', header: 'Reviews', align: 'center' }
                   ] as ColumnConfig[]
                 },
@@ -2461,8 +2465,8 @@ export const SimplifiedTest: React.FC = () => {
                 <li><strong>Render Time:</strong> {lastRenderMetrics.time.toFixed(2)}ms</li>
                 <li><strong>Render Count:</strong> #{lastRenderMetrics.count}</li>
                 <li><strong>Status:</strong>
-                  {lastRenderMetrics.time > 100 ? '🐌 Slow ({'>'}100ms)' :
-                    lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast ({'<'}16.67ms)'}
+                  {lastRenderMetrics.time > 100 ? '🐌 Slow ({' > '}100ms)' :
+                    lastRenderMetrics.time > 16.67 ? '⚡ OK (60fps)' : '🚀 Fast ({' < '}16.67ms)'}
                 </li>
               </ul>
             </div>
@@ -2599,9 +2603,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '60px' },
                     { field: 'name', header: 'Name', type: 'text' },
-                    { 
-                      field: 'url', 
-                      header: 'URL', 
+                    {
+                      field: 'url',
+                      header: 'URL',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2667,15 +2671,15 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '60px' },
                     { field: 'name', header: 'Name', type: 'text' },
-                    { 
-                      field: 'url', 
-                      header: 'Basic Link', 
+                    {
+                      field: 'url',
+                      header: 'Basic Link',
                       type: 'text',
                       renderAs: 'link'
                     },
-                    { 
-                      field: 'url', 
-                      header: 'Custom Text Link', 
+                    {
+                      field: 'url',
+                      header: 'Custom Text Link',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2683,9 +2687,9 @@ export const SimplifiedTest: React.FC = () => {
                         newTab: true
                       }
                     },
-                    { 
-                      field: 'displayText', 
-                      header: 'Dynamic Text', 
+                    {
+                      field: 'displayText',
+                      header: 'Dynamic Text',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2693,9 +2697,9 @@ export const SimplifiedTest: React.FC = () => {
                         newTab: (entity: LinkDemoEntity) => entity.category === 'external'
                       }
                     },
-                    { 
-                      field: 'url', 
-                      header: 'External Warning', 
+                    {
+                      field: 'url',
+                      header: 'External Warning',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2703,9 +2707,9 @@ export const SimplifiedTest: React.FC = () => {
                         newTab: true
                       }
                     },
-                    { 
-                      field: 'url', 
-                      header: 'Function URL', 
+                    {
+                      field: 'url',
+                      header: 'Function URL',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2773,18 +2777,18 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'id', header: 'ID', type: 'number', width: '60px' },
                     { field: 'name', header: 'Action', type: 'text' },
                     { field: 'action', header: 'Type', type: 'text', align: 'center' },
-                    { 
-                      field: 'url', 
-                      header: 'Direct Link', 
+                    {
+                      field: 'url',
+                      header: 'Direct Link',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
                         newTab: (entity: ActionLinkEntity) => entity.action === 'download'
                       }
                     },
-                    { 
-                      field: 'text', 
-                      header: 'Custom Action Link', 
+                    {
+                      field: 'text',
+                      header: 'Custom Action Link',
                       type: 'text',
                       renderAs: 'link',
                       linkOptions: {
@@ -2794,9 +2798,9 @@ export const SimplifiedTest: React.FC = () => {
                         externalWarning: (entity: ActionLinkEntity) => entity.action === 'download'
                       }
                     },
-                    { 
-                      field: 'target', 
-                      header: 'Target', 
+                    {
+                      field: 'target',
+                      header: 'Target',
                       type: 'text',
                       align: 'center'
                     }
@@ -2902,13 +2906,13 @@ export const SimplifiedTest: React.FC = () => {
                       showExpandAll: true,
                       collapsible: true,
                       groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
-                        <span style={{ 
-                          fontWeight: 'bold', 
+                        <span style={{
+                          fontWeight: 'bold',
                           color: isExpanded ? '#28a745' : '#007bff'
                         }}>
                           {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
                         </span>
-                      ) 
+                      )
                     },
                     hooks: {
                       onSort: (field: string, direction: 'asc' | 'desc') => console.log(`Sort by ${field} ${direction}`),
@@ -2947,9 +2951,9 @@ export const SimplifiedTest: React.FC = () => {
                     }
                   }
                 },
-                footer: { 
-                  enabled: true, 
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}` 
+                footer: {
+                  enabled: true,
+                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
                 }
               }
             }}
@@ -3002,9 +3006,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '60px' },
                     { field: 'name', header: 'Product', type: 'text' },
-                    { 
-                      field: 'price', 
-                      header: 'Default USD', 
+                    {
+                      field: 'price',
+                      header: 'Default USD',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3012,9 +3016,9 @@ export const SimplifiedTest: React.FC = () => {
                         locale: 'en-US'
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'EUR (Germany)', 
+                    {
+                      field: 'price',
+                      header: 'EUR (Germany)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3022,9 +3026,9 @@ export const SimplifiedTest: React.FC = () => {
                         locale: (entity: CurrencyDemoEntity) => entity.locale
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'No Symbol', 
+                    {
+                      field: 'price',
+                      header: 'No Symbol',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3033,9 +3037,9 @@ export const SimplifiedTest: React.FC = () => {
                         symbolPosition: 'suffix'
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'Colorized', 
+                    {
+                      field: 'price',
+                      header: 'Colorized',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3043,9 +3047,9 @@ export const SimplifiedTest: React.FC = () => {
                         colorize: true
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'Custom Colors', 
+                    {
+                      field: 'price',
+                      header: 'Custom Colors',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3056,9 +3060,9 @@ export const SimplifiedTest: React.FC = () => {
                         zeroColor: '#1976d2'      // Blue
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'Parentheses', 
+                    {
+                      field: 'price',
+                      header: 'Parentheses',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3066,9 +3070,9 @@ export const SimplifiedTest: React.FC = () => {
                         negativeFormat: 'parentheses'
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'Compact', 
+                    {
+                      field: 'price',
+                      header: 'Compact',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3077,9 +3081,9 @@ export const SimplifiedTest: React.FC = () => {
                         compactThreshold: 100000
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: '1 Decimal', 
+                    {
+                      field: 'price',
+                      header: '1 Decimal',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3141,9 +3145,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'country', header: 'Country', type: 'text' },
-                    { 
-                      field: 'amount', 
-                      header: 'Formatted Currency', 
+                    {
+                      field: 'amount',
+                      header: 'Formatted Currency',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3200,9 +3204,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'description', header: 'Description', type: 'text' },
-                    { 
-                      field: 'amount', 
-                      header: 'Prefix', 
+                    {
+                      field: 'amount',
+                      header: 'Prefix',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3210,9 +3214,9 @@ export const SimplifiedTest: React.FC = () => {
                         symbolPosition: 'prefix'
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'Suffix', 
+                    {
+                      field: 'amount',
+                      header: 'Suffix',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3220,9 +3224,9 @@ export const SimplifiedTest: React.FC = () => {
                         symbolPosition: 'suffix'
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'No Symbol', 
+                    {
+                      field: 'amount',
+                      header: 'No Symbol',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3278,9 +3282,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'description', header: 'Description', type: 'text' },
-                    { 
-                      field: 'amount', 
-                      header: 'Standard', 
+                    {
+                      field: 'amount',
+                      header: 'Standard',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3288,9 +3292,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: false
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'Decimal Aligned', 
+                    {
+                      field: 'amount',
+                      header: 'Decimal Aligned',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3298,9 +3302,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'EUR Aligned', 
+                    {
+                      field: 'amount',
+                      header: 'EUR Aligned',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3309,9 +3313,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'JPY Aligned', 
+                    {
+                      field: 'amount',
+                      header: 'JPY Aligned',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3367,9 +3371,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'description', header: 'Description', type: 'text' },
-                    { 
-                      field: 'amount', 
-                      header: '2 Decimals', 
+                    {
+                      field: 'amount',
+                      header: '2 Decimals',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3379,9 +3383,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: '0 Decimals', 
+                    {
+                      field: 'amount',
+                      header: '0 Decimals',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3391,9 +3395,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: '1-3 Decimals', 
+                    {
+                      field: 'amount',
+                      header: '1-3 Decimals',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3403,9 +3407,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: '4-6 Decimals', 
+                    {
+                      field: 'amount',
+                      header: '4-6 Decimals',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3462,9 +3466,9 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'description', header: 'Description', type: 'text' },
-                    { 
-                      field: 'amount', 
-                      header: 'Regular', 
+                    {
+                      field: 'amount',
+                      header: 'Regular',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3472,9 +3476,9 @@ export const SimplifiedTest: React.FC = () => {
                         compact: false
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'Compact (1K+)', 
+                    {
+                      field: 'amount',
+                      header: 'Compact (1K+)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3484,9 +3488,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'Compact (1M+)', 
+                    {
+                      field: 'amount',
+                      header: 'Compact (1M+)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3496,9 +3500,9 @@ export const SimplifiedTest: React.FC = () => {
                         decimalAlign: true
                       }
                     },
-                    { 
-                      field: 'amount', 
-                      header: 'Compact (10M+)', 
+                    {
+                      field: 'amount',
+                      header: 'Compact (10M+)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3556,9 +3560,9 @@ export const SimplifiedTest: React.FC = () => {
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'product', header: 'Product', type: 'text' },
                     { field: 'region', header: 'Region', type: 'text', align: 'center', width: '60px' },
-                    { 
-                      field: 'price', 
-                      header: 'Regional Currency', 
+                    {
+                      field: 'price',
+                      header: 'Regional Currency',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3572,9 +3576,9 @@ export const SimplifiedTest: React.FC = () => {
                         }
                       }
                     },
-                    { 
-                      field: 'price', 
-                      header: 'With Discount Color', 
+                    {
+                      field: 'price',
+                      header: 'With Discount Color',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3584,9 +3588,9 @@ export const SimplifiedTest: React.FC = () => {
                         compactThreshold: 10000
                       }
                     },
-                    { 
-                      field: 'discount', 
-                      header: 'Discount %', 
+                    {
+                      field: 'discount',
+                      header: 'Discount %',
                       type: 'number',
                       align: 'center',
                       width: '80px'
@@ -3640,14 +3644,14 @@ export const SimplifiedTest: React.FC = () => {
                   columns: [
                     { field: 'id', header: 'ID', type: 'number', width: '50px' },
                     { field: 'description', header: 'Description', type: 'text' },
-                    { 
-                      field: 'value', 
-                      header: 'Raw Value', 
+                    {
+                      field: 'value',
+                      header: 'Raw Value',
                       type: 'text'
                     },
-                    { 
-                      field: 'value', 
-                      header: 'Currency (USD)', 
+                    {
+                      field: 'value',
+                      header: 'Currency (USD)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3656,9 +3660,9 @@ export const SimplifiedTest: React.FC = () => {
                         negativeFormat: 'parentheses'
                       }
                     },
-                    { 
-                      field: 'value', 
-                      header: 'Currency (EUR)', 
+                    {
+                      field: 'value',
+                      header: 'Currency (EUR)',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
@@ -3668,9 +3672,9 @@ export const SimplifiedTest: React.FC = () => {
                         negativeFormat: 'parentheses'
                       }
                     },
-                    { 
-                      field: 'value', 
-                      header: 'Compact', 
+                    {
+                      field: 'value',
+                      header: 'Compact',
                       type: 'number',
                       renderAs: 'currency',
                       currencyOptions: {
