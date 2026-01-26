@@ -2,6 +2,7 @@ import React from 'react';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
+import { teaserSampleData } from './sampleData';
 
 interface TaskEntity {
   id: number;
@@ -67,6 +68,27 @@ interface SampleData {
   activeUsers?: number;
   totalUsers?: number;
 }
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const twoUsersData = teaserSampleData.slice(0, 2);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const threeUsersData = teaserSampleData.slice(0, 3);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const fourUsersData = teaserSampleData.slice(0, 4);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const fiveUsersData = teaserSampleData.slice(0, 5);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const sixUsersData = teaserSampleData.slice(0, 6);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const eightUsersData = teaserSampleData.slice(0, 8);
+
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const twelveUsersData = teaserSampleData.slice(0, 12);
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
