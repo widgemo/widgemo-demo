@@ -106,8 +106,25 @@ export const SimplifiedTest: React.FC = () => {
           box-shadow: 0px 0px 8px var(--shadow-color);
           padding: 0.5rem;
         }
+        .custom-footer-class {
+          background-color: #d5d5d5;
+          border-radius: 0.25rem;
+          padding: 0.3rem;
+        }
+        .custom-footer-class .zone-title {
+          font-size: 14px; 
+          color: #065193;
+          padding-left: 0.5rem;
+        }
+        .custom-footer-class .zone-subtitle {
+          font-size: 14px; 
+          color: #333334;
+        }
       `}</style>
-      <h1 className="mb-4">Widgemo Product Primitive - ZoneRenderer Test</h1>
+      <h1 >Widgemo Product Primitive</h1>
+      <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the SimplifiedWidgemo component.</h4>
+      <h4 className="mb-3">Each example showcases different configurations and data sets to illustrate the flexibility and power of Widgemo in rendering complex data-driven UIs.</h4>
+      <h5 className="mb-4"><strong>Note:</strong> all widgemos below use the <code>my-custom-widgemo</code> class for consistent styling.</h5>
       <div className="row">
         {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
         {widgemoExamples.map((example) => (
