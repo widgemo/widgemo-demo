@@ -30,20 +30,22 @@ function AppContent() {
       <div>
         <AppNavbar />
 
-        <Routes>
-          <Route
-            path="/"
-            element={<MainPage />}
-          />
-          <Route
-            path="/sandbox"
-            element={<SandboxPage />}
-          />
-          <Route
-            path="/simplified-test"
-            element={<SimplifiedTest />}
-          />
-        </Routes>
+        <div style={{ marginTop: '56px' }}>
+          <Routes>
+            <Route
+              path="/"
+              element={<MainPage />}
+            />
+            <Route
+              path="/sandbox"
+              element={<SandboxPage />}
+            />
+            <Route
+              path="/simplified-test"
+              element={<SimplifiedTest />}
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   );

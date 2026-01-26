@@ -1,4 +1,3 @@
-import React from 'react';
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
@@ -1112,8 +1111,8 @@ export const tablePlainConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
       enabled: true,
-      title: 'User Management',
-      subtitle: 'Sortable table with actions - Alternating Row Backgrounds & Separators Disabled'
+      title: 'Table Mode - Plain',
+      subtitle: 'Basic table mode with default styling and actions.'
     },
     content: {
       enabled: true,
@@ -1127,7 +1126,7 @@ export const tablePlainConfig: SimplifiedWidgemoConfig = {
       table: {
         actionsColumn: true,
         alternatingRows: false,
-        rowSeparator: false
+        rowSeparator: true
       },
       itemConfig: {
         actions: {
@@ -1137,7 +1136,6 @@ export const tablePlainConfig: SimplifiedWidgemoConfig = {
               label: 'View',
               icon: 'view',
               variant: 'ghost',
-              // placement: 'always',
               handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
             }
           ]
@@ -1476,6 +1474,162 @@ export const hooksSystemTestConfig: SimplifiedWidgemoConfig = {
       enabled: true,
       title: 'Hook Status',
       subtitle: 'Hooks executed successfully'
+    }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const carouselConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'User Carousel',
+      subtitle: 'Swipe or click to navigate through users'
+    },
+    content: {
+      enabled: true,
+      mode: 'carousel',
+      carousel: {
+        itemWidth: 320,
+        itemHeight: 240,
+        gap: 16,
+        showIndicators: true,
+        showArrows: true,
+        infinite: false,
+        autoPlay: false,
+        dragThreshold: 50
+      },
+      item: {
+        style: 'card',
+        template: {
+          sections: [
+            {
+              title: 'Profile',
+              fields: [
+                { key: 'src', label: 'Photo', type: 'image', imageOptions: { width: 120, height: 120, lightbox: true } },
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' }
+              ]
+            },
+            {
+              title: 'Contact',
+              fields: [
+                { key: 'email', label: 'Email', type: 'email' },
+                { key: 'department', label: 'Department', type: 'text' }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { enabled: false }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const conditionalBackgroundColorsConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'User Management',
+      subtitle: 'Conditional background colors with matching text colors - Active: Green, Inactive: Red'
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      columns: [
+        { field: 'name', header: 'Name', sortable: true },
+        { field: 'email', header: 'Email', sortable: true },
+        { field: 'role', header: 'Role', align: 'center' },
+        { field: 'status', header: 'Status', align: 'center' }
+      ],
+      table: {
+        actionsColumn: true,
+        alternatingRows: false,
+        rowSeparator: true
+      },
+      itemConfig: {
+        actions: {
+          item: [
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'view',
+              variant: 'ghost',
+              handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+            }
+          ]
+        },
+        conditionalBackgroundColor: (entity: Entity) => {
+          const status = entity.status as boolean;
+          if (status === true) {
+            return { backgroundColor: '#e8f5e8', color: '#2d5a2d' }; // Light green bg with dark green text
+          } else if (status === false) {
+            return { backgroundColor: '#ffe8e8', color: '#8b1a1a' }; // Light red bg with dark red text
+          }
+          return undefined;
+        }
+      }
+    },
+    footer: {
+      enabled: true,
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
+    }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const conditionalBordersConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'User Management',
+      subtitle: 'Conditional borders - Manager: Blue left border, Developer: Green top border, Analyst: Red right border'
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      columns: [
+        { field: 'name', header: 'Name', sortable: true },
+        { field: 'email', header: 'Email', sortable: true },
+        { field: 'role', header: 'Role', align: 'center' },
+        { field: 'status', header: 'Status', align: 'center' }
+      ],
+      table: {
+        actionsColumn: true,
+        alternatingRows: false,
+        rowSeparator: true
+      },
+      itemConfig: {
+        conditionalBorder: (entity: Entity) => {
+          const role = entity.role as string;
+          switch (role) {
+            case 'Manager':
+              return { color: '#007bff', thickness: 5 };
+            case 'Developer':
+              return { color: '#28a745', thickness: 5 };
+            case 'Analyst':
+              return { color: '#dc3545', thickness: 5, placement: 'right' };
+            default:
+              return undefined;
+          }
+        },
+        actions: {
+          item: [
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'view',
+              variant: 'ghost',
+              handler: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+            }
+          ]
+        }
+      }
+    },
+    footer: {
+      enabled: true,
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
@@ -2520,21 +2674,21 @@ const widgemoExamples = [
     title: 'Mode - Table Mode - Conditional Background Colors',
     description: 'Table mode with conditional background colors',
     data: fiveUsersData,
-    config: imageGalleryConfig
+    config: conditionalBackgroundColorsConfig
   },
   {
     id: 'conditional-borders',
     title: 'Mode - Table Mode - Conditional Borders',
     description: 'Table mode with conditional borders',
     data: eightUsersData,
-    config: progressBarFieldsConfig
+    config: conditionalBordersConfig
   },
   {
     id: 'image-gallery',
     title: 'Image Gallery - FieldRenderer Lightbox',
     description: 'Image gallery with lightbox',
     data: fiveUsersData,
-    config: progressBarVariantsConfig
+    config: imageGalleryConfig
   },
   {
     id: 'progress-bar-fields',
@@ -2569,7 +2723,7 @@ const widgemoExamples = [
     title: 'CarouselMode - Swipeable Carousel',
     description: 'Carousel mode',
     data: fiveUsersData,
-    config: hooksSystemTestConfig
+    config: carouselConfig
   },
   {
     id: 'swatch-example',
@@ -2583,7 +2737,7 @@ const widgemoExamples = [
     title: 'Hooks System Test - Pre/Post Render',
     description: 'Hooks system test',
     data: fourUsersData,
-    config: boardModeConfig
+    config: hooksSystemTestConfig
   },
   {
     id: 'performance-monitoring',

@@ -36,6 +36,17 @@ export const linkTestData: SampleData[] = [
   { id: 4, name: 'MDN Web Docs', url: 'https://developer.mozilla.org', description: 'Web Documentation' },
 ];
 
+// Sample data for 12 users
+export const twelveUsersData: SampleData[] = teaserSampleData.slice(0, 12);
+
+// Additional data slices
+export const twoUsersData: SampleData[] = teaserSampleData.slice(0, 2);
+export const threeUsersData: SampleData[] = teaserSampleData.slice(0, 3);
+export const fourUsersData: SampleData[] = teaserSampleData.slice(0, 4);
+export const fiveUsersData: SampleData[] = teaserSampleData.slice(0, 5);
+export const sixUsersData: SampleData[] = teaserSampleData.slice(0, 6);
+export const eightUsersData: SampleData[] = teaserSampleData.slice(0, 8);
+
 // Sample data for image gallery
 export const imageGalleryData: SampleData[] = [
   { id: 1, name: 'Mountain Landscape', src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop', category: 'Nature', description: 'Beautiful mountain vista' },
