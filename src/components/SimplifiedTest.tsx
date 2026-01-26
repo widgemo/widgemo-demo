@@ -125,7 +125,13 @@ export const SimplifiedTest: React.FC = () => {
       <h1 >Widgemo Product Primitive</h1>
       <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the SimplifiedWidgemo component.</h4>
       <h4 className="mb-3">Each example showcases different configurations and data sets to illustrate the flexibility and power of Widgemo in rendering complex data-driven UIs.</h4>
-      <h5 className="mb-4"><strong>Note:</strong> all widgemos below use the <code className="css-class-code" title="Placeholder text for the popover. Specific content will be added later.">my-custom-widgemo</code> class for consistent styling.</h5>
+      <h5 className="mb-4"><strong>Note:</strong> all widgemos below use the <code className="css-class-code" title=".my-custom-widgemo {
+          background-color: var(--bg-color);
+          border: 1px solid var(--border-color);
+          border-radius: 0.375rem;
+          box-shadow: 0px 0px 8px var(--shadow-color);
+          padding: 0.5rem;
+        }">my-custom-widgemo</code> class for consistent styling.</h5>
       <div className="row">
         {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
         {widgemoExamples.map((example) => (
