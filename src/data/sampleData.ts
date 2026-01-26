@@ -7,7 +7,7 @@ export interface SampleData extends Record<string, unknown> {
   department?: string;
   status?: boolean | string;
   lastLogin?: string;
-  value?: number;
+  value?: number | string | null | undefined;
   category?: string;
   metric?: string;
   month?: string;
@@ -38,6 +38,32 @@ export const currencyPrecisionSampleData: SampleData[] = [
   { id: 6, description: '1-4 decimals', amount: 123.456789, minFrac: 1, maxFrac: 4 },
   { id: 7, description: 'Crypto style (4-8)', amount: 0.12345678, minFrac: 4, maxFrac: 8 },
   { id: 8, description: 'Stock prices (2-4)', amount: 123.456789, minFrac: 2, maxFrac: 4 }
+];
+
+// Sample data for currency compact handling
+export const currencyCompactSampleData: SampleData[] = [
+  { id: 1, description: 'Thousand', amount: 1500, threshold: 1000 },
+  { id: 2, description: 'Ten Thousand', amount: 12500, threshold: 1000 },
+  { id: 3, description: 'Hundred Thousand', amount: 250000, threshold: 1000 },
+  { id: 4, description: 'Million', amount: 1850000, threshold: 1000 },
+  { id: 5, description: 'Ten Million', amount: 12750000, threshold: 1000 },
+  { id: 6, description: 'Billion', amount: 2300000000, threshold: 1000 },
+  { id: 7, description: 'Higher Threshold', amount: 500000, threshold: 1000000 },
+  { id: 8, description: 'No Compact', amount: 1500000, threshold: 10000000 }
+];
+
+// Sample data for currency EdgeCases handling
+export const currencyEdgeCasesSampleData: SampleData[] = [
+  { id: 1, description: 'Normal positive', value: 123.45 },
+  { id: 2, description: 'Normal negative', value: -67.89 },
+  { id: 3, description: 'Zero', value: 0 },
+  { id: 4, description: 'Very small', value: 0.000001 },
+  { id: 5, description: 'Very large', value: 999999999.99 },
+  { id: 6, description: 'String number', value: '456.78' },
+  { id: 7, description: 'Invalid string', value: 'not-a-number' },
+  { id: 8, description: 'Null value', value: null },
+  { id: 9, description: 'Undefined value', value: undefined },
+  { id: 10, description: 'NaN', value: NaN }
 ];
 
 // Sample data for currency decimal handling
@@ -126,6 +152,18 @@ export const swatchesSampleData: SampleData[] = [
   { id: 2, name: 'Success Color', color: '#28a745', description: 'Success state color' },
   { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
   { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
+];
+
+// Sample data for Currency Dynamic handling
+export const currencyDynamicSampleData: SampleData[] = [
+  { id: 1, product: 'US Software', region: 'US', currency: 'USD', price: 99.99, discount: 0 },
+  { id: 2, product: 'EU Software', region: 'EU', currency: 'EUR', price: 89.99, discount: 10 },
+  { id: 3, product: 'UK Software', region: 'UK', currency: 'GBP', price: 79.99, discount: 5 },
+  { id: 4, product: 'JP Software', region: 'JP', currency: 'JPY', price: 12000, discount: 0 },
+  { id: 5, product: 'CA Hardware', region: 'CA', currency: 'CAD', price: 249.99, discount: 15 },
+  { id: 6, product: 'AU Service', region: 'AU', currency: 'AUD', price: 149.99, discount: 20 },
+  { id: 7, product: 'CH Premium', region: 'CH', currency: 'CHF', price: 199.99, discount: 0 },
+  { id: 8, product: 'Bulk Order', region: 'US', currency: 'USD', price: 50000, discount: 25 }
 ];
 
 // Sample data for link testing

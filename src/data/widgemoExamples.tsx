@@ -6,7 +6,7 @@
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
-import { teaserSampleData } from './sampleData';
+import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData } from './sampleData';
 
 interface TaskEntity {
   id: number;
@@ -2545,28 +2545,28 @@ const widgemoExamples = [
     id: 'collapsible-header',
     title: 'Collapsible Header Zone',
     description: 'Header Zone: Enabled, collapsible with button, title and subtitle functions',
-    data: twoUsersData,
+    data: teaserSampleData,
     config: collapsibleHeaderConfig
   },
   {
     id: 'fixed-header',
     title: 'Fixed Header Zone',
     description: 'Header Zone: Enabled, fixed position, title and subtitle',
-    data: fourUsersData,
+    data: twoUsersData,
     config: fixedHeaderConfig
   },
   {
     id: 'react-element-title',
     title: 'React Element Title Example',
     description: 'Header Zone: Enabled, React element as title, subtitle',
-    data: fiveUsersData,
+    data: fourUsersData,
     config: reactElementTitleConfig
   },
   {
     id: 'actions-system-test',
     title: 'Actions System Test',
     description: 'Header Zone: Enabled with actions, Content Zone: Table mode with actions column',
-    data: fiveUsersData,
+    data: teaserSampleData,
     config: actionsSystemTestConfig
   },
   {
@@ -2678,7 +2678,7 @@ const widgemoExamples = [
     id: 'conditional-background-colors',
     title: 'Mode - Table Mode - Conditional Background Colors',
     description: 'Table mode with conditional background colors',
-    data: fiveUsersData,
+    data: eightUsersData,
     config: conditionalBackgroundColorsConfig
   },
   {
@@ -2692,36 +2692,36 @@ const widgemoExamples = [
     id: 'image-gallery',
     title: 'Image Gallery - FieldRenderer Lightbox',
     description: 'Image gallery with lightbox',
-    data: fiveUsersData,
+    data: sixUsersData,
     config: imageGalleryConfig
   },
   {
     id: 'progress-bar-fields',
     title: 'FieldRenderer Test - Progress Bar Fields',
     description: 'Progress bar fields',
-    data: fiveUsersData,
-    config: progressBarFunctionsConfig
+    data: progressExampleSampleData,
+    config: progressBarFieldsConfig
   },
   {
     id: 'progress-bar-variants',
     title: 'FieldRenderer Test - Progress Bar Variants',
     description: 'Progress bar variants',
-    data: fiveUsersData,
-    config: ratingFieldConfig
+    data: progressVariantsSampleData,
+    config: progressBarVariantsConfig
   },
   {
     id: 'progress-bar-functions',
     title: 'FieldRenderer Test - Progress Bar Functions',
     description: 'Progress bar with functions',
-    data: fiveUsersData,
-    config: carouselModeConfig
+    data: progressSampleData,
+    config: progressBarFunctionsConfig
   },
   {
     id: 'rating-field',
     title: 'FieldRenderer Test - Rating Field',
     description: 'Rating field',
-    data: fiveUsersData,
-    config: swatchExampleConfig
+    data: ratingsSampleData,
+    config: ratingFieldConfig
   },
   {
     id: 'carousel-mode',
@@ -2734,8 +2734,8 @@ const widgemoExamples = [
     id: 'swatch-example',
     title: 'Field Type Registry - Swatch Example',
     description: 'Swatch example',
-    data: fourUsersData,
-    config: performanceMonitoringConfig
+    data: swatchesSampleData,
+    config: swatchExampleConfig
   },
   {
     id: 'hooks-system-test',
@@ -2748,84 +2748,98 @@ const widgemoExamples = [
     id: 'performance-monitoring',
     title: 'Performance Monitoring - Pre/Post Render Hooks',
     description: 'Performance monitoring',
-    data: fourUsersData,
-    config: linkRenderingConfig
+    data: eightUsersData,
+    config: performanceMonitoringConfig
   },
   {
     id: 'board-mode',
     title: 'BoardMode - Kanban Board',
     description: 'Board mode',
-    data: fourUsersData,
-    config: linkRenderingCustomConfig
+    data: kanbanSampleData,
+    config: boardModeConfig
   },
   {
     id: 'link-rendering',
     title: 'Link Rendering',
     description: 'Link rendering',
-    data: fiveUsersData,
-    config: linkRenderingActionLinksConfig
+    data: linkTestData,
+    config: linkRenderingConfig
   },
   {
     id: 'link-rendering-custom',
     title: 'Link Rendering - Custom Text and URLs',
     description: 'Custom link rendering',
-    data: fiveUsersData,
-    config: tableGroupingConfig
+    data: actionOptionsSampleData,
+    config: linkRenderingCustomConfig
   },
   {
     id: 'link-rendering-action-links',
     title: 'Link Rendering - Action Links',
     description: 'Action links',
-    data: fiveUsersData,
-    config: currencyFieldRenderingConfig
+    data: actionLinksSampleData,
+    config: linkRenderingActionLinksConfig
   },
   {
     id: 'table-grouping',
     title: 'Mode - Table - Grouping',
     description: 'Table grouping',
     data: eightUsersData,
-    config: currencyInternationalConfig
+    config: tableGroupingConfig
   },
   {
     id: 'currency-field-rendering',
     title: 'Currency Field Rendering',
     description: 'Currency field rendering',
-    data: fiveUsersData,
-    config: currencySymbolPositioningConfig
+    data: currencyExamplesSampleData,
+    config: currencyFieldRenderingConfig
   },
   {
     id: 'currency-field-locale',
     title: 'Currency Field - International Showcase',
     description: 'Currency with locales',
-    data: fiveUsersData,
-    config: currencyDecimalAlignmentConfig
+    data: currencyInternationalSampleData,
+    config: currencyInternationalConfig
   },
   {
     id: 'currency-field-position',
     title: 'Currency Field - Symbol Positioning',
     description: 'Currency symbol positioning',
-    data: fiveUsersData,
-    config: currencyDecimalPrecisionConfig
+    data: currencyPositioningSampleData,
+    config: currencySymbolPositioningConfig
   },
   {
     id: 'currency-field-alignment',
     title: 'Currency Field - Decimal Alignment',
     description: 'Currency decimal alignment',
-    data: fiveUsersData,
-    config: currencyCompactNotationConfig
+    data: currencyDecimalSampleData,
+    config: currencyDecimalAlignmentConfig
   },
   {
     id: 'currency-field-precision',
     title: 'Currency Field - Decimal Precision',
     description: 'Currency decimal precision',
-    data: fiveUsersData,
-    config: currencyDynamicOptionsConfig
+    data: currencyPrecisionSampleData,
+    config: currencyDecimalPrecisionConfig
   },
   {
     id: 'currency-field-compact',
     title: 'Currency Field - Compact Notation',
     description: 'Currency compact notation',
-    data: fiveUsersData,
+    data: currencyCompactSampleData,
+    config: currencyCompactNotationConfig
+  },
+  {
+    id: 'currency-dynamic-compact',
+    title: 'Currency Field - Dynamic',
+    description: 'Currency dynamic',
+    data: currencyDynamicSampleData,
+    config: currencyDynamicOptionsConfig
+  },
+  {
+    id: 'currency-edge-compact',
+    title: 'Currency Field - Edge Cases',
+    description: 'Currency edge cases',
+    data: currencyEdgeCasesSampleData,
     config: currencyEdgeCasesConfig
   }
 ];
