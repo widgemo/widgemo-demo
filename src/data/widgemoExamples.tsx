@@ -1,3 +1,8 @@
+// This file contains pre-defined examples for widgemo components.
+// Configs and data are extracted to module-level constants for performance optimization.
+// These objects are not recreated on each render, ensuring stable references and preventing unnecessary re-renders.
+// Memoization is achieved through static exports, allowing React to optimize component updates.
+
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';

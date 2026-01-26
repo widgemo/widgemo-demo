@@ -14,7 +14,7 @@ declare global {
 // Global variable to store pending metrics
 // Register performance monitoring hooks at module level
 let renderCount = 0;
-let renderQueue: number[] = [];
+const renderQueue: number[] = [];
 // Pre-render hook to start timing
 registerHook({
   name: 'preRender',
@@ -89,6 +89,11 @@ iconNames.forEach(iconName => {
     defaultProps: { size: 16, color: 'currentColor' }
   });
 });
+/**
+ * Refactored to separate configs and data from rendering logic, allowing dynamic rendering
+ * and easier addition of new examples by modifying only the examples file.
+ * Optimizations include module-level constants for configs/data to prevent recreation on renders.
+ */
 export const SimplifiedTest: React.FC = () => {
   console.log('SimplifiedTest rendering');
   return (
