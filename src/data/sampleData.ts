@@ -1,11 +1,11 @@
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 export interface SampleData extends Record<string, unknown> {
   id?: number;
-  name: string;
+  name?: string;
   email?: string;
   role?: string;
   department?: string;
-  status?: boolean;
+  status?: boolean | string;
   lastLogin?: string;
   value?: number;
   category?: string;
@@ -13,7 +13,7 @@ export interface SampleData extends Record<string, unknown> {
   month?: string;
   sales?: number;
   tasks?: number;
-  rating?: string;
+  rating?: string | number;
   feedback?: string;
   activeUsers?: number;
   totalUsers?: number;
@@ -28,12 +28,152 @@ export const teaserSampleData: SampleData[] = [
   { id: 5, name: 'Eva Davis', email: 'eva.davis@company.com', role: 'Analyst', department: 'Business', status: true, lastLogin: '2024-01-13', src: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face' },
 ];
 
+// Sample data for currency precision handling
+export const currencyPrecisionSampleData: SampleData[] = [
+  { id: 1, description: 'Default (2 decimals)', amount: 123.456789, minFrac: 2, maxFrac: 2 },
+  { id: 2, description: 'No decimals', amount: 123.456789, minFrac: 0, maxFrac: 0 },
+  { id: 3, description: '1 decimal', amount: 123.456789, minFrac: 1, maxFrac: 1 },
+  { id: 4, description: '3 decimals', amount: 123.456789, minFrac: 3, maxFrac: 3 },
+  { id: 5, description: '0-2 decimals', amount: 123.456789, minFrac: 0, maxFrac: 2 },
+  { id: 6, description: '1-4 decimals', amount: 123.456789, minFrac: 1, maxFrac: 4 },
+  { id: 7, description: 'Crypto style (4-8)', amount: 0.12345678, minFrac: 4, maxFrac: 8 },
+  { id: 8, description: 'Stock prices (2-4)', amount: 123.456789, minFrac: 2, maxFrac: 4 }
+];
+
+// Sample data for currency decimal handling
+export const currencyDecimalSampleData: SampleData[] = [
+  { id: 1, description: 'Small amount', amount: 12.34 },
+  { id: 2, description: 'Medium amount', amount: 123.45 },
+  { id: 3, description: 'Large amount', amount: 1234.56 },
+  { id: 4, description: 'Very large', amount: 12345.67 },
+  { id: 5, description: 'Negative small', amount: -12.34 },
+  { id: 6, description: 'Negative large', amount: -1234.56 },
+  { id: 7, description: 'Zero amount', amount: 0.00 },
+  { id: 8, description: 'Fractional', amount: 0.12 }
+];
+
+// Sample data for currency positioning  handling
+export const currencyPositioningSampleData: SampleData[] = [
+  { id: 1, description: 'USD Prefix (default)', currency: 'USD', position: 'prefix', amount: 123.45 },
+  { id: 2, description: 'EUR Prefix', currency: 'EUR', position: 'prefix', amount: 123.45 },
+  { id: 3, description: 'GBP Prefix', currency: 'GBP', position: 'prefix', amount: 123.45 },
+  { id: 4, description: 'USD Suffix', currency: 'USD', position: 'suffix', amount: 123.45 },
+  { id: 5, description: 'EUR Suffix', currency: 'EUR', position: 'suffix', amount: 123.45 },
+  { id: 6, description: 'GBP Suffix', currency: 'GBP', position: 'suffix', amount: 123.45 },
+  { id: 7, description: 'No Symbol', currency: 'USD', position: 'none', amount: 123.45 },
+  { id: 8, description: 'Custom Position', currency: 'EUR', position: 'custom', amount: 123.45 }
+];
+
+// Sample data for currency international  handling
+export const currencyInternationalSampleData: SampleData[] = [
+  { id: 1, country: 'United States', currency: 'USD', locale: 'en-US', amount: 1234.56 },
+  { id: 2, country: 'Germany', currency: 'EUR', locale: 'de-DE', amount: 1234.56 },
+  { id: 3, country: 'United Kingdom', currency: 'GBP', locale: 'en-GB', amount: 1234.56 },
+  { id: 4, country: 'Japan', currency: 'JPY', locale: 'ja-JP', amount: 1234.56 },
+  { id: 5, country: 'France', currency: 'EUR', locale: 'fr-FR', amount: 1234.56 },
+  { id: 6, country: 'Canada', currency: 'CAD', locale: 'en-CA', amount: 1234.56 },
+  { id: 7, country: 'Australia', currency: 'AUD', locale: 'en-AU', amount: 1234.56 },
+  { id: 8, country: 'Switzerland', currency: 'CHF', locale: 'de-CH', amount: 1234.56 }
+];
+
+// Sample data for currency examples  handling
+export const currencyExamplesSampleData: SampleData[] = [
+  { id: 1, name: 'US Product', price: 29.99, currency: 'USD', locale: 'en-US' },
+  { id: 2, name: 'EU Product', price: 24.50, currency: 'EUR', locale: 'de-DE' },
+  { id: 3, name: 'UK Product', price: 19.99, currency: 'GBP', locale: 'en-GB' },
+  { id: 4, name: 'JP Product', price: 3500, currency: 'JPY', locale: 'ja-JP' },
+  { id: 5, name: 'Large Amount', price: 1500000, currency: 'USD', locale: 'en-US' },
+  { id: 6, name: 'Negative Amount', price: -45.67, currency: 'USD', locale: 'en-US' },
+  { id: 7, name: 'Zero Amount', price: 0, currency: 'USD', locale: 'en-US' },
+  { id: 8, name: 'Fractional Price', price: 12.3456, currency: 'USD', locale: 'en-US' }
+];
+
+// Sample data for Action Links handling
+export const actionLinksSampleData: SampleData[] = [
+  { id: 1, name: 'Edit Profile', action: 'edit', target: 'profile', url: '#edit-profile', text: 'Edit' },
+  { id: 2, name: 'Delete Item', action: 'delete', target: 'item', url: '#delete', text: 'Delete' },
+  { id: 3, name: 'Download File', action: 'download', target: 'report.pdf', url: '/api/download/report.pdf', text: 'Download' },
+  { id: 4, name: 'Send Email', action: 'email', target: 'user@example.com', url: 'mailto:user@example.com', text: 'Email User' },
+  { id: 5, name: 'Call Phone', action: 'call', target: '+1234567890', url: 'tel:+1234567890', text: 'Call Now' },
+  { id: 6, name: 'Open Chat', action: 'chat', target: 'support', url: '#chat-support', text: 'Start Chat' }
+];
+
+// Sample data for Action Options handling
+export const actionOptionsSampleData: SampleData[] = [
+  { id: 1, name: 'Google Search', url: 'https://google.com', displayText: 'Search the Web', category: 'external' },
+  { id: 2, name: 'GitHub Profile', url: 'https://github.com', displayText: 'View Code', category: 'external' },
+  { id: 3, name: 'Local Docs', url: '/docs', displayText: 'Documentation', category: 'internal' },
+  { id: 4, name: 'Company Site', url: 'https://example.com', displayText: 'Visit Company', category: 'external' },
+  { id: 5, name: 'Dashboard', url: '/dashboard', displayText: 'Go to Dashboard', category: 'internal' },
+  { id: 6, name: 'API Reference', url: 'https://api.example.com/docs', displayText: 'API Docs', category: 'external' }
+];
+
+// Sample data for Kanban handling
+export const kanbanSampleData: SampleData[] = [
+  { id: 1, name: 'Design homepage mockup', status: 'todo', priority: 'high', assignee: 'Alice' },
+  { id: 2, name: 'Implement user authentication', status: 'in-progress', priority: 'high', assignee: 'Bob' },
+  { id: 3, name: 'Write API documentation', status: 'review', priority: 'medium', assignee: 'Alice' },
+  { id: 4, name: 'Fix mobile responsiveness', status: 'done', priority: 'low', assignee: 'Charlie' },
+  { id: 5, name: 'Add unit tests', status: 'todo', priority: 'medium', assignee: 'Bob' },
+  { id: 6, name: 'Setup CI/CD pipeline', status: 'in-progress', priority: 'high', assignee: 'Alice' },
+  { id: 7, name: 'Database optimization', status: 'review', priority: 'medium', assignee: 'Charlie' },
+  { id: 8, name: 'User feedback integration', status: 'todo', priority: 'low', assignee: 'Bob' }
+];
+
+// Sample data for Swatches handling
+export const swatchesSampleData: SampleData[] = [
+  { id: 1, name: 'Primary Color', color: '#007bff', description: 'Brand primary color' },
+  { id: 2, name: 'Success Color', color: '#28a745', description: 'Success state color' },
+  { id: 3, name: 'Warning Color', color: '#ffc107', description: 'Warning state color' },
+  { id: 4, name: 'Danger Color', color: '#dc3545', description: 'Error state color' },
+];
+
 // Sample data for link testing
 export const linkTestData: SampleData[] = [
   { id: 1, name: 'Google', url: 'https://google.com', description: 'Search Engine' },
   { id: 2, name: 'GitHub', url: 'https://github.com', description: 'Code Repository' },
   { id: 3, name: 'Stack Overflow', url: 'https://stackoverflow.com', description: 'Developer Q&A' },
   { id: 4, name: 'MDN Web Docs', url: 'https://developer.mozilla.org', description: 'Web Documentation' },
+];
+
+// Sample data for Ratings testing
+export const ratingsSampleData: SampleData[] = [
+  { id: 1, name: 'Product A', rating: 4.5, hearts: 3, cost: 5, reviews: 128 },
+  { id: 2, name: 'Product B', rating: 3, hearts: 4.5, cost: 1, reviews: 45 },
+  { id: 3, name: 'Product C', rating: 5, hearts: 2, cost: 1.6, reviews: 89 },
+  { id: 4, name: 'Product D', rating: 0, hearts: 5, cost: 2.1, reviews: 0 },
+  { id: 5, name: 'Product E', rating: 2.5, hearts: 1.5, cost: 0.8, reviews: 67 }
+];
+
+// Sample data for Progress testing
+export const progressSampleData: SampleData[] = [
+  { id: 1, name: 'High Priority Task', progress: 85, priority: 'high', size: 'large' },
+  { id: 2, name: 'Medium Priority Task', progress: 60, priority: 'medium', size: 'medium' },
+  { id: 3, name: 'Low Priority Task', progress: 30, priority: 'low', size: 'small' },
+  { id: 4, name: 'Critical Task', progress: 95, priority: 'critical', size: 'large' },
+  { id: 5, name: 'Normal Task', progress: 45, priority: 'medium', size: 'medium' }
+];
+
+// Sample data for Progress Variants testing
+export const progressVariantsSampleData: SampleData[] = [
+  { id: 1, name: 'Standard Progress', progress: 65, color: '#007bff' },
+  { id: 2, name: 'Success Progress', progress: 80, color: '#28a745' },
+  { id: 3, name: 'Warning Progress', progress: 45, color: '#ffc107' },
+  { id: 4, name: 'Danger Progress', progress: 25, color: '#dc3545' },
+  { id: 5, name: 'No Text Progress', progress: 70, color: '#6f42c1', showText: false },
+  { id: 6, name: 'Tall Progress', progress: 55, color: '#20c997', height: '30px' }
+];
+
+// Sample data for Progress Example testing
+export const progressExampleSampleData: SampleData[] = [
+  { id: 1, name: 'Task A', progress: 75, status: 'in-progress', priority: 'high' },
+  { id: 2, name: 'Task B', progress: 30, status: 'started', priority: 'medium' },
+  { id: 3, name: 'Task C', progress: 100, status: 'completed', priority: 'low' },
+  { id: 4, name: 'Task D', progress: 0, status: 'not-started', priority: 'high' },
+  { id: 5, name: 'Task E', progress: 45, status: 'in-progress', priority: 'medium' },
+  { id: 6, name: 'Task F', progress: 90, status: 'review', priority: 'low' },
+  { id: 7, name: 'Task G', progress: -5, status: 'error', priority: 'high' }, // Test negative value
+  { id: 8, name: 'Task H', progress: 150, status: 'overflow', priority: 'low' } // Test >100 value
 ];
 
 // Sample data for 12 users
@@ -99,7 +239,7 @@ export const galleryConfigs: Array<{
               icon: 'edit',
               variant: 'secondary',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             },
             {
               id: 'delete',
@@ -107,7 +247,7 @@ export const galleryConfigs: Array<{
               icon: 'trash',
               variant: 'danger',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             }
           ],
           header: {
@@ -149,7 +289,7 @@ export const galleryConfigs: Array<{
               icon: 'eye',
               variant: 'secondary',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             }
           ],
           header: {
@@ -361,7 +501,7 @@ export const galleryConfigs: Array<{
               icon: 'edit',
               variant: 'secondary',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             },
             {
               id: 'delete',
@@ -369,7 +509,7 @@ export const galleryConfigs: Array<{
               icon: 'trash',
               variant: 'danger',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             }
           ],
           header: {
@@ -453,7 +593,7 @@ export const galleryConfigs: Array<{
               icon: 'edit',
               variant: 'secondary',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             },
             {
               id: 'delete',
@@ -461,7 +601,7 @@ export const galleryConfigs: Array<{
               icon: 'trash',
               variant: 'danger',
               iconOnly: true,
-              onTrigger: () => {} // Demo action
+              onTrigger: () => { } // Demo action
             }
           ],
           item: {
@@ -976,9 +1116,9 @@ export const galleryConfigs: Array<{
         fields: [
           { name: 'id', label: 'ID', type: 'number' },
           { name: 'name', label: 'Name', type: 'text' },
-          { 
-            name: 'url', 
-            label: 'URL', 
+          {
+            name: 'url',
+            label: 'URL',
             type: 'text',
             renderAs: 'link',
             linkOptions: {
@@ -1023,7 +1163,7 @@ export const defaultSandboxConfig: WidgemoConfig = {
         icon: 'edit',
         variant: 'secondary',
         iconOnly: true,
-        onTrigger: () => {} // Demo action
+        onTrigger: () => { } // Demo action
       },
       {
         id: 'delete',
@@ -1031,7 +1171,7 @@ export const defaultSandboxConfig: WidgemoConfig = {
         icon: 'trash',
         variant: 'danger',
         iconOnly: true,
-        onTrigger: () => {} // Demo action
+        onTrigger: () => { } // Demo action
       }
     ],
     header: {
@@ -1072,7 +1212,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
             icon: 'edit',
             variant: 'secondary',
             iconOnly: true,
-            onTrigger: () => {} // Demo action
+            onTrigger: () => { } // Demo action
           },
           {
             id: 'delete',
@@ -1080,7 +1220,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
             icon: 'trash',
             variant: 'danger',
             iconOnly: true,
-            onTrigger: () => {} // Demo action
+            onTrigger: () => { } // Demo action
           }
         ],
         header: {
@@ -1115,7 +1255,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
             icon: 'eye',
             variant: 'secondary',
             iconOnly: true,
-            onTrigger: () => {} // Demo action
+            onTrigger: () => { } // Demo action
           }
         ],
         header: {
