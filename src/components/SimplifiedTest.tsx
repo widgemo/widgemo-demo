@@ -1,5 +1,5 @@
 import React from 'react';
-import { registerHook, registerIcon } from 'widgemo-core';
+import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
 import type { Entity } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
@@ -109,7 +109,13 @@ export const SimplifiedTest: React.FC = () => {
           <div key={example.id} className="col-12 mb-4">
             <h2>{example.title}</h2>
             <p>{example.description}</p>
-            {/* TODO: Add SimplifiedWidgemo here */}
+            {/* Rendering SimplifiedWidgemo with stable props from examples array. */}
+            <SimplifiedWidgemo
+              data={example.data}
+              config={example.config}
+              className="my-custom-widgemo"
+              {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+            />
           </div>
         ))}
       </div>
