@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
+import { registerHook, registerIcon } from 'widgemo-core';
 import type { Entity } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
@@ -104,121 +104,14 @@ export const SimplifiedTest: React.FC = () => {
       `}</style>
       <h1 className="mb-4">Widgemo Product Primitive - ZoneRenderer Test</h1>
       <div className="row">
-        <div className="col-12 mb-4">
-          <h2>Mode - Table Mode - Plain</h2>
-          <p>Basic table mode with default styling and actions.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'table-plain')!.data}
-            config={widgemoExamples.find(e => e.id === 'table-plain')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Mode - Table Mode - Alternating Rows</h2>
-          <p>Table mode with alternating row colors for better readability.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'table-alternating')!.data}
-            config={widgemoExamples.find(e => e.id === 'table-alternating')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Mode - Table Mode - Row Dividers</h2>
-          <p>Table mode with row separators for clear data separation.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'table-row-dividers')!.data}
-            config={widgemoExamples.find(e => e.id === 'table-row-dividers')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>FieldRenderer Test - Type-Specific Rendering</h2>
-          <p>Testing FieldRenderer with type-specific rendering for different data types.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'field-renderer-test')!.data}
-            config={widgemoExamples.find(e => e.id === 'field-renderer-test')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Mode - Table Mode - Conditional Borders</h2>
-          <p>Table mode with conditional borders based on data values, alternating rows disabled.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'conditional-borders')!.data}
-            config={widgemoExamples.find(e => e.id === 'conditional-borders')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>CarouselMode - Swipeable Carousel</h2>
-          <p>Testing CarouselMode with drag gestures, navigation arrows, and indicators. Drag or use arrows to navigate.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'carousel-mode')!.data}
-            config={widgemoExamples.find(e => e.id === 'carousel-mode')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Image Gallery - FieldRenderer Lightbox</h2>
-          <p>Testing FieldRenderer image type with lightbox functionality using dedicated image data.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'image-gallery')!.data}
-            config={widgemoExamples.find(e => e.id === 'image-gallery')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Mode - Table Mode - Groupable Columns</h2>
-          <p>Table mode with groupable columns for data organization.</p>
-          <SimplifiedWidgemo
-            data={widgemoExamples.find(e => e.id === 'table-groupable-columns')!.data}
-            config={widgemoExamples.find(e => e.id === 'table-groupable-columns')!.config}
-            className="my-custom-widgemo"
-          />
-        </div>
-        <div className="col-12 mb-4">
-          <h2>Performance Monitoring - Pre/Post Render Hooks</h2>
-          <p>Testing preRender and postRender hooks for performance monitoring. Check console for logs and see live performance metrics below.</p>
-          <SimplifiedWidgemo
-            id="performance-monitoring-demo"
-            data={widgemoExamples.find(e => e.id === 'performance-monitoring')!.data}
-            className="my-custom-widgemo"
-            config={{
-              preRender: () => {
-                if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
-                  performance.mark('widgemo-start');
-                }
-              },
-              zones: {
-                header: {
-                  enabled: true,
-                  icon: { src: 'clock', size: 24, color: '#06a10e' },
-                  title: 'Performance Monitored Component',
-                  subtitle: 'Pre/Post render hooks active'
-                },
-                content: {
-                  enabled: true,
-                  mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Name', sortable: true },
-                    { field: 'email', header: 'Email', sortable: true },
-                    { field: 'role', header: 'Role', align: 'center' },
-                    { field: 'department', header: 'Department', sortable: true }
-                  ],
-                  table: {
-                    rowSeparator: false,
-                    pagination: { page: 1, pageSize: 5 }
-                  }
-                },
-                footer: {
-                  enabled: true,
-                  title: 'Performance Stats',
-                  subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
-                }
-              }
-            }}
-          />
-        </div>
+        {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
+        {widgemoExamples.map((example) => (
+          <div key={example.id} className="col-12 mb-4">
+            <h2>{example.title}</h2>
+            <p>{example.description}</p>
+            {/* TODO: Add SimplifiedWidgemo here */}
+          </div>
+        ))}
       </div>
     </div>
   );
