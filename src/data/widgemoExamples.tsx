@@ -2379,3 +2379,296 @@ export const currencyEdgeCasesConfig: SimplifiedWidgemoConfig = {
     footer: { enabled: false }
   }
 };
+
+// Array of examples for dynamic rendering in SimplifiedTest.
+const widgemoExamples = [
+  {
+    id: 'collapsible-header',
+    title: 'Collapsible Header Zone',
+    description: 'Header Zone: Enabled, collapsible with button, title and subtitle functions',
+    data: twoUsersData,
+    config: collapsibleHeaderConfig
+  },
+  {
+    id: 'fixed-header',
+    title: 'Fixed Header Zone',
+    description: 'Header Zone: Enabled, fixed position, title and subtitle',
+    data: fourUsersData,
+    config: fixedHeaderConfig
+  },
+  {
+    id: 'react-element-title',
+    title: 'React Element Title Example',
+    description: 'Header Zone: Enabled, React element as title, subtitle',
+    data: fiveUsersData,
+    config: reactElementTitleConfig
+  },
+  {
+    id: 'actions-system-test',
+    title: 'Actions System Test',
+    description: 'Header Zone: Enabled with actions, Content Zone: Table mode with actions column',
+    data: fiveUsersData,
+    config: actionsSystemTestConfig
+  },
+  {
+    id: 'compact-layout',
+    title: 'Zone Layouts Test - Compact Layout',
+    description: 'Compact layout with reduced spacing',
+    data: fiveUsersData,
+    config: compactLayoutConfig
+  },
+  {
+    id: 'minimal-layout',
+    title: 'Zone Layouts Test - Minimal Layout',
+    description: 'Minimal layout with no padding',
+    data: fiveUsersData,
+    config: minimalLayoutConfig
+  },
+  {
+    id: 'centered-layout',
+    title: 'Zone Layouts Test - Centered Layout',
+    description: 'Centered layout with max width',
+    data: fiveUsersData,
+    config: centeredLayoutConfig
+  },
+  {
+    id: 'custom-layout',
+    title: 'Custom Layout Test',
+    description: 'Custom layout with specific dimensions',
+    data: fiveUsersData,
+    config: customLayoutConfig
+  },
+  {
+    id: 'custom-layout-custom-element',
+    title: 'Custom Layout with Custom Element',
+    description: 'Custom layout with custom element in header',
+    data: fiveUsersData,
+    config: customLayoutWithCustomElementConfig
+  },
+  {
+    id: 'custom-layout-vertical',
+    title: 'Custom Layout with Vertical Direction',
+    description: 'Custom layout with vertical direction',
+    data: fiveUsersData,
+    config: customLayoutVerticalConfig
+  },
+  {
+    id: 'custom-layout-groups',
+    title: 'Custom Layout with Groups',
+    description: 'Custom layout with grouped zones',
+    data: fiveUsersData,
+    config: customLayoutWithGroupsConfig
+  },
+  {
+    id: 'headless-widgemo',
+    title: 'Headless Widgemo Example',
+    description: 'Headless mode with no zones',
+    data: sixUsersData,
+    config: headlessWidgemoConfig
+  },
+  {
+    id: 'instance-id-demo',
+    title: 'Widgemo Instance ID Demo',
+    description: 'Instance ID for multiple widgemos',
+    data: threeUsersData,
+    config: instanceIdDemoConfig
+  },
+  {
+    id: 'grid-mode-item-renderer',
+    title: 'Mode System Test - Grid Mode with ItemRenderer',
+    description: 'Grid mode with custom item renderer and conditional borders',
+    data: sixUsersData,
+    config: gridModeWithItemRendererConfig
+  },
+  {
+    id: 'table-alternating',
+    title: 'Mode - Table - Alternating',
+    description: 'Table mode with alternating row colors',
+    data: eightUsersData,
+    config: tableAlternatingConfig
+  },
+  {
+    id: 'table-row-dividers',
+    title: 'Mode - Table Mode - Row Dividers',
+    description: 'Table mode with row separators',
+    data: fiveUsersData,
+    config: tableRowDividersConfig
+  },
+  {
+    id: 'table-groupable-columns',
+    title: 'Mode - Table Mode - Groupable Columns',
+    description: 'Table mode with groupable columns',
+    data: twelveUsersData,
+    config: tableGroupableColumnsConfig
+  },
+  {
+    id: 'table-plain',
+    title: 'Mode - Table Mode - Plain',
+    description: 'Plain table mode',
+    data: fiveUsersData,
+    config: tablePlainConfig
+  },
+  {
+    id: 'field-renderer-test',
+    title: 'FieldRenderer Test - Type-Specific Rendering',
+    description: 'FieldRenderer with type-specific rendering',
+    data: fourUsersData,
+    config: fieldRendererTestConfig
+  },
+  {
+    id: 'conditional-background-colors',
+    title: 'Mode - Table Mode - Conditional Background Colors',
+    description: 'Table mode with conditional background colors',
+    data: fiveUsersData,
+    config: imageGalleryConfig
+  },
+  {
+    id: 'conditional-borders',
+    title: 'Mode - Table Mode - Conditional Borders',
+    description: 'Table mode with conditional borders',
+    data: eightUsersData,
+    config: progressBarFieldsConfig
+  },
+  {
+    id: 'image-gallery',
+    title: 'Image Gallery - FieldRenderer Lightbox',
+    description: 'Image gallery with lightbox',
+    data: fiveUsersData,
+    config: progressBarVariantsConfig
+  },
+  {
+    id: 'progress-bar-fields',
+    title: 'FieldRenderer Test - Progress Bar Fields',
+    description: 'Progress bar fields',
+    data: fiveUsersData,
+    config: progressBarFunctionsConfig
+  },
+  {
+    id: 'progress-bar-variants',
+    title: 'FieldRenderer Test - Progress Bar Variants',
+    description: 'Progress bar variants',
+    data: fiveUsersData,
+    config: ratingFieldConfig
+  },
+  {
+    id: 'progress-bar-functions',
+    title: 'FieldRenderer Test - Progress Bar Functions',
+    description: 'Progress bar with functions',
+    data: fiveUsersData,
+    config: carouselModeConfig
+  },
+  {
+    id: 'rating-field',
+    title: 'FieldRenderer Test - Rating Field',
+    description: 'Rating field',
+    data: fiveUsersData,
+    config: swatchExampleConfig
+  },
+  {
+    id: 'carousel-mode',
+    title: 'CarouselMode - Swipeable Carousel',
+    description: 'Carousel mode',
+    data: fiveUsersData,
+    config: hooksSystemTestConfig
+  },
+  {
+    id: 'swatch-example',
+    title: 'Field Type Registry - Swatch Example',
+    description: 'Swatch example',
+    data: fourUsersData,
+    config: performanceMonitoringConfig
+  },
+  {
+    id: 'hooks-system-test',
+    title: 'Hooks System Test - Pre/Post Render',
+    description: 'Hooks system test',
+    data: fourUsersData,
+    config: boardModeConfig
+  },
+  {
+    id: 'performance-monitoring',
+    title: 'Performance Monitoring - Pre/Post Render Hooks',
+    description: 'Performance monitoring',
+    data: fourUsersData,
+    config: linkRenderingConfig
+  },
+  {
+    id: 'board-mode',
+    title: 'BoardMode - Kanban Board',
+    description: 'Board mode',
+    data: fourUsersData,
+    config: linkRenderingCustomConfig
+  },
+  {
+    id: 'link-rendering',
+    title: 'Link Rendering',
+    description: 'Link rendering',
+    data: fiveUsersData,
+    config: linkRenderingActionLinksConfig
+  },
+  {
+    id: 'link-rendering-custom',
+    title: 'Link Rendering - Custom Text and URLs',
+    description: 'Custom link rendering',
+    data: fiveUsersData,
+    config: tableGroupingConfig
+  },
+  {
+    id: 'link-rendering-action-links',
+    title: 'Link Rendering - Action Links',
+    description: 'Action links',
+    data: fiveUsersData,
+    config: currencyFieldRenderingConfig
+  },
+  {
+    id: 'table-grouping',
+    title: 'Mode - Table - Grouping',
+    description: 'Table grouping',
+    data: eightUsersData,
+    config: currencyInternationalConfig
+  },
+  {
+    id: 'currency-field-rendering',
+    title: 'Currency Field Rendering',
+    description: 'Currency field rendering',
+    data: fiveUsersData,
+    config: currencySymbolPositioningConfig
+  },
+  {
+    id: 'currency-field-locale',
+    title: 'Currency Field - International Showcase',
+    description: 'Currency with locales',
+    data: fiveUsersData,
+    config: currencyDecimalAlignmentConfig
+  },
+  {
+    id: 'currency-field-position',
+    title: 'Currency Field - Symbol Positioning',
+    description: 'Currency symbol positioning',
+    data: fiveUsersData,
+    config: currencyDecimalPrecisionConfig
+  },
+  {
+    id: 'currency-field-alignment',
+    title: 'Currency Field - Decimal Alignment',
+    description: 'Currency decimal alignment',
+    data: fiveUsersData,
+    config: currencyCompactNotationConfig
+  },
+  {
+    id: 'currency-field-precision',
+    title: 'Currency Field - Decimal Precision',
+    description: 'Currency decimal precision',
+    data: fiveUsersData,
+    config: currencyDynamicOptionsConfig
+  },
+  {
+    id: 'currency-field-compact',
+    title: 'Currency Field - Compact Notation',
+    description: 'Currency compact notation',
+    data: fiveUsersData,
+    config: currencyEdgeCasesConfig
+  }
+];
+
+export default widgemoExamples;
