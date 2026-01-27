@@ -144,7 +144,7 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
-  devMode: false,
+  devMode: true,
   zones: {
     header: {
       enabled: true,
@@ -182,6 +182,7 @@ export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const reactElementTitleConfig: SimplifiedWidgemoConfig = {
+  devMode: true,
   zones: {
     header: {
       enabled: true,
@@ -246,6 +247,7 @@ export const reactElementTitleConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const actionsSystemTestConfig: SimplifiedWidgemoConfig = {
+  devMode: true,
   zones: {
     header: {
       enabled: true,
@@ -616,6 +618,7 @@ export const customLayoutWithGroupsConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const headlessWidgemoConfig: SimplifiedWidgemoConfig = {
+  devMode: true,
   zones: {
     header: {
       enabled: false  // This makes it headless
