@@ -96,6 +96,7 @@ export const twelveUsersData = teaserSampleData.slice(0, 12);
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
+  devMode: true,
   zones: {
     header: {
       enabled: true,
@@ -143,6 +144,7 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
+  devMode: false,
   zones: {
     header: {
       enabled: true,
