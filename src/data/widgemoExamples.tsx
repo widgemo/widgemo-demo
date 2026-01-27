@@ -671,6 +671,60 @@ export const headlessWidgemoConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const headlessFooterlessWidgemoConfig: SimplifiedWidgemoConfig = {
+  devMode: true,
+  zones: {
+    header: {
+      enabled: false  // This makes it headless
+    },
+    content: {
+      enabled: true,
+      mode: 'grid'
+    },
+    footer: {
+      enabled: false,
+      title: 'Actions (Footer)',
+      subtitle: 'Since header is disabled, actions are placed here',
+      actions: [
+        {
+          id: 'add-item',
+          label: 'Add Item',
+          icon: 'add',
+          variant: 'primary',
+          onTrigger: (context) => {
+            console.log(`🆔 Add Item clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+          }
+        },
+        {
+          id: 'bulk-edit',
+          label: 'Bulk Edit',
+          icon: 'edit',
+          variant: 'secondary',
+          onTrigger: (context) => {
+            console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Bulk Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+          }
+        },
+        {
+          id: 'export-data',
+          label: 'Export Data',
+          icon: 'export',
+          variant: 'success',
+          onTrigger: (context) => {
+            console.log(`🆔 Export Data clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Export Data clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
+          }
+        }
+      ]
+    }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const instanceIdDemoConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
@@ -2629,6 +2683,13 @@ const widgemoExamples = [
     description: 'Headless mode with no zones',
     data: sixUsersData,
     config: headlessWidgemoConfig
+  },
+   {
+    id: 'headless-footerless-widgemo',
+    title: 'Headless and Footerless Widgemo Example',
+    description: 'Headless mode with no zones, including no footer',
+    data: sixUsersData,
+    config: headlessFooterlessWidgemoConfig
   },
   {
     id: 'instance-id-demo',
