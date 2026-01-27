@@ -2,12 +2,9 @@
 
 /* Set demo-specific z-index values for proper layering */
 :root {
-  --widgemo-table-actions-z-index: 200;
-  --widgemo-dropdown-z-index: 500;
-  --widgemo-devmode-overlay-z-index: 10000;
+  --widgemo-table-actions-z-index: 900;
+  --widgemo-dropdown-z-index: 1000;
+  --widgemo-devmode-overlay-z-index: 1020;
 }
 
-/* Demo navbar z-index */
-.demo-navbar {
-  z-index: 11000 !important;
-}
+/* Navbar uses Bootstrap's default z-index: 1030 (no override needed) */

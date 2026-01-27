@@ -34,7 +34,7 @@ export const AppNavbar: React.FC = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow demo-navbar">
+      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
         <BootstrapNavbar.Brand 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           as={Link as any} 
