@@ -17,8 +17,49 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('🎨 ThemeProvider component rendered with initial theme:', 'theme-light');
-  const [currentTheme, setCurrentTheme] = useState('theme-light');
+  // Check if localStorage is available and working
+  const isLocalStorageAvailable = () => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    try {
+      const testKey = '__localStorage_test__';
+      localStorage.setItem(testKey, 'test');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // Load theme from localStorage or default to light
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    if (isLocalStorageAvailable()) {
+      try {
+        const saved = localStorage.getItem('widgemo-theme');
+        if (saved) {
+          return saved;
+        } else {
+          return 'theme-light';
+        }
+      } catch (error) {
+        return 'theme-light';
+      }
+    } else {
+      return 'theme-light';
+    }
+  });
+
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    if (isLocalStorageAvailable()) {
+      try {
+        localStorage.setItem('widgemo-theme', currentTheme);
+      } catch (error) {
+        // Silently fail if localStorage is not available
+      }
+    }
+  }, [currentTheme]);
 
   // Safe theming application - works in both development and production
   useEffect(() => {
@@ -45,6 +86,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             document.documentElement.style.setProperty('--bg-color', themeConfig.backgroundColor);
             document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
             document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
+            document.documentElement.style.setProperty('--button-hover', themeConfig.buttonHover);
 
             // Also apply to body for broader coverage
             document.body.style.setProperty('color', themeConfig.textColor);
