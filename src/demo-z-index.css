@@ -1,0 +1,13 @@
+/* widgemo-demo custom z-index overrides */
+
+/* Set demo-specific z-index values for proper layering */
+:root {
+  --widgemo-table-actions-z-index: 200;
+  --widgemo-dropdown-z-index: 500;
+  --widgemo-devmode-overlay-z-index: 10000;
+}
+
+/* Demo navbar z-index */
+.demo-navbar {
+  z-index: 11000 !important;
+}
