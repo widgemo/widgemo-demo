@@ -4,17 +4,21 @@ import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
+import { getThemeConfig } from './utils/themeConfig';
 
 function AppContent() {
+  console.log('📱 AppContent rendering');
   const { currentTheme } = useTheme();
+  const themeConfig = getThemeConfig(currentTheme);
   
   return (
     <div 
       className={`App ${currentTheme}`}
       style={{
-        background: `linear-gradient(to bottom, var(--border-color) 0%, var(--bg-color) 100%) fixed`,
+        background: `linear-gradient(to bottom, ${themeConfig?.borderColor || '#cccccc'} 0%, ${themeConfig?.backgroundColor || '#ffffff'} 100%) fixed`,
         backgroundSize: '100% 100vh',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        color: themeConfig?.textColor || '#333333'
       }}
     >
       <div>
@@ -42,6 +46,7 @@ function AppContent() {
 }
 
 function App() {
+  console.log('🚀 App component rendering');
   return (
     <ThemeProvider>
       <AppContent />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import { getThemeConfig } from '../utils/themeConfig';
 
 interface ThemeContextType {
   currentTheme: string;
@@ -16,29 +17,67 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  console.log('🎨 ThemeProvider component rendered with initial theme:', 'theme-light');
   const [currentTheme, setCurrentTheme] = useState('theme-light');
 
-  // Safe theming application - only runs in development and with proper error handling
+  // Safe theming application - works in both development and production
   useEffect(() => {
-    // Only apply theming in development to avoid production issues
-    if (typeof window === 'undefined' || !window.location || window.location.port !== '5173') {
+    console.log('🎨 ThemeProvider useEffect triggered for theme:', currentTheme);
+
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.document) {
+      console.log('❌ Not in browser environment');
       return;
     }
 
-    // Delay execution to avoid render conflicts
-    const timer = setTimeout(() => {
+    console.log('✅ In browser environment, applying theme...');
+
+    const applyTheme = () => {
+      console.log('🎨 ThemeProvider: Applying theme for', currentTheme);
       try {
-        if (document.documentElement) {
-          // Apply basic theme colors via CSS variables
-          document.documentElement.style.setProperty('--bg-color', currentTheme === 'theme-dark' ? '#1a1a1a' : '#ffffff');
-          document.documentElement.style.setProperty('--text-color', currentTheme === 'theme-dark' ? '#ffffff' : '#333333');
-          document.documentElement.style.setProperty('--border-color', currentTheme === 'theme-dark' ? '#444444' : '#dddddd');
+        if (document.documentElement && document.body) {
+          // Get the actual theme configuration
+          const themeConfig = getThemeConfig(currentTheme);
+          console.log('🎨 ThemeProvider: Got theme config', themeConfig);
+
+          if (themeConfig) {
+            // Apply theme colors to CSS variables on document root
+            document.documentElement.style.setProperty('--bg-color', themeConfig.backgroundColor);
+            document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
+            document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
+
+            // Also apply to body for broader coverage
+            document.body.style.setProperty('color', themeConfig.textColor);
+            document.body.style.setProperty('background-color', themeConfig.backgroundColor);
+
+            console.log('✅ Theme applied successfully:', currentTheme, {
+              bg: themeConfig.backgroundColor,
+              text: themeConfig.textColor,
+              border: themeConfig.borderColor
+            });
+          } else {
+            console.error('❌ Theme config not found for:', currentTheme, '- using fallback');
+            // Fallback to light theme
+            document.documentElement.style.setProperty('--bg-color', '#ffffff');
+            document.documentElement.style.setProperty('--text-color', '#161616');
+            document.documentElement.style.setProperty('--border-color', '#cccccc');
+            document.body.style.setProperty('color', '#161616');
+            document.body.style.setProperty('background-color', '#ffffff');
+          }
+        } else {
+          console.error('❌ DOM elements not available');
         }
       } catch (error) {
         // Silently fail if theming fails
-        console.warn('Theme application failed:', error);
+        console.error('❌ Theme application failed:', error);
       }
-    }, 100);
+    };
+
+    // Apply theme immediately for initial render
+    applyTheme();
+
+    // Also apply with delay to ensure DOM is fully ready (for safety)
+    const timer = setTimeout(applyTheme, 100);
 
     return () => clearTimeout(timer);
   }, [currentTheme]);
