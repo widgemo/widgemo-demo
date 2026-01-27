@@ -12,6 +12,14 @@ export interface ThemeConfig {
   shadowColor: string;
   buttonBg: string;
   buttonHover: string;
+  rowHoverBg: string;
+  tableHeaderHoverBg: string;
+  tableBorder: string;
+  tableHeaderBg: string;
+  tableBodyBg: string;
+  rowAltBg: string;
+  focusColor: string;
+  textMuted: string;
 }
 
 export const THEME_CONFIGS: Record<string, ThemeConfig> = {
@@ -24,6 +32,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#f0f0f0',
     buttonHover: '#e0e0e0',
+    rowHoverBg: '#e0e0e0',
+    tableHeaderHoverBg: '#e0e0e0',
+    tableBorder: '#e0e0e0',
+    tableHeaderBg: '#f8f9fa',
+    tableBodyBg: '#ffffff',
+    rowAltBg: '#fafafa',
+    focusColor: '#007bff',
+    textMuted: '#6c757d',
   },
   'theme-light-blue': {
     key: 'theme-light-blue',
@@ -34,6 +50,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#cce7ff',
     buttonHover: '#99d6ff',
+    rowHoverBg: '#99d6ff',
+    tableHeaderHoverBg: '#99d6ff',
+    tableBorder: '#b3d9ff',
+    tableHeaderBg: '#e6f3ff',
+    tableBodyBg: '#f0f8ff',
+    rowAltBg: '#f5fbff',
+    focusColor: '#007bff',
+    textMuted: '#6c757d',
   },
   'theme-light-green': {
     key: 'theme-light-green',
@@ -44,6 +68,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#ccffcc',
     buttonHover: '#99ff99',
+    rowHoverBg: '#99ff99',
+    tableHeaderHoverBg: '#99ff99',
+    tableBorder: '#b3ffb3',
+    tableHeaderBg: '#e6ffe6',
+    tableBodyBg: '#f0fff0',
+    rowAltBg: '#f5fff5',
+    focusColor: '#28a745',
+    textMuted: '#6c757d',
   },
   'theme-light-purple': {
     key: 'theme-light-purple',
@@ -54,6 +86,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     buttonBg: '#e6ccff',
     buttonHover: '#d9b3ff',
+    rowHoverBg: '#d9b3ff',
+    tableHeaderHoverBg: '#d9b3ff',
+    tableBorder: '#d9b3ff',
+    tableHeaderBg: '#f2e6ff',
+    tableBodyBg: '#f8f0ff',
+    rowAltBg: '#fbf5ff',
+    focusColor: '#6f42c1',
+    textMuted: '#6c757d',
   },
   'theme-dark': {
     key: 'theme-dark',
@@ -64,6 +104,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#333333',
     buttonHover: '#555555',
+    rowHoverBg: '#555555',
+    tableHeaderHoverBg: '#555555',
+    tableBorder: '#444444',
+    tableHeaderBg: '#2a2a2a',
+    tableBodyBg: '#1a1a1a',
+    rowAltBg: '#222222',
+    focusColor: '#007bff',
+    textMuted: '#888888',
   },
   'theme-dark-red': {
     key: 'theme-dark-red',
@@ -74,6 +122,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#4a2a2a',
     buttonHover: '#6a4a4a',
+    rowHoverBg: '#6a4a4a',
+    tableHeaderHoverBg: '#6a4a4a',
+    tableBorder: '#664444',
+    tableHeaderBg: '#3a2a2a',
+    tableBodyBg: '#2a1a1a',
+    rowAltBg: '#332222',
+    focusColor: '#dc3545',
+    textMuted: '#888888',
   },
   'theme-dark-purple': {
     key: 'theme-dark-purple',
@@ -84,6 +140,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#2a2a4a',
     buttonHover: '#4a4a6a',
+    rowHoverBg: '#4a4a6a',
+    tableHeaderHoverBg: '#4a4a6a',
+    tableBorder: '#444466',
+    tableHeaderBg: '#2a2a3a',
+    tableBodyBg: '#1a1a2a',
+    rowAltBg: '#222233',
+    focusColor: '#6f42c1',
+    textMuted: '#888888',
   },
   'theme-dark-teal': {
     key: 'theme-dark-teal',
@@ -94,6 +158,14 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     shadowColor: 'rgba(255, 255, 255, 0.1)',
     buttonBg: '#2a4a48',
     buttonHover: '#4a6a6a',
+    rowHoverBg: '#4a6a6a',
+    tableHeaderHoverBg: '#4a6a6a',
+    tableBorder: '#446166',
+    tableHeaderBg: '#1a3a38',
+    tableBodyBg: '#053c4c',
+    rowAltBg: '#0a4545',
+    focusColor: '#17a2b8',
+    textMuted: '#888888',
   },
 };
 

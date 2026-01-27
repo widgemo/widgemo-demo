@@ -87,6 +87,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
             document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
             document.documentElement.style.setProperty('--button-hover', themeConfig.buttonHover);
+            document.documentElement.style.setProperty('--row-hover-bg', themeConfig.rowHoverBg);
+            document.documentElement.style.setProperty('--table-header-hover-bg', themeConfig.tableHeaderHoverBg);
+            document.documentElement.style.setProperty('--table-border', themeConfig.tableBorder);
+            document.documentElement.style.setProperty('--table-header-bg', themeConfig.tableHeaderBg);
+            document.documentElement.style.setProperty('--table-body-bg', themeConfig.tableBodyBg);
+            document.documentElement.style.setProperty('--row-alt-bg', themeConfig.rowAltBg);
+            document.documentElement.style.setProperty('--focus-color', themeConfig.focusColor);
+            document.documentElement.style.setProperty('--text-muted', themeConfig.textMuted);
 
             // Also apply to body for broader coverage
             document.body.style.setProperty('color', themeConfig.textColor);
@@ -103,6 +111,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             document.documentElement.style.setProperty('--bg-color', '#ffffff');
             document.documentElement.style.setProperty('--text-color', '#161616');
             document.documentElement.style.setProperty('--border-color', '#cccccc');
+            document.documentElement.style.setProperty('--button-hover', '#e0e0e0');
+            document.documentElement.style.setProperty('--row-hover-bg', '#e0e0e0');
+            document.documentElement.style.setProperty('--table-header-hover-bg', '#e0e0e0');
+            document.documentElement.style.setProperty('--table-border', '#e0e0e0');
+            document.documentElement.style.setProperty('--table-header-bg', '#f8f9fa');
+            document.documentElement.style.setProperty('--table-body-bg', '#ffffff');
+            document.documentElement.style.setProperty('--row-alt-bg', '#fafafa');
+            document.documentElement.style.setProperty('--focus-color', '#007bff');
+            document.documentElement.style.setProperty('--text-muted', '#6c757d');
             document.body.style.setProperty('color', '#161616');
             document.body.style.setProperty('background-color', '#ffffff');
           }
