@@ -42,7 +42,14 @@ export const AppNavbar: React.FC = () => {
           className="d-flex align-items-center ms-4"
         >
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
-          <strong>Widgemo</strong>
+          <div className="d-flex flex-column">
+            <strong>Widgemo</strong>
+            {import.meta.env.DEV && (
+              <small className="text-warning opacity-75" style={{ fontSize: '0.65rem', lineHeight: '1', marginTop: '-2px' }}>
+                DEVELOPMENT MODE
+              </small>
+            )}
+          </div>
         </BootstrapNavbar.Brand>
         <BootstrapNavbar.Toggle aria-controls="demo-nav" />
         <BootstrapNavbar.Collapse id="demo-nav" className='me-4'>
