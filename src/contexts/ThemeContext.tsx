@@ -1,60 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { injectThemeCSS, THEME_CONFIGS } from '../utils/themeConfig';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const ThemeContext = React.createContext<{
+interface ThemeContextType {
   currentTheme: string;
   setCurrentTheme: (theme: string) => void;
-}>({
-  currentTheme: 'theme-light',
-  setCurrentTheme: () => {},
-});
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState(() => {
-    // Load from localStorage or detect system preference
-    const saved = localStorage.getItem('widgemo-theme');
-    if (saved) return saved;
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light';
-    }
-    return 'theme-light';
-  });
+  const [currentTheme, setCurrentTheme] = useState('theme-light');
 
-  // Inject theme CSS on mount and theme change
+  // Safe theming application - only runs in development and with proper error handling
   useEffect(() => {
-    console.log('ThemeContext: Injecting CSS for theme:', currentTheme);
-    injectThemeCSS();
-    
-    // Also set CSS variables on document root for global access
-    const themeConfig = THEME_CONFIGS[currentTheme];
-    if (themeConfig && document.documentElement) {
-      document.documentElement.style.setProperty('--bg-color', themeConfig.backgroundColor);
-      document.documentElement.style.setProperty('--text-color', themeConfig.textColor);
-      document.documentElement.style.setProperty('--border-color', themeConfig.borderColor);
-      document.documentElement.style.setProperty('--shadow-color', themeConfig.shadowColor);
-      document.documentElement.style.setProperty('--button-bg', themeConfig.buttonBg);
-      document.documentElement.style.setProperty('--button-hover', themeConfig.buttonHover);
+    // Only apply theming in development to avoid production issues
+    if (typeof window === 'undefined' || !window.location || window.location.port !== '5173') {
+      return;
     }
-    
-    // Apply theme class to document body for proper inheritance
-    if (document.body) {
-      // Remove any existing theme classes
-      document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim();
-      // Add current theme class
-      document.body.classList.add(currentTheme);
-    }
-    
-    // Directly apply colors to theme-aware-text elements
-    const themeAwareElements = document.querySelectorAll('.theme-aware-text');
-    themeAwareElements.forEach((element) => {
-      (element as HTMLElement).style.color = themeConfig?.textColor || '#161616';
-    });
-  }, [currentTheme]);
 
-  // Save theme to localStorage
-  useEffect(() => {
-    localStorage.setItem('widgemo-theme', currentTheme);
+    // Delay execution to avoid render conflicts
+    const timer = setTimeout(() => {
+      try {
+        if (document.documentElement) {
+          // Apply basic theme colors via CSS variables
+          document.documentElement.style.setProperty('--bg-color', currentTheme === 'theme-dark' ? '#1a1a1a' : '#ffffff');
+          document.documentElement.style.setProperty('--text-color', currentTheme === 'theme-dark' ? '#ffffff' : '#333333');
+          document.documentElement.style.setProperty('--border-color', currentTheme === 'theme-dark' ? '#444444' : '#dddddd');
+        }
+      } catch (error) {
+        // Silently fail if theming fails
+        console.warn('Theme application failed:', error);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [currentTheme]);
 
   return (
@@ -63,3 +49,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     </ThemeContext.Provider>
   );
 };
+
+// Export the context for advanced usage
+export { ThemeContext };

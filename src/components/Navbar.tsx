@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { ThemeSelector } from './ThemeSelector';
 
 export const AppNavbar: React.FC = () => {
-  const { currentTheme, setCurrentTheme } = useContext(ThemeContext);
+  const { currentTheme, setCurrentTheme } = useTheme();
   const location = useLocation();
   const isSandbox = location.pathname === '/sandbox';
 
@@ -44,7 +44,7 @@ export const AppNavbar: React.FC = () => {
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
           <div className="d-flex flex-column">
             <strong>Widgemo</strong>
-            {import.meta.env.DEV && (
+            {window.location?.port === '5173' && (  // Show in dev, hidden in prod
               <small className="text-warning opacity-75" style={{ fontSize: '0.65rem', lineHeight: '1', marginTop: '-2px' }}>
                 DEVELOPMENT MODE
               </small>

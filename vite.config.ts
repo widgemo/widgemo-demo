@@ -16,6 +16,19 @@ export default defineConfig({
   resolve: {
     alias: {
       'widgemo-core': path.resolve(__dirname, '../widgemo-core/src/index.ts')
+    },
+    dedupe: ['react', 'react-dom']
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom']
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom']
+        }
+      }
     }
   }
 })

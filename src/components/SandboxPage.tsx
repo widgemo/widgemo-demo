@@ -1,11 +1,11 @@
-import { useMemo, useContext } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData, galleryConfigs } from '../data/sampleData';
 
 export const SandboxPage: React.FC = () => {
-  const { currentTheme } = useContext(ThemeContext);
+  const { currentTheme } = useTheme();
   const [searchParams] = useSearchParams();
 
   // Get initial config from URL params
