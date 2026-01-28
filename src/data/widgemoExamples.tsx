@@ -1097,6 +1097,14 @@ export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
                   defaultColor: '#6c757d'
                 }}
               ]
+            },
+            {
+              title: 'Performance',
+              fields: [
+                { key: 'progress', type: 'number', renderAs: 'progress', progressOptions: { showPercentage: true } },
+                { key: 'rating', type: 'number', renderAs: 'rating', ratingOptions: { max: 5 } },
+                { key: 'amount', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+              ]
             }
           ]
         }
