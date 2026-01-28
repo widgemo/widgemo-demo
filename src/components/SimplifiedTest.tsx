@@ -163,14 +163,14 @@ export const SimplifiedTest: React.FC = () => {
     <div className="container mt-5">
       <style>{`
         .my-custom-widgemo {
-          background-color: var(--demo-bg-color);
-          border: 1px solid var(--demo-border-color);
+          background-color: var(--widgemo-bg-color);
+          border: 1px solid var(--widgemo-border-color);
           border-radius: 0.375rem;
-          box-shadow: 0px 0px 8px var(--demo-shadow-color);
+          box-shadow: 0px 0px 8px var(--widgemo-shadow-color);
           padding: 0.5rem;
         }
         .custom-footer-class {
-          background-color: var(--demo-row-alt-bg);
+          background-color: var(--widgemo-row-alt-bg);
           border-radius: 0.25rem;
           padding: 0.3rem;S
         }
@@ -181,10 +181,10 @@ export const SimplifiedTest: React.FC = () => {
         }
         .custom-footer-class .zone-subtitle {
           font-size: 14px; 
-          color: var(--demo-text-color);
+          color: var(--widgemo-text-color);
         }
         .devmode-toggle-text {
-          color: var(--demo-text-color);
+          color: var(--widgemo-text-color);
         }
       `}</style>
       <h1 >Widgemo Product Primitive</h1>
