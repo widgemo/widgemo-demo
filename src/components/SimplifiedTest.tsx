@@ -109,18 +109,18 @@ export const SimplifiedTest: React.FC = () => {
           padding: 0.5rem;
         }
         .custom-footer-class {
-          background-color: #d5d5d5;
+          background-color: var(--row-alt-bg);
           border-radius: 0.25rem;
-          padding: 0.3rem;
+          padding: 0.3rem;S
         }
         .custom-footer-class .zone-title {
           font-size: 14px; 
-          color: #065193;
+          color: #4f8fc7;
           padding-left: 0.5rem;
         }
         .custom-footer-class .zone-subtitle {
           font-size: 14px; 
-          color: #333334;
+          color: var(--text-color);
         }
       `}</style>
       <h1 >Widgemo Product Primitive</h1>

@@ -144,7 +144,10 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
-  devMode: true,
+  devMode: {
+    enabled: true,
+    zone: 'footer'
+  },
   zones: {
     header: {
       enabled: true,
