@@ -1074,6 +1074,15 @@ export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
       item: {
         style: 'card',
         layout: { preset: 'compact' },
+        cardOptions: {
+          border: true,
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderColor: 'var(--border-color, #dee2e6)',
+          borderRadius: 'var(--border-radius, 12px)',
+          backgroundColor: 'var(--bg-color, #ffffff)',
+          padding: 'var(--card-padding, 1rem)'
+        },
         template: {
           sections: [
             {
