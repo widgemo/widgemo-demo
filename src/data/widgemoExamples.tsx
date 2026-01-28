@@ -849,6 +849,211 @@ export const gridModeWithItemRendererConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const itemLayoutPresetsConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Item Layout Presets Demo',
+      subtitle: 'Demonstrating default, compact, minimal, and custom item layouts',
+      actions: [
+        {
+          id: 'switch-default',
+          label: 'Default Layout',
+          icon: 'layout',
+          variant: 'primary',
+          onTrigger: () => alert('Switched to default layout (full sections with labels)')
+        },
+        {
+          id: 'switch-compact',
+          label: 'Compact Layout',
+          icon: 'compress',
+          variant: 'secondary',
+          onTrigger: () => alert('Switched to compact layout (no labels, reduced spacing)')
+        },
+        {
+          id: 'switch-minimal',
+          label: 'Minimal Layout',
+          icon: 'minus',
+          variant: 'secondary',
+          onTrigger: () => alert('Switched to minimal layout (essential fields only)')
+        },
+        {
+          id: 'switch-custom',
+          label: 'Custom Layout',
+          icon: 'cogs',
+          variant: 'secondary',
+          onTrigger: () => alert('Switched to custom layout (reordered sections, inline fields)')
+        }
+      ]
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      columns: 2,
+      item: {
+        style: 'card',
+        layout: { preset: 'default' }, // This will be overridden by individual item configs in the demo
+        template: {
+          sections: [
+            {
+              title: 'Personal Info',
+              fields: [
+                { key: 'name', label: 'Full Name', type: 'text' },
+                { key: 'role', label: 'Job Role', type: 'text' },
+                { key: 'department', label: 'Department', type: 'text' }
+              ]
+            },
+            {
+              title: 'Contact Details',
+              fields: [
+                { key: 'email', label: 'Email Address', type: 'email' },
+                { key: 'phone', label: 'Phone Number', type: 'text' }
+              ]
+            },
+            {
+              title: 'Status',
+              fields: [
+                { key: 'status', label: 'Active Status', type: 'boolean' },
+                { key: 'lastLogin', label: 'Last Login', type: 'date' }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: {
+      enabled: true,
+      subtitle: 'Use header actions to see different layout presets in action'
+    }
+  }
+};
+
+// Compact layout config
+export const itemLayoutCompactConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Compact Item Layout',
+      subtitle: 'Reduced spacing, hidden field labels'
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      columns: 3,
+      item: {
+        style: 'card',
+        layout: { preset: 'compact' },
+        template: {
+          sections: [
+            {
+              title: 'Profile',
+              fields: [
+                { key: 'name', type: 'text' },
+                { key: 'role', type: 'text' },
+                { key: 'department', type: 'text' }
+              ]
+            },
+            {
+              title: 'Contact',
+              fields: [
+                { key: 'email', type: 'email' },
+                { key: 'status', type: 'boolean' }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { enabled: false }
+  }
+};
+
+// Minimal layout config
+export const itemLayoutMinimalConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Minimal Item Layout',
+      subtitle: 'Essential fields only, limited sections'
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      columns: 4,
+      item: {
+        style: 'card',
+        layout: { preset: 'minimal' },
+        template: {
+          sections: [
+            {
+              fields: [
+                { key: 'name', type: 'text' },
+                { key: 'role', type: 'text' },
+                { key: 'email', type: 'email' }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { enabled: false }
+  }
+};
+
+// Custom layout config
+export const itemLayoutCustomConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Custom Item Layout',
+      subtitle: 'Reordered sections with inline field arrangement'
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      columns: 2,
+      item: {
+        style: 'card',
+        layout: {
+          preset: 'custom',
+          custom: {
+            sectionOrder: ['Status', 'Personal Info', 'Contact Details'],
+            fieldArrangement: 'inline',
+            gap: '0.5rem'
+          }
+        },
+        template: {
+          sections: [
+            {
+              title: 'Personal Info',
+              fields: [
+                { key: 'name', type: 'text' },
+                { key: 'role', type: 'text' }
+              ]
+            },
+            {
+              title: 'Contact Details',
+              fields: [
+                { key: 'email', type: 'email' },
+                { key: 'department', type: 'text' }
+              ]
+            },
+            {
+              title: 'Status',
+              fields: [
+                { key: 'status', type: 'boolean' },
+                { key: 'lastLogin', type: 'date' }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { enabled: false }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const tableAlternatingConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
@@ -3045,6 +3250,34 @@ const widgemoExamples = [
     description: 'Currency edge cases',
     data: currencyEdgeCasesSampleData,
     config: currencyEdgeCasesConfig
+  },
+  {
+    id: 'item-layout-presets',
+    title: 'Item Layout Presets',
+    description: 'Demonstrates different item layout presets (default, compact, minimal, custom)',
+    data: teaserSampleData,
+    config: itemLayoutPresetsConfig
+  },
+  {
+    id: 'item-layout-compact',
+    title: 'Item Layout - Compact',
+    description: 'Compact item layout with reduced spacing and hidden labels',
+    data: teaserSampleData,
+    config: itemLayoutCompactConfig
+  },
+  {
+    id: 'item-layout-minimal',
+    title: 'Item Layout - Minimal',
+    description: 'Minimal item layout showing only essential fields',
+    data: teaserSampleData,
+    config: itemLayoutMinimalConfig
+  },
+  {
+    id: 'item-layout-custom',
+    title: 'Item Layout - Custom',
+    description: 'Custom item layout with reordered sections and inline fields',
+    data: teaserSampleData,
+    config: itemLayoutCustomConfig
   }
 ];
 
