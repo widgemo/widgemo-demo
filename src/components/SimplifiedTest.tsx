@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { Entity } from 'widgemo-core';
+import type { Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 // Extend Window interface for performance metrics
@@ -90,6 +90,39 @@ iconNames.forEach(iconName => {
     defaultProps: { size: 16, color: 'currentColor' }
   });
 });
+
+/**
+ * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state
+ */
+function injectDevMode(config: SimplifiedWidgemoConfig, enabled: boolean): SimplifiedWidgemoConfig {
+  if (!config) return config;
+
+  const existingDevMode = config.devMode;
+
+  if (typeof existingDevMode === 'boolean') {
+    // If devMode was a boolean, preserve it but override enabled
+    return {
+      ...config,
+      devMode: enabled
+    };
+  } else if (existingDevMode && typeof existingDevMode === 'object') {
+    // If devMode was an object, preserve all settings but override enabled
+    return {
+      ...config,
+      devMode: {
+        ...existingDevMode,
+        enabled
+      }
+    };
+  } else {
+    // If no devMode was set, add it
+    return {
+      ...config,
+      devMode: enabled
+    };
+  }
+}
+
 /**
  * Refactored to separate configs and data from rendering logic, allowing dynamic rendering
  * and easier addition of new examples by modifying only the examples file.
@@ -97,6 +130,23 @@ iconNames.forEach(iconName => {
  */
 export const SimplifiedTest: React.FC = () => {
   console.log('SimplifiedTest rendering');
+
+  // Production gating: Only enable devMode toggle in development environment
+  const isDevEnvironment = process.env.NODE_ENV === 'development';
+
+  // State for devMode toggle (only used in development)
+  const [includeWidgemoInspector, setIncludeWidgemoInspector] = useState(false);
+
+  // Memoized examples with devMode injection (only in development)
+  const examplesWithDevMode = useMemo(() => {
+    if (!isDevEnvironment) {
+      return widgemoExamples;
+    }
+    return widgemoExamples.map(example => ({
+      ...example,
+      config: injectDevMode(example.config, includeWidgemoInspector)
+    }));
+  }, [includeWidgemoInspector, isDevEnvironment]);
 
   return (
     <div className="container mt-5">
@@ -133,9 +183,32 @@ export const SimplifiedTest: React.FC = () => {
           box-shadow: 0px 0px 8px var(--shadow-color);
           padding: 0.5rem;
         }">my-custom-widgemo</code> class for consistent styling.</h5>
+      
+      {/* DevMode Toggle - Only shown in development environment */}
+      {isDevEnvironment && (
+        <div className="mb-4 p-3 border rounded" style={{ backgroundColor: 'var(--bg-color)', borderColor: 'var(--border-color)' }}>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="widgemo-inspector-toggle"
+              checked={includeWidgemoInspector}
+              onChange={(e) => setIncludeWidgemoInspector(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="widgemo-inspector-toggle">
+              <strong>Include Widgemo Inspector</strong>
+            </label>
+          </div>
+          <small className="text-muted">
+            When enabled, all Widgemo components below will have the inspector icon for configuration viewing.
+            Existing devMode settings are preserved except for the enabled state.
+          </small>
+        </div>
+      )}
+      
       <div className="row">
         {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
-        {widgemoExamples.map((example) => (
+        {examplesWithDevMode.map((example) => (
           <div key={example.id} className="col-12 mb-4">
             <h2>{example.title}</h2>
             <p>{example.description}</p>
