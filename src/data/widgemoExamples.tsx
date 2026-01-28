@@ -1051,11 +1051,12 @@ export const tableRowDividersConfig: SimplifiedWidgemoConfig = {
       enabled: true,
       mode: 'table',
       columns: [
+        { field: 'src', header: 'Photo', type: 'image', width: '60px', imageOptions: { width: 40, height: 40, alt: 'User photo', circular: true, shadow: '0 2px 4px rgba(0,0,0,0.1)' } },
         { field: 'name', header: 'Name', sortable: true },
         { field: 'email', header: 'Email', sortable: true },
         { field: 'role', header: 'Role', align: 'center' },
         { field: 'status', header: 'Status', align: 'center' }
-      ],
+      ] as ColumnConfig[],
       table: {
         actionsColumn: true,
         alternatingRows: false,
