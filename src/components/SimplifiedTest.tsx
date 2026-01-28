@@ -130,8 +130,22 @@ export const SimplifiedTest: React.FC = () => {
   // Production gating: Only enable devMode toggle in development environment
   const isDevEnvironment = process.env.NODE_ENV === 'development';
 
-  // State for devMode toggle (only used in development)
-  const [includeWidgemoInspector, setIncludeWidgemoInspector] = useState(false);
+  // State for devMode toggle (only used in development) - loads from localStorage initially
+  const [includeWidgemoInspector, setIncludeWidgemoInspectorState] = useState(() => {
+    if (isDevEnvironment) {
+      const saved = localStorage.getItem('widgemo-inspector-toggle');
+      return saved === 'true';
+    }
+    return false;
+  });
+
+  // Custom setter that saves to localStorage
+  const setIncludeWidgemoInspector = (value: boolean) => {
+    setIncludeWidgemoInspectorState(value);
+    if (isDevEnvironment) {
+      localStorage.setItem('widgemo-inspector-toggle', value.toString());
+    }
+  };
 
   // Memoized examples with devMode injection (only in development)
   const examplesWithDevMode = useMemo(() => {
