@@ -7,9 +7,9 @@
   color: #161616; /* Default text color for light theme */
   background-color: #ffffff; /* Default background for light theme */
 
-  --bg-color: #ffffff; /* Default background */
-  --text-color: #161616; /* Default text color */
-  --border-color: #cccccc; /* Default border color */
+  --widgemo-bg-color: #ffffff; /* Default background */
+  --widgemo-text-color: #161616; /* Default text color */
+  --widgemo-border-color: #cccccc; /* Default border color */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -31,8 +31,8 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: var(--widgemo-bg-color);
+  color: var(--widgemo-text-color);
 }
 
 h1 {
