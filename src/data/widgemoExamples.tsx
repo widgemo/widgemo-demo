@@ -1446,7 +1446,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'status',
           header: 'Status (Badge Style)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'badge', // Explicit badge style
@@ -1462,7 +1463,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'status',
           header: 'Status (Inline Style)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'inline', // Inline style - no background
@@ -1478,7 +1480,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'priority',
           header: 'Priority (Badge Mixed)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'badge',
@@ -1494,7 +1497,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'priority',
           header: 'Priority (Inline Mixed)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'inline',
@@ -1510,7 +1514,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'assignee',
           header: 'Assignee (Inline Text)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'inline',
@@ -1527,7 +1532,8 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         {
           field: 'category',
           header: 'Category (Inline Icons)',
-          type: 'badge',
+          type: 'text',
+          renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'inline',
