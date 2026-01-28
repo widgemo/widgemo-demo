@@ -163,8 +163,8 @@ export const SimplifiedTest: React.FC = () => {
     <div className="container mt-5">
       <style>{`
         .my-custom-widgemo {
-          background-color: var(--bg-color);
-          border: 1px solid var(--border-color);
+          background-color: var(--demo-bg-color);
+          border: 1px solid var(--demo-border-color);
           border-radius: 0.375rem;
           box-shadow: 0px 0px 8px var(--shadow-color);
           padding: 0.5rem;

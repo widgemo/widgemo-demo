@@ -81,6 +81,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             document.documentElement.style.setProperty('--demo-border-color', themeConfig.borderColor);
             document.documentElement.style.setProperty('--demo-focus-color', themeConfig.focusColor);
             document.documentElement.style.setProperty('--demo-text-muted', themeConfig.textMuted);
+            document.documentElement.style.setProperty('--demo-shadow-color', themeConfig.shadowColor);
 
             // Set table-specific variables that depend on theme
             document.documentElement.style.setProperty('--widgemo-table-border', themeConfig.tableBorder);
@@ -110,6 +111,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             document.documentElement.style.setProperty('--demo-border-color', '#cccccc');
             document.documentElement.style.setProperty('--demo-focus-color', '#007bff');
             document.documentElement.style.setProperty('--demo-text-muted', '#6c757d');
+            document.documentElement.style.setProperty('--demo-shadow-color', 'rgba(0, 0, 0, 0.1)');
 
             // Set table-specific variables for fallback
             document.documentElement.style.setProperty('--widgemo-table-border', '#e0e0e0');

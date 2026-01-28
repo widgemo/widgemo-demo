@@ -20,6 +20,7 @@
   --demo-success-color: #28a745;
   --demo-dark-color: #343a40;
   --demo-light-color: #f8f9fa;
+  --demo-shadow-color: rgba(0, 0, 0, 0.1);
 
   /* ===== WIDGEMO VARIABLE MAPPING ===== */
   /* widgemo-core variables reference demo variables for consistent theming */
@@ -34,6 +35,7 @@
   --widgemo-success-color: var(--demo-success-color);
   --widgemo-dark-color: var(--demo-dark-color);
   --widgemo-light-color: var(--demo-light-color);
+  --widgemo-shadow-color: var(--demo-shadow-color);
 
   /* Table theming */
   --widgemo-table-border: var(--demo-border-color);
