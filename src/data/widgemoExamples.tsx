@@ -1053,6 +1053,59 @@ export const itemLayoutCustomConfig: SimplifiedWidgemoConfig = {
   }
 };
 
+// Enhanced grid mode config
+export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Enhanced Grid Mode',
+      subtitle: 'Responsive columns, custom gaps, and compact item layouts'
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      grid: {
+        minItemWidth: '280px',
+        maxColumns: 4,
+        gap: '1.5rem',
+        justifyItems: 'stretch',
+        alignItems: 'start'
+      },
+      item: {
+        style: 'card',
+        layout: { preset: 'compact' },
+        template: {
+          sections: [
+            {
+              title: 'Profile',
+              fields: [
+                { key: 'name', type: 'text' },
+                { key: 'role', type: 'text' },
+                { key: 'department', type: 'text' }
+              ]
+            },
+            {
+              title: 'Contact',
+              fields: [
+                { key: 'email', type: 'email', renderAs: 'link' },
+                { key: 'status', type: 'text', renderAs: 'badge', badgeOptions: {
+                  colorMap: {
+                    'active': '#28a745',
+                    'inactive': '#6c757d',
+                    'pending': '#ffc107'
+                  },
+                  defaultColor: '#6c757d'
+                }}
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { enabled: false }
+  }
+};
+
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const tableAlternatingConfig: SimplifiedWidgemoConfig = {
   zones: {
@@ -3278,6 +3331,13 @@ const widgemoExamples = [
     description: 'Custom item layout with reordered sections and inline fields',
     data: teaserSampleData,
     config: itemLayoutCustomConfig
+  },
+  {
+    id: 'grid-mode-enhanced',
+    title: 'Grid Mode - Enhanced',
+    description: 'Enhanced grid mode with responsive columns, custom gaps, and item layouts',
+    data: teaserSampleData,
+    config: enhancedGridModeConfig
   }
 ];
 
