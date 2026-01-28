@@ -74,15 +74,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           console.log('🎨 ThemeProvider: Got theme config', themeConfig);
 
           if (themeConfig) {
-            // Apply theme colors to demo CSS variables on document root
-            // These cascade to widgemo variables via CSS variable references
-            document.documentElement.style.setProperty('--demo-bg-color', themeConfig.backgroundColor);
-            document.documentElement.style.setProperty('--demo-text-color', themeConfig.textColor);
-            document.documentElement.style.setProperty('--demo-border-color', themeConfig.borderColor);
-            document.documentElement.style.setProperty('--demo-focus-color', themeConfig.focusColor);
-            document.documentElement.style.setProperty('--demo-text-muted', themeConfig.textMuted);
-            document.documentElement.style.setProperty('--demo-shadow-color', themeConfig.shadowColor);
-            document.documentElement.style.setProperty('--demo-row-alt-bg', themeConfig.rowAltBg);
+            // Apply theme colors directly to widgemo CSS variables on document root
+            document.documentElement.style.setProperty('--widgemo-bg-color', themeConfig.backgroundColor);
+            document.documentElement.style.setProperty('--widgemo-text-color', themeConfig.textColor);
+            document.documentElement.style.setProperty('--widgemo-border-color', themeConfig.borderColor);
+            document.documentElement.style.setProperty('--widgemo-focus-color', themeConfig.focusColor);
+            document.documentElement.style.setProperty('--widgemo-text-muted', themeConfig.textMuted);
+            document.documentElement.style.setProperty('--widgemo-shadow-color', themeConfig.shadowColor);
+            document.documentElement.style.setProperty('--widgemo-primary-color', themeConfig.focusColor); // Using focusColor as primary for now
+            document.documentElement.style.setProperty('--widgemo-secondary-color', themeConfig.textMuted);
+            document.documentElement.style.setProperty('--widgemo-row-alt-bg', themeConfig.rowAltBg);
 
             // Set table-specific variables that depend on theme
             document.documentElement.style.setProperty('--widgemo-table-border', themeConfig.tableBorder);
@@ -93,6 +94,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
             // Set interactive element variables
             document.documentElement.style.setProperty('--widgemo-button-hover', themeConfig.buttonHover);
+            document.documentElement.style.setProperty('--widgemo-ghost-button-border', themeConfig.ghostButtonBorder);
+            document.documentElement.style.setProperty('--widgemo-ghost-button-hover-bg', themeConfig.ghostButtonHoverBg);
 
             // Also apply to body for broader coverage
             document.body.style.setProperty('color', themeConfig.textColor);

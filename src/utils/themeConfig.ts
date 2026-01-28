@@ -20,6 +20,8 @@ export interface ThemeConfig {
   rowAltBg: string;
   focusColor: string;
   textMuted: string;
+  ghostButtonBorder: string;
+  ghostButtonHoverBg: string;
 }
 
 export const THEME_CONFIGS: Record<string, ThemeConfig> = {
@@ -40,6 +42,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#fafafa',
     focusColor: '#007bff',
     textMuted: '#6c757d',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#e9ecef',
   },
   'theme-light-blue': {
     key: 'theme-light-blue',
@@ -58,6 +62,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#f5fbff',
     focusColor: '#007bff',
     textMuted: '#6c757d',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#e6f3ff',
   },
   'theme-light-green': {
     key: 'theme-light-green',
@@ -76,6 +82,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#f5fff5',
     focusColor: '#28a745',
     textMuted: '#6c757d',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#e6ffe6',
   },
   'theme-light-purple': {
     key: 'theme-light-purple',
@@ -94,6 +102,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#fbf5ff',
     focusColor: '#6f42c1',
     textMuted: '#6c757d',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#f2e6ff',
   },
   'theme-dark': {
     key: 'theme-dark',
@@ -112,6 +122,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#222222',
     focusColor: '#007bff',
     textMuted: '#888888',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#2a2a2a',
   },
   'theme-dark-red': {
     key: 'theme-dark-red',
@@ -130,6 +142,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#332222',
     focusColor: '#dc3545',
     textMuted: '#888888',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#3a2a2a',
   },
   'theme-dark-purple': {
     key: 'theme-dark-purple',
@@ -148,6 +162,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#222233',
     focusColor: '#6f42c1',
     textMuted: '#888888',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#2a2a3a',
   },
   'theme-dark-teal': {
     key: 'theme-dark-teal',
@@ -166,6 +182,8 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     rowAltBg: '#0a4545',
     focusColor: '#17a2b8',
     textMuted: '#888888',
+    ghostButtonBorder: 'none',
+    ghostButtonHoverBg: '#1a3a38',
   },
 };
 

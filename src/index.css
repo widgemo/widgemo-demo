@@ -7,50 +7,19 @@
   color: #161616; /* Default text color for light theme */
   background-color: #ffffff; /* Default background for light theme */
 
-  /* ===== DEMO THEME VARIABLES ===== */
-  /* These are the core theme variables that widgemo-demo controls */
-  --demo-bg-color: #ffffff;
-  --demo-text-color: #161616;
-  --demo-text-muted: #6c757d;
-  --demo-border-color: #cccccc;
-  --demo-focus-color: #007bff;
-  --demo-primary-color: #007bff;
-  --demo-secondary-color: #6c757d;
-  --demo-danger-color: #dc3545;
-  --demo-success-color: #28a745;
-  --demo-dark-color: #343a40;
-  --demo-light-color: #f8f9fa;
-  --demo-shadow-color: rgba(0, 0, 0, 0.1);
+  /* Static theme variables that don't change with themes */
   --demo-row-alt-bg: #fafafa;
 
-  /* ===== WIDGEMO VARIABLE MAPPING ===== */
-  /* widgemo-core variables reference demo variables for consistent theming */
-  --widgemo-bg-color: var(--demo-bg-color);
-  --widgemo-text-color: var(--demo-text-color);
-  --widgemo-text-muted: var(--demo-text-muted);
-  --widgemo-border-color: var(--demo-border-color);
-  --widgemo-focus-color: var(--demo-focus-color);
-  --widgemo-primary-color: var(--demo-primary-color);
-  --widgemo-secondary-color: var(--demo-secondary-color);
-  --widgemo-danger-color: var(--demo-danger-color);
-  --widgemo-success-color: var(--demo-success-color);
-  --widgemo-dark-color: var(--demo-dark-color);
-  --widgemo-light-color: var(--demo-light-color);
-  --widgemo-shadow-color: var(--demo-shadow-color);
 
-
-  /* Table theming */
-  --widgemo-table-border: var(--demo-border-color);
+  /* Table theming - static defaults */
   --widgemo-table-header-bg: #f8f9fa;
   --widgemo-table-header-hover-bg: #e9ecef;
-  --widgemo-table-body-bg: var(--demo-bg-color);
   --widgemo-row-hover-bg: #f5f5f5;
   --widgemo-row-alt-bg: var(--demo-row-alt-bg);
 
   /* Board theming */
   --widgemo-board-bg: #f8f9fa;
   --widgemo-swimlane-header-bg: #e9ecef;
-  --widgemo-column-bg: var(--demo-bg-color);
   --widgemo-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   /* Interactive elements */
