@@ -1431,7 +1431,7 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
     header: {
       enabled: true,
       title: 'Badge Field Demo',
-      subtitle: 'Status badges with color mapping and icons'
+      subtitle: 'Status badges with automatic and custom text colors'
     },
     content: {
       enabled: true,
@@ -1441,15 +1441,15 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         { field: 'name', header: 'Task Name', type: 'text' },
         {
           field: 'status',
-          header: 'Status',
+          header: 'Status (Auto Text)',
           type: 'badge',
           align: 'center',
           badgeOptions: {
             colorMap: {
-              'completed': '#28a745',
-              'in-progress': '#ffc107',
-              'pending': '#6c757d',
-              'cancelled': '#dc3545'
+              'completed': '#28a745', // Dark green - will get white text automatically
+              'in-progress': '#ffc107', // Yellow - will get black text automatically
+              'pending': '#6c757d', // Gray - will get white text automatically
+              'cancelled': '#dc3545' // Red - will get white text automatically
             },
             size: 'md',
             iconName: 'circle'
@@ -1457,15 +1457,15 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         },
         {
           field: 'priority',
-          header: 'Priority',
+          header: 'Priority (Custom Text)',
           type: 'badge',
           align: 'center',
           badgeOptions: {
             colorMap: {
-              'low': '#17a2b8',
-              'medium': '#ffc107',
-              'high': '#fd7e14',
-              'critical': '#dc3545'
+              'low': { background: '#e3f2fd', text: '#1976d2' }, // Light blue bg, dark blue text
+              'medium': { background: '#fff3e0', text: '#f57c00' }, // Light orange bg, dark orange text
+              'high': '#fd7e14', // Orange - will get white text automatically
+              'critical': '#dc3545' // Red - will get white text automatically
             },
             size: 'sm',
             iconPosition: 'right'
