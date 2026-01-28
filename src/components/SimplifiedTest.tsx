@@ -92,20 +92,16 @@ iconNames.forEach(iconName => {
 });
 
 /**
- * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state
+ * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state.
+ * Ensures all examples have devMode injected for consistent toggle behavior.
  */
 function injectDevMode(config: SimplifiedWidgemoConfig, enabled: boolean): SimplifiedWidgemoConfig {
   if (!config) return config;
 
   const existingDevMode = config.devMode;
 
-  if (typeof existingDevMode === 'boolean') {
-    // If devMode was a boolean, preserve it but override enabled
-    return {
-      ...config,
-      devMode: enabled
-    };
-  } else if (existingDevMode && typeof existingDevMode === 'object') {
+  // Always inject devMode to ensure consistent toggle behavior across all examples
+  if (existingDevMode && typeof existingDevMode === 'object') {
     // If devMode was an object, preserve all settings but override enabled
     return {
       ...config,
@@ -115,7 +111,7 @@ function injectDevMode(config: SimplifiedWidgemoConfig, enabled: boolean): Simpl
       }
     };
   } else {
-    // If no devMode was set, add it
+    // If devMode was a boolean, null, undefined, or any other value, replace with the enabled state
     return {
       ...config,
       devMode: enabled
@@ -142,6 +138,7 @@ export const SimplifiedTest: React.FC = () => {
     if (!isDevEnvironment) {
       return widgemoExamples;
     }
+    // Always inject devMode into all examples to ensure consistent toggle behavior
     return widgemoExamples.map(example => ({
       ...example,
       config: injectDevMode(example.config, includeWidgemoInspector)
@@ -201,7 +198,7 @@ export const SimplifiedTest: React.FC = () => {
           </div>
           <small className="text-muted">
             When enabled, all Widgemo components below will have the inspector icon for configuration viewing.
-            Existing devMode settings are preserved except for the enabled state.
+            When disabled, the inspector is turned off for all components.
           </small>
         </div>
       )}
@@ -214,6 +211,7 @@ export const SimplifiedTest: React.FC = () => {
             <p>{example.description}</p>
             {/* Rendering SimplifiedWidgemo with stable props from examples array. */}
             <SimplifiedWidgemo
+              key={`${example.id}-${includeWidgemoInspector}`}
               data={example.data}
               config={example.config}
               className="my-custom-widgemo"
