@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 import { ThemeSelector } from './ThemeSelector';
 
 export const AppNavbar: React.FC = () => {

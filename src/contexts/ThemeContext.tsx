@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { getThemeConfig } from '../utils/themeConfig';
 
 interface ThemeContextType {
@@ -7,14 +7,6 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Check if localStorage is available and working
@@ -27,7 +19,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       localStorage.setItem(testKey, 'test');
       localStorage.removeItem(testKey);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   };
@@ -42,7 +34,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         } else {
           return 'theme-light';
         }
-      } catch (error) {
+      } catch {
         return 'theme-light';
       }
     } else {
@@ -55,7 +47,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (isLocalStorageAvailable()) {
       try {
         localStorage.setItem('widgemo-theme', currentTheme);
-      } catch (error) {
+      } catch {
         // Silently fail if localStorage is not available
       }
     }
@@ -82,19 +74,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           console.log('🎨 ThemeProvider: Got theme config', themeConfig);
 
           if (themeConfig) {
-            // Apply theme colors to CSS variables on document root
-            document.documentElement.style.setProperty('--widgemo-bg-color', themeConfig.backgroundColor);
-            document.documentElement.style.setProperty('--widgemo-text-color', themeConfig.textColor);
-            document.documentElement.style.setProperty('--widgemo-border-color', themeConfig.borderColor);
-            document.documentElement.style.setProperty('--widgemo-button-hover', themeConfig.buttonHover);
-            document.documentElement.style.setProperty('--widgemo-row-hover-bg', themeConfig.rowHoverBg);
-            document.documentElement.style.setProperty('--widgemo-table-header-hover-bg', themeConfig.tableHeaderHoverBg);
+            // Apply theme colors to demo CSS variables on document root
+            // These cascade to widgemo variables via CSS variable references
+            document.documentElement.style.setProperty('--demo-bg-color', themeConfig.backgroundColor);
+            document.documentElement.style.setProperty('--demo-text-color', themeConfig.textColor);
+            document.documentElement.style.setProperty('--demo-border-color', themeConfig.borderColor);
+            document.documentElement.style.setProperty('--demo-focus-color', themeConfig.focusColor);
+            document.documentElement.style.setProperty('--demo-text-muted', themeConfig.textMuted);
+
+            // Set table-specific variables that depend on theme
             document.documentElement.style.setProperty('--widgemo-table-border', themeConfig.tableBorder);
             document.documentElement.style.setProperty('--widgemo-table-header-bg', themeConfig.tableHeaderBg);
+            document.documentElement.style.setProperty('--widgemo-table-header-hover-bg', themeConfig.tableHeaderHoverBg);
             document.documentElement.style.setProperty('--widgemo-table-body-bg', themeConfig.tableBodyBg);
+            document.documentElement.style.setProperty('--widgemo-row-hover-bg', themeConfig.rowHoverBg);
             document.documentElement.style.setProperty('--widgemo-row-alt-bg', themeConfig.rowAltBg);
-            document.documentElement.style.setProperty('--widgemo-focus-color', themeConfig.focusColor);
-            document.documentElement.style.setProperty('--widgemo-text-muted', themeConfig.textMuted);
+
+            // Set interactive element variables
+            document.documentElement.style.setProperty('--widgemo-button-hover', themeConfig.buttonHover);
 
             // Also apply to body for broader coverage
             document.body.style.setProperty('color', themeConfig.textColor);
@@ -107,19 +104,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             });
           } else {
             console.error('❌ Theme config not found for:', currentTheme, '- using fallback');
-            // Fallback to light theme
-            document.documentElement.style.setProperty('--widgemo-bg-color', '#ffffff');
-            document.documentElement.style.setProperty('--widgemo-text-color', '#161616');
-            document.documentElement.style.setProperty('--widgemo-border-color', '#cccccc');
-            document.documentElement.style.setProperty('--widgemo-button-hover', '#e0e0e0');
-            document.documentElement.style.setProperty('--widgemo-row-hover-bg', '#e0e0e0');
-            document.documentElement.style.setProperty('--widgemo-table-header-hover-bg', '#e0e0e0');
+            // Fallback to light theme - set demo variables
+            document.documentElement.style.setProperty('--demo-bg-color', '#ffffff');
+            document.documentElement.style.setProperty('--demo-text-color', '#161616');
+            document.documentElement.style.setProperty('--demo-border-color', '#cccccc');
+            document.documentElement.style.setProperty('--demo-focus-color', '#007bff');
+            document.documentElement.style.setProperty('--demo-text-muted', '#6c757d');
+
+            // Set table-specific variables for fallback
             document.documentElement.style.setProperty('--widgemo-table-border', '#e0e0e0');
             document.documentElement.style.setProperty('--widgemo-table-header-bg', '#f8f9fa');
+            document.documentElement.style.setProperty('--widgemo-table-header-hover-bg', '#e0e0e0');
             document.documentElement.style.setProperty('--widgemo-table-body-bg', '#ffffff');
+            document.documentElement.style.setProperty('--widgemo-row-hover-bg', '#e0e0e0');
             document.documentElement.style.setProperty('--widgemo-row-alt-bg', '#fafafa');
-            document.documentElement.style.setProperty('--widgemo-focus-color', '#007bff');
-            document.documentElement.style.setProperty('--widgemo-text-muted', '#6c757d');
+
+            // Set interactive element variables for fallback
+            document.documentElement.style.setProperty('--widgemo-button-hover', '#e0e0e0');
+
             document.body.style.setProperty('color', '#161616');
             document.body.style.setProperty('background-color', '#ffffff');
           }

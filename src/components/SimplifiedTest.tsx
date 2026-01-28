@@ -200,7 +200,7 @@ export const SimplifiedTest: React.FC = () => {
       
       {/* DevMode Toggle - Only shown in development environment */}
       {isDevEnvironment && (
-        <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--bg-color)', border: '1px solid var(--border-color)' }}>
+        <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--demo-bg-color)', border: '1px solid var(--demo-border-color)' }}>
           <div className="form-check">
             <input
               className="form-check-input"

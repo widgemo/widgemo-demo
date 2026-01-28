@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData, galleryConfigs } from '../data/sampleData';
 

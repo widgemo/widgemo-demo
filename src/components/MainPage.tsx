@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 import { TeaserSection } from './TeaserSection';
 import { AnatomySection } from './AnatomySection';
 import { GallerySection } from './GallerySection';
