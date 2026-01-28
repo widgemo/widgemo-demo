@@ -21,6 +21,7 @@
   --demo-dark-color: #343a40;
   --demo-light-color: #f8f9fa;
   --demo-shadow-color: rgba(0, 0, 0, 0.1);
+  --demo-row-alt-bg: #fafafa;
 
   /* ===== WIDGEMO VARIABLE MAPPING ===== */
   /* widgemo-core variables reference demo variables for consistent theming */
@@ -37,13 +38,14 @@
   --widgemo-light-color: var(--demo-light-color);
   --widgemo-shadow-color: var(--demo-shadow-color);
 
+
   /* Table theming */
   --widgemo-table-border: var(--demo-border-color);
   --widgemo-table-header-bg: #f8f9fa;
   --widgemo-table-header-hover-bg: #e9ecef;
   --widgemo-table-body-bg: var(--demo-bg-color);
   --widgemo-row-hover-bg: #f5f5f5;
-  --widgemo-row-alt-bg: #fafafa;
+  --widgemo-row-alt-bg: var(--demo-row-alt-bg);
 
   /* Board theming */
   --widgemo-board-bg: #f8f9fa;
