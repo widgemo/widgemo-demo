@@ -1,5 +1,6 @@
 import React from 'react';
 import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
+import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';

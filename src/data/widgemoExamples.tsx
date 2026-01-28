@@ -6,7 +6,7 @@
 import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
-import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData } from './sampleData';
+import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData } from './sampleData';
 
 interface TaskEntity {
   id: number;
@@ -1426,6 +1426,58 @@ export const ratingFieldConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const badgeFieldConfig: SimplifiedWidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Badge Field Demo',
+      subtitle: 'Status badges with color mapping and icons'
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      columns: [
+        { field: 'id', header: 'ID', type: 'number', width: '50px' },
+        { field: 'name', header: 'Task Name', type: 'text' },
+        {
+          field: 'status',
+          header: 'Status',
+          type: 'badge',
+          align: 'center',
+          badgeOptions: {
+            colorMap: {
+              'completed': '#28a745',
+              'in-progress': '#ffc107',
+              'pending': '#6c757d',
+              'cancelled': '#dc3545'
+            },
+            size: 'md',
+            iconName: 'circle'
+          }
+        },
+        {
+          field: 'priority',
+          header: 'Priority',
+          type: 'badge',
+          align: 'center',
+          badgeOptions: {
+            colorMap: {
+              'low': '#17a2b8',
+              'medium': '#ffc107',
+              'high': '#fd7e14',
+              'critical': '#dc3545'
+            },
+            size: 'sm',
+            iconPosition: 'right'
+          }
+        }
+      ] as ColumnConfig[]
+    },
+    footer: { enabled: false }
+  }
+};
+
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const carouselModeConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
@@ -2788,6 +2840,13 @@ const widgemoExamples = [
     description: 'Rating field',
     data: ratingsSampleData,
     config: ratingFieldConfig
+  },
+  {
+    id: 'badge-field',
+    title: 'FieldRenderer Test - Badge Field',
+    description: 'Status badges with color mapping',
+    data: badgeSampleData,
+    config: badgeFieldConfig
   },
   {
     id: 'carousel-mode',

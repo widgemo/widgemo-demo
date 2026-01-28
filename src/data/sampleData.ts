@@ -1387,6 +1387,18 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
   },
 ];
 
+// Sample data for badge field rendering
+export const badgeSampleData: SampleData[] = [
+  { id: 1, name: 'Task A', status: 'completed', priority: 'high' },
+  { id: 2, name: 'Task B', status: 'in-progress', priority: 'medium' },
+  { id: 3, name: 'Task C', status: 'pending', priority: 'low' },
+  { id: 4, name: 'Task D', status: 'completed', priority: 'critical' },
+  { id: 5, name: 'Task E', status: 'in-progress', priority: 'high' },
+  { id: 6, name: 'Task F', status: 'cancelled', priority: 'medium' },
+  { id: 7, name: 'Task G', status: 'pending', priority: 'low' },
+  { id: 8, name: 'Task H', status: 'completed', priority: 'high' },
+];
+
 // Mock adapters for all Widgemo instances
 export const mockAdapters: WidgemoAdapters = {
   fetchData: async () => ({
