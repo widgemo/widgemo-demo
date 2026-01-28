@@ -1431,7 +1431,7 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
     header: {
       enabled: true,
       title: 'Badge Field Demo',
-      subtitle: 'Status badges with automatic and custom text colors'
+      subtitle: 'Status badges with semantic icons and automatic text colors'
     },
     content: {
       enabled: true,
@@ -1441,34 +1441,32 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
         { field: 'name', header: 'Task Name', type: 'text' },
         {
           field: 'status',
-          header: 'Status (Auto Text)',
+          header: 'Status (Semantic Icons)',
           type: 'badge',
           align: 'center',
           badgeOptions: {
             colorMap: {
-              'completed': '#28a745', // Dark green - will get white text automatically
-              'in-progress': '#ffc107', // Yellow - will get black text automatically
-              'pending': '#6c757d', // Gray - will get white text automatically
-              'cancelled': '#dc3545' // Red - will get white text automatically
+              'completed': { background: '#28a745', icon: 'check-circle' },
+              'in-progress': { background: '#ffc107', icon: 'clock' },
+              'pending': { background: '#6c757d', icon: 'pause' },
+              'cancelled': { background: '#dc3545', icon: 'x-circle' }
             },
-            size: 'md',
-            iconName: 'circle'
+            size: 'md'
           }
         },
         {
           field: 'priority',
-          header: 'Priority (Custom Text)',
+          header: 'Priority (Mixed Styles)',
           type: 'badge',
           align: 'center',
           badgeOptions: {
             colorMap: {
               'low': { background: '#e3f2fd', text: '#1976d2' }, // Light blue bg, dark blue text
               'medium': { background: '#fff3e0', text: '#f57c00' }, // Light orange bg, dark orange text
-              'high': '#fd7e14', // Orange - will get white text automatically
-              'critical': '#dc3545' // Red - will get white text automatically
+              'high': { background: '#fd7e14', icon: 'check-circle' }, // Orange with icon
+              'critical': { background: '#dc3545', icon: 'x-circle', iconPosition: 'only' } // Icon only
             },
-            size: 'sm',
-            iconPosition: 'right'
+            size: 'sm'
           }
         }
       ] as ColumnConfig[]
