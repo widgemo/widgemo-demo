@@ -1389,14 +1389,16 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
 
 // Sample data for badge field rendering
 export const badgeSampleData: SampleData[] = [
-  { id: 1, name: 'Task A', status: 'completed', priority: 'high' },
-  { id: 2, name: 'Task B', status: 'in-progress', priority: 'medium' },
-  { id: 3, name: 'Task C', status: 'pending', priority: 'low' },
-  { id: 4, name: 'Task D', status: 'completed', priority: 'critical' },
-  { id: 5, name: 'Task E', status: 'in-progress', priority: 'high' },
-  { id: 6, name: 'Task F', status: 'cancelled', priority: 'medium' },
-  { id: 7, name: 'Task G', status: 'pending', priority: 'low' },
-  { id: 8, name: 'Task H', status: 'completed', priority: 'high' },
+  { id: 1, name: 'Implement user authentication', status: 'completed', priority: 'high', assignee: 'Alice', category: 'security' },
+  { id: 2, name: 'Design dashboard layout', status: 'in-progress', priority: 'medium', assignee: 'Bob', category: 'ui' },
+  { id: 3, name: 'Write API documentation', status: 'pending', priority: 'low', assignee: 'Charlie', category: 'docs' },
+  { id: 4, name: 'Fix payment processing bug', status: 'completed', priority: 'critical', assignee: 'Alice', category: 'bug' },
+  { id: 5, name: 'Add dark mode support', status: 'in-progress', priority: 'high', assignee: 'Diana', category: 'feature' },
+  { id: 6, name: 'Database migration', status: 'cancelled', priority: 'medium', assignee: 'Bob', category: 'infrastructure' },
+  { id: 7, name: 'User feedback analysis', status: 'pending', priority: 'low', assignee: 'Eve', category: 'analytics' },
+  { id: 8, name: 'Performance optimization', status: 'completed', priority: 'high', assignee: 'Alice', category: 'performance' },
+  { id: 9, name: 'Mobile responsive fixes', status: 'in-progress', priority: 'medium', assignee: 'Charlie', category: 'ui' },
+  { id: 10, name: 'Security audit', status: 'pending', priority: 'critical', assignee: 'Frank', category: 'security' },
 ];
 
 // Mock adapters for all Widgemo instances
