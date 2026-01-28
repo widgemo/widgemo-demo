@@ -10,30 +10,6 @@
   /* Static theme variables that don't change with themes */
   --demo-row-alt-bg: #fafafa;
 
-
-  /* Table theming - static defaults */
-  --widgemo-table-header-bg: #f8f9fa;
-  --widgemo-table-header-hover-bg: #e9ecef;
-  --widgemo-row-hover-bg: #f5f5f5;
-  --widgemo-row-alt-bg: var(--demo-row-alt-bg);
-
-  /* Board theming */
-  --widgemo-board-bg: #f8f9fa;
-  --widgemo-swimlane-header-bg: #e9ecef;
-  --widgemo-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-  /* Interactive elements */
-  --widgemo-button-hover: rgba(0, 0, 0, 0.05);
-  --widgemo-selected-bg: rgba(0, 123, 255, 0.1);
-  --widgemo-ghost-button-border: none;
-  --widgemo-ghost-button-hover-bg: #e9ecef;
-  --widgemo-header-bg: transparent;
-
-  /* Z-index layering */
-  --widgemo-zone-header-z-index: 50;
-  --widgemo-table-actions-z-index: 900;
-  --widgemo-dropdown-z-index: 950;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
