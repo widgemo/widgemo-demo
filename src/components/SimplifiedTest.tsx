@@ -183,6 +183,9 @@ export const SimplifiedTest: React.FC = () => {
           font-size: 14px; 
           color: var(--text-color);
         }
+        .devmode-toggle-text {
+          color: var(--text-color);
+        }
       `}</style>
       <h1 >Widgemo Product Primitive</h1>
       <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the SimplifiedWidgemo component.</h4>
@@ -197,7 +200,7 @@ export const SimplifiedTest: React.FC = () => {
       
       {/* DevMode Toggle - Only shown in development environment */}
       {isDevEnvironment && (
-        <div className="mb-4 p-3 border rounded" style={{ backgroundColor: 'var(--bg-color)', borderColor: 'var(--border-color)' }}>
+        <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--bg-color)', border: '1px solid var(--border-color)' }}>
           <div className="form-check">
             <input
               className="form-check-input"
@@ -210,7 +213,7 @@ export const SimplifiedTest: React.FC = () => {
               <strong>Include Widgemo Inspector</strong>
             </label>
           </div>
-          <small className="text-muted">
+          <small className="devmode-toggle-text">
             When enabled, all Widgemo components below will have the inspector icon for configuration viewing.
             When disabled, the inspector is turned off for all components.
           </small>
