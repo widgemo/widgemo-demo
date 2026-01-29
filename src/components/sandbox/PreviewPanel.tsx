@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form } from 'react-bootstrap';
-import { Widgemo } from 'widgemo-core';
+// import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters, ResolvedWidgemoProps } from 'widgemo-core';
 import { applyThemeToElement } from 'widgemo-core';
 import { useMergedWidgemoProps } from '../../hooks/useMergedWidgemoProps';
@@ -167,7 +167,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           width: isAutoWidth ? 'auto' : `${width}px`
         }}
       >
-        <Widgemo {...mergedProps} />
+        {/* <Widgemo {...mergedProps} /> */}
+        <div>Sandbox preview commented out</div>
       </div>
     </div>
   );

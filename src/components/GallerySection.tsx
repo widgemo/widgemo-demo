@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button, Dropdown, Badge } from 'react-bootstrap';
 import { FaPlay, FaFilter } from 'react-icons/fa';
-import { Widgemo } from 'widgemo-core';
+// import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import { galleryConfigs, mockAdapters } from '../data/sampleData';
 import { getThemeBackgroundColor, mergeThemeIntoConfig } from '../utils/themeUtils';
@@ -101,11 +101,12 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               height: '200%',
               pointerEvents: 'none'
             }}>
-              <Widgemo
+              {/* <Widgemo
                 config={{ ...mergedConfig, theme: { ...mergedConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
                 adapters={itemAdapters}
                 showConfigDetails={false}
-              />
+              /> */}
+              <div>Gallery preview commented out</div>
             </div>
             <div className="gallery-overlay">
               <FaPlay className="play-icon" />
@@ -202,11 +203,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               /* console.log('Selected Item Config:', selectedItem.config);
               console.log ('Merged Config:', mergedConfig); */
               return (
-                <Widgemo
-                  config={{ ...mergedConfig, theme: { ...mergedConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
-                  adapters={selectedItemAdapters}
-                  showConfigDetails={true}
-                />
+                <div>Modal Widgemo commented out</div>
               );
             })()}
             <div className="mt-3">

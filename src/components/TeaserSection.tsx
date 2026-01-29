@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
-import { Widgemo } from 'widgemo-core';
+// import { Widgemo } from 'widgemo-core';
 import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
 import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
 
@@ -134,12 +134,13 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                   </small>
                 </div>
                 <div inert className="flex-grow-1 overflow-auto" style={{ padding: '8px' }}>
-                  <Widgemo
+                  {/* <Widgemo
                     key={currentConfigIndex}
                     config={{ ...teaserConfig, theme: { ...teaserConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
                     adapters={teaserAdapters}
                     showConfigDetails={false}
-                  />
+                  /> */}
+                  <div>Teaser Widgemo commented out for testing simplified version</div>
                 </div>
               </Card.Body>
             </Card>
