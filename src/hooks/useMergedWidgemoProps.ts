@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
-import { getThemeBackgroundColor } from '../utils/themeUtils';
 import type { Theme } from '../utils/themeConfig';
 
 interface UseMergedWidgemoPropsInput {
@@ -130,10 +129,11 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       // For 'config' mode, don't include default baseColor to preserve config.theme.baseColor
       if (currentSandboxTheme !== undefined) {
         // Always set baseColor from current theme for non-config modes
-        const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
-        if (baseColorFromTheme) {
-          appliedThemeProps.baseColor = baseColorFromTheme;
-        }
+        // Note: Removed getThemeBackgroundColor usage - using CSS variables now
+        // const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
+        // if (baseColorFromTheme) {
+        //   appliedThemeProps.baseColor = baseColorFromTheme;
+        // }
       }
       
       if (appliedBaseColor?.trim()) {
@@ -160,16 +160,17 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
       }
     } else {
       // Even without advanced props, include baseColor
-      const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
-      if (baseColorFromTheme) {
-        if (currentSandboxTheme === undefined) {
-          // 'config' mode: merge baseColor with config.theme only if not already present
-          themeToApply = { baseColor: baseColorFromTheme, ...config.theme };
-        } else {
-          // Other modes: merge baseColor with currentSandboxTheme
-          themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
-        }
-      }
+      // Note: Removed getThemeBackgroundColor usage - using CSS variables now
+      // const baseColorFromTheme = getThemeBackgroundColor(currentTheme);
+      // if (baseColorFromTheme) {
+      //   if (currentSandboxTheme === undefined) {
+      //     // 'config' mode: merge baseColor with config.theme only if not already present
+      //     themeToApply = { baseColor: baseColorFromTheme, ...config.theme };
+      //   } else {
+      //     // Other modes: merge baseColor with currentSandboxTheme
+      //     themeToApply = { ...currentSandboxTheme, baseColor: baseColorFromTheme };
+      //   }
+      // }
     }
 
     if (themeToApply === null) {

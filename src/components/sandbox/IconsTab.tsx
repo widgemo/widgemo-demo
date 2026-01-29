@@ -4,8 +4,6 @@ import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, Fa
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie, LuPencil, LuTrash, LuX, LuChevronUp, LuChevronLeft, LuSearch, LuFilter, LuArrowUpDown, LuKanban, LuMoveHorizontal } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPresentationChartLine, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal, HiArrowUp, HiFilter } from 'react-icons/hi';
 import { defaultRenderIcon } from 'widgemo-core';
-import { getThemeBorderColor } from '../../utils/themeConfig';
-import type { Theme } from '../../utils/themeConfig';
 
 interface IconsTabProps {
   /** Current icon library selection */
@@ -14,8 +12,6 @@ interface IconsTabProps {
   onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
   /** Whether dark mode is enabled */
   darkMode?: boolean;
-  /** Current theme key for border color */
-  currentTheme?: Theme;
 }
 
 /**
@@ -44,11 +40,7 @@ interface IconsTabProps {
 export const IconsTab: React.FC<IconsTabProps> = ({
   iconLibrary,
   onIconLibraryChange,
-  currentTheme = 'light',
 }) => {
-
-  // Get theme border color
-  const themeBorderColor = getThemeBorderColor(currentTheme);
 
   // Function to get the icon component for the selected library
   const getIconComponent = (iconName: string) => {
@@ -393,7 +385,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
 
           <div className="col-12">
             <Form.Label className="small fw-bold">Available Icons & Mappings</Form.Label>
-            <Card style={{ background: 'transparent', border: `1px solid ${themeBorderColor}` }}>
+            <Card style={{ background: 'transparent', border: `1px solid var(--app-border)` }}>
               <Card.Body className="p-3">
                 <small className="text-muted d-block mb-3">
                   {iconLibrary === 'none' 
@@ -405,7 +397,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
                 <Row className="g-2">
                   {getIconData().map((icon) => (
                     <Col xs={12} sm={6} lg={4} key={`${iconLibrary}-${icon.libraryIcon}-${icon.widgemoNames.join(',')}`} className="mb-2">
-                      <div className={`d-flex align-items-center p-2 rounded`} style={{ backgroundColor: 'transparent', border: `1px solid ${themeBorderColor}` }}>
+                      <div className={`d-flex align-items-center p-2 rounded`} style={{ backgroundColor: 'transparent', border: `1px solid var(--app-border)` }}>
                         <div className="me-3">
                           {iconLibrary === 'none' ? getIconComponent(icon.widgemoNames[0]) : getIconComponentFromLibraryName(icon.libraryIcon)}
                         </div>

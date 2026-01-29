@@ -1,3 +1,10 @@
+/*
+ * LEGACY COMPONENT - No longer used after switching to simple light/dark toggle
+ * Replaced by ThemeToggle.tsx for cleaner UI
+ * Keeping commented out for reference
+ */
+
+/*
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FaPalette } from 'react-icons/fa';
@@ -50,3 +57,4 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     </Dropdown>
   );
 };
+*/

@@ -48,4 +48,5 @@ export const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): 
 
 // Get theme background color for dynamicBackground feature
 // (re-exported from themeConfig for backward compatibility)
-export { getThemeBackgroundColor, getThemeBorderColor } from './themeConfig';
+// Note: These functions were removed during cleanup to use CSS variables instead
+// export { getThemeBackgroundColor, getThemeBorderColor } from './themeConfig';

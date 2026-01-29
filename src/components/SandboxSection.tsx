@@ -835,7 +835,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}
-                currentTheme={currentTheme}
                 // SampleDataTab props
                 currentData={customData}
                 jsonEditorText={jsonEditorText}

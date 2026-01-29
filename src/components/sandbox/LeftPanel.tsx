@@ -7,7 +7,6 @@ import { IconsTab } from './IconsTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
 import type { WidgemoTheme } from 'widgemo-core';
-import type { Theme } from '../../utils/themeConfig';
 
 interface PresetOption {
   name: string;
@@ -74,7 +73,6 @@ export interface LeftPanelProps {
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
   onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
-  currentTheme: Theme;
 
   // SampleDataTab props
   currentData: Record<string, unknown>[];
@@ -150,7 +148,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   // IconsTab props
   iconLibrary,
   onIconLibraryChange,
-  currentTheme,
   // SampleDataTab props
   currentData,
   jsonEditorText,
@@ -310,7 +307,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             darkMode={darkMode}
             autoGeneratePalette={autoGeneratePalette}
             configTheme={configTheme}
-            currentTheme={currentTheme}
             onThemeModeChange={onThemeModeChange}
             onPrimaryColorChange={onPrimaryColorChange}
             onCustomThemeChange={onCustomThemeChange}
@@ -324,7 +320,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             iconLibrary={iconLibrary}
             onIconLibraryChange={onIconLibraryChange}
             darkMode={darkMode}
-            currentTheme={currentTheme}
           />
         )}
 

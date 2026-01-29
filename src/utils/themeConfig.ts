@@ -69,23 +69,10 @@ export const THEME_CONFIGS: Record<Theme, ThemeConfig> = {
   },
 };
 
-// Helper functions
+// Helper functions - keeping only essential ones for current light/dark implementation
 export const getThemeConfig = (theme: Theme): ThemeConfig => {
   return THEME_CONFIGS[theme];
 };
 
-export const getThemeBackgroundColor = (theme: Theme): string => {
-  return THEME_CONFIGS[theme].backgroundColor;
-};
-
-export const getThemeBorderColor = (theme: Theme): string => {
-  return THEME_CONFIGS[theme].borderColor;
-};
-
-export const isThemeDark = (theme: Theme): boolean => {
-  return theme === 'dark';
-};
-
-export const getAllThemes = (): ThemeConfig[] => {
-  return Object.values(THEME_CONFIGS);
-};
+// Note: getThemeBackgroundColor, getThemeBorderColor, isThemeDark, and getAllThemes
+// have been removed as they're no longer needed with CSS variables approach
