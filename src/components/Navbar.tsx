@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
-import { useTheme } from '../hooks/useTheme';
-import { ThemeSelector } from './ThemeSelector';
+import { ThemeToggle } from './ThemeToggle';
 
 export const AppNavbar: React.FC = () => {
-  const { currentTheme, setCurrentTheme } = useTheme();
   const location = useLocation();
   const isSandbox = location.pathname === '/sandbox';
 
@@ -81,7 +79,7 @@ export const AppNavbar: React.FC = () => {
                 ← Back to Main
               </Button>
             )}
-            <ThemeSelector currentTheme={currentTheme} onThemeChange={setCurrentTheme} />
+            <ThemeToggle />
           </div>
         </BootstrapNavbar.Collapse>
       </BootstrapNavbar>
