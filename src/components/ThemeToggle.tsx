@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { useTheme } from '../hooks/useTheme';
 
@@ -10,25 +10,27 @@ export const ThemeToggle: React.FC = () => {
     setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
   };
 
+  const tooltipText = `Change to ${currentTheme === 'light' ? 'dark' : 'light'} mode`;
+
   return (
-    <Button
-      variant="outline-light"
-      size="sm"
-      onClick={toggleTheme}
-      className="d-flex align-items-center gap-2"
-      title={`Switch to ${currentTheme === 'light' ? 'dark' : 'light'} mode`}
+    <OverlayTrigger
+      placement="bottom"
+      overlay={<Tooltip id="theme-toggle-tooltip">{tooltipText}</Tooltip>}
     >
-      {currentTheme === 'light' ? (
-        <>
-          <FaMoon size={14} />
-          <span className="d-none d-sm-inline">Dark Mode</span>
-        </>
-      ) : (
-        <>
-          <FaSun size={14} />
-          <span className="d-none d-sm-inline">Light Mode</span>
-        </>
-      )}
-    </Button>
+      <Button
+        variant="outline-light"
+        size="sm"
+        onClick={toggleTheme}
+        className="d-flex align-items-center justify-content-center rounded-circle"
+        style={{ width: '40px', height: '40px' }}
+        aria-label={tooltipText}
+      >
+        {currentTheme === 'light' ? (
+          <FaMoon size={16} />
+        ) : (
+          <FaSun size={16} />
+        )}
+      </Button>
+    </OverlayTrigger>
   );
 };
