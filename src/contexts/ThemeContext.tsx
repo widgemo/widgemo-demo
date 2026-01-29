@@ -9,8 +9,21 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Default to light theme
-  const [currentTheme, setCurrentTheme] = useState<Theme>('light');
+  // Initialize with saved theme from localStorage or default to 'light'
+  const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('app-theme');
+      return (saved as Theme) || 'light';
+    }
+    return 'light';
+  });
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('app-theme', currentTheme);
+    }
+  }, [currentTheme]);
 
   // Apply theme by setting data attributes
   useEffect(() => {
