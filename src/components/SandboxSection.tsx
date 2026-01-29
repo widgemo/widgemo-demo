@@ -545,7 +545,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
       setTimeout(() => setExportStatus(null), 5000);
     }
-  }, [overridesJson, styleJson, className, baseColor, autoContrast, contrastAmount, overrideBackground, overrideBaseColorEnabled, overrideBackgroundEnabled]);
+  }, [overridesJson, styleJson, className]);
 
   const handleApplyLoadingStates = useCallback(() => {
     // Force re-render of preview
