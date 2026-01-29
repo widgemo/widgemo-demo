@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Row, Col, Card, Modal, Button, Dropdown, Badge } from 'react-bootstrap';
-import { FaPlay, FaFilter } from 'react-icons/fa';
-// import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
-import { galleryConfigs, mockAdapters } from '../data/sampleData';
-import { getThemeBackgroundColor, mergeThemeIntoConfig } from '../utils/themeUtils';
-import type { SampleData } from '../data/sampleData';
+import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
+import { FaPlay } from 'react-icons/fa';
+import { SimplifiedWidgemo, type Entity, type SimplifiedWidgemoConfig } from 'widgemo-core';
+import widgemoExamples from '../data/widgemoExamples';
+import { getThemeBackgroundColor } from '../utils/themeUtils';
 
 interface GallerySectionProps {
   onLoadToSandbox: (configId: string) => void;
@@ -14,29 +12,20 @@ interface GallerySectionProps {
 
 interface GalleryItem {
   id: string;
-  config: WidgemoConfig;
-  name: string;
+  title: string;
   description: string;
-  data?: SampleData[];
-  mode: string;
+  data: Entity[];
+  config: SimplifiedWidgemoConfig;
 }
 
 export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox, currentTheme }) => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [modeFilter, setModeFilter] = useState<string>('all');
-
-  // Get unique modes for filter dropdown
-  const availableModes = useMemo(() => {
-    const modes = Array.from(new Set(galleryConfigs.map(item => item.mode).filter(Boolean)));
-    return modes.sort();
-  }, []);
 
   // Filter items based on selected mode
   const filteredItems = useMemo(() => {
-    if (modeFilter === 'all') return galleryConfigs;
-    return galleryConfigs.filter(item => item.mode === modeFilter);
-  }, [modeFilter]);
+    return widgemoExamples;
+  }, []);
 
   const handleItemClick = (item: GalleryItem) => {
     setSelectedItem(item);
@@ -64,20 +53,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   };
 
   const renderGalleryItem = (item: GalleryItem, index: number) => {
-    // Create dynamic adapters for items with custom data
-    const itemAdapters: WidgemoAdapters = item.data ? {
-      ...mockAdapters,
-      fetchData: async () => ({
-        data: item.data!,
-        total: item.data!.length,
-      }),
-    } : mockAdapters;
-
-    // Merge config with theme
-    const mergedConfig = mergeThemeIntoConfig(item.config, currentTheme);
-    
-    // Debug: Log merged config for grid view
-    console.log('Grid View - Merged Config for', item.name + ':', mergedConfig);
+    // Debug: Log config for grid view
+    console.log('Grid View - Config for', item.title + ':', item.config);
 
     return (
       <Col xs={12} sm={6} md={6} lg={4} xl={3} xxl={3} key={index} className="mb-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
@@ -101,12 +78,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               height: '200%',
               pointerEvents: 'none'
             }}>
-              {/* <Widgemo
-                config={{ ...mergedConfig, theme: { ...mergedConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
-                adapters={itemAdapters}
-                showConfigDetails={false}
-              /> */}
-              <div>Gallery preview commented out</div>
+              <SimplifiedWidgemo
+                data={item.data}
+                config={item.config}
+                className="my-custom-widgemo"
+              />
             </div>
             <div className="gallery-overlay">
               <FaPlay className="play-icon" />
@@ -114,10 +90,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           </div>
           <Card.Body className="d-flex flex-column p-3">
             <div className="d-flex justify-content-between align-items-start mb-2">
-              <Card.Title className="h6 mb-0 flex-grow-1">{item.name}</Card.Title>
-              <Badge bg="secondary" className="ms-2 text-capitalize">
-                {item.mode}
-              </Badge>
+              <Card.Title className="h6 mb-0 flex-grow-1">{item.title}</Card.Title>
             </div>
             <Card.Text className="text-muted small flex-grow-1">
               {item.description}
@@ -133,36 +106,10 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
   return (
     <section id="gallery" className="py-5 theme-aware-section">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="text-center mb-5">
           <h2 className="display-4 fw-bold mb-3 theme-aware-text">Gallery</h2>
           <p className="lead theme-aware-text">Explore different configurations and modes</p>
         </div>
-      {/* Controls */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div className="d-flex gap-2">
-          <Dropdown>
-            <Dropdown.Toggle variant="outline-secondary" size="sm">
-              <FaFilter className="me-2" />
-              Mode: {modeFilter === 'all' ? 'All' : modeFilter.charAt(0).toUpperCase() + modeFilter.slice(1)}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setModeFilter('all')}>
-                All Modes
-              </Dropdown.Item>
-              {availableModes.map(mode => (
-                <Dropdown.Item
-                  key={mode}
-                  onClick={() => setModeFilter(mode)}
-                  className="text-capitalize"
-                >
-                  {mode}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </div>
 
       {/* Gallery Content */}
       <Row className="g-3">
@@ -180,32 +127,15 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
         >
             <Modal.Header closeButton className={currentTheme}>
             <Modal.Title>
-              {selectedItem.name}
-              <Badge bg="secondary" className="ms-2 text-capitalize">
-                {selectedItem.mode}
-              </Badge>
+              {selectedItem.title}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className={currentTheme} style={{ minHeight: '500px' }}>
-            {(() => {
-              // Create dynamic adapters for the selected item
-              const selectedItemAdapters: WidgemoAdapters = selectedItem.data ? {
-                ...mockAdapters,
-                fetchData: async () => ({
-                  data: selectedItem.data!,
-                  total: selectedItem.data!.length,
-                }),
-              } : mockAdapters;
-              
-              // Merge config with theme and extract mediaConfig
-              const mergedConfig = mergeThemeIntoConfig(selectedItem.config, currentTheme);
-              
-              /* console.log('Selected Item Config:', selectedItem.config);
-              console.log ('Merged Config:', mergedConfig); */
-              return (
-                <div>Modal Widgemo commented out</div>
-              );
-            })()}
+            <SimplifiedWidgemo
+              data={selectedItem.data}
+              config={selectedItem.config}
+              className="my-custom-widgemo"
+            />
             <div className="mt-3">
               <p >{selectedItem.description}</p>
             </div>
@@ -220,8 +150,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           </Modal.Footer>
         </Modal>
       )}
-
-    </div>
 
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -291,6 +219,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
           }
         `
       }} />
-    </section>
-  );
+  </section>
+);
 };

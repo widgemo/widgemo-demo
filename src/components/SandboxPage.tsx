@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { SandboxSection } from './SandboxSection';
-import { defaultSandboxConfig, teaserSampleData, galleryConfigs } from '../data/sampleData';
+import { defaultSandboxConfig, teaserSampleData } from '../data/sampleData';
+import widgemoExamples from '../data/widgemoExamples';
 
 export const SandboxPage: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -12,7 +13,7 @@ export const SandboxPage: React.FC = () => {
   const initialConfig = useMemo(() => {
     const configId = searchParams.get('config');
     if (configId) {
-      const configItem = galleryConfigs.find(item => item.id === configId);
+      const configItem = widgemoExamples.find(item => item.id === configId);
       if (configItem) {
         // For gallery configs, don't inject theme properties so they use core defaults
         return configItem.config;
@@ -31,7 +32,7 @@ export const SandboxPage: React.FC = () => {
   const initialData = useMemo(() => {
     const configId = searchParams.get('config');
     if (configId) {
-      const configItem = galleryConfigs.find(item => item.id === configId);
+      const configItem = widgemoExamples.find(item => item.id === configId);
       return configItem?.data || teaserSampleData;
     }
     return teaserSampleData;

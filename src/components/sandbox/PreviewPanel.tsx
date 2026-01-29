@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig, WidgemoAdapters, ResolvedWidgemoProps } from 'widgemo-core';
-import { applyThemeToElement } from 'widgemo-core';
-import { useMergedWidgemoProps } from '../../hooks/useMergedWidgemoProps';
+import { SimplifiedWidgemo } from 'widgemo-core';
+import type { SimplifiedWidgemoConfig } from 'widgemo-core';
 
 interface PreviewPanelProps {
   // Configuration
-  config: WidgemoConfig;
-  adapters: WidgemoAdapters;
-  showConfigDetails?: boolean;
-
-  // Theme and styling
-  currentTheme: string;
-  currentSandboxTheme?: any;
-  currentIconRenderer?: any;
+  config: SimplifiedWidgemoConfig;
+  data: Record<string, unknown>[];
 
   // Size controls
   width: number;
@@ -25,30 +18,11 @@ interface PreviewPanelProps {
   onHeightChange: (height: number) => void;
   onAutoWidthChange: (auto: boolean) => void;
   onAutoHeightChange: (auto: boolean) => void;
-
-  // Advanced props
-  applyAdvancedProps?: boolean;
-  appliedOverrides?: Partial<WidgemoConfig>;
-  appliedClassName?: string;
-  appliedStyleJson?: string;
-  appliedLoading?: boolean;
-  appliedError?: string | Error;
-  appliedBaseColor?: string;
-  appliedOverrideBackground?: string;
-  appliedAutoContrast?: boolean;
-  appliedContrastAmount?: number;
-  customLoadingComponent?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  customErrorComponent?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
-  onResolvedProps?: (resolved: ResolvedWidgemoProps) => void;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   config,
-  adapters,
-  showConfigDetails,
-  currentTheme,
-  currentSandboxTheme,
-  currentIconRenderer,
+  data,
   width,
   height,
   isAutoWidth,
@@ -57,57 +31,10 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   onHeightChange,
   onAutoWidthChange,
   onAutoHeightChange,
-  applyAdvancedProps,
-  appliedOverrides,
-  appliedClassName,
-  appliedStyleJson,
-  appliedLoading,
-  appliedError,
-  appliedBaseColor,
-  appliedOverrideBackground,
-  appliedAutoContrast,
-  appliedContrastAmount,
-  customLoadingComponent,
-  customErrorComponent,
-  onResolvedProps,
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  // Memoize the callback to prevent infinite re-renders
-  const handleResolvedProps = React.useCallback((resolved: ResolvedWidgemoProps) => {
-    onResolvedProps?.(resolved);
-  }, [onResolvedProps]);
-
-  // Use the merged props hook
-  const { mergedProps } = useMergedWidgemoProps({
-    config,
-    adapters,
-    currentTheme,
-    currentSandboxTheme,
-    currentIconRenderer,
-    showConfigDetails,
-    applyAdvancedProps,
-    appliedOverrides,
-    appliedClassName,
-    appliedStyleJson,
-    appliedLoading,
-    appliedError,
-    appliedBaseColor,
-    appliedOverrideBackground,
-    appliedAutoContrast,
-    appliedContrastAmount,
-    customLoadingComponent,
-    customErrorComponent,
-    onResolvedProps: handleResolvedProps,
-  });
-
-  // Apply custom theme to preview container
-  useEffect(() => {
-    if (previewRef.current && currentSandboxTheme && typeof currentSandboxTheme === 'object' && Object.keys(currentSandboxTheme).length > 0) {
-      const isDark = currentTheme === 'dark' || (currentTheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      applyThemeToElement(previewRef.current, currentSandboxTheme, isDark);
-    }
-  }, [currentSandboxTheme, currentTheme]);
+  // SimplifiedWidgemo handles theming internally
 
   return (
     <div className="p-4 h-100">
@@ -167,8 +94,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           width: isAutoWidth ? 'auto' : `${width}px`
         }}
       >
-        {/* <Widgemo {...mergedProps} /> */}
-        <div>Sandbox preview commented out</div>
+        <SimplifiedWidgemo data={data} config={config} className="my-custom-widgemo" />
       </div>
     </div>
   );

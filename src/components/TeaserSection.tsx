@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
-// import { Widgemo } from 'widgemo-core';
-import { teaserConfigs, mockAdapters, teaserSampleData } from '../data/sampleData';
-import { mergeThemeIntoConfig, getThemeBackgroundColor } from '../utils/themeUtils';
+import { SimplifiedWidgemo } from 'widgemo-core';
+import widgemoExamples from '../data/widgemoExamples';
 
 interface TeaserSectionProps {
   onExploreGallery: () => void;
   onJumpToSandbox: () => void;
   shouldHaveDarkText: boolean;
-  currentTheme: string;
 }
 
 export const TeaserSection: React.FC<TeaserSectionProps> = ({
   onExploreGallery,
   onJumpToSandbox,
-  shouldHaveDarkText,
-  currentTheme
+  shouldHaveDarkText
 }) => {
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -26,7 +23,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
     }
     return true; // Default to large screen
   });
-  const configsLength = teaserConfigs.length;
+  const configsLength = widgemoExamples.length;
 
   // Detect screen size changes
   useEffect(() => {
@@ -59,20 +56,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
     return () => clearInterval(progressInterval);
   }, []);
 
-  const currentTeaserItem = teaserConfigs[currentConfigIndex];
-  const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
+  const currentTeaserItem = widgemoExamples[currentConfigIndex];
+  // const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
   
-  // Create dynamic adapters - all teasers use the same user data
-  const teaserAdapters = React.useMemo(() => {
-    return {
-      ...mockAdapters,
-      fetchData: async () => ({
-        data: teaserSampleData,
-        total: teaserSampleData.length,
-      }),
-    };
-  }, []);
-
   return (
     <section id="teaser" className="py-5 theme-aware-section" style={{
       color: shouldHaveDarkText ? '#161616' : 'white',
@@ -134,13 +120,12 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                   </small>
                 </div>
                 <div inert className="flex-grow-1 overflow-auto" style={{ padding: '8px' }}>
-                  {/* <Widgemo
+                  <SimplifiedWidgemo
                     key={currentConfigIndex}
-                    config={{ ...teaserConfig, theme: { ...teaserConfig.theme, baseColor: getThemeBackgroundColor(currentTheme) } }}
-                    adapters={teaserAdapters}
-                    showConfigDetails={false}
-                  /> */}
-                  <div>Teaser Widgemo commented out for testing simplified version</div>
+                    data={currentTeaserItem.data}
+                    config={currentTeaserItem.config}
+                    className="my-custom-widgemo"
+                  />
                 </div>
               </Card.Body>
             </Card>

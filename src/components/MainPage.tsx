@@ -34,7 +34,6 @@ export const MainPage: React.FC = () => {
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => navigate('/sandbox')}
         shouldHaveDarkText={shouldHaveDarkTeaserText}
-        currentTheme={currentTheme}
       />
 
       <AnatomySection />

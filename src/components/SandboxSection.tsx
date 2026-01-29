@@ -4,8 +4,8 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, ResolvedWidgemoProps } from 'widgemo-core';
-import { galleryConfigs } from '../data/sampleData';
+import type { WidgemoAdapters, WidgemoTheme, SimplifiedWidgemoConfig } from 'widgemo-core';
+import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { AppliedConfig } from './AppliedConfig';
@@ -55,9 +55,9 @@ const CustomErrorComponent: React.FC<{
 );
 
 interface SandboxSectionProps {
-  initialConfig: WidgemoConfig;
+  initialConfig: SimplifiedWidgemoConfig;
   initialData: Record<string, unknown>[];
-  onConfigChange?: (config: WidgemoConfig) => void;
+  onConfigChange?: (config: SimplifiedWidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: string;
   initialThemeMode?: 'defaults' | 'config' | 'custom';
@@ -96,13 +96,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAppliedConfigCollapsed, setIsAppliedConfigCollapsed] = useState(false);
   const [appliedConfigCopyStatus, setAppliedConfigCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  // State for resolved props from onResolvedProps
-  const [resolvedConfig, setResolvedConfig] = useState<ResolvedWidgemoProps | null>(null);
-
-  // Debug: Log when resolvedConfig changes
-  useEffect(() => {
-    console.log('resolvedConfig changed:', resolvedConfig);
-  }, [resolvedConfig]);
+  // SimplifiedWidgemo doesn't need resolved props
 
   // Active tab state
   const [activeTab, setActiveTab] = useState(() => {
@@ -120,13 +114,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [overrideBackgroundEnabled, setOverrideBackgroundEnabled] = useState(false);
 
   // Applied advanced props state (to prevent live updates)
-  const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
+  const [appliedOverrides, setAppliedOverrides] = useState<Partial<SimplifiedWidgemoConfig>>({});
   const [appliedClassName, setAppliedClassName] = useState('');
   const [appliedStyleJson, setAppliedStyleJson] = useState('{}');
-  const [appliedBaseColor, setAppliedBaseColor] = useState('');
-  const [appliedAutoContrast, setAppliedAutoContrast] = useState(true);
-  const [appliedContrastAmount, setAppliedContrastAmount] = useState(0.05);
-  const [appliedOverrideBackground, setAppliedOverrideBackground] = useState('');
 
   // Preview dimensions state
   const [width, setWidth] = useState<number>(400);
@@ -200,10 +190,10 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     return false;
   }, [currentSandboxTheme, currentTheme]);
 
-  // Transform galleryConfigs to PresetOption format for JsonConfigTab
+  // Transform widgemoExamples to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
-    return galleryConfigs.map(config => ({
-      name: config.name,
+    return widgemoExamples.map(config => ({
+      name: config.title,
       config: config.config
     }));
   }, []);
@@ -351,16 +341,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   // Copy applied configuration to clipboard
   const copyAppliedConfigToClipboard = useCallback(async () => {
-    console.log('Copy button clicked, resolvedConfig:', resolvedConfig);
+    console.log('Copy button clicked, config:', config);
     
-    if (!resolvedConfig || Object.keys(resolvedConfig).length === 0) {
-      console.log('No resolvedConfig available or empty');
-      setAppliedConfigCopyStatus('error');
-      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
-      return;
-    }
-    
-    const configText = JSON.stringify(resolvedConfig, null, 2);
+    const configText = JSON.stringify(config, null, 2);
     console.log('Config text to copy:', configText.substring(0, 100) + '...');
     
     // Try fallback first (more reliable in localhost/development)
@@ -398,7 +381,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       setAppliedConfigCopyStatus('error');
       setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
     }
-  }, [resolvedConfig]);
+  }, [config]);
 
   // Download config as JSON file
   const downloadConfig = useCallback(() => {
@@ -463,7 +446,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     lastAppliedThemeRef.current = currentTheme;
   }, [currentTheme]);
 
-  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
+  const loadPreset = (presetConfig: SimplifiedWidgemoConfig, presetTitle?: string) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
     const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
@@ -555,19 +538,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       // Apply all current values to applied state
       setAppliedClassName(className);
       setAppliedStyleJson(styleJson);
-      if (overrideBaseColorEnabled) {
-        setAppliedBaseColor(baseColor);
-      } else {
-        setAppliedBaseColor('');
-      }
-      setAppliedAutoContrast(autoContrast);
-      setAppliedContrastAmount(contrastAmount);
-      if (overrideBackgroundEnabled) {
-        setAppliedOverrideBackground(overrideBackground);
-      } else {
-        setAppliedOverrideBackground('');
-      }
-
       setApplyAdvancedProps(true);
       setExportStatus('Advanced properties applied successfully!');
       setTimeout(() => setExportStatus(null), 3000);
@@ -866,7 +836,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 customTheme={customTheme}
                 darkMode={isDarkModeActive}
                 autoGeneratePalette={autoGeneratePalette}
-                configTheme={config.theme}
+                configTheme={undefined}
                 onThemeModeChange={handleThemeModeChange}
                 onPrimaryColorChange={handlePrimaryColorChange}
                 onCustomThemeChange={handleCustomThemeChange}
@@ -901,11 +871,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
               <PreviewPanel
                 key={renderTrigger}
                 config={config}
-                adapters={dynamicAdapters}
-                showConfigDetails={showConfigDetails}
-                currentTheme={currentTheme}
-                currentSandboxTheme={currentSandboxTheme}
-                currentIconRenderer={currentIconRenderer}
+                data={customData}
                 width={width}
                 height={height}
                 isAutoWidth={isAutoWidth}
@@ -914,19 +880,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onHeightChange={setHeight}
                 onAutoWidthChange={setIsAutoWidth}
                 onAutoHeightChange={setIsAutoHeight}
-                applyAdvancedProps={applyAdvancedProps}
-                appliedOverrides={appliedOverrides}
-                appliedClassName={appliedClassName}
-                appliedStyleJson={appliedStyleJson}
-                appliedLoading={loading}
-                appliedError={error}
-                appliedBaseColor={appliedBaseColor}
-                appliedOverrideBackground={appliedOverrideBackground}
-                appliedAutoContrast={appliedAutoContrast}
-                appliedContrastAmount={appliedContrastAmount}
-                customLoadingComponent={useCustomLoading ? CustomLoadingComponent : undefined}
-                customErrorComponent={useCustomError ? CustomErrorComponent : undefined}
-                onResolvedProps={setResolvedConfig}
               />
             </Panel>
             {!isAppliedConfigCollapsed && (
@@ -939,7 +892,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                       <button
                         className="btn btn-sm btn-outline-secondary"
                         onClick={copyAppliedConfigToClipboard}
-                        disabled={!resolvedConfig || Object.keys(resolvedConfig).length === 0}
+                        disabled={false}
                         title="Copy configuration to clipboard"
                         aria-label="Copy configuration to clipboard"
                       >
@@ -970,7 +923,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                       currentIconRenderer={currentIconRenderer}
                       customLoading={useCustomLoading ? CustomLoadingComponent : undefined}
                       customError={useCustomError ? CustomErrorComponent : undefined}
-                      resolvedConfig={resolvedConfig}
                     />
                   </div>
                 </Panel>
