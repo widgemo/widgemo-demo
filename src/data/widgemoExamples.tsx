@@ -1469,7 +1469,7 @@ export const tablePlainConfig: SimplifiedWidgemoConfig = {
       table: {
         actionsColumn: true,
         alternatingRows: false,
-        rowSeparator: true
+        rowSeparator: false
       },
       itemConfig: {
         actions: {

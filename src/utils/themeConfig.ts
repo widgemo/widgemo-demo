@@ -179,7 +179,7 @@ export const THEME_CONFIGS: Record<string, ThemeConfig> = {
     tableBorder: '#446166',
     tableHeaderBg: '#053c4c',
     tableBodyBg: '#053c4c',
-    rowAltBg: '#0a4545',
+    rowAltBg: '#064255',
     focusColor: '#17a2b8',
     textMuted: '#888888',
     ghostButtonBorder: 'none',
