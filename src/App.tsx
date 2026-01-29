@@ -9,8 +9,6 @@ import { SimplifiedTest } from './components/SimplifiedTest';
 import './App.css';
 
 function AppContent() {
-  console.log('📱 AppContent rendering');
-
   const { currentTheme: theme } = useTheme();
 
   // Bridge app theme to widgemo theme
