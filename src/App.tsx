@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { useTheme } from './hooks/useTheme';
-import { WidgemoThemeProvider } from 'widgemo-core';
+// import { useTheme } from './hooks/useTheme';
+// import { WidgemoThemeProvider } from 'widgemo-core';
 import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
@@ -9,25 +9,25 @@ import { SimplifiedTest } from './components/SimplifiedTest';
 import './App.css';
 
 function AppContent() {
-  const { currentTheme: theme } = useTheme();
+  // const { currentTheme: theme } = useTheme();
 
   // Bridge app theme to widgemo theme
-  const appAccent = theme === 'dark' ? 'hsl(110 168 254)' : 'hsl(249 115 22)';
-  const appBgPrimary = theme === 'dark' ? '#121212' : '#ffffff';
-  const appTextPrimary = theme === 'dark' ? '#e0e0e0' : '#495057';
-  const appBorder = theme === 'dark' ? '#343a40' : '#dee2e6';
-  const appTextSecondary = theme === 'dark' ? '#adb5bd' : '#6c757d';
+  // const appAccent = theme === 'dark' ? 'hsl(110 168 254)' : 'hsl(249 115 22)';
+  // const appBgPrimary = theme === 'dark' ? '#121212' : '#ffffff';
+  // const appTextPrimary = theme === 'dark' ? '#e0e0e0' : '#495057';
+  // const appBorder = theme === 'dark' ? '#343a40' : '#dee2e6';
+  // const appTextSecondary = theme === 'dark' ? '#adb5bd' : '#6c757d';
 
-  const widgemoOverrides = {
-    colors: {
-      primary: appAccent,
-      background: appBgPrimary,
-      text: appTextPrimary,
-      border: appBorder,
-      secondary: appTextSecondary,
-      success: appAccent, // Reuse accent for success
-    }
-  };
+  // const widgemoOverrides = {
+  //   colors: {
+  //     primary: appAccent,
+  //     background: appBgPrimary,
+  //     text: appTextPrimary,
+  //     border: appBorder,
+  //     secondary: appTextSecondary,
+  //     success: appAccent, // Reuse accent for success
+  //   }
+  // };
 
   return (
     //<WidgemoThemeProvider theme={widgemoOverrides}>
