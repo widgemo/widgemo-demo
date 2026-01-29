@@ -18,7 +18,7 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
         <Row className="g-4">
           {/* The Single Primitive */}
           <Col lg={12} className="mb-4">
-            <Card className="h-100 shadow-sm theme-aware-card" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-3">
                   <FaLayerGroup className="text-primary me-3" size={24} />
@@ -53,7 +53,7 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
 
           {/* Core Layers of Configurability */}
           <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-3">
                   <FaCog className="text-success me-3" size={24} />
@@ -93,7 +93,7 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
 
           {/* How Modes Adapt */}
           <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-3">
                   <FaCodeBranch className="text-warning me-3" size={24} />
@@ -126,7 +126,7 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
 
           {/* Extending with Overrides */}
           <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-3">
                   <FaPuzzlePiece className="text-info me-3" size={24} />
@@ -177,7 +177,7 @@ const customAdapters = {
 
           {/* Parent-Child Composition */}
           <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-4">
                 <div className="d-flex align-items-center mb-3">
                   <FaLayerGroup className="text-danger me-3" size={24} />

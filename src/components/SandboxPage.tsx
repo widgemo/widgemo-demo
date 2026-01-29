@@ -48,9 +48,8 @@ export const SandboxPage: React.FC = () => {
       width: '100vw',
       height: 'calc(100vh - 56px)',
       overflow: 'hidden',
-      backgroundColor: 'var(--app-bg-primary)',
       color: 'var(--app-text-primary)',
-      transition: 'background-color 0.3s ease, color 0.3s ease'
+      transition: 'color 0.3s ease'
     }}>
       <SandboxSection
         key={searchParams.get('config') || 'default'}

@@ -3,7 +3,6 @@ import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 import { SimplifiedWidgemo, type Entity, type SimplifiedWidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
-import { getThemeBackgroundColor } from '../utils/themeUtils';
 import type { Theme } from '../utils/themeConfig';
 
 interface GallerySectionProps {
@@ -68,11 +67,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             height: '180px',
             overflow: 'hidden',
             position: 'relative',
-            backgroundColor: getThemeBackgroundColor(currentTheme),
+            backgroundColor: 'transparent',
             borderRadius: '0.375rem 0.375rem 0 0'
           }}>
             <div style={{
-              backgroundColor: getThemeBackgroundColor(currentTheme), 
+              backgroundColor: 'transparent', 
               transform: 'scale(0.5)',
               transformOrigin: 'top left',
               width: '200%',

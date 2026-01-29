@@ -31,9 +31,7 @@ export const MainPage: React.FC = () => {
   return (
     <div style={{ 
       paddingTop: '60px', 
-      minHeight: '100vh',
-      backgroundColor: 'var(--app-bg-primary)',
-      transition: 'background-color 0.3s ease'
+      minHeight: '100vh'
     }}>
       <TeaserSection
         onExploreGallery={() => scrollToSection('gallery')}

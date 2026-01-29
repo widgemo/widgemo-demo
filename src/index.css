@@ -42,6 +42,9 @@
   --bs-secondary: var(--app-text-secondary);
   --bs-border-color: var(--app-border);
 
+  /* Gradient background */
+  --app-bg-gradient: linear-gradient(to bottom, var(--app-bg-primary), var(--app-border));
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -79,6 +82,9 @@
   --bs-primary: var(--app-accent);
   --bs-secondary: var(--app-text-secondary);
   --bs-border-color: var(--app-border);
+
+  /* Gradient background */
+  --app-bg-gradient: linear-gradient(to bottom, var(--app-border), var(--app-bg-primary));
 }
 
 a {
@@ -95,8 +101,10 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--app-bg-primary, var(--widgemo-bg-color));
-  color: var(--app-text-primary, var(--widgemo-text-color));
+  background: var(--app-bg-gradient);
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--app-text-primary);
 }
 
 h1 {

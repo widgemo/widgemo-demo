@@ -162,9 +162,7 @@ export const SimplifiedTest: React.FC = () => {
   return (
     <div className="container mt-5" style={{ 
       minHeight: '100vh', 
-      padding: '2rem',
-      backgroundColor: 'var(--app-bg-primary)',
-      transition: 'background-color 0.3s ease'
+      padding: '2rem'
     }}>
       <style>{`
         .my-custom-widgemo {

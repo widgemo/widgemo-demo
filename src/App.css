@@ -9,9 +9,8 @@
 
 /* Apply theme to body */
 body {
-  background-color: var(--app-bg-primary);
   color: var(--app-text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Demo-specific styles */
@@ -88,7 +87,7 @@ body {
 
 /* Theme-aware sections */
 .theme-aware-section {
-  background-color: var(--app-bg-primary) !important;
+  background: transparent !important;
 }
 
 /* Theme-aware text */
@@ -140,6 +139,7 @@ p.theme-aware-text {
   border: none;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   transition: box-shadow 0.15s ease-in-out;
+  background: transparent;
 }
 
 .card:hover {
