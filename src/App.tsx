@@ -30,7 +30,7 @@ function AppContent() {
   };
 
   return (
-    <WidgemoThemeProvider theme={widgemoOverrides}>
+    //<WidgemoThemeProvider theme={widgemoOverrides}>
       <div className="App" style={{ 
         minHeight: '100vh',
         color: 'var(--app-text-primary)',
@@ -55,7 +55,7 @@ function AppContent() {
           </Routes>
         </div>
       </div>
-    </WidgemoThemeProvider>
+    //</WidgemoThemeProvider>
   );
 }
 
