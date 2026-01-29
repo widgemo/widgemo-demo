@@ -9,11 +9,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize with saved theme from localStorage or default to 'light'
+  // Initialize with saved theme from localStorage or system preference fallback
   const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('app-theme');
-      return (saved as Theme) || 'light';
+      if (saved) return saved as Theme;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     return 'light';
   });
@@ -24,6 +25,22 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       localStorage.setItem('app-theme', currentTheme);
     }
   }, [currentTheme]);
+
+  // Listen for system color scheme changes (only when no user preference is saved)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      // Only follow system preference if no user-saved theme exists
+      if (!localStorage.getItem('app-theme')) {
+        setCurrentTheme(mediaQuery.matches ? 'dark' : 'light');
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   // Apply theme by setting data attributes
   useEffect(() => {
