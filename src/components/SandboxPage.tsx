@@ -39,7 +39,7 @@ export const SandboxPage: React.FC = () => {
   }, [searchParams]);
 
   return (
-    <div className={`${currentTheme}`} style={{ 
+    <div style={{ 
       position: 'fixed',
       top: '56px', // Account for navbar height
       left: 0,
@@ -48,8 +48,9 @@ export const SandboxPage: React.FC = () => {
       width: '100vw',
       height: 'calc(100vh - 56px)',
       overflow: 'hidden',
-      background: `linear-gradient(to bottom, var(--border-color) 0%, var(--bg-color) 100%) fixed`,
-      backgroundSize: '100% 100vh'
+      backgroundColor: 'var(--app-bg-primary)',
+      color: 'var(--app-text-primary)',
+      transition: 'background-color 0.3s ease, color 0.3s ease'
     }}>
       <SandboxSection
         key={searchParams.get('config') || 'default'}

@@ -1,46 +1,37 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { useTheme } from './hooks/useTheme';
 import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
-import { getThemeConfig } from './utils/themeConfig';
+import './App.css';
 
 function AppContent() {
   console.log('📱 AppContent rendering');
-  const { currentTheme } = useTheme();
-  const themeConfig = getThemeConfig(currentTheme);
-  
-  return (
-    <div 
-      className={`App ${currentTheme}`}
-      style={{
-        background: `linear-gradient(to bottom, ${themeConfig?.borderColor || '#cccccc'} 0%, ${themeConfig?.backgroundColor || '#ffffff'} 100%) fixed`,
-        backgroundSize: '100% 100vh',
-        minHeight: '100vh',
-        color: themeConfig?.textColor || '#333333'
-      }}
-    >
-      <div>
-        <AppNavbar />
 
-        <div style={{ marginTop: '56px' }}>
-          <Routes>
-            <Route
-              path="/"
-              element={<MainPage />}
-            />
-            <Route
-              path="/sandbox"
-              element={<SandboxPage />}
-            />
-            <Route
-              path="/simplified-test"
-              element={<SimplifiedTest />}
-            />
-          </Routes>
-        </div>
+  return (
+    <div className="App" style={{ 
+      minHeight: '100vh',
+      color: 'var(--app-text-primary)',
+      transition: 'color 0.3s ease'
+    }}>
+      <AppNavbar />
+
+      <div style={{ marginTop: '56px' }}>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainPage />}
+          />
+          <Route
+            path="/sandbox"
+            element={<SandboxPage />}
+          />
+          <Route
+            path="/simplified-test"
+            element={<SimplifiedTest />}
+          />
+        </Routes>
       </div>
     </div>
   );

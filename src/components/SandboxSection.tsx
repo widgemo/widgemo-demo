@@ -12,6 +12,7 @@ import { AppliedConfig } from './AppliedConfig';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
+import type { Theme } from '../utils/themeConfig';
 
 // Custom loading component that matches widgemo-core's expected interface
 const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
@@ -59,7 +60,7 @@ interface SandboxSectionProps {
   initialData: Record<string, unknown>[];
   onConfigChange?: (config: SimplifiedWidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
-  currentTheme: string;
+  currentTheme: Theme;
   initialThemeMode?: 'defaults' | 'config' | 'custom';
 }
 
@@ -153,18 +154,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     switch (themeMode) {
       case 'defaults':
         // For defaults mode, merge the main theme selection into the theme
-        if (currentTheme.startsWith('theme-dark')) {
-          return { dark: true, autoDetect: false };
-        } else if (currentTheme.startsWith('theme-light')) {
-          return { dark: false, autoDetect: false };
-        } else if (currentTheme === 'auto') {
-          return { dark: false, autoDetect: true };
-        } else if (currentTheme === 'dark') {
-          return { dark: true, autoDetect: false };
-        } else if (currentTheme === 'light') {
-          return { dark: false, autoDetect: false };
-        }
-        return null; // fallback to defaults
+        return { dark: currentTheme === 'dark', autoDetect: false };
       case 'config':
         return undefined; // undefined means use config.theme as-is
       case 'custom':

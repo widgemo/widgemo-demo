@@ -5,10 +5,20 @@
   padding: 0;
 }
 
+/* ===== THEME VARIABLES ===== moved to index.css */
+
+/* Apply theme to body */
+body {
+  background-color: var(--app-bg-primary);
+  color: var(--app-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Demo-specific styles */
 .App {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 /* Navigation */
@@ -78,14 +88,14 @@
 
 /* Theme-aware sections */
 .theme-aware-section {
-  background-color: var(--widgemo-bg-color) !important;
+  background-color: var(--app-bg-primary) !important;
 }
 
 /* Theme-aware text */
 .theme-aware-text,
 h2.theme-aware-text,
 p.theme-aware-text {
-  color: var(--text-color) !important;
+  color: var(--app-text-primary) !important;
 }
 
 /* Resizable panels */
@@ -200,43 +210,19 @@ body {
   background: #a8a8a8;
 }
 
-.theme-light,
-.theme-light-blue,
-.theme-light-green,
-.theme-light-purple,
-.theme-dark,
-.theme-dark-red,
-.theme-dark-purple,
-.theme-dark-teal {
-  background-color: var(--widgemo-bg-color);
-  color: var(--widgemo-text-color);
-  /* min-height: 100vh; */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 .dropdown-menu {
-  background-color: var(--widgemo-bg-color) !important;
-  border: 1px solid var(--widgemo-border-color) !important;
-  color: var(--widgemo-text-color) !important;
+  background-color: var(--app-bg-primary) !important;
+  border: 1px solid var(--app-border) !important;
+  color: var(--app-text-primary) !important;
 }
 
 .dropdown-item {
-  color: var(--widgemo-text-color) !important;
+  color: var(--app-text-primary) !important;
 }
 
 .dropdown-item:hover {
-  background-color: var(--widgemo-button-hover) !important;
-  color: var(--widgemo-text-color) !important;
-}
-
-.theme-light h1,
-.theme-light h2 {
-  color: var(--widgemo-text-color);
-}
-
-.theme-dark h1,
-.theme-dark h2 {
-  color: var(--widgemo-text-color);
+  background-color: var(--app-button-hover) !important;
+  color: var(--app-text-primary) !important;
 }
 
 .logo {

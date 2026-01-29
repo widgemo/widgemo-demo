@@ -1,11 +1,12 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FaPalette } from 'react-icons/fa';
+import type { Theme } from '../utils/themeConfig';
 import { getAllThemes, getThemeConfig } from '../utils/themeConfig';
 
 interface ThemeSelectorProps {
-  currentTheme: string;
-  onThemeChange: (theme: string) => void;
+  currentTheme: Theme;
+  onThemeChange: (theme: Theme) => void;
 }
 
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({

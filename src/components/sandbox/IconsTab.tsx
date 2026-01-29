@@ -5,6 +5,7 @@ import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings,
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie, HiPresentationChartLine, HiPencil, HiTrash, HiX, HiChevronUp, HiChevronLeft, HiSearch, HiDotsHorizontal, HiArrowUp, HiFilter } from 'react-icons/hi';
 import { defaultRenderIcon } from 'widgemo-core';
 import { getThemeBorderColor } from '../../utils/themeConfig';
+import type { Theme } from '../../utils/themeConfig';
 
 interface IconsTabProps {
   /** Current icon library selection */
@@ -14,7 +15,7 @@ interface IconsTabProps {
   /** Whether dark mode is enabled */
   darkMode?: boolean;
   /** Current theme key for border color */
-  currentTheme?: string;
+  currentTheme?: Theme;
 }
 
 /**
@@ -43,7 +44,7 @@ interface IconsTabProps {
 export const IconsTab: React.FC<IconsTabProps> = ({
   iconLibrary,
   onIconLibraryChange,
-  currentTheme = 'theme-light',
+  currentTheme = 'light',
 }) => {
 
   // Get theme border color

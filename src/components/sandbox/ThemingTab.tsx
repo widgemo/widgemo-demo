@@ -4,6 +4,7 @@ import { generatePalette } from 'widgemo-core';
 import type { WidgemoTheme } from 'widgemo-core';
 import { defaultTheme } from 'widgemo-core';
 import { getThemeBorderColor } from '../../utils/themeConfig';
+import type { Theme } from '../../utils/themeConfig';
 
 type ThemeMode = 'defaults' | 'config' | 'custom';
 
@@ -31,7 +32,7 @@ interface ThemingTabProps {
   /** Callback when auto-generate palette changes */
   onAutoGeneratePaletteChange: (auto: boolean) => void;
   /** Current global theme key for border styling */
-  currentTheme: string;
+  currentTheme: Theme;
 }
 
 /**

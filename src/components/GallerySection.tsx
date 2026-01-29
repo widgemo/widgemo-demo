@@ -4,10 +4,11 @@ import { FaPlay } from 'react-icons/fa';
 import { SimplifiedWidgemo, type Entity, type SimplifiedWidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { getThemeBackgroundColor } from '../utils/themeUtils';
+import type { Theme } from '../utils/themeConfig';
 
 interface GallerySectionProps {
   onLoadToSandbox: (configId: string) => void;
-  currentTheme: string;
+  currentTheme: Theme;
 }
 
 interface GalleryItem {

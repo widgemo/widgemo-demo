@@ -7,6 +7,7 @@ import { IconsTab } from './IconsTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
 import type { WidgemoTheme } from 'widgemo-core';
+import type { Theme } from '../../utils/themeConfig';
 
 interface PresetOption {
   name: string;
@@ -73,7 +74,7 @@ export interface LeftPanelProps {
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
   onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
-  currentTheme: string;
+  currentTheme: Theme;
 
   // SampleDataTab props
   currentData: Record<string, unknown>[];

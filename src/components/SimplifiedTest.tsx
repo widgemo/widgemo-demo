@@ -160,7 +160,12 @@ export const SimplifiedTest: React.FC = () => {
   }, [includeWidgemoInspector, isDevEnvironment]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{ 
+      minHeight: '100vh', 
+      padding: '2rem',
+      backgroundColor: 'var(--app-bg-primary)',
+      transition: 'background-color 0.3s ease'
+    }}>
       <style>{`
         .my-custom-widgemo {
           background-color: var(--widgemo-bg-color);

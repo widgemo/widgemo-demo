@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
 import { getThemeBackgroundColor } from '../utils/themeUtils';
+import type { Theme } from '../utils/themeConfig';
 
 interface UseMergedWidgemoPropsInput {
   // Core configuration
@@ -8,7 +9,7 @@ interface UseMergedWidgemoPropsInput {
   adapters: WidgemoAdapters;
 
   // Theme and styling
-  currentTheme: string;
+  currentTheme: Theme;
   currentSandboxTheme?: Partial<WidgemoTheme> | null;
   currentIconRenderer?: RenderIcon;
 

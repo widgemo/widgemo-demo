@@ -10,10 +10,75 @@
   /* Static theme variables that don't change with themes */
   --demo-row-alt-bg: #fafafa;
 
+  /* ===== THEME VARIABLES ===== */
+  /* Core colors */
+  --app-bg-primary: #ffffff;
+  --app-bg-secondary: #f8f9fa;
+  --app-text-primary: #161616;
+  --app-text-secondary: #6c757d;
+  --app-text-muted: #6c757d;
+  --app-border: #cccccc;
+  --app-border-light: #e0e0e0;
+  --app-accent: #007bff;
+  --app-accent-hover: #0056b3;
+  --app-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Interactive elements */
+  --app-button-bg: #f0f0f0;
+  --app-button-hover: #e0e0e0;
+  --app-focus: #007bff;
+
+  /* Table colors */
+  --app-table-border: #e0e0e0;
+  --app-table-header-bg: #ffffff;
+  --app-table-body-bg: #ffffff;
+  --app-row-hover: #e0e0e0;
+  --app-row-alt: #fafafa;
+
+  /* Bootstrap overrides */
+  --bs-body-bg: var(--app-bg-primary);
+  --bs-body-color: var(--app-text-primary);
+  --bs-primary: var(--app-accent);
+  --bs-secondary: var(--app-text-secondary);
+  --bs-border-color: var(--app-border);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  /* Core colors */
+  --app-bg-primary: #1a1a2a;
+  --app-bg-secondary: #222233;
+  --app-text-primary: #cccccc;
+  --app-text-secondary: #888888;
+  --app-text-muted: #888888;
+  --app-border: #444466;
+  --app-border-light: #555577;
+  --app-accent: #4dabf7;
+  --app-accent-hover: #339af0;
+  --app-shadow: rgba(0, 0, 0, 0.3);
+
+  /* Interactive elements */
+  --app-button-bg: #333344;
+  --app-button-hover: #444455;
+  --app-focus: #4dabf7;
+
+  /* Table colors */
+  --app-table-border: #555577;
+  --app-table-header-bg: #1a1a2a;
+  --app-table-body-bg: #1a1a2a;
+  --app-row-hover: #333344;
+  --app-row-alt: #222233;
+
+  /* Bootstrap overrides */
+  --bs-body-bg: var(--app-bg-primary);
+  --bs-body-color: var(--app-text-primary);
+  --bs-primary: var(--app-accent);
+  --bs-secondary: var(--app-text-secondary);
+  --bs-border-color: var(--app-border);
 }
 
 a {
@@ -30,8 +95,8 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--widgemo-bg-color);
-  color: var(--widgemo-text-color);
+  background-color: var(--app-bg-primary, var(--widgemo-bg-color));
+  color: var(--app-text-primary, var(--widgemo-text-color));
 }
 
 h1 {

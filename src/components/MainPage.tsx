@@ -11,7 +11,7 @@ export const MainPage: React.FC = () => {
   const navigate = useNavigate();
 
   // Determine if current theme should have dark teaser text
-  const shouldHaveDarkTeaserText = currentTheme.startsWith('theme-light');
+  const shouldHaveDarkTeaserText = currentTheme === 'light';
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -29,7 +29,12 @@ export const MainPage: React.FC = () => {
   };
 
   return (
-    <div style={{ paddingTop: '60px' }}>
+    <div style={{ 
+      paddingTop: '60px', 
+      minHeight: '100vh',
+      backgroundColor: 'var(--app-bg-primary)',
+      transition: 'background-color 0.3s ease'
+    }}>
       <TeaserSection
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => navigate('/sandbox')}
