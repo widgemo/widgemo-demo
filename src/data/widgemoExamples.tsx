@@ -132,10 +132,13 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
     },
     content: {
       // enabled: true,
-      title: 'Data:'
+      icon: { src: 'database', size: 24, color: '#c4530d' },
+      title: 'Modeless Data',
+      subtitle: 'No mode, defaults to Grid Mode'
     },
     footer: {
       // enabled: true,
+      icon: { src: 'database', size: 24, color: '#c4530d' },
       title: '* Data last updated',
       subtitle: '5 minutes ago'
     }
@@ -156,9 +159,15 @@ export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
       title: 'Team Overview',
       subtitle: 'Quick stats and actions'
     },
-    content: { enabled: true },
+    content: { 
+      enabled: true, 
+      icon: { src: 'users', size: 24, color: '#15abf0' },
+      title: 'Grid Mode', 
+      subtitle: '...but no Grid properties, all defaults', 
+      mode: 'grid' },
     footer: {
       enabled: true,
+      icon: { src: 'users', size: 24, color: '#15abf0' },
       className: 'custom-footer-class',
       title: (data) => `Team Members (${data.length} users)`,
       subtitle: '- "Manage your team efficiently"',
@@ -1097,14 +1106,16 @@ export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
               title: 'Contact',
               fields: [
                 { key: 'email', type: 'email', renderAs: 'link' },
-                { key: 'status', type: 'text', renderAs: 'badge', badgeOptions: {
-                  colorMap: {
-                    'active': '#28a745',
-                    'inactive': '#6c757d',
-                    'pending': '#ffc107'
-                  },
-                  defaultColor: '#6c757d'
-                }}
+                {
+                  key: 'status', type: 'text', renderAs: 'badge', badgeOptions: {
+                    colorMap: {
+                      'active': '#28a745',
+                      'inactive': '#6c757d',
+                      'pending': '#ffc107'
+                    },
+                    defaultColor: '#6c757d'
+                  }
+                }
               ]
             },
             {
@@ -3090,7 +3101,7 @@ const widgemoExamples = [
     data: sixUsersData,
     config: headlessWidgemoConfig
   },
-   {
+  {
     id: 'headless-footerless-widgemo',
     title: 'Headless and Footerless Widgemo Example',
     description: 'Headless mode with no zones, including no footer',
