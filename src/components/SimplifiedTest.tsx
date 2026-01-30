@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, registerHook, registerIcon } from 'widgemo-core';
+import { Widgemo, registerWidgemoHook, registerWidgemoIcon } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
@@ -17,7 +17,7 @@ declare global {
 let renderCount = 0;
 const renderQueue: number[] = [];
 // Pre-render hook to start timing
-registerHook({
+registerWidgemoHook({
   name: 'preRender',
   hook: (...args: unknown[]) => {
     const [componentName] = args as [string, { data: Entity[]; className?: string }];
@@ -30,7 +30,7 @@ registerHook({
   }
 });
 // Post-render hook to measure and log performance
-registerHook({
+registerWidgemoHook({
   name: 'postRender',
   hook: (...args: unknown[]) => {
     const renderId = renderQueue.shift();
@@ -84,7 +84,7 @@ const iconNames = [
 ];
 
 iconNames.forEach(iconName => {
-  registerIcon({
+  registerWidgemoIcon({
     name: iconName,
     component: (props) => fontAwesomeRenderIcon({ name: iconName, ...props }), // Wrap to match expected signature
     defaultProps: { size: 16, color: 'currentColor' }
