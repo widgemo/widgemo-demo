@@ -1139,6 +1139,7 @@ export const tableAlternatingConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
       enabled: true,
+      icon: { src: 'users', size: 28, color: '#09ae9d' },
       title: 'Table Mode Demo',
       subtitle: 'Default Header Layout with Actions - Alternating Row Backgrounds & Separators Enabled',
       actions: [
@@ -1274,6 +1275,7 @@ export const tableRowDividersConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
       enabled: true,
+      icon: { src: 'users', size: 32, color: '#dda012' },
       title: 'User Management',
       subtitle: 'Sortable table with actions - Alternating Row Backgrounds & Separators Disabled',
       actions: [
