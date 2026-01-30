@@ -3,7 +3,7 @@
 // These objects are not recreated on each render, ensuring stable references and preventing unnecessary re-renders.
 // Memoization is achieved through static exports, allowing React to optimize component updates.
 
-import type { ActionContext, Entity, SimplifiedWidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
+import type { ActionContext, Entity, WidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
 import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData } from './sampleData';
@@ -95,7 +95,7 @@ export const eightUsersData = teaserSampleData.slice(0, 8);
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
+export const collapsibleHeaderConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -146,7 +146,7 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
+export const fixedHeaderConfig: WidgemoConfig = {
   devMode: {
     enabled: true,
     zone: 'footer'
@@ -193,7 +193,7 @@ export const fixedHeaderConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const reactElementTitleConfig: SimplifiedWidgemoConfig = {
+export const reactElementTitleConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -258,7 +258,7 @@ export const reactElementTitleConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const actionsSystemTestConfig: SimplifiedWidgemoConfig = {
+export const actionsSystemTestConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -329,7 +329,7 @@ export const actionsSystemTestConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const compactLayoutConfig: SimplifiedWidgemoConfig = {
+export const compactLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -371,7 +371,7 @@ export const compactLayoutConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const minimalLayoutConfig: SimplifiedWidgemoConfig = {
+export const minimalLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -406,7 +406,7 @@ export const minimalLayoutConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const centeredLayoutConfig: SimplifiedWidgemoConfig = {
+export const centeredLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -454,7 +454,7 @@ export const centeredLayoutConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutConfig: SimplifiedWidgemoConfig = {
+export const customLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -493,7 +493,7 @@ export const customLayoutConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutWithCustomElementConfig: SimplifiedWidgemoConfig = {
+export const customLayoutWithCustomElementConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -531,7 +531,7 @@ export const customLayoutWithCustomElementConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutVerticalConfig: SimplifiedWidgemoConfig = {
+export const customLayoutVerticalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -578,7 +578,7 @@ export const customLayoutVerticalConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutWithGroupsConfig: SimplifiedWidgemoConfig = {
+export const customLayoutWithGroupsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -629,7 +629,7 @@ export const customLayoutWithGroupsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const headlessWidgemoConfig: SimplifiedWidgemoConfig = {
+export const headlessWidgemoConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -683,7 +683,7 @@ export const headlessWidgemoConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const headlessFooterlessWidgemoConfig: SimplifiedWidgemoConfig = {
+export const headlessFooterlessWidgemoConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -737,7 +737,7 @@ export const headlessFooterlessWidgemoConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const instanceIdDemoConfig: SimplifiedWidgemoConfig = {
+export const instanceIdDemoConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -796,7 +796,7 @@ export const instanceIdDemoConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const gridModeWithItemRendererConfig: SimplifiedWidgemoConfig = {
+export const gridModeWithItemRendererConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -858,7 +858,7 @@ export const gridModeWithItemRendererConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const itemLayoutPresetsConfig: SimplifiedWidgemoConfig = {
+export const itemLayoutPresetsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -938,7 +938,7 @@ export const itemLayoutPresetsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Compact layout config
-export const itemLayoutCompactConfig: SimplifiedWidgemoConfig = {
+export const itemLayoutCompactConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -978,7 +978,7 @@ export const itemLayoutCompactConfig: SimplifiedWidgemoConfig = {
 };
 
 // Minimal layout config
-export const itemLayoutMinimalConfig: SimplifiedWidgemoConfig = {
+export const itemLayoutMinimalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1010,7 +1010,7 @@ export const itemLayoutMinimalConfig: SimplifiedWidgemoConfig = {
 };
 
 // Custom layout config
-export const itemLayoutCustomConfig: SimplifiedWidgemoConfig = {
+export const itemLayoutCustomConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1063,7 +1063,7 @@ export const itemLayoutCustomConfig: SimplifiedWidgemoConfig = {
 };
 
 // Enhanced grid mode config
-export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
+export const enhancedGridModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1135,7 +1135,7 @@ export const enhancedGridModeConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableAlternatingConfig: SimplifiedWidgemoConfig = {
+export const tableAlternatingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1271,7 +1271,7 @@ export const tableAlternatingConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableRowDividersConfig: SimplifiedWidgemoConfig = {
+export const tableRowDividersConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1393,7 +1393,7 @@ export const tableRowDividersConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableGroupableColumnsConfig: SimplifiedWidgemoConfig = {
+export const tableGroupableColumnsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1463,7 +1463,7 @@ export const tableGroupableColumnsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tablePlainConfig: SimplifiedWidgemoConfig = {
+export const tablePlainConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1506,7 +1506,7 @@ export const tablePlainConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const fieldRendererTestConfig: SimplifiedWidgemoConfig = {
+export const fieldRendererTestConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1547,7 +1547,7 @@ export const fieldRendererTestConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const imageGalleryConfig: SimplifiedWidgemoConfig = {
+export const imageGalleryConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1578,7 +1578,7 @@ export const imageGalleryConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarFieldsConfig: SimplifiedWidgemoConfig = {
+export const progressBarFieldsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1600,7 +1600,7 @@ export const progressBarFieldsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarVariantsConfig: SimplifiedWidgemoConfig = {
+export const progressBarVariantsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1625,7 +1625,7 @@ export const progressBarVariantsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarFunctionsConfig: SimplifiedWidgemoConfig = {
+export const progressBarFunctionsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1668,7 +1668,7 @@ export const progressBarFunctionsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const ratingFieldConfig: SimplifiedWidgemoConfig = {
+export const ratingFieldConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1718,7 +1718,7 @@ export const ratingFieldConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const badgeFieldConfig: SimplifiedWidgemoConfig = {
+export const badgeFieldConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1845,7 +1845,7 @@ export const badgeFieldConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const carouselModeConfig: SimplifiedWidgemoConfig = {
+export const carouselModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1893,7 +1893,7 @@ export const carouselModeConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const swatchExampleConfig: SimplifiedWidgemoConfig = {
+export const swatchExampleConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1924,7 +1924,7 @@ export const swatchExampleConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const hooksSystemTestConfig: SimplifiedWidgemoConfig = {
+export const hooksSystemTestConfig: WidgemoConfig = {
   preRender: () => {
     console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
   },
@@ -1962,7 +1962,7 @@ export const hooksSystemTestConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const carouselConfig: SimplifiedWidgemoConfig = {
+export const carouselConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2010,7 +2010,7 @@ export const carouselConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const conditionalBackgroundColorsConfig: SimplifiedWidgemoConfig = {
+export const conditionalBackgroundColorsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2064,7 +2064,7 @@ export const conditionalBackgroundColorsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const conditionalBordersConfig: SimplifiedWidgemoConfig = {
+export const conditionalBordersConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2120,7 +2120,7 @@ export const conditionalBordersConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const performanceMonitoringConfig: SimplifiedWidgemoConfig = {
+export const performanceMonitoringConfig: WidgemoConfig = {
   preRender: () => {
     if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
       performance.mark('widgemo-start');
@@ -2156,7 +2156,7 @@ export const performanceMonitoringConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const boardModeConfig: SimplifiedWidgemoConfig = {
+export const boardModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2200,7 +2200,7 @@ export const boardModeConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingConfig: SimplifiedWidgemoConfig = {
+export const linkRenderingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2246,7 +2246,7 @@ export const linkRenderingConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingCustomConfig: SimplifiedWidgemoConfig = {
+export const linkRenderingCustomConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2319,7 +2319,7 @@ export const linkRenderingCustomConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingActionLinksConfig: SimplifiedWidgemoConfig = {
+export const linkRenderingActionLinksConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2371,7 +2371,7 @@ export const linkRenderingActionLinksConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableGroupingConfig: SimplifiedWidgemoConfig = {
+export const tableGroupingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2480,7 +2480,7 @@ export const tableGroupingConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyFieldRenderingConfig: SimplifiedWidgemoConfig = {
+export const currencyFieldRenderingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2597,7 +2597,7 @@ export const currencyFieldRenderingConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyInternationalConfig: SimplifiedWidgemoConfig = {
+export const currencyInternationalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2635,7 +2635,7 @@ export const currencyInternationalConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencySymbolPositioningConfig: SimplifiedWidgemoConfig = {
+export const currencySymbolPositioningConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2690,7 +2690,7 @@ export const currencySymbolPositioningConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDecimalAlignmentConfig: SimplifiedWidgemoConfig = {
+export const currencyDecimalAlignmentConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2756,7 +2756,7 @@ export const currencyDecimalAlignmentConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDecimalPrecisionConfig: SimplifiedWidgemoConfig = {
+export const currencyDecimalPrecisionConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2828,7 +2828,7 @@ export const currencyDecimalPrecisionConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyCompactNotationConfig: SimplifiedWidgemoConfig = {
+export const currencyCompactNotationConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2898,7 +2898,7 @@ export const currencyCompactNotationConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDynamicOptionsConfig: SimplifiedWidgemoConfig = {
+export const currencyDynamicOptionsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2958,7 +2958,7 @@ export const currencyDynamicOptionsConfig: SimplifiedWidgemoConfig = {
 };
 
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyEdgeCasesConfig: SimplifiedWidgemoConfig = {
+export const currencyEdgeCasesConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,

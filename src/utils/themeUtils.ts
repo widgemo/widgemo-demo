@@ -1,7 +1,7 @@
-import type { WidgemoConfig } from 'widgemo-core';
+import type { LegacyWidgemoConfig } from 'widgemo-core';
 
 // Utility functions for theme management
-export const mergeThemeIntoConfig = (config: WidgemoConfig, demoTheme: string): WidgemoConfig => {
+export const mergeThemeIntoConfig = (config: LegacyWidgemoConfig, demoTheme: string): LegacyWidgemoConfig => {
   // Convert demo theme format to Widgemo theme format using dark and autoDetect booleans
   let isDark: boolean = false;
   let autoDetect: boolean = false;

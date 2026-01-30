@@ -1,10 +1,10 @@
 import { useMemo, useState, useEffect } from 'react';
-import type { WidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, WidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
+import type { LegacyWidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, LegacyWidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
 import type { Theme } from '../utils/themeConfig';
 
-interface UseMergedWidgemoPropsInput {
+interface UseMergedLegacyWidgemoPropsInput {
   // Core configuration
-  config: WidgemoConfig;
+  config: LegacyWidgemoConfig;
   adapters: WidgemoAdapters;
 
   // Theme and styling
@@ -14,7 +14,7 @@ interface UseMergedWidgemoPropsInput {
 
   // Advanced props (applied state)
   applyAdvancedProps?: boolean;
-  appliedOverrides?: Partial<WidgemoConfig>;
+  appliedOverrides?: Partial<LegacyWidgemoConfig>;
   appliedClassName?: string;
   appliedStyleJson?: string;
   appliedLoading?: boolean;
@@ -38,10 +38,10 @@ interface UseMergedWidgemoPropsInput {
   onResolvedProps?: (resolved: ResolvedWidgemoProps) => void;
 }
 
-interface UseMergedWidgemoPropsOutput {
+interface UseMergedLegacyWidgemoPropsOutput {
   /** Final merged props object ready to pass to <Widgemo /> */
-  mergedProps: Omit<WidgemoProps, 'config' | 'adapters'> & {
-    config: WidgemoConfig;
+  mergedProps: Omit<LegacyWidgemoProps, 'config' | 'adapters'> & {
+    config: LegacyWidgemoConfig;
     adapters: WidgemoAdapters;
   };
   /** Resolved theme object (for debugging/display) */
@@ -69,7 +69,7 @@ interface UseMergedWidgemoPropsOutput {
  *
  * @example
  * ```tsx
- * const { mergedProps } = useMergedWidgemoProps({
+ * const { mergedProps } = useMergedLegacyWidgemoProps({
  *   config,
  *   adapters,
  *   currentTheme,
@@ -83,7 +83,7 @@ interface UseMergedWidgemoPropsOutput {
  * return <Widgemo {...mergedProps} />;
  * ```
  */
-export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMergedWidgemoPropsOutput => {
+export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsInput): UseMergedLegacyWidgemoPropsOutput => {
   const {
     config,
     adapters,
@@ -108,8 +108,8 @@ export const useMergedWidgemoProps = (input: UseMergedWidgemoPropsInput): UseMer
 
   const mergedProps = useMemo(() => {
     // Start with the core required props
-    const props: Omit<WidgemoProps, 'config' | 'adapters'> & {
-      config: WidgemoConfig;
+    const props: Omit<LegacyWidgemoProps, 'config' | 'adapters'> & {
+      config: LegacyWidgemoConfig;
       adapters: WidgemoAdapters;
     } = {
       config: { ...config }, // Start with base config

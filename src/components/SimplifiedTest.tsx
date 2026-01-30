@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { SimplifiedWidgemo, registerHook, registerIcon } from 'widgemo-core';
+import { Widgemo, registerHook, registerIcon } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { Entity, SimplifiedWidgemoConfig } from 'widgemo-core';
+import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 // Extend Window interface for performance metrics
@@ -95,7 +95,7 @@ iconNames.forEach(iconName => {
  * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state.
  * Ensures all examples have devMode injected for consistent toggle behavior.
  */
-function injectDevMode(config: SimplifiedWidgemoConfig, enabled: boolean): SimplifiedWidgemoConfig {
+function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
   if (!config) return config;
 
   const existingDevMode = config.devMode;
@@ -191,7 +191,7 @@ export const SimplifiedTest: React.FC = () => {
         }
       `}</style> */}
       <h1 >Widgemo Product Primitive</h1>
-      <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the SimplifiedWidgemo component.</h4>
+      <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the Widgemo component.</h4>
       <h4 className="mb-3">Each example showcases different configurations and data sets to illustrate the flexibility and power of Widgemo in rendering complex data-driven UIs.</h4>
       {/* <h5 className="mb-4"><strong>Note:</strong> all widgemos below use the <code className="css-class-code" title=".my-custom-widgemo {
           background-color: var(--bg-color);
@@ -229,8 +229,8 @@ export const SimplifiedTest: React.FC = () => {
           <div key={example.id} className="col-12 mb-4">
             <h2>{example.title}</h2>
             <p>{example.description}</p>
-            {/* Rendering SimplifiedWidgemo with stable props from examples array. */}
-            <SimplifiedWidgemo
+            {/* Rendering Widgemo with stable props from examples array. */}
+            <Widgemo
               key={`${example.id}-${includeWidgemoInspector}`}
               data={example.data}
               config={example.config}

@@ -4,7 +4,7 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoAdapters, WidgemoTheme, SimplifiedWidgemoConfig } from 'widgemo-core';
+import type { WidgemoAdapters, WidgemoTheme, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -56,9 +56,9 @@ const CustomErrorComponent: React.FC<{
 );
 
 interface SandboxSectionProps {
-  initialConfig: SimplifiedWidgemoConfig;
+  initialConfig: WidgemoConfig;
   initialData: Record<string, unknown>[];
-  onConfigChange?: (config: SimplifiedWidgemoConfig) => void;
+  onConfigChange?: (config: WidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: Theme;
   initialThemeMode?: 'defaults' | 'config' | 'custom';
@@ -115,7 +115,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [overrideBackgroundEnabled, setOverrideBackgroundEnabled] = useState(false);
 
   // Applied advanced props state (to prevent live updates)
-  const [appliedOverrides, setAppliedOverrides] = useState<Partial<SimplifiedWidgemoConfig>>({});
+  const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
   const [appliedClassName, setAppliedClassName] = useState('');
   const [appliedStyleJson, setAppliedStyleJson] = useState('{}');
 
@@ -436,7 +436,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     lastAppliedThemeRef.current = currentTheme;
   }, [currentTheme]);
 
-  const loadPreset = (presetConfig: SimplifiedWidgemoConfig, presetTitle?: string) => {
+  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
     const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
-import { SimplifiedWidgemo } from 'widgemo-core';
-import type { SimplifiedWidgemoConfig } from 'widgemo-core';
+import { Widgemo } from 'widgemo-core';
+import type { WidgemoConfig } from 'widgemo-core';
 
 interface PreviewPanelProps {
   // Configuration
-  config: SimplifiedWidgemoConfig;
+  config: WidgemoConfig;
   data: Record<string, unknown>[];
 
   // Size controls
@@ -34,7 +34,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  // SimplifiedWidgemo handles theming internally
+  // Widgemo handles theming internally
 
   return (
     <div className="p-4 h-100">
@@ -94,7 +94,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           width: isAutoWidth ? 'auto' : `${width}px`
         }}
       >
-        <SimplifiedWidgemo data={data} config={config} className="my-custom-widgemo" />
+        <Widgemo data={data} config={config} className="my-custom-widgemo" />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
-import { SimplifiedWidgemo, type Entity, type SimplifiedWidgemoConfig } from 'widgemo-core';
+import { Widgemo, type Entity, type WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import type { Theme } from '../utils/themeConfig';
 
@@ -15,7 +15,7 @@ interface GalleryItem {
   title: string;
   description: string;
   data: Entity[];
-  config: SimplifiedWidgemoConfig;
+  config: WidgemoConfig;
 }
 
 export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox, currentTheme }) => {
@@ -78,7 +78,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               height: '200%',
               pointerEvents: 'none'
             }}>
-              <SimplifiedWidgemo
+              <Widgemo
                 data={item.data}
                 config={item.config}
                 className="my-custom-widgemo"
@@ -131,7 +131,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className={currentTheme} style={{ minHeight: '500px' }}>
-            <SimplifiedWidgemo
+            <Widgemo
               data={selectedItem.data}
               config={selectedItem.config}
               className="my-custom-widgemo"

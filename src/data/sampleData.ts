@@ -1,4 +1,4 @@
-import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { LegacyWidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 export interface SampleData extends Record<string, unknown> {
   id?: number;
   name?: string;
@@ -243,7 +243,7 @@ export const imageGalleryData: SampleData[] = [
 
 export const galleryConfigs: Array<{
   id: string;
-  config: WidgemoConfig;
+  config: LegacyWidgemoConfig;
   name: string;
   description: string;
   data?: SampleData[];
@@ -1179,7 +1179,7 @@ export const galleryConfigs: Array<{
   ];
 
 // Default sandbox configuration
-export const defaultSandboxConfig: WidgemoConfig = {
+export const defaultSandboxConfig: LegacyWidgemoConfig = {
   title: 'User Sandbox',
   mode: 'table',
   dataSource: { type: 'static' },
@@ -1225,7 +1225,7 @@ export const defaultSandboxConfig: WidgemoConfig = {
 };
 
 // Teaser configurations with varying settings for each mode
-export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
+export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: string }> = [
   {
     config: {
       title: 'User Management Table',

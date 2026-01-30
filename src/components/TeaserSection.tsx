@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
-import { SimplifiedWidgemo } from 'widgemo-core';
+import { Widgemo } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 
 interface TeaserSectionProps {
@@ -120,7 +120,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                   </small>
                 </div>
                 <div inert className="flex-grow-1 overflow-auto" style={{ padding: '8px' }}>
-                  <SimplifiedWidgemo
+                  <Widgemo
                     key={currentConfigIndex}
                     data={currentTeaserItem.data}
                     config={currentTeaserItem.config}
