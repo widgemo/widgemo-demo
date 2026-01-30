@@ -17,6 +17,8 @@ function AppContent() {
   // const appTextPrimary = theme === 'dark' ? '#e0e0e0' : '#495057';
   // const appBorder = theme === 'dark' ? '#343a40' : '#dee2e6';
   // const appTextSecondary = theme === 'dark' ? '#adb5bd' : '#6c757d';
+  // const appTitleText = theme === 'dark' ? '#ffffff' : '#212529'; // Slightly different for titles
+  // const appSubtitleText = theme === 'dark' ? '#adb5bd' : '#6c757d'; // Muted for subtitles
 
   // const widgemoOverrides = {
   //   colors: {
@@ -26,6 +28,8 @@ function AppContent() {
   //     border: appBorder,
   //     secondary: appTextSecondary,
   //     success: appAccent, // Reuse accent for success
+  //     titleText: appTitleText,
+  //     subtitleText: appSubtitleText,
   //   }
   // };
 

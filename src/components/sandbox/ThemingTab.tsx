@@ -63,17 +63,31 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
   onDarkModeChange,
   onAutoGeneratePaletteChange,
 }) => {
-  const handleCustomThemeChange = (key: keyof WidgemoTheme, value: string | boolean) => {
-    onCustomThemeChange({
-      ...customTheme,
-      [key]: value || undefined
-    });
+  const handleCustomThemeChange = (key: string, value: string | boolean) => {
+    // Handle nested colors structure
+    if (['primary', 'primaryLight', 'primaryDark', 'accent', 'text', 'background', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'colorDark', 'cardBg', 'cardBorder', 'tableBg', 'tableBorder', 'headerBg', 'ghostButtonBorder', 'ghostButtonHoverBg', 'focusColor', 'shadowColor', 'shadowColor', 'titleText', 'subtitleText'].includes(key)) {
+      onCustomThemeChange({
+        ...customTheme,
+        colors: {
+          ...customTheme.colors,          primary: customTheme.colors?.primary || defaultTheme.colors!.primary,
+          background: customTheme.colors?.background || defaultTheme.colors!.background,
+          text: customTheme.colors?.text || defaultTheme.colors!.text,
+          border: customTheme.colors?.border || defaultTheme.colors!.border,          [key]: value || undefined
+        }
+      });
+    } else {
+      // Handle non-color properties
+      onCustomThemeChange({
+        ...customTheme,
+        [key]: value || undefined
+      });
+    }
   };
 
   const handleResetToDefaults = () => {
     onCustomThemeChange({});
-    onPrimaryColorChange(defaultTheme.primary!);
-    onDarkModeChange(defaultTheme.dark!);
+    onPrimaryColorChange(defaultTheme.colors!.primary);
+    onDarkModeChange(false); // Default to light mode
     onAutoGeneratePaletteChange(true);
   };
 
@@ -84,8 +98,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
         return generatePalette('#0066cc', { dark: false });
       case 'config':
         return configTheme ? generatePalette(
-          configTheme.primary || '#0066cc',
-          { dark: configTheme.dark || false }
+          configTheme.colors?.primary || '#0066cc',
+          { dark: (configTheme as any).dark || false }
         ) : generatePalette('#0066cc', { dark: false });
       case 'custom':
         if (autoGeneratePalette) {
@@ -94,19 +108,19 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
           // Use custom theme values, with fallbacks to generated palette
           const generated = generatePalette(primaryColor, { dark: darkMode });
           return {
-            primary: customTheme.primary || primaryColor,
-            primaryLight: customTheme.primaryLight || generated.primaryLight,
-            primaryDark: customTheme.primaryDark || generated.primaryDark,
-            accent: customTheme.accent || generated.accent,
-            text: customTheme.text || generated.text,
-            background: customTheme.background || generated.background,
-            secondary: customTheme.secondary || defaultTheme.secondary,
-            success: customTheme.success || defaultTheme.success,
-            warning: customTheme.warning || defaultTheme.warning,
-            danger: customTheme.danger || defaultTheme.danger,
-            info: customTheme.info || defaultTheme.info,
-            light: customTheme.light || defaultTheme.light,
-            colorDark: customTheme.colorDark || defaultTheme.colorDark,
+            primary: customTheme.colors?.primary || primaryColor,
+            primaryLight: customTheme.colors?.primaryLight || generated.primaryLight,
+            primaryDark: customTheme.colors?.primaryDark || generated.primaryDark,
+            accent: customTheme.colors?.accent || generated.accent,
+            text: customTheme.colors?.text || generated.text,
+            background: customTheme.colors?.background || generated.background,
+            secondary: customTheme.colors?.secondary || defaultTheme.colors!.secondary,
+            success: customTheme.colors?.success || defaultTheme.colors!.success,
+            warning: customTheme.colors?.warning || '#ffc107', // Default warning color
+            danger: customTheme.colors?.danger || '#dc3545', // Default danger color
+            info: customTheme.colors?.info || '#17a2b8', // Default info color
+            light: customTheme.colors?.light || '#f8f9fa', // Default light color
+            colorDark: customTheme.colors?.colorDark || '#343a40', // Default dark color
           };
         }
       default:
@@ -234,7 +248,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                           type="text"
                           size="sm"
                           placeholder="Primary Light (e.g., #338fff)"
-                          value={customTheme.primaryLight || ''}
+                          value={customTheme.colors?.primaryLight || ''}
                           onChange={(e) => handleCustomThemeChange('primaryLight', e.target.value)}
                           aria-label="Primary light color"
                         />
@@ -244,7 +258,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                           type="text"
                           size="sm"
                           placeholder="Primary Dark (e.g., #004d99)"
-                          value={customTheme.primaryDark || ''}
+                          value={customTheme.colors?.primaryDark || ''}
                           onChange={(e) => handleCustomThemeChange('primaryDark', e.target.value)}
                           aria-label="Primary dark color"
                         />
@@ -254,7 +268,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                           type="text"
                           size="sm"
                           placeholder="Accent (e.g., #66a3ff)"
-                          value={customTheme.accent || ''}
+                          value={customTheme.colors?.accent || ''}
                           onChange={(e) => handleCustomThemeChange('accent', e.target.value)}
                           aria-label="Accent color"
                         />
@@ -264,7 +278,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                           type="text"
                           size="sm"
                           placeholder="Text on Primary (e.g., #ffffff)"
-                          value={customTheme.text || ''}
+                          value={customTheme.colors?.text || ''}
                           onChange={(e) => handleCustomThemeChange('text', e.target.value)}
                           aria-label="Text color"
                         />
@@ -274,7 +288,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                           type="text"
                           size="sm"
                           placeholder="Background (e.g., #ffffff)"
-                          value={customTheme.background || ''}
+                          value={customTheme.colors?.background || ''}
                           onChange={(e) => handleCustomThemeChange('background', e.target.value)}
                           aria-label="Background color"
                         />
@@ -286,7 +300,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.secondary || '#6c757d'}
+                        value={customTheme.colors?.secondary || '#6c757d'}
                         onChange={(e) => handleCustomThemeChange('secondary', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Secondary color picker"
@@ -294,7 +308,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.secondary || ''}
+                        value={customTheme.colors?.secondary || ''}
                         onChange={(e) => handleCustomThemeChange('secondary', e.target.value)}
                         placeholder="#6c757d"
                         className="flex-grow-1"
@@ -307,7 +321,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.success || '#28a745'}
+                        value={customTheme.colors?.success || '#28a745'}
                         onChange={(e) => handleCustomThemeChange('success', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Success color picker"
@@ -315,7 +329,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.success || ''}
+                        value={customTheme.colors?.success || ''}
                         onChange={(e) => handleCustomThemeChange('success', e.target.value)}
                         placeholder="#28a745"
                         className="flex-grow-1"
@@ -328,7 +342,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.warning || '#ffc107'}
+                        value={customTheme.colors?.warning || '#ffc107'}
                         onChange={(e) => handleCustomThemeChange('warning', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Warning color picker"
@@ -336,7 +350,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.warning || ''}
+                        value={customTheme.colors?.warning || ''}
                         onChange={(e) => handleCustomThemeChange('warning', e.target.value)}
                         placeholder="#ffc107"
                         className="flex-grow-1"
@@ -349,7 +363,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.danger || '#dc3545'}
+                        value={customTheme.colors?.danger || '#dc3545'}
                         onChange={(e) => handleCustomThemeChange('danger', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Danger color picker"
@@ -357,7 +371,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.danger || ''}
+                        value={customTheme.colors?.danger || ''}
                         onChange={(e) => handleCustomThemeChange('danger', e.target.value)}
                         placeholder="#dc3545"
                         className="flex-grow-1"
@@ -370,7 +384,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.info || '#17a2b8'}
+                        value={customTheme.colors?.info || '#17a2b8'}
                         onChange={(e) => handleCustomThemeChange('info', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Info color picker"
@@ -378,7 +392,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.info || ''}
+                        value={customTheme.colors?.info || ''}
                         onChange={(e) => handleCustomThemeChange('info', e.target.value)}
                         placeholder="#17a2b8"
                         className="flex-grow-1"
@@ -391,7 +405,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.light || '#f8f9fa'}
+                        value={customTheme.colors?.light || '#f8f9fa'}
                         onChange={(e) => handleCustomThemeChange('light', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Light color picker"
@@ -399,7 +413,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.light || ''}
+                        value={customTheme.colors?.light || ''}
                         onChange={(e) => handleCustomThemeChange('light', e.target.value)}
                         placeholder="#f8f9fa"
                         className="flex-grow-1"
@@ -412,7 +426,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.colorDark || '#343a40'}
+                        value={customTheme.colors?.colorDark || '#343a40'}
                         onChange={(e) => handleCustomThemeChange('colorDark', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Dark text color picker"
@@ -420,7 +434,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.colorDark || ''}
+                        value={customTheme.colors?.colorDark || ''}
                         onChange={(e) => handleCustomThemeChange('colorDark', e.target.value)}
                         placeholder="#343a40"
                         className="flex-grow-1"
@@ -485,7 +499,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.cardBg || '#ffffff'}
+                        value={customTheme.colors?.cardBg || '#ffffff'}
                         onChange={(e) => handleCustomThemeChange('cardBg', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Card background color picker"
@@ -493,7 +507,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.cardBg || ''}
+                        value={customTheme.colors?.cardBg || ''}
                         onChange={(e) => handleCustomThemeChange('cardBg', e.target.value)}
                         placeholder="#ffffff"
                         className="flex-grow-1"
@@ -506,7 +520,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.cardBorder || '#dee2e6'}
+                        value={customTheme.colors?.cardBorder || '#dee2e6'}
                         onChange={(e) => handleCustomThemeChange('cardBorder', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Card border color picker"
@@ -514,7 +528,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.cardBorder || ''}
+                        value={customTheme.colors?.cardBorder || ''}
                         onChange={(e) => handleCustomThemeChange('cardBorder', e.target.value)}
                         placeholder="#dee2e6"
                         className="flex-grow-1"
@@ -527,7 +541,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.tableBg || '#ffffff'}
+                        value={customTheme.colors?.tableBg || '#ffffff'}
                         onChange={(e) => handleCustomThemeChange('tableBg', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Table background color picker"
@@ -535,7 +549,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.tableBg || ''}
+                        value={customTheme.colors?.tableBg || ''}
                         onChange={(e) => handleCustomThemeChange('tableBg', e.target.value)}
                         placeholder="#ffffff"
                         className="flex-grow-1"
@@ -548,7 +562,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.tableBorder || '#dee2e6'}
+                        value={customTheme.colors?.tableBorder || '#dee2e6'}
                         onChange={(e) => handleCustomThemeChange('tableBorder', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Table border color picker"
@@ -556,7 +570,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.tableBorder || ''}
+                        value={customTheme.colors?.tableBorder || ''}
                         onChange={(e) => handleCustomThemeChange('tableBorder', e.target.value)}
                         placeholder="#dee2e6"
                         className="flex-grow-1"
@@ -569,7 +583,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <Form.Control
                       type="text"
                       size="sm"
-                      value={customTheme.headerBg || ''}
+                      value={customTheme.colors?.headerBg || ''}
                       onChange={(e) => handleCustomThemeChange('headerBg', e.target.value)}
                       placeholder="transparent"
                       aria-label="Header background color"
@@ -616,7 +630,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Ghost Button Border (e.g., none)"
-                      value={customTheme.ghostButtonBorder || ''}
+                      value={customTheme.colors?.ghostButtonBorder || ''}
                       onChange={(e) => handleCustomThemeChange('ghostButtonBorder', e.target.value)}
                       aria-label="Ghost button border"
                     />
@@ -626,7 +640,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.ghostButtonHoverBg || '#e9ecef'}
+                        value={customTheme.colors?.ghostButtonHoverBg || '#e9ecef'}
                         onChange={(e) => handleCustomThemeChange('ghostButtonHoverBg', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Ghost button hover background color picker"
@@ -634,7 +648,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.ghostButtonHoverBg || ''}
+                        value={customTheme.colors?.ghostButtonHoverBg || ''}
                         onChange={(e) => handleCustomThemeChange('ghostButtonHoverBg', e.target.value)}
                         placeholder="#e9ecef"
                         className="flex-grow-1"
@@ -673,7 +687,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <Form.Control
                       type="text"
                       size="sm"
-                      value={customTheme.shadowColor || ''}
+                      value={customTheme.colors?.shadowColor || ''}
                       onChange={(e) => handleCustomThemeChange('shadowColor', e.target.value)}
                       placeholder="rgba(0, 0, 0, 0.15)"
                       aria-label="Shadow color"
@@ -684,7 +698,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                     <div className="d-flex gap-2">
                       <Form.Control
                         type="color"
-                        value={customTheme.focusColor || '#0066cc'}
+                        value={customTheme.colors?.focusColor || '#0066cc'}
                         onChange={(e) => handleCustomThemeChange('focusColor', e.target.value)}
                         style={{ width: '60px' }}
                         aria-label="Focus color picker"
@@ -692,7 +706,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       <Form.Control
                         type="text"
                         size="sm"
-                        value={customTheme.focusColor || ''}
+                        value={customTheme.colors?.focusColor || ''}
                         onChange={(e) => handleCustomThemeChange('focusColor', e.target.value)}
                         placeholder="#0066cc"
                         className="flex-grow-1"
@@ -703,7 +717,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.shadow !== undefined ? customTheme.shadow : defaultTheme.shadow}
+                      checked={customTheme.shadow !== undefined ? customTheme.shadow : true}
                       onChange={(e) => handleCustomThemeChange('shadow', e.target.checked)}
                       label="Enable Shadows"
                       aria-label="Toggle shadows"
@@ -712,7 +726,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.showBorder !== undefined ? customTheme.showBorder : defaultTheme.showBorder}
+                      checked={customTheme.showBorder !== undefined ? customTheme.showBorder : true}
                       onChange={(e) => handleCustomThemeChange('showBorder', e.target.checked)}
                       label="Show Borders"
                       aria-label="Toggle borders"
@@ -721,7 +735,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.dynamicBackground !== undefined ? customTheme.dynamicBackground : defaultTheme.dynamicBackground}
+                      checked={customTheme.dynamicBackground !== undefined ? customTheme.dynamicBackground : false}
                       onChange={(e) => handleCustomThemeChange('dynamicBackground', e.target.checked)}
                       label="Dynamic Background"
                       aria-label="Toggle dynamic background"

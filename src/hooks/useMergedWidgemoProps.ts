@@ -137,16 +137,16 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
       }
       
       if (appliedBaseColor?.trim()) {
-        appliedThemeProps.baseColor = appliedBaseColor;
+        // appliedThemeProps.baseColor = appliedBaseColor; // Legacy property, using CSS variables now
       }
       if (appliedOverrideBackground?.trim()) {
-        appliedThemeProps.overrideBackground = appliedOverrideBackground;
+        // appliedThemeProps.overrideBackground = appliedOverrideBackground; // Legacy property, using CSS variables now
       }
       if (appliedAutoContrast !== undefined) {
-        appliedThemeProps.autoContrast = appliedAutoContrast;
+        // appliedThemeProps.autoContrast = appliedAutoContrast; // Legacy property, using CSS variables now
       }
       if (appliedContrastAmount !== undefined) {
-        appliedThemeProps.contrastAmount = appliedContrastAmount;
+        // appliedThemeProps.contrastAmount = appliedContrastAmount; // Legacy property, using CSS variables now
       }
       
       // For 'config' mode, merge applied props with config.theme
@@ -178,7 +178,7 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
       delete props.config.theme;
     } else if (themeToApply !== undefined) {
       // Override with custom theme
-      props.config.theme = themeToApply;
+      props.config.theme = themeToApply as WidgemoTheme;
     }
     // Note: themeToApply is never undefined now due to the logic above
 
@@ -263,8 +263,8 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
     [config.theme, config.styling?.themeOverrides]
   );
 
-  // Track system dark mode preference
-  const [systemDark, setSystemDark] = useState(() => 
+  // Track system dark mode preference (simplified)
+  const [, setSystemDark] = useState(() => 
     window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
   );
 
@@ -276,16 +276,11 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Memoize resolved dark mode
+  // Memoize resolved dark mode (simplified for new theme system)
   const resolvedDark = useMemo(() => {
-    if (resolvedTheme.dark !== undefined) {
-      return resolvedTheme.dark;
-    }
-    if (resolvedTheme.autoDetect) {
-      return systemDark;
-    }
+    // Dark mode is now handled via CSS variables, not theme properties
     return false;
-  }, [resolvedTheme.autoDetect, resolvedTheme.dark, systemDark]);
+  }, []);
 
   return {
     mergedProps,
