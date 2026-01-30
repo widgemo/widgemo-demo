@@ -262,25 +262,6 @@ body {
   color: #888;
 }
 
-/* Icon button styling for Widgemo */
-.icon-button {
-  background: transparent !important;
-  border: none !important;
-  color: var(--widgemo-text-color) !important;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.icon-button:hover {
-  background-color: var(--widgemo-button-hover) !important;
-  color: var(--widgemo-text-color) !important;
-}
-
-.icon-button:focus {
-  background-color: var(--widgemo-button-hover) !important;
-  color: var(--widgemo-text-color) !important;
-  box-shadow: none !important;
-}
-
 /* Sandbox section */
 .sandbox-taller {
   padding-top: 6rem;
