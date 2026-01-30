@@ -39,7 +39,8 @@ import {
   FaSquare,
   FaHtml5,
   FaPuzzlePiece,
-  FaGlobe
+  FaGlobe,
+  FaInfoCircle
 } from 'react-icons/fa';
 import type { RenderIcon } from 'widgemo-core';
 
@@ -205,6 +206,9 @@ export const fontAwesomeRenderIcon: RenderIcon = ({ name, size = 16, className, 
 
     case 'globe':
       return <FaGlobe {...iconProps} />;
+
+    case 'info-circle':
+      return <FaInfoCircle {...iconProps} />;
 
     default:
       // Fallback: question mark icon for unknown icons

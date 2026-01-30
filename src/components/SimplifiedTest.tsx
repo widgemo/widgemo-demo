@@ -80,7 +80,7 @@ const iconNames = [
   'chevron-down', 'users', 'teamspeak', 'clock', 'square', 'html5', 'centercode',
   'puzzle-piece', 'chart-line', 'chart-bar', 'chart-pie', 'table', 'th', 'columns',
   'copy', 'upload', 'random', 'external-link-alt', 'book', 'check', 'undo',
-  'ellipsis-vertical', 'question-circle', 'star', 'heart', 'currency-dollar', 'dollar-sign', 'globe'
+  'ellipsis-vertical', 'question-circle', 'star', 'heart', 'currency-dollar', 'dollar-sign', 'globe', 'info-circle'
 ];
 
 iconNames.forEach(iconName => {

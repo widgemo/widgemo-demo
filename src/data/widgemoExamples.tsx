@@ -132,15 +132,15 @@ export const collapsibleHeaderConfig: SimplifiedWidgemoConfig = {
     },
     content: {
       // enabled: true,
-      icon: { src: 'database', size: 24, color: '#c4530d' },
+      icon: { src: 'grid', size: 24, color: '#0a8086' },
       title: 'Modeless Data',
       subtitle: 'No mode, defaults to Grid Mode'
     },
     footer: {
       // enabled: true,
-      icon: { src: 'database', size: 24, color: '#c4530d' },
-      title: '* Data last updated',
-      subtitle: '5 minutes ago'
+      icon: { src: 'info-circle', size: 18, color: '#0d56c4' },
+      //title: 'Data last updated',
+      subtitle: 'Last refresh: 5 minutes ago'
     }
   }
 };
