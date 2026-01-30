@@ -2482,6 +2482,7 @@ export const currencyFieldRenderingConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
       enabled: true,
+      collapse: {initialState: 'fixed'},
       title: 'Currency Field Examples',
       subtitle: 'Various currency formatting options and locales'
     },
@@ -2598,6 +2599,8 @@ export const currencyInternationalConfig: SimplifiedWidgemoConfig = {
   zones: {
     header: {
       enabled: true,
+      collapse: {initialState: 'fixed'},
+      icon: { src: 'globe', size: 24, color: '#06a10e' },
       title: 'International Currency Formatting',
       subtitle: 'Proper locale-specific formatting for different countries'
     },
