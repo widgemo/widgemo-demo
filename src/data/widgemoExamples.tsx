@@ -2044,11 +2044,13 @@ export const conditionalBackgroundColorsConfig: SimplifiedWidgemoConfig = {
           ]
         },
         conditionalBackgroundColor: (entity: Entity) => {
-          const status = entity.status as boolean;
-          if (status === true) {
-            return { backgroundColor: '#e8f5e8', color: '#2d5a2d' }; // Light green bg with dark green text
-          } else if (status === false) {
-            return { backgroundColor: '#ffe8e8', color: '#8b1a1a' }; // Light red bg with dark red text
+          const status = entity.status as string;
+          if (status === 'active') {
+            return { backgroundColor: '#469446', color: '#c7dec7' }; // Green bg with light green text
+          } else if (status === 'inactive') {
+            return { backgroundColor: '#af1010', color: '#e8d2d2' }; // Red bg with light red text
+          } else {
+            return { backgroundColor: '#9f9f9f', color: '#292929' };
           }
           return undefined;
         }
