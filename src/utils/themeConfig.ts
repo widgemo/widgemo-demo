@@ -44,7 +44,7 @@ export const THEME_CONFIGS: Record<Theme, ThemeConfig> = {
     rowAltBg: '#fafafa',
     focusColor: '#007bff',
     textMuted: '#6c757d',
-    ghostButtonBorder: 'none',
+    ghostButtonBorder: 'transparent',
     ghostButtonHoverBg: '#e9ecef',
   },
   dark: {
@@ -64,7 +64,7 @@ export const THEME_CONFIGS: Record<Theme, ThemeConfig> = {
     rowAltBg: '#222233',
     focusColor: '#6f42c1',
     textMuted: '#888888',
-    ghostButtonBorder: 'none',
+    ghostButtonBorder: 'transparent',
     ghostButtonHoverBg: '#2a2a3a',
   },
 };
