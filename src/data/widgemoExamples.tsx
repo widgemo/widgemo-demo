@@ -1067,8 +1067,8 @@ export const enhancedGridModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
-      title: 'Enhanced Grid Mode',
-      subtitle: 'Responsive columns, custom gaps, and compact item layouts'
+      title: 'Configuration Styled Cards in Grid Mode',
+      subtitle: 'Card item style with custom cardOptions in the config'
     },
     content: {
       enabled: true,
@@ -1085,12 +1085,12 @@ export const enhancedGridModeConfig: WidgemoConfig = {
         layout: { preset: 'compact' },
         cardOptions: {
           border: true,
-          borderStyle: 'solid',
-          borderWidth: '1px',
-          borderColor: 'var(--border-color, #dee2e6)',
-          borderRadius: 'var(--border-radius, 12px)',
-          backgroundColor: 'var(--bg-color, #ffffff)',
-          padding: 'var(--card-padding, 1rem)'
+          borderStyle: 'dashed',
+          borderWidth: '10px',
+          borderColor: '#0f787a',
+          borderRadius: '20px',
+          backgroundColor: '#e89d4d',
+          padding: '1.5rem'
         },
         template: {
           sections: [
@@ -1130,7 +1130,11 @@ export const enhancedGridModeConfig: WidgemoConfig = {
         }
       }
     },
-    footer: { enabled: false }
+    footer: { 
+      enabled: true,
+      title: 'cardOptions:',
+      subtitle: 'backgroundColor, borderStyle, borderColor, borderWidth, borderRadius, as well as padding applied to each card item'
+     }
   }
 };
 
