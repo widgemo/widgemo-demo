@@ -42,7 +42,9 @@ export interface WidgemoThemeMapping {
     shadowColor?: string;
     titleText?: string;
     subtitleText?: string;
-    buttonHover?: string;
+    boardBg?: string;
+    swimlaneHeaderBg?: string;
+    columnBg?: string;
   };
   borderRadius?: string;
   spacing?: string;
@@ -153,16 +155,12 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     focusColor: 'var(--app-focus)',
     shadowColor: 'var(--app-shadow)',
 
-    // Title and subtitle colors
-    titleText: 'var(--app-text-primary)',
-    subtitleText: 'var(--app-text-muted)',
+    // Board mode colors
+    boardBg: 'var(--app-bg-secondary)',
+    swimlaneHeaderBg: 'var(--app-swimlane-header-bg)',
+    columnBg: 'var(--app-bg-primary)',
   }
 };
-
-/**
- * Creates the widgemo theme for widgemo-demo using the mapping configuration.
- * This automatically handles light/dark theme switching through CSS variables.
- */
 export function createWidgemoTheme(): WidgemoTheme {
   return createWidgemoThemeFromMapping(widgemoDemoThemeMapping);
 }

@@ -4,15 +4,17 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #161616; /* Default text color for light theme */
-  background-color: #ffffff; /* Default background for light theme */
+  color: #161616;
+  /* Default text color for light theme */
+  background-color: #ffffff;
+  /* Default background for light theme */
 
   /* Static theme variables that don't change with themes */
   --demo-row-alt-bg: #fafafa;
 
   /* ===== THEME VARIABLES ===== */
   /* Core colors */
-  --app-bg-primary: #fdf7d8; /* #ffffff */
+  --app-bg-primary: #fdf7d8;
   --app-bg-secondary: #fefce8;
   --app-text-primary: #161616;
   --app-text-secondary: #fa8e40;
@@ -29,11 +31,16 @@
   --app-focus: #308e78;
 
   /* Table colors */
-  --app-table-border: var( --app-border);
+  --app-table-border: var(--app-border);
   --app-table-header-bg: var(--app-bg-secondary);
   --app-table-body-bg: var(--app-bg-secondary);
-  --app-row-hover: var( --app-border);
+  --app-row-hover: var(--app-border);
   --app-row-alt: var(--app-bg-primary);
+
+  /* Board mode colors */
+  --app-board-bg: var(--app-bg-secondary);
+  --app-swimlane-header-bg: #fcfbed;
+  --app-column-bg: var(--app-bg-primary);
 
   /* Bootstrap overrides */
   --bs-body-bg: var(--app-bg-primary);
@@ -70,11 +77,16 @@
   --app-focus: #4dabf7;
 
   /* Table colors */
-  --app-table-border: var( --app-border);
+  --app-table-border: var(--app-border);
   --app-table-header-bg: var(--app-bg-secondary);
   --app-table-body-bg: var(--app-bg-secondary);
-  --app-row-hover: var( --app-border);
+  --app-row-hover: var(--app-border);
   --app-row-alt: var(--app-bg-primary);
+
+    /* Board mode colors */
+  --app-board-bg: var(--app-bg-secondary);
+  --app-swimlane-header-bg: #191925;
+  --app-column-bg: var(--app-bg-primary);
 
   /* Bootstrap overrides */
   --bs-body-bg: var(--app-bg-primary);
@@ -92,6 +104,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -123,9 +136,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -136,9 +151,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
