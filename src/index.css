@@ -29,11 +29,11 @@
   --app-focus: #007bff;
 
   /* Table colors */
-  --app-table-border: #e0e0e0;
-  --app-table-header-bg: #ffffff;
-  --app-table-body-bg: #ffffff;
-  --app-row-hover: #e0e0e0;
-  --app-row-alt: #fafafa;
+  --app-table-border: var( --app-border);
+  --app-table-header-bg: var(--app-bg-secondary);
+  --app-table-body-bg: var(--app-bg-secondary);
+  --app-row-hover: var( --app-border);
+  --app-row-alt: var(--app-bg-primary);
 
   /* Bootstrap overrides */
   --bs-body-bg: var(--app-bg-primary);
@@ -70,11 +70,11 @@
   --app-focus: #4dabf7;
 
   /* Table colors */
-  --app-table-border: #555577;
-  --app-table-header-bg: #1a1a2a;
-  --app-table-body-bg: #1a1a2a;
-  --app-row-hover: #333344;
-  --app-row-alt: #222233;
+  --app-table-border: var( --app-border);
+  --app-table-header-bg: var(--app-bg-secondary);
+  --app-table-body-bg: var(--app-bg-secondary);
+  --app-row-hover: var( --app-border);
+  --app-row-alt: var(--app-bg-primary);
 
   /* Bootstrap overrides */
   --bs-body-bg: var(--app-bg-primary);
