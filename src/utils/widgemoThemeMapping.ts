@@ -58,6 +58,8 @@ export interface WidgemoThemeMapping {
   shadow?: boolean;
   showBorder?: boolean;
   dynamicBackground?: boolean;
+  dark?: boolean;
+  autoDetect?: boolean;
 }
 
 /**
@@ -110,27 +112,29 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
   if (mapping.shadow !== undefined) theme.shadow = mapping.shadow;
   if (mapping.showBorder !== undefined) theme.showBorder = mapping.showBorder;
   if (mapping.dynamicBackground !== undefined) theme.dynamicBackground = mapping.dynamicBackground;
+  if (mapping.dark !== undefined) theme.dark = mapping.dark;
+  if (mapping.autoDetect !== undefined) theme.autoDetect = mapping.autoDetect;
 
   return theme;
 }
 
 /**
  * widgemo-demo's specific theme mapping configuration.
- * Maps widgemo properties to our app's CSS variables.
+ * Maps widgemo properties to our app's values.
  * Developers can modify this to customize the mapping.
  */
 export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
   colors: {
-    // Map to our app's CSS variables
-    primary: 'var(--bs-primary)',
-    primaryDark: 'var(--app-accent-hover)',
-    background: 'var(--app-bg-secondary)',
-    surfaceBg: 'var(--app-bg-primary)',
-    text: 'var(--app-text-primary)',
-    textMuted: 'var(--app-text-muted)',
-    border: 'var(--app-border)',
-    secondary: 'var(--bs-secondary)',
-    secondaryDark: 'var(--app-accent-hover)',
+    // Map to static values that work for both light and dark modes
+    primary: '#0d6efd', // Bootstrap primary
+    primaryDark: '#0a58ca',
+    background: '#fefce8', // Light mode value - will be overridden by theme provider
+    surfaceBg: '#fdf7d8', // Light mode value - will be overridden by theme provider
+    text: '#2d3748', // Good text color
+    textMuted: '#718096', // Muted text
+    border: '#e2e8f0', // Light border
+    secondary: '#718096',
+    secondaryDark: '#4a5568',
 
     // Additional semantic colors
     success: '#308e78', // Reuse accent for success
@@ -138,31 +142,104 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     danger: '#dc3545', // Keep standard danger
     info: '#17a2b8', // Keep standard info
 
-    // UI element colors
-    cardBg: 'var(--app-bg-primary)',
-    cardBorder: 'var(--app-border)',
-    tableBodyBg: 'var( --app-table-body-bg)',
-    tableBorder: 'var(--app-table-border)',
-    tableHeaderBg: 'var(--app-table-header-bg)',
-    tableHeaderHoverBg: 'var(--app-table-header-hover-bg, var(--app-border))',
-    rowHoverBg: 'var(--app-row-hover, var(--app-border))',
-    rowAltBg: 'var(--app-row-alt, var(--app-bg-secondary))',
-    headerBg: 'var(--app-bg-primary)',
+    // UI element colors - these will be overridden by the dynamic theme
+    cardBg: '#fdf7d8',
+    cardBorder: '#e2e8f0',
+    tableBodyBg: '#fefce8',
+    tableBorder: '#e2e8f0',
+    tableHeaderBg: '#fefce8',
+    tableHeaderHoverBg: '#e2e8f0',
+    rowHoverBg: '#e2e8f0',
+    rowAltBg: '#fdf7d8',
+    headerBg: 'transparent',
 
     // Interactive elements
-    ghostButtonBorder: 'var(--app-border)',
-    ghostButtonHoverBg: 'var(--app-bg-primary)',
-    focusColor: 'var(--app-focus)',
-    shadowColor: 'var(--app-shadow)',
+    ghostButtonBorder: '#e2e8f0',
+    ghostButtonHoverBg: '#fdf7d8',
+    focusColor: '#0d6efd',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
 
     // Board mode colors
-    boardBg: 'var(--app-bg-secondary)',
-    swimlaneHeaderBg: 'var(--app-swimlane-header-bg)',
-    columnBg: 'var(--app-bg-primary)',
-  }
+    boardBg: '#fefce8',
+    swimlaneHeaderBg: '#fdf7d8',
+    columnBg: '#fdf7d8',
+  },
+  autoDetect: true,
 };
-export function createWidgemoTheme(): WidgemoTheme {
-  return createWidgemoThemeFromMapping(widgemoDemoThemeMapping);
+export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
+  // Create different mappings for light and dark modes
+  const lightMapping: WidgemoThemeMapping = {
+    colors: {
+      primary: '#0d6efd',
+      primaryDark: '#0a58ca',
+      background: '#fefce8', // Light background
+      surfaceBg: '#fdf7d8', // Light surface
+      text: '#2d3748',
+      textMuted: '#718096',
+      border: '#e2e8f0',
+      secondary: '#718096',
+      secondaryDark: '#4a5568',
+      success: '#308e78',
+      warning: '#ffc107',
+      danger: '#dc3545',
+      info: '#17a2b8',
+      cardBg: '#fdf7d8',
+      cardBorder: '#e2e8f0',
+      tableBodyBg: '#fefce8',
+      tableBorder: '#e2e8f0',
+      tableHeaderBg: '#fefce8',
+      tableHeaderHoverBg: '#e2e8f0',
+      rowHoverBg: '#e2e8f0',
+      rowAltBg: '#fdf7d8',
+      headerBg: 'transparent',
+      ghostButtonBorder: '#e2e8f0',
+      ghostButtonHoverBg: '#fdf7d8',
+      focusColor: '#0d6efd',
+      shadowColor: 'rgba(0, 0, 0, 0.1)',
+      boardBg: '#fefce8',
+      swimlaneHeaderBg: '#fdf7d8',
+      columnBg: '#fdf7d8',
+    },
+    autoDetect: true,
+  };
+
+  const darkMapping: WidgemoThemeMapping = {
+    colors: {
+      primary: '#0d6efd',
+      primaryDark: '#0a58ca',
+      background: '#222233', // Dark background
+      surfaceBg: '#1a1a2a', // Dark surface
+      text: '#e0e0e0',
+      textMuted: '#adb5bd',
+      border: '#3f454c',
+      secondary: '#6c757d',
+      secondaryDark: '#545b62',
+      success: '#28a745',
+      warning: '#ffc107',
+      danger: '#dc3545',
+      info: '#17a2b8',
+      cardBg: '#1a1a2a',
+      cardBorder: '#3f454c',
+      tableBodyBg: '#222233',
+      tableBorder: '#3f454c',
+      tableHeaderBg: '#222233',
+      tableHeaderHoverBg: '#3f454c',
+      rowHoverBg: '#3f454c',
+      rowAltBg: '#1a1a2a',
+      headerBg: 'transparent',
+      ghostButtonBorder: '#3f454c',
+      ghostButtonHoverBg: '#2a2a3a',
+      focusColor: '#6ea8fe',
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      boardBg: '#1e1e1e',
+      swimlaneHeaderBg: '#101010',
+      columnBg: '#121212',
+    },
+    autoDetect: true,
+  };
+
+  const mapping = isDark ? darkMapping : lightMapping;
+  return createWidgemoThemeFromMapping(mapping);
 }
 
 /**

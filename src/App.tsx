@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider } from 'widgemo-core';
 import { createWidgemoTheme } from './utils/widgemoThemeMapping';
@@ -9,7 +10,20 @@ import { SimplifiedTest } from './components/SimplifiedTest';
 import './App.css';
 
 function AppContent() {
-  const widgemoTheme = createWidgemoTheme();
+  const [isDark, setIsDark] = useState(() => 
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+  
+  // Track system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Recreate theme when dark mode changes to ensure correct colors
+  const widgemoTheme = useMemo(() => createWidgemoTheme(isDark), [isDark]);
 
   return (
     <WidgemoThemeProvider theme={widgemoTheme}>
