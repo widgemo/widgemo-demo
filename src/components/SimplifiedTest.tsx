@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Widgemo, registerWidgemoHook, registerWidgemoIcon, WidgemoThemeProvider } from 'widgemo-core';
+import { createWidgemoCoreDefaultsTheme } from '../utils/widgemoThemeMapping';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
@@ -228,8 +229,8 @@ export const SimplifiedTest: React.FC = () => {
           </label>
         </div>
         <small className="devmode-toggle-text">
-          When enabled, all Widgemo components below will use the widgemo-core default theme.
-          When disabled, the widgemo-demo theme provider will be applied to all components.
+            When enabled, all Widgemo components below will use the widgemo-core default theme (ignoring the app theme).
+            When disabled, the widgemos will use the widgemo-demo app theme (matching the current light/dark mode).
         </small>
       </div>
       
@@ -263,15 +264,7 @@ export const SimplifiedTest: React.FC = () => {
             <p>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
             {useWidgemoCoreDefaultTheming ? (
-              <Widgemo
-                key={`${example.id}-${includeWidgemoInspector}`}
-                data={example.data}
-                config={example.config}
-                className="my-custom-widgemo"
-                {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
-              />
-            ) : (
-              <WidgemoThemeProvider>
+              <WidgemoThemeProvider theme={createWidgemoCoreDefaultsTheme()}>
                 <Widgemo
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
@@ -280,6 +273,14 @@ export const SimplifiedTest: React.FC = () => {
                   {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
                 />
               </WidgemoThemeProvider>
+            ) : (
+              <Widgemo
+                key={`${example.id}-${includeWidgemoInspector}`}
+                data={example.data}
+                config={example.config}
+                className="my-custom-widgemo"
+                {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+              />
             )}
           </div>
         ))}
