@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Widgemo, registerWidgemoHook, registerWidgemoIcon, WidgemoThemeProvider } from 'widgemo-core';
-import { createWidgemoCoreDefaultsTheme } from '../utils/widgemoThemeMapping';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
@@ -264,7 +263,7 @@ export const SimplifiedTest: React.FC = () => {
             <p>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
             {useWidgemoCoreDefaultTheming ? (
-              <WidgemoThemeProvider theme={createWidgemoCoreDefaultsTheme()}>
+              <WidgemoThemeProvider>
                 <Widgemo
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
