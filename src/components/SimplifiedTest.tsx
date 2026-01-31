@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, registerWidgemoHook, registerWidgemoIcon } from 'widgemo-core';
+import { Widgemo, registerWidgemoHook, registerWidgemoIcon, WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
@@ -147,6 +147,18 @@ export const SimplifiedTest: React.FC = () => {
     }
   };
 
+  // State for theme provider toggle - loads from localStorage initially
+  const [useWidgemoCoreDefaultTheming, setUseWidgemoCoreDefaultThemingState] = useState(() => {
+    const saved = localStorage.getItem('widgemo-core-default-theming-toggle');
+    return saved === 'true';
+  });
+
+  // Custom setter that saves to localStorage
+  const setUseWidgemoCoreDefaultTheming = (value: boolean) => {
+    setUseWidgemoCoreDefaultThemingState(value);
+    localStorage.setItem('widgemo-core-default-theming-toggle', value.toString());
+  };
+
   // Memoized examples with devMode injection (only in development)
   const examplesWithDevMode = useMemo(() => {
     if (!isDevEnvironment) {
@@ -201,6 +213,26 @@ export const SimplifiedTest: React.FC = () => {
           padding: 0.5rem;
         }">my-custom-widgemo</code> class for consistent styling.</h5> */}
       
+      {/* Theme Toggle - Available in all environments */}
+      <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-primary)', border: '1px solid var(--app-border)' }}>
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="widgemo-core-default-theming-toggle"
+            checked={useWidgemoCoreDefaultTheming}
+            onChange={(e) => setUseWidgemoCoreDefaultTheming(e.target.checked)}
+          />
+          <label className="form-check-label" htmlFor="widgemo-core-default-theming-toggle">
+            <strong>Use widgemo-core default theming</strong>
+          </label>
+        </div>
+        <small className="devmode-toggle-text">
+          When enabled, all Widgemo components below will use the widgemo-core default theme.
+          When disabled, the widgemo-demo theme provider will be applied to all components.
+        </small>
+      </div>
+      
       {/* DevMode Toggle - Only shown in development environment */}
       {isDevEnvironment && (
         <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-primary)', border: '1px solid var(--app-border)' }}>
@@ -230,13 +262,25 @@ export const SimplifiedTest: React.FC = () => {
             <h2>{example.title}</h2>
             <p>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
-            <Widgemo
-              key={`${example.id}-${includeWidgemoInspector}`}
-              data={example.data}
-              config={example.config}
-              className="my-custom-widgemo"
-              {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
-            />
+            {useWidgemoCoreDefaultTheming ? (
+              <Widgemo
+                key={`${example.id}-${includeWidgemoInspector}`}
+                data={example.data}
+                config={example.config}
+                className="my-custom-widgemo"
+                {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+              />
+            ) : (
+              <WidgemoThemeProvider>
+                <Widgemo
+                  key={`${example.id}-${includeWidgemoInspector}`}
+                  data={example.data}
+                  config={example.config}
+                  className="my-custom-widgemo"
+                  {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+                />
+              </WidgemoThemeProvider>
+            )}
           </div>
         ))}
       </div>
