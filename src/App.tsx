@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider } from 'widgemo-core';
-import { useTheme } from './hooks/useTheme';
 import { createWidgemoTheme } from './utils/widgemoThemeMapping';
 import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
@@ -10,8 +9,7 @@ import { SimplifiedTest } from './components/SimplifiedTest';
 import './App.css';
 
 function AppContent() {
-  const { currentTheme } = useTheme();
-  const widgemoTheme = createWidgemoTheme(currentTheme);
+  const widgemoTheme = createWidgemoTheme();
 
   return (
     <WidgemoThemeProvider theme={widgemoTheme}>
