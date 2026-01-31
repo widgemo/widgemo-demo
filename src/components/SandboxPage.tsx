@@ -4,6 +4,7 @@ import { useTheme } from '../hooks/useTheme';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData } from '../data/sampleData';
 import widgemoExamples from '../data/widgemoExamples';
+import type { LegacyWidgemoConfig } from 'widgemo-core';
 
 export const SandboxPage: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -16,7 +17,7 @@ export const SandboxPage: React.FC = () => {
       const configItem = widgemoExamples.find(item => item.id === configId);
       if (configItem) {
         // For gallery configs, don't inject theme properties so they use core defaults
-        return configItem.config;
+        return configItem.config as LegacyWidgemoConfig;
       }
     }
     // For default sandbox, don't inject theme properties so it uses core defaults

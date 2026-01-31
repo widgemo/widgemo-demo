@@ -45,7 +45,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
   // Function to get the icon component for the selected library
   const getIconComponent = (iconName: string) => {
     if (iconLibrary === 'react-icons') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'plus': FaPlus,
         'add': FaPlus,
         'edit': FaPencilAlt,
@@ -84,7 +84,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
     }
 
     if (iconLibrary === 'lucide') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'plus': LuPlus,
         'add': LuPlus,
         'edit': LuPencil,
@@ -123,7 +123,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
     }
 
     if (iconLibrary === 'heroicons') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'plus': HiPlus,
         'add': HiPlus,
         'edit': HiPencil,
@@ -168,7 +168,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
   // Function to get the icon component from a library icon name (e.g., 'FaPlus', 'LuPlus')
   const getIconComponentFromLibraryName = (libraryIconName: string) => {
     if (iconLibrary === 'react-icons') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'FaPlus': FaPlus,
         'FaPencilAlt': FaPencilAlt,
         'FaTrash': FaTrash,
@@ -198,7 +198,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
     }
 
     if (iconLibrary === 'lucide') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'LuPlus': LuPlus,
         'LuPencil': LuPencil,
         'LuTrash': LuTrash,
@@ -228,7 +228,7 @@ export const IconsTab: React.FC<IconsTabProps> = ({
     }
 
     if (iconLibrary === 'heroicons') {
-      const iconMap: Record<string, React.ComponentType<any>> = {
+      const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
         'HiPlus': HiPlus,
         'HiPencil': HiPencil,
         'HiTrash': HiTrash,

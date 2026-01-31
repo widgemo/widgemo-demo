@@ -4,7 +4,7 @@ import { BsInfoCircle } from 'react-icons/bs';
 
 interface AppliedConfigViewerProps {
   /** The resolved/merged props object to display */
-  resolvedProps: Record<string, any>;
+  resolvedProps: Record<string, unknown>;
   /** Optional: explanatory note below the title */
   note?: string;
 }

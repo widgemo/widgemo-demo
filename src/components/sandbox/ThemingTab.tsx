@@ -99,7 +99,7 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
       case 'config':
         return configTheme ? generatePalette(
           configTheme.colors?.primary || '#0066cc',
-          { dark: (configTheme as any).dark || false }
+          { dark: false }
         ) : generatePalette('#0066cc', { dark: false });
       case 'custom':
         if (autoGeneratePalette) {

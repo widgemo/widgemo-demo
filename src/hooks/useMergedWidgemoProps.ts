@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
 import type { LegacyWidgemoConfig, WidgemoAdapters, WidgemoTheme, RenderIcon, LegacyWidgemoProps, ResolvedWidgemoProps } from 'widgemo-core';
-import type { Theme } from '../utils/themeConfig';
 
 interface UseMergedLegacyWidgemoPropsInput {
   // Core configuration
@@ -8,7 +7,6 @@ interface UseMergedLegacyWidgemoPropsInput {
   adapters: WidgemoAdapters;
 
   // Theme and styling
-  currentTheme: Theme;
   currentSandboxTheme?: Partial<WidgemoTheme> | null;
   currentIconRenderer?: RenderIcon;
 
@@ -87,7 +85,6 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
   const {
     config,
     adapters,
-    currentTheme,
     currentSandboxTheme,
     currentIconRenderer,
     applyAdvancedProps = false,
@@ -242,7 +239,6 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
   }, [
     config,
     adapters,
-    currentTheme,
     currentSandboxTheme,
     currentIconRenderer,
     showConfigDetails,
@@ -255,6 +251,10 @@ export const useMergedLegacyWidgemoProps = (input: UseMergedLegacyWidgemoPropsIn
     appliedError,
     customLoadingComponent,
     customErrorComponent,
+    appliedBaseColor,
+    appliedOverrideBackground,
+    appliedAutoContrast,
+    appliedContrastAmount,
   ]);
 
   // Memoize resolved theme from config

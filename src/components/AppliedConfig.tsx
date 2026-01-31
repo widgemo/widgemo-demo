@@ -1,19 +1,19 @@
 import React from 'react';
 import { AppliedConfigViewer } from './sandbox/AppliedConfigViewer';
-import type { ResolvedWidgemoProps } from 'widgemo-core';
+import type { ResolvedWidgemoProps, LegacyWidgemoConfig, WidgemoAdapters, RenderIcon, WidgemoTheme } from 'widgemo-core';
 
 interface AppliedConfigProps {
-  config: any;
-  adapters: any;
+  config: LegacyWidgemoConfig;
+  adapters: WidgemoAdapters;
   showConfigDetails?: boolean;
-  renderIcon?: any;
-  overrides?: any;
+  renderIcon?: RenderIcon;
+  overrides?: Partial<LegacyWidgemoConfig>;
   className?: string;
-  style?: any;
+  style?: React.CSSProperties;
   loading?: boolean;
   error?: string | Error;
-  currentSandboxTheme?: any;
-  currentIconRenderer?: any;
+  currentSandboxTheme?: WidgemoTheme | null;
+  currentIconRenderer?: RenderIcon;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
   resolvedConfig?: ResolvedWidgemoProps | null;
@@ -44,27 +44,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
     };
   } else {
     // Fallback
-    const truncateData = (data: any, maxItems = 3): any => {
-      if (Array.isArray(data)) {
-        if (data.length > maxItems) {
-          return [...data.slice(0, maxItems), `... ${data.length - maxItems} more items`];
-        }
-        return data;
-      }
-      if (typeof data === 'object' && data !== null) {
-        const keys = Object.keys(data);
-        if (keys.length > maxItems) {
-          const truncated: any = {};
-          keys.slice(0, maxItems).forEach(key => {
-            truncated[key] = data[key];
-          });
-          truncated[`... ${keys.length - maxItems} more properties`] = '...';
-          return truncated;
-        }
-      }
-      return data;
-    };
-
     // Build theme with baseColor included
     const effectiveTheme = currentSandboxTheme === null ? undefined :
       currentSandboxTheme !== undefined ? currentSandboxTheme :
@@ -77,8 +56,7 @@ export function AppliedConfig(props: AppliedConfigProps) {
         styling: config.styling ? {
           ...config.styling,
           themeOverrides: config.styling.themeOverrides
-        } : undefined,
-        data: config.data ? truncateData(config.data) : undefined
+        } : undefined
       },
       adapters: {
         fetchData: '[Function: fetchData]',

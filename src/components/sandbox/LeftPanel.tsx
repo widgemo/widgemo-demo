@@ -6,11 +6,11 @@ import { PropsOverridesTab } from './PropsOverridesTab';
 import { IconsTab } from './IconsTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
-import type { WidgemoTheme } from 'widgemo-core';
+import type { WidgemoTheme, LegacyWidgemoConfig } from 'widgemo-core';
 
 interface PresetOption {
   name: string;
-  config: any;
+  config: LegacyWidgemoConfig;
 }
 
 export interface LeftPanelProps {
@@ -26,7 +26,7 @@ export interface LeftPanelProps {
   onJsonChange: (json: string) => void;
   onApplyJson: () => void;
   presets: PresetOption[];
-  onLoadPreset: (presetConfig: any, presetName?: string) => void;
+  onLoadPreset: (presetConfig: LegacyWidgemoConfig, presetName?: string) => void;
   jsonError: string | null;
   onShowReference: () => void;
   onShowCodeSandbox: () => void;

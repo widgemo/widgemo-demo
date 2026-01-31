@@ -4,7 +4,7 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoAdapters, WidgemoTheme, WidgemoConfig } from 'widgemo-core';
+import type { WidgemoAdapters, WidgemoTheme, WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -56,9 +56,9 @@ const CustomErrorComponent: React.FC<{
 );
 
 interface SandboxSectionProps {
-  initialConfig: WidgemoConfig;
+  initialConfig: LegacyWidgemoConfig;
   initialData: Record<string, unknown>[];
-  onConfigChange?: (config: WidgemoConfig) => void;
+  onConfigChange?: (config: LegacyWidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: Theme;
   initialThemeMode?: 'defaults' | 'config' | 'custom';
@@ -130,6 +130,11 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [primaryColor, setPrimaryColor] = useState('#0066cc');
   const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
   const [darkMode, setDarkMode] = useState(false);
+
+  // Ensure darkMode is used for TypeScript
+  void darkMode;
+
+  // Note: darkMode is used by ThemingTab for palette generation display
   const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
 
   // Icons state
@@ -153,38 +158,34 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const currentSandboxTheme = useMemo(() => {
     switch (themeMode) {
       case 'defaults':
-        // For defaults mode, merge the main theme selection into the theme
-        return { dark: currentTheme === 'dark', autoDetect: false };
+        // For defaults mode, return null to use widgemo defaults
+        return null;
       case 'config':
         return undefined; // undefined means use config.theme as-is
       case 'custom':
         return {
-          primary: primaryColor,
-          dark: darkMode,
+          colors: {
+            primary: primaryColor,
+            ...customTheme.colors
+          },
           ...customTheme
-        };
+        } as WidgemoTheme;
       default:
         return null;
     }
-  }, [themeMode, currentTheme, primaryColor, darkMode, customTheme]);
+  }, [themeMode, primaryColor, customTheme]);
 
   // Determine if dark mode is actually active based on current theme
   const isDarkModeActive = useMemo(() => {
-    if (currentSandboxTheme === null || currentSandboxTheme === undefined) {
-      // Check currentTheme directly for defaults mode
-      return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
-    }
-    if (typeof currentSandboxTheme === 'object' && currentSandboxTheme !== null) {
-      return currentSandboxTheme.dark === true;
-    }
-    return false;
-  }, [currentSandboxTheme, currentTheme]);
+    // Dark mode is now handled via CSS variables, check the current theme
+    return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
+  }, [currentTheme]);
 
   // Transform widgemoExamples to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
     return widgemoExamples.map(config => ({
       name: config.title,
-      config: config.config
+      config: config.config as LegacyWidgemoConfig
     }));
   }, []);
 
@@ -436,7 +437,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     lastAppliedThemeRef.current = currentTheme;
   }, [currentTheme]);
 
-  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
+  const loadPreset = (presetConfig: LegacyWidgemoConfig, presetTitle?: string) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
     const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
