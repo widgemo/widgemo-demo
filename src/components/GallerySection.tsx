@@ -189,6 +189,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
 
           .theme-aware-card {
             transition: all 0.2s ease;
+            background: var(--app-bg-primary) !important;
+            border: 1px solid var(--app-border) !important;
+            color: var(--app-text-primary) !important;
           }
 
           /* Ensure popovers appear above modal */

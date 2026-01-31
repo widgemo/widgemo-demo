@@ -214,7 +214,7 @@ export const SimplifiedTest: React.FC = () => {
         }">my-custom-widgemo</code> class for consistent styling.</h5> */}
       
       {/* Theme Toggle - Available in all environments */}
-      <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-primary)', border: '1px solid var(--app-border)' }}>
+      <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}>
         <div className="form-check">
           <input
             className="form-check-input"
@@ -235,7 +235,7 @@ export const SimplifiedTest: React.FC = () => {
       
       {/* DevMode Toggle - Only shown in development environment */}
       {isDevEnvironment && (
-        <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-primary)', border: '1px solid var(--app-border)' }}>
+        <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}>
           <div className="form-check">
             <input
               className="form-check-input"

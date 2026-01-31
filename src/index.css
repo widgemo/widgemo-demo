@@ -12,12 +12,12 @@
 
   /* ===== THEME VARIABLES ===== */
   /* Core colors */
-  --app-bg-primary: #faf1e4; /* #ffffff */
-  --app-bg-secondary: #fffaf5;
+  --app-bg-primary: #fdf7d8; /* #ffffff */
+  --app-bg-secondary: #fefce8;
   --app-text-primary: #161616;
-  --app-text-secondary: #d26b3e;
+  --app-text-secondary: #fa8e40;
   --app-text-muted: #6c757d;
-  --app-border: #c4af91;
+  --app-border: #fedeb1;
   --app-border-light: #e0e0e0;
   --app-accent: #8d1fdc;
   --app-accent-hover: #5d1591;
@@ -43,7 +43,7 @@
   --bs-border-color: var(--app-border);
 
   /* Gradient background */
-  --app-bg-gradient: linear-gradient(to bottom, var(--app-bg-primary), var(--app-border));
+  --app-bg-gradient: linear-gradient(to bottom, var(--app-bg-primary), var(--app-bg-secondary));
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
