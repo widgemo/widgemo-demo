@@ -80,7 +80,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
             <div className="d-flex gap-3 flex-wrap">
               <Button
                 size="lg"
-                variant="light"
+                variant="secondary"
                 className="px-4 py-3 fw-bold"
                 onClick={onExploreGallery}
               >

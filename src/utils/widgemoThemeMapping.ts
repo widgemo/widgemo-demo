@@ -120,14 +120,18 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
 export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
   colors: {
     // Map to our app's CSS variables
-    primary: 'var(--app-accent)',
-    background: 'var(--app-bg-primary)', // 
+    primary: 'var(--bs-primary)',
+    primaryDark: 'var(--app-accent-hover)',
+    background: 'var(--app-bg-secondary)',
+    surfaceBg: 'var(--app-bg-primary)',
     text: 'var(--app-text-primary)',
+    textMuted: 'var(--app-text-muted)',
     border: 'var(--app-border)',
-    secondary: 'var(--app-text-secondary)',
+    secondary: 'var(--bs-secondary)',
+    secondaryDark: 'var(--app-accent-hover)',
 
     // Additional semantic colors
-    success: 'var(--app-accent)', // Reuse accent for success
+    success: '#308e78', // Reuse accent for success
     warning: '#ffc107', // Keep standard warning
     danger: '#dc3545', // Keep standard danger
     info: '#17a2b8', // Keep standard info
@@ -135,7 +139,7 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     // UI element colors
     cardBg: 'var(--app-bg-primary)',
     cardBorder: 'var(--app-border)',
-    tableBg: 'var(--app-table-body-bg)',
+    tableBg: 'var(--app-bg-primary)',
     tableBorder: 'var(--app-table-border)',
     headerBg: 'var(--app-table-header-bg)',
 
@@ -147,7 +151,7 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
 
     // Title and subtitle colors
     titleText: 'var(--app-text-primary)',
-    subtitleText: 'var(--app-text-secondary)',
+    subtitleText: 'var(--app-text-muted)',
   }
 };
 
