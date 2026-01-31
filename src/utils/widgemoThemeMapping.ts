@@ -9,12 +9,17 @@ export interface WidgemoThemeMapping {
   colors?: {
     primary?: string;
     background?: string;
+    surfaceBg?: string;
     text?: string;
+    textMuted?: string;
     border?: string;
     secondary?: string;
+    secondaryDark?: string;
     success?: string;
+    successDark?: string;
     warning?: string;
     danger?: string;
+    dangerDark?: string;
     info?: string;
     light?: string;
     colorDark?: string;
@@ -25,6 +30,11 @@ export interface WidgemoThemeMapping {
     cardBorder?: string;
     tableBg?: string;
     tableBorder?: string;
+    tableHeaderBg?: string;
+    tableHeaderHoverBg?: string;
+    tableBodyBg?: string;
+    rowHoverBg?: string;
+    rowAltBg?: string;
     headerBg?: string;
     ghostButtonBorder?: string;
     ghostButtonHoverBg?: string;
@@ -32,6 +42,7 @@ export interface WidgemoThemeMapping {
     shadowColor?: string;
     titleText?: string;
     subtitleText?: string;
+    buttonHover?: string;
   };
   borderRadius?: string;
   spacing?: string;
