@@ -139,9 +139,13 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     // UI element colors
     cardBg: 'var(--app-bg-primary)',
     cardBorder: 'var(--app-border)',
-    tableBg: 'var(--app-bg-primary)',
+    tableBodyBg: 'var(--app-bg-primary)',
     tableBorder: 'var(--app-table-border)',
-    headerBg: 'var(--app-table-header-bg)',
+    tableHeaderBg: 'var(--app-table-header-bg)',
+    tableHeaderHoverBg: 'var(--app-table-header-hover-bg, var(--app-border))',
+    rowHoverBg: 'var(--app-row-hover-bg, var(--app-border))',
+    rowAltBg: 'var(--app-row-alt-bg, var(--app-bg-secondary))',
+    headerBg: 'var(--app-bg-primary)',
 
     // Interactive elements
     ghostButtonBorder: 'transparent',
