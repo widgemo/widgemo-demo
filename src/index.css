@@ -26,7 +26,7 @@
   /* Interactive elements */
   --app-button-bg: #f0f0f0;
   --app-button-hover: #e0e0e0;
-  --app-focus: #007bff;
+  --app-focus: #308e78;
 
   /* Table colors */
   --app-table-border: var( --app-border);
