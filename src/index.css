@@ -12,12 +12,12 @@
 
   /* ===== THEME VARIABLES ===== */
   /* Core colors */
-  --app-bg-primary: #ffffff;
+  --app-bg-primary: #faf1e4; /* #ffffff */
   --app-bg-secondary: #f8f9fa;
   --app-text-primary: #161616;
   --app-text-secondary: #6c757d;
   --app-text-muted: #6c757d;
-  --app-border: #cccccc;
+  --app-border: #c4af91;
   --app-border-light: #e0e0e0;
   --app-accent: #007bff;
   --app-accent-hover: #0056b3;
