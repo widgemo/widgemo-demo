@@ -161,6 +161,7 @@ footer {
 /* Utilities */
 .text-warning {
   color: #ffc107 !important;
+  text-shadow: #b88c09 0.01em 0.01em 0.01em;
 }
 
 .shadow-lg {
