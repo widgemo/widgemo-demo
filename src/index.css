@@ -21,14 +21,14 @@
   --app-text-muted: #718096; /* 6c757d */
   --app-border: #d1d9e6; /* fedeb1 */
   --app-border-light: #e2e8f0; /* e0e0e0 */
-  --app-accent: #4dabf7; /* 8d1fdc */
-  --app-accent-hover: #3182ce; /* was someting else */
+  --app-accent: #3cb4b2; /* 8d1fdc */
+  --app-accent-hover: #133848; /* was someting else */
   --app-shadow: rgba(0, 0, 0, 0.08);
 
   /* Interactive elements */
   --app-button-bg: #edf2f7; /* f0f0f0 */
   --app-button-hover: #e2e8f0; /* e0e0e0 */
-  --app-focus: #4dabf7; /* 308e78 */
+  --app-focus: #3cb4b2; /* 308e78 */
 
   /* Table colors */
   --app-table-border: var(--app-border);

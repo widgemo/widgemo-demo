@@ -126,7 +126,7 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
 export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
   colors: {
     // Map to static values that work for both light and dark modes
-    primary: '#4dabf7', // Bootstrap primary
+    primary: '#3cb4b2', // Bootstrap primary
     primaryDark: '#3182ce',
     background: '#f8f9fc', // Light mode value - will be overridden by theme provider
     surfaceBg: '#f0f2f7', // Light mode value - will be overridden by theme provider
@@ -170,15 +170,15 @@ export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
   // Create different mappings for light and dark modes
   const lightMapping: WidgemoThemeMapping = {
     colors: {
-      primary: '#4dabf7',
-      primaryDark: '#3182ce',
-      background: '#f8f9fc', // Light background
-      surfaceBg: '#f0f2f7', // Light surface
+      primary: '#3cb4b2',
+      primaryDark: '#319190',
+      background: '#f0f2f7', // Light background f8f9fc
+      surfaceBg: '#f8f9fc', // Light surface f0f2f7
       text: '#1f2a44',
       textMuted: '#718096',
       border: '#d1d9e6',
-      secondary: '#718096',
-      secondaryDark: '#4a5568',
+      secondary: '#ff814b',
+      secondaryDark: '#cf6a3f',
       success: '#308e78',
       warning: '#ffc107',
       danger: '#dc3545',
