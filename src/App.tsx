@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider } from 'widgemo-core';
 import { createWidgemoTheme } from './utils/widgemoThemeMapping';
@@ -7,23 +7,14 @@ import { AppNavbar } from './components/Navbar';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
+import { useTheme } from './hooks/useTheme';
 import './App.css';
 
 function AppContent() {
-  const [isDark, setIsDark] = useState(() => 
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
+  const { currentTheme } = useTheme();
   
-  // Track system theme changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  // Recreate theme when dark mode changes to ensure correct colors
-  const widgemoTheme = useMemo(() => createWidgemoTheme(isDark), [isDark]);
+  // Create widgemo theme based on app's current theme, not system preference
+  const widgemoTheme = useMemo(() => createWidgemoTheme(currentTheme === 'dark'), [currentTheme]);
 
   return (
     <WidgemoThemeProvider theme={widgemoTheme}>
