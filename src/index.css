@@ -14,21 +14,21 @@
 
   /* ===== THEME VARIABLES ===== */
   /* Core colors */
-  --app-bg-primary: #fdf7d8;
-  --app-bg-secondary: #fefce8;
-  --app-text-primary: #161616;
-  --app-text-secondary: #fa8e40;
-  --app-text-muted: #6c757d;
-  --app-border: #fedeb1;
-  --app-border-light: #e0e0e0;
-  --app-accent: #8d1fdc;
-  --app-accent-hover: #5d1591;
-  --app-shadow: rgba(0, 0, 0, 0.1);
+  --app-bg-primary: #f8f9fc; /* fdf7d8 */
+  --app-bg-secondary: #f0f2f7; /* fefce8 */
+  --app-text-primary: #1f2a44; /*161616*/
+  --app-text-secondary: #4a5568; /* fa8e40 */
+  --app-text-muted: #718096; /* 6c757d */
+  --app-border: #d1d9e6; /* fedeb1 */
+  --app-border-light: #e2e8f0; /* e0e0e0 */
+  --app-accent: #4dabf7; /* 8d1fdc */
+  --app-accent-hover: #3182ce; /* was someting else */
+  --app-shadow: rgba(0, 0, 0, 0.08);
 
   /* Interactive elements */
-  --app-button-bg: #f0f0f0;
-  --app-button-hover: #e0e0e0;
-  --app-focus: #308e78;
+  --app-button-bg: #edf2f7; /* f0f0f0 */
+  --app-button-hover: #e2e8f0; /* e0e0e0 */
+  --app-focus: #4dabf7; /* 308e78 */
 
   /* Table colors */
   --app-table-border: var(--app-border);

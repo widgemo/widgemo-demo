@@ -126,13 +126,13 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
 export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
   colors: {
     // Map to static values that work for both light and dark modes
-    primary: '#0d6efd', // Bootstrap primary
-    primaryDark: '#0a58ca',
-    background: '#fefce8', // Light mode value - will be overridden by theme provider
-    surfaceBg: '#fdf7d8', // Light mode value - will be overridden by theme provider
-    text: '#2d3748', // Good text color
+    primary: '#4dabf7', // Bootstrap primary
+    primaryDark: '#3182ce',
+    background: '#f8f9fc', // Light mode value - will be overridden by theme provider
+    surfaceBg: '#f0f2f7', // Light mode value - will be overridden by theme provider
+    text: '#1f2a44', // Good text color
     textMuted: '#718096', // Muted text
-    border: '#e2e8f0', // Light border
+    border: '#d1d9e6', // Light border
     secondary: '#718096',
     secondaryDark: '#4a5568',
 
@@ -143,25 +143,25 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     info: '#17a2b8', // Keep standard info
 
     // UI element colors - these will be overridden by the dynamic theme
-    cardBg: '#fdf7d8',
-    cardBorder: '#e2e8f0',
-    tableBodyBg: '#fefce8',
-    tableBorder: '#e2e8f0',
-    tableHeaderBg: '#fefce8',
+    cardBg: '#f0f2f7',
+    cardBorder: '#d1d9e6',
+    tableBodyBg: '#f0f2f7',
+    tableBorder: '#d1d9e6',
+    tableHeaderBg: '#f0f2f7',
     tableHeaderHoverBg: '#e2e8f0',
-    rowHoverBg: '#e2e8f0',
-    rowAltBg: '#fdf7d8',
+    rowHoverBg: '#d1d9e6',
+    rowAltBg: '#f8f9fc',
     headerBg: 'transparent',
 
     // Interactive elements
     ghostButtonBorder: '#e2e8f0',
     ghostButtonHoverBg: '#fdf7d8',
-    focusColor: '#0d6efd',
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    focusColor: '#4dabf7',
+    shadowColor: 'rgba(0, 0, 0, 0.08)',
 
     // Board mode colors
     boardBg: '#fefce8',
-    swimlaneHeaderBg: '#fdf7d8',
+    swimlaneHeaderBg: '#ffffff',
     columnBg: '#fdf7d8',
   },
   autoDetect: true,
@@ -170,34 +170,34 @@ export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
   // Create different mappings for light and dark modes
   const lightMapping: WidgemoThemeMapping = {
     colors: {
-      primary: '#0d6efd',
-      primaryDark: '#0a58ca',
-      background: '#fefce8', // Light background
-      surfaceBg: '#fdf7d8', // Light surface
-      text: '#2d3748',
+      primary: '#4dabf7',
+      primaryDark: '#3182ce',
+      background: '#f8f9fc', // Light background
+      surfaceBg: '#f0f2f7', // Light surface
+      text: '#1f2a44',
       textMuted: '#718096',
-      border: '#e2e8f0',
+      border: '#d1d9e6',
       secondary: '#718096',
       secondaryDark: '#4a5568',
       success: '#308e78',
       warning: '#ffc107',
       danger: '#dc3545',
       info: '#17a2b8',
-      cardBg: '#fdf7d8',
-      cardBorder: '#e2e8f0',
-      tableBodyBg: '#fefce8',
-      tableBorder: '#e2e8f0',
-      tableHeaderBg: '#fefce8',
+      cardBg: '#f0f2f7',
+      cardBorder: '#d1d9e6',
+      tableBodyBg: '#f0f2f7',
+      tableBorder: '#d1d9e6',
+      tableHeaderBg: '#f0f2f7',
       tableHeaderHoverBg: '#e2e8f0',
-      rowHoverBg: '#e2e8f0',
-      rowAltBg: '#fdf7d8',
+      rowHoverBg: '#d1d9e6',
+      rowAltBg: '#f8f9fc',
       headerBg: 'transparent',
       ghostButtonBorder: '#e2e8f0',
       ghostButtonHoverBg: '#fdf7d8',
-      focusColor: '#0d6efd',
-      shadowColor: 'rgba(0, 0, 0, 0.1)',
+      focusColor: '#4dabf7',
+      shadowColor: 'rgba(0, 0, 0, 0.08)',
       boardBg: '#fefce8',
-      swimlaneHeaderBg: '#fdf7d8',
+      swimlaneHeaderBg: '#ffffff',
       columnBg: '#fdf7d8',
     },
     autoDetect: true,
