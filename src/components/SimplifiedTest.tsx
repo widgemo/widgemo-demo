@@ -4,6 +4,7 @@ import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
+import { useTheme } from '../hooks/useTheme';
 // Extend Window interface for performance metrics
 declare global {
   interface Window {
@@ -126,6 +127,8 @@ function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
  */
 export const SimplifiedTest: React.FC = () => {
   console.log('SimplifiedTest rendering');
+
+  const { currentTheme } = useTheme();
 
   // Production gating: Only enable devMode toggle in development environment
   const isDevEnvironment = process.env.NODE_ENV === 'development';
@@ -263,7 +266,7 @@ export const SimplifiedTest: React.FC = () => {
             <p>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
             {useWidgemoCoreDefaultTheming ? (
-              <WidgemoThemeProvider>
+              <WidgemoThemeProvider mode={currentTheme}>
                 <Widgemo
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
