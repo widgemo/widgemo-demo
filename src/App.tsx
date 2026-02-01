@@ -16,7 +16,7 @@ function AppContent() {
   // Apps can add specific overrides here as needed
   const widgemoThemeOverrides = useMemo(() => {
     return undefined; // No overrides - use base themes as-is
-  }, [currentTheme]);
+  }, []);
 
   return (
     <WidgemoThemeProvider mode={currentTheme} theme={widgemoThemeOverrides}>
