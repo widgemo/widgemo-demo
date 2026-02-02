@@ -1737,7 +1737,24 @@ export const badgeFieldConfig: WidgemoConfig = {
         { field: 'name', header: 'Task Name', type: 'text' },
         {
           field: 'status',
-          header: 'Status (Badge Style)',
+          header: 'Status (Badge Large Color only)',
+          type: 'text',
+          renderAs: 'badge',
+          align: 'center',
+          badgeOptions: {
+            style: 'badge', // Explicit badge style
+            colorMap: {
+              'completed': '#28a745',
+              'in-progress': '#ffc107',
+              'pending': '#6c757d',
+              'cancelled': '#dc3545'
+            },
+            size: 'lg'
+          }
+        },
+        {
+          field: 'status',
+          header: 'Status (Badge Medium Style w/Icon)',
           type: 'text',
           renderAs: 'badge',
           align: 'center',
@@ -1753,8 +1770,41 @@ export const badgeFieldConfig: WidgemoConfig = {
           }
         },
         {
+          field: 'priority',
+          header: 'Priority (Badge Small Mixed)',
+          type: 'text',
+          renderAs: 'badge',
+          align: 'center',
+          badgeOptions: {
+            style: 'badge',
+            colorMap: {
+              'low': '#e3f2fd', // Light blue bg, dark blue text
+              'medium': { background: '#e9d0a7', textColor: '#3e3935' }, // Light orange bg, dark orange text
+              'high': { background: '#fd7e14', icon: 'check-circle' }, // Orange with icon
+              'critical': { background: '#dc3545', icon: 'x-circle', iconPosition: 'only' } // Icon only
+            },
+            size: 'sm'
+          }
+        },
+        {
           field: 'status',
-          header: 'Status (Inline Style)',
+          header: 'Status (Inline Color only)',
+          type: 'text',
+          renderAs: 'badge',
+          align: 'center',
+          badgeOptions: {
+            style: 'inline', // Inline style - no background
+            colorMap: {
+              'completed': '#28a745', 
+              'in-progress': '#ffc107',
+              'pending': '#6c757d', 
+              'cancelled': '#dc3545'
+            }
+          }
+        },
+        {
+          field: 'status',
+          header: 'Status (Inline Style w/Icon+Position)',
           type: 'text',
           renderAs: 'badge',
           align: 'center',
@@ -1771,23 +1821,6 @@ export const badgeFieldConfig: WidgemoConfig = {
         },
         {
           field: 'priority',
-          header: 'Priority (Badge Mixed)',
-          type: 'text',
-          renderAs: 'badge',
-          align: 'center',
-          badgeOptions: {
-            style: 'badge',
-            colorMap: {
-              'low': { background: '#e3f2fd', textColor: '#1976d2' }, // Light blue bg, dark blue text
-              'medium': { background: '#fff3e0', textColor: '#f57c00' }, // Light orange bg, dark orange text
-              'high': { background: '#fd7e14', icon: 'check-circle' }, // Orange with icon
-              'critical': { background: '#dc3545', icon: 'x-circle', iconPosition: 'only' } // Icon only
-            },
-            size: 'sm'
-          }
-        },
-        {
-          field: 'priority',
           header: 'Priority (Inline Mixed)',
           type: 'text',
           renderAs: 'badge',
@@ -1799,31 +1832,30 @@ export const badgeFieldConfig: WidgemoConfig = {
               'medium': { icon: 'minus', text: 'Medium', color: '#f57c00', iconColor: '#f53100' }, // Orange icon + text
               'high': { icon: 'arrow-up', text: 'HIGH', color: '#fd7e14', iconPosition: 'right' }, // Orange icon only
               'critical': { icon: 'alert-triangle', text: 'Critical', iconColor: '#dc3545', textColor: '#666' } // Red icon, gray text
-            },
-            size: 'sm'
+            }
           }
         },
         {
           field: 'assignee',
-          header: 'Assignee (Inline Text)',
+          header: 'Assignee (Inline Text only)',
           type: 'text',
           renderAs: 'badge',
           align: 'center',
           badgeOptions: {
             style: 'inline',
             colorMap: {
-              'Alice': { text: 'Alice', color: '#e91e63' },
-              'Bob': { text: 'Bob', color: '#2196f3' },
-              'Charlie': { text: 'Charlie', color: '#4caf50' },
-              'Diana': { text: 'Diana', color: '#ff9800' },
-              'Eve': { text: 'Eve', color: '#9c27b0' },
-              'Frank': { text: 'Frank', color: '#795548' }
+              'Alice': { text: 'Alicia', color: '#e91e63'},
+              'Bob': '#2196f3',
+              'Charlie': '#4caf50',
+              'Diana': '#ff9800',
+              'Eve': '#9c27b0',
+              'Frank': '#795548'
             }
           }
         },
         {
           field: 'category',
-          header: 'Category (Inline Icons)',
+          header: 'Category (Inline Icons Default Position)',
           type: 'text',
           renderAs: 'badge',
           align: 'center',
@@ -1831,15 +1863,14 @@ export const badgeFieldConfig: WidgemoConfig = {
             style: 'inline',
             colorMap: {
               'security': { icon: 'shield', color: '#dc3545' },
-              'ui': { icon: 'palette', color: '#2196f3' },
-              'docs': { icon: 'file-text', color: '#28a745' },
+              'ui': { icon: 'grid', text: 'UI', color: '#2196f3' },
+              'docs': { icon: 'document', color: '#28a745' },
               'bug': { icon: 'bug', color: '#fd7e14' },
               'feature': { icon: 'star', color: '#ffc107' },
-              'infrastructure': { icon: 'server', color: '#6c757d' },
-              'analytics': { icon: 'bar-chart', color: '#9c27b0' },
-              'performance': { icon: 'zap', color: '#ff5722' }
-            },
-            size: 'lg'
+              'infrastructure': { icon: 'database', color: '#6c757d' },
+              'analytics': { icon: 'chart-bar', color: '#9c27b0' },
+              'performance': { icon: 'speedometer', color: '#ff5722' }
+            }
           }
         }
       ] as ColumnConfig[]
