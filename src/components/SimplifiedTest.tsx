@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, registerWidgemoHook, registerWidgemoIcon, WidgemoThemeProvider } from 'widgemo-core';
+import { Widgemo, registerWidgemoHook, /* registerWidgemoIcon, */ WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
-import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
+// import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { useTheme } from '../hooks/useTheme';
 // Extend Window interface for performance metrics
 declare global {
@@ -75,6 +75,7 @@ registerWidgemoHook({
 // Register FontAwesome icons for the demo - overrides widgemo-core defaults
 
 // Register FontAwesome versions of common icons to override widgemo-core defaults
+/*
 const iconNames = [
   'database', 'add', 'plus', 'refresh', 'sync', 'download', 'settings',
   'delete', 'trash', 'edit', 'view', 'search', 'filter', 'sort', 'chevron-up',
@@ -91,6 +92,7 @@ iconNames.forEach(iconName => {
     defaultProps: { size: 16, color: 'currentColor' }
   });
 });
+*/
 
 /**
  * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state.

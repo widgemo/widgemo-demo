@@ -411,7 +411,7 @@ export const centeredLayoutConfig: WidgemoConfig = {
     header: {
       enabled: true,
       layout: { preset: 'centered' },
-      icon: { src: 'centercode', size: 20, color: '#a41540' },
+      icon: { src: 'align-center', size: 20, color: '#a41540' },
       title: 'Centered Layout Demo',
       subtitle: 'Actions loaded as a centered layout on the foot zone'
     },
@@ -1863,11 +1863,11 @@ export const badgeFieldConfig: WidgemoConfig = {
             style: 'inline',
             colorMap: {
               'security': { icon: 'shield', color: '#dc3545' },
-              'ui': { icon: 'grid', text: 'UI', color: '#2196f3' },
+              'ui': { icon: 'code', text: 'UI', color: '#2196f3' },
               'docs': { icon: 'document', color: '#28a745' },
               'bug': { icon: 'bug', color: '#fd7e14' },
               'feature': { icon: 'star', color: '#ffc107' },
-              'infrastructure': { icon: 'database', color: '#6c757d' },
+              'infrastructure': { icon: 'server', color: '#6c757d' },
               'analytics': { icon: 'chart-bar', color: '#9c27b0' },
               'performance': { icon: 'speedometer', color: '#ff5722' }
             }
