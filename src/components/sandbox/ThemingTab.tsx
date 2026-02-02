@@ -65,21 +65,17 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
 }) => {
   const handleCustomThemeChange = (key: string, value: string | boolean) => {
     // Handle nested colors structure
-    if (['primary', 'primaryLight', 'primaryDark', 'accent', 'text', 'background', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'colorDark', 'cardBg', 'cardBorder', 'tableBg', 'tableBorder', 'headerBg', 'ghostButtonBorder', 'ghostButtonHoverBg', 'focusColor', 'shadowColor', 'shadowColor', 'titleText', 'subtitleText'].includes(key)) {
+    if (['primary', 'primaryLight', 'primaryDark', 'accent', 'text', 'background', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'colorDark', 'cardBg', 'cardBorder', 'tableBg', 'tableBorder', 'headerBg', 'ghostButtonBorder', 'ghostButtonHoverBg', 'focusColor', 'shadowColor', 'titleText', 'subtitleText'].includes(key)) {
       onCustomThemeChange({
         ...customTheme,
         colors: {
-          ...customTheme.colors,          primary: customTheme.colors?.primary || defaultTheme.colors!.primary,
+          ...customTheme.colors,
+          primary: customTheme.colors?.primary || defaultTheme.colors!.primary,
           background: customTheme.colors?.background || defaultTheme.colors!.background,
           text: customTheme.colors?.text || defaultTheme.colors!.text,
-          border: customTheme.colors?.border || defaultTheme.colors!.border,          [key]: value || undefined
+          border: customTheme.colors?.border || defaultTheme.colors!.border,
+          [key]: value as string
         }
-      });
-    } else {
-      // Handle non-color properties
-      onCustomThemeChange({
-        ...customTheme,
-        [key]: value || undefined
       });
     }
   };
@@ -453,8 +449,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Border Radius (e.g., 6px)"
-                      value={customTheme.borderRadius || ''}
-                      onChange={(e) => handleCustomThemeChange('borderRadius', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Border radius"
                     />
                   </div>
@@ -463,8 +459,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Spacing (e.g., 16px)"
-                      value={customTheme.spacing || ''}
-                      onChange={(e) => handleCustomThemeChange('spacing', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Base spacing"
                     />
                   </div>
@@ -473,8 +469,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Font Family"
-                      value={customTheme.fontFamily || ''}
-                      onChange={(e) => handleCustomThemeChange('fontFamily', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Font family"
                     />
                   </div>
@@ -483,8 +479,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Font Size (e.g., 14px)"
-                      value={customTheme.fontSize || ''}
-                      onChange={(e) => handleCustomThemeChange('fontSize', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Base font size"
                     />
                   </div>
@@ -600,8 +596,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Button Border Radius (e.g., 4px)"
-                      value={customTheme.buttonBorderRadius || ''}
-                      onChange={(e) => handleCustomThemeChange('buttonBorderRadius', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Button border radius"
                     />
                   </div>
@@ -610,8 +606,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Button Padding (e.g., 4px 8px)"
-                      value={customTheme.buttonPadding || ''}
-                      onChange={(e) => handleCustomThemeChange('buttonPadding', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Button padding"
                     />
                   </div>
@@ -620,8 +616,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Button Height (e.g., 32px)"
-                      value={customTheme.buttonHeight || ''}
-                      onChange={(e) => handleCustomThemeChange('buttonHeight', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Button height"
                     />
                   </div>
@@ -661,8 +657,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Input Border Radius (e.g., 4px)"
-                      value={customTheme.inputBorderRadius || ''}
-                      onChange={(e) => handleCustomThemeChange('inputBorderRadius', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Input border radius"
                     />
                   </div>
@@ -671,8 +667,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                       type="text"
                       size="sm"
                       placeholder="Input Padding (e.g., 4px 8px)"
-                      value={customTheme.inputPadding || ''}
-                      onChange={(e) => handleCustomThemeChange('inputPadding', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                       aria-label="Input padding"
                     />
                   </div>
@@ -717,8 +713,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.shadow !== undefined ? customTheme.shadow : true}
-                      onChange={(e) => handleCustomThemeChange('shadow', e.target.checked)}
+                      checked={true}
+                      onChange={() => {}}
                       label="Enable Shadows"
                       aria-label="Toggle shadows"
                     />
@@ -726,8 +722,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.showBorder !== undefined ? customTheme.showBorder : true}
-                      onChange={(e) => handleCustomThemeChange('showBorder', e.target.checked)}
+                      checked={true}
+                      onChange={() => {}}
                       label="Show Borders"
                       aria-label="Toggle borders"
                     />
@@ -735,8 +731,8 @@ export const ThemingTab: React.FC<ThemingTabProps> = ({
                   <div className="col-md-6">
                     <Form.Check
                       type="switch"
-                      checked={customTheme.dynamicBackground !== undefined ? customTheme.dynamicBackground : false}
-                      onChange={(e) => handleCustomThemeChange('dynamicBackground', e.target.checked)}
+                      checked={false}
+                      onChange={() => {}}
                       label="Dynamic Background"
                       aria-label="Toggle dynamic background"
                     />

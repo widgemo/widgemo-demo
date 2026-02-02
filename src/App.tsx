@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import { useMemo } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider } from 'widgemo-core';
 import { AppNavbar } from './components/Navbar';
@@ -12,14 +11,8 @@ import './App.css';
 function AppContent() {
   const { currentTheme } = useTheme();
   
-  // For now, use no theme overrides - let the base themes handle everything
-  // Apps can add specific overrides here as needed
-  const widgemoThemeOverrides = useMemo(() => {
-    return undefined; // No overrides - use base themes as-is
-  }, []);
-
   return (
-    <WidgemoThemeProvider mode={currentTheme} theme={widgemoThemeOverrides}>
+    <WidgemoThemeProvider theme={currentTheme}>
       <div className="App" style={{ 
         minHeight: '100vh',
         color: 'var(--app-text-primary)',

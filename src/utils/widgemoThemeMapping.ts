@@ -46,7 +46,7 @@ export interface WidgemoThemeMapping {
     swimlaneHeaderBg?: string;
     columnBg?: string;
   };
-  borderRadius?: string;
+/*   borderRadius?: string;
   spacing?: string;
   fontFamily?: string;
   fontSize?: string;
@@ -59,7 +59,7 @@ export interface WidgemoThemeMapping {
   showBorder?: boolean;
   dynamicBackground?: boolean;
   dark?: boolean;
-  autoDetect?: boolean;
+  autoDetect?: boolean; */
 }
 
 /**
@@ -87,7 +87,7 @@ function resolveThemeValue(value: string): string {
  * Unmapped properties will use widgemo-core defaults.
  */
 export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): WidgemoTheme {
-  const theme: WidgemoTheme = {};
+  const theme: WidgemoTheme = { colors: {} };
 
   if (mapping.colors) {
     theme.colors = {} as WidgemoTheme['colors']; // Start with empty object
@@ -100,7 +100,7 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
   }
 
   // Copy other theme properties directly
-  if (mapping.borderRadius !== undefined) theme.borderRadius = mapping.borderRadius;
+/*   if (mapping.borderRadius !== undefined) theme.borderRadius = mapping.borderRadius;
   if (mapping.spacing !== undefined) theme.spacing = mapping.spacing;
   if (mapping.fontFamily !== undefined) theme.fontFamily = mapping.fontFamily;
   if (mapping.fontSize !== undefined) theme.fontSize = mapping.fontSize;
@@ -113,7 +113,7 @@ export function createWidgemoThemeFromMapping(mapping: WidgemoThemeMapping): Wid
   if (mapping.showBorder !== undefined) theme.showBorder = mapping.showBorder;
   if (mapping.dynamicBackground !== undefined) theme.dynamicBackground = mapping.dynamicBackground;
   if (mapping.dark !== undefined) theme.dark = mapping.dark;
-  if (mapping.autoDetect !== undefined) theme.autoDetect = mapping.autoDetect;
+  if (mapping.autoDetect !== undefined) theme.autoDetect = mapping.autoDetect; */
 
   return theme;
 }
@@ -164,7 +164,6 @@ export const widgemoDemoThemeMapping: WidgemoThemeMapping = {
     swimlaneHeaderBg: '#ffffff',
     columnBg: '#fdf7d8',
   },
-  autoDetect: true,
 };
 export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
   // Create different mappings for light and dark modes
@@ -200,7 +199,6 @@ export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
       swimlaneHeaderBg: '#ffffff',
       columnBg: '#fdf7d8',
     },
-    autoDetect: true,
   };
 
   const darkMapping: WidgemoThemeMapping = {
@@ -235,7 +233,6 @@ export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
       swimlaneHeaderBg: '#101010',
       columnBg: '#121212',
     },
-    autoDetect: true,
   };
 
   const mapping = isDark ? darkMapping : lightMapping;
@@ -248,5 +245,5 @@ export function createWidgemoTheme(isDark: boolean = false): WidgemoTheme {
  */
 export function createWidgemoCoreDefaultsTheme(): WidgemoTheme {
   // Return an empty theme object to use widgemo-core defaults
-  return {};
+  return { colors: {} };
 }

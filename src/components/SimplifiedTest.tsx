@@ -266,7 +266,7 @@ export const SimplifiedTest: React.FC = () => {
             <p>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
             {useWidgemoCoreDefaultTheming ? (
-              <WidgemoThemeProvider mode={currentTheme}>
+              <WidgemoThemeProvider theme={currentTheme}>
                 <Widgemo
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
