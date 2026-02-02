@@ -10,8 +10,6 @@ interface IconsTabProps {
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
   /** Callback when icon library changes */
   onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
-  /** Whether dark mode is enabled */
-  darkMode?: boolean;
 }
 
 /**

@@ -4,7 +4,7 @@ import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
 import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
 import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoAdapters, WidgemoTheme, WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
+import type { WidgemoAdapters, WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -61,7 +61,7 @@ interface SandboxSectionProps {
   onConfigChange?: (config: LegacyWidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: Theme;
-  initialThemeMode?: 'defaults' | 'config' | 'custom';
+  // initialThemeMode?: 'defaults' | 'config' | 'custom';
 }
 
 export const SandboxSection: React.FC<SandboxSectionProps> = ({
@@ -70,7 +70,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   onConfigChange,
   onDataChange,
   currentTheme,
-  initialThemeMode = 'config'
+  // initialThemeMode = 'config'
 }) => {
   const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
   const [config, setConfig] = useState(initialConfig);
@@ -126,16 +126,16 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
 
   // Theming state
-  const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
-  const [primaryColor, setPrimaryColor] = useState('#0066cc');
-  const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
-  const [darkMode, setDarkMode] = useState(false);
+  // const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
+  // const [primaryColor, setPrimaryColor] = useState('#0066cc');
+  // const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
+  // const [darkMode, setDarkMode] = useState(false);
 
   // Ensure darkMode is used for TypeScript
-  void darkMode;
+  // void darkMode;
 
   // Note: darkMode is used by ThemingTab for palette generation display
-  const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
+  // const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
 
   // Icons state
   const [iconLibrary, setIconLibrary] = useState<'none' | 'react-icons' | 'lucide' | 'heroicons'>('none');
@@ -155,31 +155,33 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [jsonEditorText, setJsonEditorText] = useState('');
 
   // Current theme based on theming tab settings
-  const currentSandboxTheme = useMemo(() => {
-    switch (themeMode) {
-      case 'defaults':
-        // For defaults mode, return null to use widgemo defaults
-        return null;
-      case 'config':
-        return undefined; // undefined means use config.theme as-is
-      case 'custom':
-        return {
-          colors: {
-            primary: primaryColor,
-            ...customTheme.colors
-          },
-          ...customTheme
-        } as WidgemoTheme;
-      default:
-        return null;
-    }
-  }, [themeMode, primaryColor, customTheme]);
+  // const currentSandboxTheme = useMemo(() => {
+  //   switch (themeMode) {
+  //     case 'defaults':
+  //       // For defaults mode, return null to use widgemo defaults
+  //       return null;
+  //     case 'config':
+  //       return undefined; // undefined means use config.theme as-is
+  //     case 'custom':
+  //       return {
+  //         colors: {
+  //           primary: primaryColor,
+  //           ...customTheme.colors
+  //         },
+  //         ...customTheme
+  //       } as WidgemoTheme;
+  //     default:
+  //       return null;
+  //   }
+  // }, [themeMode, primaryColor, customTheme]);
+
+  const currentSandboxTheme = undefined;
 
   // Determine if dark mode is actually active based on current theme
-  const isDarkModeActive = useMemo(() => {
-    // Dark mode is now handled via CSS variables, check the current theme
-    return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
-  }, [currentTheme]);
+  // const isDarkModeActive = useMemo(() => {
+  //   // Dark mode is now handled via CSS variables, check the current theme
+  //   return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
+  // }, [currentTheme]);
 
   // Transform widgemoExamples to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
@@ -450,21 +452,21 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   };
 
   // Theming handlers
-  const handleThemeModeChange = useCallback((mode: 'defaults' | 'config' | 'custom') => {
-    setThemeMode(mode);
-  }, []);
+  // const handleThemeModeChange = useCallback((mode: 'defaults' | 'config' | 'custom') => {
+  //   setThemeMode(mode);
+  // }, []);
 
-  const handlePrimaryColorChange = useCallback((color: string) => {
-    setPrimaryColor(color);
-  }, []);
+  // const handlePrimaryColorChange = useCallback((color: string) => {
+  //   setPrimaryColor(color);
+  // }, []);
 
-  const handleCustomThemeChange = useCallback((theme: Partial<WidgemoTheme>) => {
-    setCustomTheme(theme);
-  }, []);
+  // const handleCustomThemeChange = useCallback((theme: Partial<WidgemoTheme>) => {
+  //   setCustomTheme(theme);
+  // }, []);
 
-  const handleDarkModeChange = useCallback((dark: boolean) => {
-    setDarkMode(dark);
-  }, []);
+  // const handleDarkModeChange = useCallback((dark: boolean) => {
+  //   setDarkMode(dark);
+  // }, []);
 
   // Props & Overrides handlers
   const handleOverridesJsonChange = useCallback((value: string) => {
@@ -821,18 +823,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onShowConfigDetailsChange={handleShowConfigDetailsChange}
                 onApplyAdvancedProperties={handleApplyAdvancedProperties}
                 onResetAll={handleResetAll}
-                // ThemingTab props
-                themeMode={themeMode}
-                primaryColor={primaryColor}
-                customTheme={customTheme}
-                darkMode={isDarkModeActive}
-                autoGeneratePalette={autoGeneratePalette}
-                configTheme={undefined}
-                onThemeModeChange={handleThemeModeChange}
-                onPrimaryColorChange={handlePrimaryColorChange}
-                onCustomThemeChange={handleCustomThemeChange}
-                onDarkModeChange={handleDarkModeChange}
-                onAutoGeneratePaletteChange={setAutoGeneratePalette}
                 // IconsTab props
                 iconLibrary={iconLibrary}
                 onIconLibraryChange={handleIconLibraryChange}

@@ -1,12 +1,11 @@
 import React from 'react';
 import { Alert, Nav } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
-import { ThemingTab } from './ThemingTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
 import { IconsTab } from './IconsTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
-import type { WidgemoTheme, LegacyWidgemoConfig } from 'widgemo-core';
+import type { LegacyWidgemoConfig } from 'widgemo-core';
 
 interface PresetOption {
   name: string;
@@ -56,19 +55,6 @@ export interface LeftPanelProps {
   onShowConfigDetailsChange: (value: boolean) => void;
   onApplyAdvancedProperties: () => void;
   onResetAll: () => void;
-
-  // ThemingTab props
-  themeMode: 'defaults' | 'config' | 'custom';
-  primaryColor: string;
-  customTheme: Partial<WidgemoTheme>;
-  darkMode: boolean;
-  autoGeneratePalette: boolean;
-  configTheme?: Partial<WidgemoTheme>;
-  onThemeModeChange: (mode: 'defaults' | 'config' | 'custom') => void;
-  onPrimaryColorChange: (color: string) => void;
-  onCustomThemeChange: (theme: Partial<WidgemoTheme>) => void;
-  onDarkModeChange: (dark: boolean) => void;
-  onAutoGeneratePaletteChange: (auto: boolean) => void;
 
   // IconsTab props
   iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
@@ -133,18 +119,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onShowConfigDetailsChange,
   onApplyAdvancedProperties,
   onResetAll,
-  // ThemingTab props
-  themeMode,
-  primaryColor,
-  customTheme,
-  darkMode,
-  autoGeneratePalette,
-  configTheme,
-  onThemeModeChange,
-  onPrimaryColorChange,
-  onCustomThemeChange,
-  onDarkModeChange,
-  onAutoGeneratePaletteChange,
   // IconsTab props
   iconLibrary,
   onIconLibraryChange,
@@ -169,7 +143,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
 }) => {
   const tabs = [
     { id: 'config-editor', label: 'Config Editor' },
-    { id: 'theming', label: 'Theming' },
     { id: 'icons', label: 'Icons' },
     { id: 'loading-states', label: 'Loading & States' },
     { id: 'sample-data', label: 'Sample Data' },
@@ -299,27 +272,10 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
           />
         )}
 
-        {activeTab === 'theming' && (
-          <ThemingTab
-            themeMode={themeMode}
-            primaryColor={primaryColor}
-            customTheme={customTheme}
-            darkMode={darkMode}
-            autoGeneratePalette={autoGeneratePalette}
-            configTheme={configTheme}
-            onThemeModeChange={onThemeModeChange}
-            onPrimaryColorChange={onPrimaryColorChange}
-            onCustomThemeChange={onCustomThemeChange}
-            onDarkModeChange={onDarkModeChange}
-            onAutoGeneratePaletteChange={onAutoGeneratePaletteChange}
-          />
-        )}
-
         {activeTab === 'icons' && (
           <IconsTab
             iconLibrary={iconLibrary}
             onIconLibraryChange={onIconLibraryChange}
-            darkMode={darkMode}
           />
         )}
 
