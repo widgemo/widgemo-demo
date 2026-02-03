@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, registerWidgemoHook, /* registerWidgemoIcon, */ WidgemoThemeProvider } from 'widgemo-core';
+import { Widgemo, widgemoRegistry, /* registerWidgemoHook, registerWidgemoIcon, */ WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
 import type { Entity, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
@@ -18,7 +18,7 @@ declare global {
 let renderCount = 0;
 const renderQueue: number[] = [];
 // Pre-render hook to start timing
-registerWidgemoHook({
+widgemoRegistry.registerWidgemoHook({
   name: 'preRender',
   hook: (...args: unknown[]) => {
     const [componentName] = args as [string, { data: Entity[]; className?: string }];
@@ -31,7 +31,7 @@ registerWidgemoHook({
   }
 });
 // Post-render hook to measure and log performance
-registerWidgemoHook({
+widgemoRegistry.registerWidgemoHook({
   name: 'postRender',
   hook: (...args: unknown[]) => {
     const renderId = renderQueue.shift();
