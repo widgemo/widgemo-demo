@@ -1,2 +1,1 @@
-// Custom modes will be exported here
-// export { registerTimelineMode } from './TimelineMode';
+export { default as TimelineMode, type TimelineModeConfig } from './TimelineMode';

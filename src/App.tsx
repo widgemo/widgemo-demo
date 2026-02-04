@@ -7,6 +7,7 @@ import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
 import { useTheme } from './hooks/useTheme';
 import { registerProgressBarField, registerJsonField } from './components/custom-fields';
+import { TimelineMode } from './components/custom-modes';
 import './App.css';
 
 function AppContent() {
@@ -16,6 +17,20 @@ function AppContent() {
   widgemoRegistry.registerWidgemoFieldType(registerProgressBarField());
 
   widgemoRegistry.registerWidgemoFieldType(registerJsonField());
+
+  // Register custom modes
+  widgemoRegistry.registerWidgemoMode({
+    name: 'timeline',
+    component: TimelineMode,
+    defaultConfig: {
+      dateField: 'date',
+      titleField: 'title',
+      sortOrder: 'desc',
+      orientation: 'vertical',
+      showLines: true,
+      color: '#007bff'
+    }
+  });
 
   // Other icons - commented out for testing
   /*

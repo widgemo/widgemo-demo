@@ -3384,6 +3384,99 @@ const widgemoExamples = [
     description: 'Enhanced grid mode with responsive columns, custom gaps, and item layouts',
     data: teaserSampleData,
     config: enhancedGridModeConfig
+  },
+  {
+    id: 'timeline-mode',
+    title: 'Timeline Mode',
+    description: 'Timeline mode displaying chronological events with dates, titles, and descriptions',
+    data: [
+      {
+        id: 1,
+        date: '2024-01-15',
+        title: 'Project Kickoff',
+        description: 'Initial project planning and team assembly completed. All stakeholders aligned on objectives.',
+        category: 'Planning',
+        status: 'completed'
+      },
+      {
+        id: 2,
+        date: '2024-02-01',
+        title: 'Design Phase Complete',
+        description: 'UI/UX designs finalized and approved. Wireframes and mockups delivered to development team.',
+        category: 'Design',
+        status: 'completed'
+      },
+      {
+        id: 3,
+        date: '2024-02-15',
+        title: 'Development Started',
+        description: 'Frontend and backend development initiated. Core architecture implemented.',
+        category: 'Development',
+        status: 'in-progress'
+      },
+      {
+        id: 4,
+        date: '2024-03-01',
+        title: 'First Prototype Demo',
+        description: 'Internal demo of first working prototype. Feedback collected from key stakeholders.',
+        category: 'Milestone',
+        status: 'completed'
+      },
+      {
+        id: 5,
+        date: '2024-03-15',
+        title: 'Testing Phase',
+        description: 'Comprehensive testing begins including unit tests, integration tests, and user acceptance testing.',
+        category: 'Testing',
+        status: 'pending'
+      },
+      {
+        id: 6,
+        date: '2024-04-01',
+        title: 'Beta Release',
+        description: 'Beta version released to select users for real-world testing and feedback.',
+        category: 'Release',
+        status: 'pending'
+      },
+      {
+        id: 7,
+        date: '2024-04-15',
+        title: 'Production Launch',
+        description: 'Full production deployment and public launch of the application.',
+        category: 'Release',
+        status: 'pending'
+      }
+    ],
+    config: {
+      zones: {
+        header: {
+          enabled: true,
+          title: 'Project Timeline',
+          subtitle: 'Chronological view of project milestones and events',
+          icon: { src: 'calendar', size: 24, color: '#2196f3' }
+        },
+        content: {
+          enabled: true,
+          mode: 'timeline',
+          timeline: {
+            dateField: 'date',
+            sortOrder: 'asc' as const,
+            orientation: 'horizontal' as const,
+            showLines: true,
+            color: '#2196f3',
+            dateFormat: {
+              year: 'numeric' as const,
+              month: 'short' as const,
+              day: 'numeric' as const
+            }
+          }
+        },
+        footer: {
+          enabled: true,
+          subtitle: 'Timeline mode with horizontal orientation and connecting lines'
+        }
+      }
+    }
   }
 ];
 
