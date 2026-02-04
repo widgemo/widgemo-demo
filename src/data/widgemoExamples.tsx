@@ -3465,9 +3465,17 @@ const widgemoExamples = [
             showLines: true,
             color: '#2196f3',
             dateFormat: {
-              year: 'numeric' as const,
-              month: 'short' as const,
-              day: 'numeric' as const
+              year: 'numeric' as const, // 'numeric' | '2-digit'
+              month: 'short' as const, // 'numeric' | '2-digit' | 'long' | 'short' | 'narrow'
+              day: 'numeric' as const, // 'numeric' | '2-digit'
+              hour: 'numeric' as const, // 'numeric' | '2-digit'
+              minute: 'numeric' as const, // 'numeric' | '2-digit'
+              weekday: 'short', // 'long' | 'short' | 'narrow'
+              era: undefined, // 'long' | 'short' | 'narrow'
+              timeZoneName: 'short', // 'long' | 'short'
+              hour12: undefined, // boolean
+              minute12: undefined, // boolean
+              second: undefined // 'numeric' | '2-digit'
             }
           }
         },
