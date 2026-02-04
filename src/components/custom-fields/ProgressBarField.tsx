@@ -1,20 +1,19 @@
-// Define interface for progress bar field config
-export interface ProgressBarFieldConfig {
-  type: 'progress';
+// Define interface for progress bar renderAs options
+export interface ProgressBarRenderAsOptions {
   showPercentage?: boolean;
   color?: string;
   height?: string;
+  maxValue?: number;
 }
 
 export const registerProgressBarField = () => ({
-  name: 'progress',
-  render: (value: unknown, config: unknown) => {
+  name: 'customProgress',
+  render: (value: unknown, options: import('widgemo-core').RenderAsOptions) => {
+    const progressOptions = options as ProgressBarRenderAsOptions;
     const progress = Math.min(100, Math.max(0, Number(value) || 0));
-    // Access custom config properties with proper typing
-    const customConfig = config as unknown as ProgressBarFieldConfig;
-    const showPercentage = customConfig.showPercentage !== false;
-    const color = customConfig.color || '#007bff';
-    const height = customConfig.height || '8px';
+    const showPercentage = progressOptions.showPercentage !== false;
+    const color = progressOptions.color || '#007bff';
+    const height = progressOptions.height || '8px';
 
     return (
       <div className="progress-container" style={{ width: '100%', maxWidth: '200px' }}>
@@ -51,5 +50,10 @@ export const registerProgressBarField = () => ({
       </div>
     );
   },
-  defaultConfig: {}
+  defaultOptions: {
+    showPercentage: true,
+    color: '#007bff',
+    height: '8px',
+    maxValue: 100
+  }
 });

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-// Define interface for JSON field config
-export interface JsonFieldConfig {
-  type: 'json';
+// Define interface for JSON renderAs options
+export interface JsonRenderAsOptions {
   collapsed?: boolean;
   maxDepth?: number;
+  theme?: string;
 }
 
 export const registerJsonField = () => ({
-  name: 'json',
-  render: (value: unknown, config: unknown) => {
-    const customConfig = config as unknown as JsonFieldConfig;
-    const collapsed = customConfig.collapsed ?? true;
-    const maxDepth = customConfig.maxDepth ?? 3;
+  name: 'jsonView',
+  render: (value: unknown, options: import('widgemo-core').RenderAsOptions) => {
+    const jsonOptions = options as JsonRenderAsOptions;
+    const collapsed = jsonOptions.collapsed ?? true;
+    const maxDepth = jsonOptions.maxDepth ?? 3;
 
     // Parse JSON if it's a string, otherwise use as-is
     let jsonData;
@@ -160,5 +160,9 @@ export const registerJsonField = () => ({
       </div>
     );
   },
-  defaultConfig: {}
+  defaultOptions: {
+    collapsed: true,
+    maxDepth: 3,
+    theme: 'light'
+  }
 });

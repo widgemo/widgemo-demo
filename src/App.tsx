@@ -13,10 +13,10 @@ import './App.css';
 function AppContent() {
   const { currentTheme } = useTheme();
   
-  // Register custom field types
-  widgemoRegistry.registerWidgemoFieldType(registerProgressBarField());
+  // Register custom renderAs renderers
+  widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
 
-  widgemoRegistry.registerWidgemoFieldType(registerJsonField());
+  widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
 
   // Register custom modes
   widgemoRegistry.registerWidgemoMode({

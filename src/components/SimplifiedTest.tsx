@@ -273,13 +273,14 @@ export const SimplifiedTest: React.FC = () => {
               { id: 4, name: 'Task D', progress: 25 }
             ]}
             config={{
+              devMode: true,
               zones: {
                 content: {
                   mode: 'table',
                   columns: [
-                    { field: 'name', header: 'Task Name', type: 'text' },
-                    { field: 'progress', header: 'Progress', type: 'progress' as const, showPercentage: true, color: '#28a745' } as unknown as ColumnConfig
-                  ]
+                    { field: 'name', header: 'Task Name', type: 'text' } as const,
+                    { field: 'progress', header: 'Progress', type: 'number', renderAs: 'customProgress', renderAsOptions: { showPercentage: true, color: '#28a745' } } as const
+                  ] as ColumnConfig[]
                 }
               }
             }}
@@ -318,13 +319,14 @@ export const SimplifiedTest: React.FC = () => {
               }
             ]}
             config={{
+              devMode: true,
               zones: {
                 content: {
                   mode: 'table',
                   columns: [
-                    { field: 'name', header: 'Data Type', type: 'text' },
-                    { field: 'jsonData', header: 'JSON Data', type: 'json' as const, collapsed: true, maxDepth: 4 } as unknown as ColumnConfig
-                  ]
+                    { field: 'name', header: 'Data Type', type: 'text' } as const,
+                    { field: 'jsonData', header: 'JSON Data', type: 'text', renderAs: 'jsonView', renderAsOptions: { collapsed: true, maxDepth: 4 } } as const
+                  ] as ColumnConfig[]
                 }
               }
             }}

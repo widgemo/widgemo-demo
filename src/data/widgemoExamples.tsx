@@ -1677,7 +1677,7 @@ export const ratingFieldConfig: WidgemoConfig = {
             color: '#e91e63',
             emptyColor: '#fdbfd4',
             size: 18,
-            iconName: 'heart'
+            icon: 'heart'
           }
         },
         {
@@ -1687,7 +1687,7 @@ export const ratingFieldConfig: WidgemoConfig = {
             color: '#0f6005',
             emptyColor: 'var(--bg-color)',
             size: 20,
-            iconName: 'dollar-sign'
+            icon: 'dollar-sign'
           }
         },
         { field: 'reviews', header: 'Reviews', align: 'center' }

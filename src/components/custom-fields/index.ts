@@ -1,2 +1,2 @@
-export { registerProgressBarField, type ProgressBarFieldConfig } from './ProgressBarField';
-export { registerJsonField, type JsonFieldConfig } from './JsonField';
+export { registerProgressBarField, type ProgressBarRenderAsOptions } from './ProgressBarField';
+export { registerJsonField, type JsonRenderAsOptions } from './JsonField';
