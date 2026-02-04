@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Widgemo, widgemoRegistry, /* registerWidgemoHook, registerWidgemoIcon, */ WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { Entity, WidgemoConfig } from 'widgemo-core';
+import type { Entity, WidgemoConfig, ColumnConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 // import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { useTheme } from '../hooks/useTheme';
@@ -261,6 +261,32 @@ export const SimplifiedTest: React.FC = () => {
       )}
       
       <div className="row">
+        {/* Test section for custom field types */}
+        <div className="col-12 mb-4">
+          <h2>🧪 Custom Field Type Test: Progress Bar</h2>
+          <p>Testing the custom 'progress' field type registered above.</p>
+          <Widgemo
+            data={[
+              { id: 1, name: 'Task A', progress: 75 },
+              { id: 2, name: 'Task B', progress: 45 },
+              { id: 3, name: 'Task C', progress: 90 },
+              { id: 4, name: 'Task D', progress: 25 }
+            ]}
+            config={{
+              zones: {
+                content: {
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Task Name', type: 'text' },
+                    { field: 'progress', header: 'Progress', type: 'progress' as const, showPercentage: true, color: '#28a745' } as unknown as ColumnConfig
+                  ]
+                }
+              }
+            }}
+            className="my-custom-widgemo"
+          />
+        </div>
+
         {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
         {examplesWithDevMode.map((example) => (
           <div key={example.id} className="col-12 mb-4">

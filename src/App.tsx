@@ -6,19 +6,67 @@ import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
 import { useTheme } from './hooks/useTheme';
-import { fontAwesomeRenderIcon } from './utils/fontAwesomeIconRenderer';
 import './App.css';
+
+// Define interface for progress bar field config
+interface ProgressBarFieldConfig {
+  type: 'progress';
+  showPercentage?: boolean;
+  color?: string;
+  height?: string;
+}
 
 function AppContent() {
   const { currentTheme } = useTheme();
   
-  // Register custom icons for widgemo
-  // HTML5 icon - active
-  widgemoRegistry.registerWidgemoIcon({
-    name: 'html5',
-    component: (props: { className?: string; size?: number; color?: string }) => 
-      fontAwesomeRenderIcon({ name: 'html5', ...props }),
-    defaultProps: { size: 16, color: '#e34f26' }
+  // Register custom field type for progress bars
+  // Progress bar - active
+  widgemoRegistry.registerWidgemoFieldType({
+    name: 'progress',
+    render: (value, config) => {
+      const progress = Math.min(100, Math.max(0, Number(value) || 0));
+      // Access custom config properties with proper typing
+      const customConfig = config as unknown as ProgressBarFieldConfig;
+      const showPercentage = customConfig.showPercentage !== false;
+      const color = customConfig.color || '#007bff';
+      const height = customConfig.height || '8px';
+      
+      return (
+        <div className="progress-container" style={{ width: '100%', maxWidth: '200px' }}>
+          <div 
+            className="progress-bar"
+            style={{
+              width: '100%',
+              height,
+              backgroundColor: '#e9ecef',
+              borderRadius: '4px',
+              overflow: 'hidden'
+            }}
+          >
+            <div 
+              style={{
+                width: `${progress}%`,
+                height: '100%',
+                backgroundColor: color,
+                transition: 'width 0.3s ease',
+                borderRadius: '4px'
+              }}
+            />
+          </div>
+          {showPercentage && (
+            <div style={{ 
+              fontSize: '12px', 
+              color: '#6c757d', 
+              textAlign: 'center', 
+              marginTop: '2px' 
+            }}>
+              {progress}%
+            </div>
+          )}
+        </div>
+      );
+    },
+    defaultConfig: {}
   });
 
   // Other icons - commented out for testing
