@@ -1,12 +1,8 @@
-// This file contains pre-defined examples for widgemo components.
-// Configs and data are extracted to module-level constants for performance optimization.
-// These objects are not recreated on each render, ensuring stable references and preventing unnecessary re-renders.
-// Memoization is achieved through static exports, allowing React to optimize component updates.
-
 import type { ActionContext, Entity, WidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
 import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData } from './sampleData';
+import type { SampleData } from './types';
 
 interface TaskEntity {
   id: number;
@@ -51,26 +47,6 @@ interface CurrencyDemoEntity {
   region?: string;
   discount?: number;
   value?: number;
-}
-
-interface SampleData {
-  id?: number;
-  name: string;
-  email?: string;
-  role?: string;
-  department?: string;
-  status?: boolean;
-  lastLogin?: string;
-  value?: number;
-  category?: string;
-  metric?: string;
-  month?: string;
-  sales?: number;
-  tasks?: number;
-  rating?: string;
-  feedback?: string;
-  activeUsers?: number;
-  totalUsers?: number;
 }
 
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.

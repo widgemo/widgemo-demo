@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppliedConfigViewer } from './sandbox/AppliedConfigViewer';
+import { AppliedConfigViewer } from './AppliedConfigViewer';
 import type { ResolvedWidgemoProps, LegacyWidgemoConfig, WidgemoAdapters, RenderIcon, WidgemoTheme } from 'widgemo-core';
 
 interface AppliedConfigProps {

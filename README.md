@@ -44,7 +44,7 @@ Widgemo Demo includes a custom FontAwesome icon renderer that maps widgemo's ico
 
 ### Custom Icon Renderer
 
-The demo uses a custom `fontAwesomeRenderIcon` function located in `src/utils/fontAwesomeIconRenderer.tsx` that provides:
+The demo uses a custom `fontAwesomeRenderIcon` function that provides:
 
 - **25+ mapped icons** covering all widgemo UI elements
 - **FontAwesome integration** using react-icons/fa
@@ -66,7 +66,7 @@ The demo uses a custom `fontAwesomeRenderIcon` function located in `src/utils/fo
 
 ### Using Different Icon Libraries
 
-To use a different icon library, modify `src/utils/fontAwesomeIconRenderer.tsx` or create a new renderer:
+To use a different icon library, create a new renderer function:
 
 ```tsx
 // Example: Using Heroicons instead

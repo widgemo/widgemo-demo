@@ -8,7 +8,7 @@ import type { WidgemoAdapters, WidgemoConfig, LegacyWidgemoConfig } from 'widgem
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
-import { AppliedConfig } from './AppliedConfig';
+import { AppliedConfig } from './sandbox/AppliedConfig';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';

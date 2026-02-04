@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FaSun, FaMoon } from 'react-icons/fa';
-import { useTheme } from '../hooks/useTheme';
+import { useTheme } from '../../hooks/useTheme';
 
 export const ThemeToggle: React.FC = () => {
   const { currentTheme, setCurrentTheme } = useTheme();

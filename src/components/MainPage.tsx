@@ -1,10 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
-import { TeaserSection } from './TeaserSection';
-import { AnatomySection } from './AnatomySection';
-import { GallerySection } from './GallerySection';
-import { AdvancedSection } from './AdvancedSection';
-import { ResourcesSection } from './ResourcesSection';
+import { TeaserSection, AnatomySection, GallerySection, AdvancedSection, ResourcesSection } from './main-page';
 
 export const MainPage: React.FC = () => {
   const { currentTheme } = useTheme();

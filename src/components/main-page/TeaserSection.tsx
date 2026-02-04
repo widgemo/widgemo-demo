@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo } from 'widgemo-core';
-import widgemoExamples from '../data/widgemoExamples';
+import widgemoExamples from '../../data/widgemoExamples';
 
 interface TeaserSectionProps {
   onExploreGallery: () => void;

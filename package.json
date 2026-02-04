@@ -17,9 +17,6 @@
     "react-icons": "^5.5.0",
     "react-resizable-panels": "^4.2.0",
     "react-router-dom": "^7.11.0",
-    "react-slick": "^0.31.0",
-    "recharts": "^3.6.0",
-    "slick-carousel": "^1.8.1",
     "widgemo-core": "file:../widgemo-core"
   },
   "devDependencies": {
