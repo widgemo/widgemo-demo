@@ -287,6 +287,51 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
 
+        {/* JSON Field Type Test */}
+        <div className="col-12 mb-4">
+          <h2>JSON Field Type Test</h2>
+          <p>Testing custom JSON field type with collapsible sections and color coding</p>
+          <Widgemo
+            data={[
+              {
+                id: 1,
+                name: 'Simple Object',
+                jsonData: JSON.stringify({ name: "John", age: 30, active: true, score: 85.5 })
+              },
+              {
+                id: 2,
+                name: 'Nested Object',
+                jsonData: JSON.stringify({
+                  user: { id: 123, profile: { theme: "dark", notifications: true } },
+                  settings: { autoSave: false, language: "en" }
+                })
+              },
+              {
+                id: 3,
+                name: 'Array Data',
+                jsonData: JSON.stringify({
+                  items: [
+                    { id: 1, name: "Item A", tags: ["red", "small"] },
+                    { id: 2, name: "Item B", tags: ["blue", "large"] }
+                  ]
+                })
+              }
+            ]}
+            config={{
+              zones: {
+                content: {
+                  mode: 'table',
+                  columns: [
+                    { field: 'name', header: 'Data Type', type: 'text' },
+                    { field: 'jsonData', header: 'JSON Data', type: 'json' as const, collapsed: true, maxDepth: 4 } as unknown as ColumnConfig
+                  ]
+                }
+              }
+            }}
+            className="my-custom-widgemo"
+          />
+        </div>
+
         {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
         {examplesWithDevMode.map((example) => (
           <div key={example.id} className="col-12 mb-4">

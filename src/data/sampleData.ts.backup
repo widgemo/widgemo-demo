@@ -41,24 +41,89 @@ export const currencyPrecisionSampleData: SampleData[] = [
 ];
 
 // Sample data for JSON field type testing
-// Sample data for JSON field type testing
 export const jsonSampleData: SampleData[] = [
   {
     id: 1,
-    name: "Simple Object",
-    jsonData: `{"name": "John", "age": 30, "active": true}`
+    name: 'User Profile',
+    jsonData: JSON.stringify({
+      user: {
+        id: 12345,
+        name: "John Doe",
+        email: "john.doe@example.com",
+        profile: {
+          age: 30,
+          active: true,
+          roles: ["admin", "user"],
+          preferences: {
+            theme: "dark",
+            notifications: {
+              email: true,
+              push: false,
+              sms: null
+            }
+          }
+        },
+        metadata: {
+          createdAt: "2024-01-15T10:30:00Z",
+          lastLogin: "2024-01-20T14:22:15Z",
+          tags: ["premium", "verified"]
+        }
+      }
+    })
   },
   {
     id: 2,
-    name: "Nested Object", 
-    jsonData: `{"user": {"id": 123, "profile": {"theme": "dark"}}, "settings": {"autoSave": false}}`
+    name: 'API Response',
+    jsonData: JSON.stringify({
+      status: "success",
+      code: 200,
+      data: {
+        items: [
+          { id: 1, name: "Item A", price: 29.99, inStock: true },
+          { id: 2, name: "Item B", price: 49.99, inStock: false },
+          { id: 3, name: "Item C", price: 19.99, inStock: true }
+        ],
+        pagination: {
+          page: 1,
+          limit: 10,
+          total: 156,
+          hasNext: true
+        }
+      },
+      timestamp: "2024-01-20T15:30:45Z"
+    })
   },
   {
     id: 3,
-    name: "Array Data",
-    jsonData: `{"items": [{"id": 1, "name": "Item A"}, {"id": 2, "name": "Item B"}]}`
-  }
+    name: 'Configuration',
+    jsonData: JSON.stringify({
+      app: {
+        version: "2.1.0",
+        environment: "production",
+        features: {
+          darkMode: true,
+          analytics: false,
+          betaFeatures: ["newUI", "aiAssistant"]
+        },
+        limits: {
+          maxUsers: 1000,
+          maxProjects: 50,
+          storageGB: 100
+        }
+      },
+      database: {
+        host: "db.example.com",
+        port: 5432,
+        ssl: true,
+        connectionPool: {
+          min: 2,
+          max: 20,
+          idle: 30000
+        }
+      }
+    })
 ];
+
 // Sample data for currency compact handling
 export const currencyCompactSampleData: SampleData[] = [
   { id: 1, description: 'Thousand', amount: 1500, threshold: 1000 },
