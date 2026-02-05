@@ -215,6 +215,18 @@ export const progressExampleSampleData: SampleData[] = [
   { id: 8, name: 'Task H', progress: 150, status: 'overflow', priority: 'low' } // Test >100 value
 ];
 
+// Sample data for Project and complex items layout testing
+export const projectExampleSampleData: SampleData[] = [
+  { id: 1, title: 'Task A', description: 'Description for Task A', completion: 75, status: 'active', priority: 'high', assignee: 'Alice', dueDate: '2024-02-15' },
+  { id: 2, title: 'Task B', description: 'Description for Task B', completion: 30, status: 'active', priority: 'medium', assignee: 'Bob', dueDate: '2024-03-01' },
+  { id: 3, title: 'Task C', description: 'Description for Task C', completion: 100, status: 'pending', priority: 'low', assignee: 'Charlie', dueDate: '2024-01-30' },
+  { id: 4, title: 'Task D', description: 'Description for Task D', completion: 0, status: 'inactive', priority: 'high', assignee: 'David', dueDate: '2024-04-10' },
+  { id: 5, title: 'Task E', description: 'Description for Task E', completion: 45, status: 'pending', priority: 'medium', assignee: 'Eva', dueDate: '2024-02-28' },
+  { id: 6, title: 'Task F', description: 'Description for Task F', completion: 90, status: 'inactive', priority: 'low', assignee: 'Frank', dueDate: '2024-03-15' },
+  { id: 7, title: 'Task G', description: 'Description for Task G', completion: -5, status: 'pending', priority: 'high', assignee: 'Grace', dueDate: '2024-04-01' },
+  { id: 8, title: 'Task H', description: 'Description for Task H', completion: 150, status: 'active', priority: 'low', assignee: 'Hank', dueDate: '2024-05-20' } 
+];
+
 // Sample data for 12 users
 export const twelveUsersData: SampleData[] = teaserSampleData.slice(0, 12);
 

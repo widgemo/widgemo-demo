@@ -1,7 +1,7 @@
 import type { ActionContext, Entity, WidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
-import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData } from './sampleData';
+import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData, projectExampleSampleData } from './sampleData';
 import type { SampleData } from './types';
 
 interface TaskEntity {
@@ -1110,6 +1110,120 @@ export const enhancedGridModeConfig: WidgemoConfig = {
       enabled: true,
       title: 'cardOptions:',
       subtitle: 'backgroundColor, borderStyle, borderColor, borderWidth, borderRadius, as well as padding applied to each card item'
+     }
+  }
+};
+
+export const complexGridCardConfig: WidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'Grid Mode with Complex Template and Sections on Cards',
+      subtitle: 'Card item style with complex templates including badges, progress, ratings, and currency formatting'
+    },
+    content: {
+      mode: "grid",
+      item: {
+        style: "card",
+        cardOptions: {
+          border: true,
+          borderStyle: "solid",
+          borderWidth: "2px",
+          borderColor: "#135290",
+          borderRadius: "12px",
+          backgroundColor: "#858585",
+          padding: "1.5rem"
+        },
+        layout: {
+          preset: "custom",
+          custom: {
+            sectionOrder: ["header", "details", "progress"],
+            fieldArrangement: "inline",
+            //direction: "horizontal",
+            fieldsPerRow: 2,
+            gap: "1rem"
+          }
+        },
+        template: {
+          sections: [
+            {
+              title: "header",
+              fields: [
+                {
+                  key: "title",
+                  type: "text",
+                  label: "Project Title",
+                  showLabel: false
+                },
+                {
+                  key: "status",
+                  type: "text",
+                  renderAs: "badge",
+                  badgeOptions: {
+                    colorMap: {
+                      active: "#28a745",
+                      inactive: "#6c757d",
+                      pending: "#ffc107"
+                    }
+                  },
+                  showLabel: false
+                }
+              ]
+            },
+            {
+              title: "details",
+              fields: [
+                {
+                  key: "description",
+                  type: "text",
+                  label: "Description"
+                },
+                {
+                  key: "priority",
+                  type: "text",
+                  label: "Priority",
+                  renderAs: "badge",
+                  badgeOptions: {
+                    colorMap: {
+                      high: "#dc3545",
+                      medium: "#ffc107",
+                      low: "#28a745"
+                    }
+                  }
+                },
+                {
+                  key: "assignee",
+                  type: "text",
+                  label: "Assigned To"
+                },
+                {
+                  key: "dueDate",
+                  type: "text",
+                  label: "Due Date"
+                }
+              ]
+            },
+            {
+              title: "progress",
+              fields: [
+                {
+                  key: "completion",
+                  type: "number",
+                  renderAs: "progress",
+                  progressOptions: {
+                    showPercentage: true,
+                    color: "#007bff"
+                  },
+                  label: "Progress"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    footer: { 
+      enabled: false,
      }
   }
 };
@@ -3384,6 +3498,13 @@ const widgemoExamples = [
     description: 'Enhanced grid mode with responsive columns, custom gaps, and item layouts',
     data: teaserSampleData,
     config: enhancedGridModeConfig
+  },
+  {
+    id: 'grid-mode-complex',
+    title: 'Grid Mode - Complex',
+    description: 'Complex grid mode with variable column spans, custom item renderers, and hover effects',
+    data: projectExampleSampleData,
+    config: complexGridCardConfig
   },
   {
     id: 'timeline-mode',
