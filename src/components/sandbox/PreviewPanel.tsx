@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
 import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
 import { legacyToUnified } from 'widgemo-core';
 
 interface PreviewPanelProps {
@@ -39,9 +39,13 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   const [useUnified, setUseUnified] = React.useState(false);
   const [selectedTheme, setSelectedTheme] = React.useState('default');
 
+  // Sugar props for testing
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
   // Modify unified config to include theme
   const getUnifiedConfig = () => {
-    const unifiedConfig = legacyToUnified(config as any, data);
+    const unifiedConfig = legacyToUnified(config as LegacyWidgemoConfig, data);
     unifiedConfig.theme = selectedTheme; // Set global theme
     return unifiedConfig;
   };
@@ -68,6 +72,18 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <option value="dark">Dark Theme</option>
             </Form.Select>
           )}
+          <Form.Check
+            type="checkbox"
+            label="Loading"
+            checked={loading}
+            onChange={(e) => setLoading(e.target.checked)}
+          />
+          <Form.Check
+            type="checkbox"
+            label="Error"
+            checked={!!error}
+            onChange={(e) => setError(e.target.checked ? 'Test error occurred' : null)}
+          />
           <Form.Check
             type="checkbox"
             label="Auto width"
@@ -125,7 +141,13 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           data={data} 
           config={useUnified ? getUnifiedConfig() : config} 
           configVersion={useUnified ? 'unified' : 'legacy'} 
-          className="my-custom-widgemo" 
+          className="my-custom-widgemo"
+          loading={loading}
+          error={error}
+          onRetry={() => {
+            setLoading(false);
+            setError(null);
+          }}
         />
       </div>
     </div>
