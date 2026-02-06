@@ -47,6 +47,12 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   const getUnifiedConfig = () => {
     const unifiedConfig = legacyToUnified(config as LegacyWidgemoConfig, data);
     unifiedConfig.theme = selectedTheme; // Set global theme
+    // Enable devMode for testing
+    unifiedConfig.devMode = {
+      enabled: true,
+      position: 'top-right',
+      excludeFields: ['zones.content.data', 'zones.content.status', 'zones.content.error']
+    };
     return unifiedConfig;
   };
 
