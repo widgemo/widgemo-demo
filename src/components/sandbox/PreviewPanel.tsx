@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
 import { Widgemo } from 'widgemo-core';
 import type { WidgemoConfig } from 'widgemo-core';
+import { legacyToUnified } from 'widgemo-core';
 
 interface PreviewPanelProps {
   // Configuration
@@ -34,6 +35,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
+  // Toggle for config version
+  const [useUnified, setUseUnified] = React.useState(false);
+
   // Widgemo handles theming internally
 
   return (
@@ -41,6 +45,12 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="mb-0">Live Preview</h5>
         <div className="d-flex align-items-center gap-3">
+          <Form.Check
+            type="checkbox"
+            label="Unified Config"
+            checked={useUnified}
+            onChange={(e) => setUseUnified(e.target.checked)}
+          />
           <Form.Check
             type="checkbox"
             label="Auto width"
@@ -94,7 +104,12 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           width: isAutoWidth ? 'auto' : `${width}px`
         }}
       >
-        <Widgemo data={data} config={config} className="my-custom-widgemo" />
+        <Widgemo 
+          data={data} 
+          config={useUnified ? legacyToUnified(config as any, data) : config} 
+          configVersion={useUnified ? 'unified' : 'legacy'} 
+          className="my-custom-widgemo" 
+        />
       </div>
     </div>
   );
