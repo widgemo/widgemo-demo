@@ -37,8 +37,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 
   // Toggle for config version
   const [useUnified, setUseUnified] = React.useState(false);
+  const [selectedTheme, setSelectedTheme] = React.useState('default');
 
-  // Widgemo handles theming internally
+  // Modify unified config to include theme
+  const getUnifiedConfig = () => {
+    const unifiedConfig = legacyToUnified(config as any, data);
+    unifiedConfig.theme = selectedTheme; // Set global theme
+    return unifiedConfig;
+  };
 
   return (
     <div className="p-4 h-100">
@@ -51,6 +57,17 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
             checked={useUnified}
             onChange={(e) => setUseUnified(e.target.checked)}
           />
+          {useUnified && (
+            <Form.Select
+              value={selectedTheme}
+              onChange={(e) => setSelectedTheme(e.target.value)}
+              size="sm"
+              style={{ width: '120px' }}
+            >
+              <option value="default">Default Theme</option>
+              <option value="dark">Dark Theme</option>
+            </Form.Select>
+          )}
           <Form.Check
             type="checkbox"
             label="Auto width"
@@ -106,7 +123,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       >
         <Widgemo 
           data={data} 
-          config={useUnified ? legacyToUnified(config as any, data) : config} 
+          config={useUnified ? getUnifiedConfig() : config} 
           configVersion={useUnified ? 'unified' : 'legacy'} 
           className="my-custom-widgemo" 
         />

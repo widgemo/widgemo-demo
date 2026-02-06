@@ -131,7 +131,7 @@ export const fixedHeaderConfig: WidgemoConfig = {
     header: {
       enabled: true,
       collapse: { initialState: 'fixed' },
-      icon: { src: 'users', size: 24, color: '#15abf0' },
+      icon: { src: 'users', size: 24},
       title: 'Team Overview',
       subtitle: 'Quick stats and actions'
     },
@@ -143,7 +143,7 @@ export const fixedHeaderConfig: WidgemoConfig = {
       mode: 'grid' },
     footer: {
       enabled: true,
-      icon: { src: 'users', size: 24, color: '#15abf0' },
+      icon: { src: 'users'},
       className: 'custom-footer-class',
       title: (data) => `Team Members (${data.length} users)`,
       subtitle: '- "Manage your team efficiently"',
@@ -352,7 +352,7 @@ export const minimalLayoutConfig: WidgemoConfig = {
     header: {
       enabled: true,
       layout: { preset: 'minimal' },
-      icon: { src: 'clock', size: 20, color: '#11a661' },
+      icon: { src: 'clock'},
       title: 'Minimal Layout Demo',
       subtitle: 'Title and collapse only',
       actions: [
