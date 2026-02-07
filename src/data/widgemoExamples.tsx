@@ -3148,7 +3148,7 @@ export const currencyEdgeCasesConfig: WidgemoConfig = {
 };
 
 // Unified config with itemActions for table and grid
-export const unifiedItemActionsConfig: any = {
+export const unifiedItemActionsConfig: WidgemoConfig<SampleData> = {
   id: 'unified-item-actions',
   zones: {
     header: {
@@ -3180,14 +3180,14 @@ export const unifiedItemActionsConfig: any = {
           id: 'edit',
           label: 'Edit',
           icon: 'edit',
-          onClick: (entity: any) => console.log('Edit clicked for', entity.name)
+          onClick: (entity: SampleData) => console.log('Edit clicked for', entity.name)
         },
         {
           id: 'delete',
           label: 'Delete',
           icon: 'delete',
           variant: 'danger',
-          onClick: (entity: any) => console.log('Delete clicked for', entity.name)
+          onClick: (entity: SampleData) => console.log('Delete clicked for', entity.name)
         }
       ]
     }
@@ -3195,7 +3195,7 @@ export const unifiedItemActionsConfig: any = {
 };
 
 // Unified config with itemActions for grid mode
-export const unifiedGridItemActionsConfig: any = {
+export const unifiedGridItemActionsConfig: WidgemoConfig<SampleData> = {
   id: 'unified-grid-item-actions',
   zones: {
     header: {
@@ -3225,20 +3225,20 @@ export const unifiedGridItemActionsConfig: any = {
           id: 'view',
           label: 'View',
           icon: 'eye',
-          onClick: (entity: any) => console.log('View clicked for', entity.name)
+          onClick: (entity: SampleData) => console.log('View clicked for', entity.name)
         },
         {
           id: 'edit',
           label: 'Edit',
           icon: 'edit',
-          onClick: (entity: any) => console.log('Edit clicked for', entity.name)
+          onClick: (entity: SampleData) => console.log('Edit clicked for', entity.name)
         },
         {
           id: 'delete',
           label: 'Delete',
           icon: 'delete',
           variant: 'danger',
-          onClick: (entity: any) => console.log('Delete clicked for', entity.name)
+          onClick: (entity: SampleData) => console.log('Delete clicked for', entity.name)
         }
       ]
     }
@@ -3706,18 +3706,75 @@ const widgemoExamples = [
     }
   },
   {
-    id: 'unified-item-actions',
-    title: 'Unified Item Actions',
-    description: 'Per-item actions in unified table and grid modes',
-    data: teaserSampleData.slice(0, 3),
-    config: unifiedItemActionsConfig
+    id: 'unified-grid-layout',
+    title: 'Unified Grid Item Layout',
+    description: 'Items arranged in a 2-column grid layout',
+    data: teaserSampleData.slice(0, 4),
+    config: {
+      zones: {
+        header: {
+          title: 'Grid Layout Demo',
+          subtitle: 'Items in 2-column grid with spans'
+        },
+        content: {
+          mode: 'grid',
+          data: teaserSampleData.slice(0, 4),
+          layout: {},
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', span: 2 },
+              { key: 'email', label: 'Email' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { 
+              type: 'grid', 
+              grid: { 
+                columns: 'repeat(2, 1fr)', 
+                gap: '0.5rem' 
+              } 
+            },
+            style: {}
+          }
+        }
+      }
+    }
   },
   {
-    id: 'unified-grid-item-actions',
-    title: 'Unified Grid Item Actions',
-    description: 'Per-item actions in unified grid mode',
-    data: teaserSampleData.slice(0, 6),
-    config: unifiedGridItemActionsConfig
+    id: 'unified-flex-layout',
+    title: 'Unified Flex Item Layout',
+    description: 'Items arranged in a flex row layout within grid items',
+    data: teaserSampleData.slice(0, 3),
+    config: {
+      zones: {
+        header: {
+          title: 'Flex Layout Demo',
+          subtitle: 'Fields arranged horizontally within each grid item'
+        },
+        content: {
+          mode: 'grid',
+          data: teaserSampleData.slice(0, 3),
+          layout: {},
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', width: '200px' },
+              { key: 'email', label: 'Email', width: '250px' },
+              { key: 'role', label: 'Role', width: '150px' }
+            ],
+            layout: { 
+              type: 'flex', 
+              flex: { 
+                direction: 'row', 
+                wrap: false, 
+                justify: 'flex-start', 
+                align: 'center' 
+              } 
+            },
+            style: {}
+          }
+        }
+      }
+    }
   }
 ];
 
