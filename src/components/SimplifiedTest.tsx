@@ -346,6 +346,7 @@ export const SimplifiedTest: React.FC = () => {
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
                   config={example.config}
+                  configVersion={example.config.id === 'unified-item-actions' || example.config.id === 'unified-grid-item-actions' ? 'unified' : 'legacy'}
                   className="my-custom-widgemo"
                   {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
                 />
@@ -355,6 +356,7 @@ export const SimplifiedTest: React.FC = () => {
                 key={`${example.id}-${includeWidgemoInspector}`}
                 data={example.data}
                 config={example.config}
+                configVersion={example.config.id === 'unified-item-actions' || example.config.id === 'unified-grid-item-actions' ? 'unified' : 'legacy'}
                 className="my-custom-widgemo"
                 {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
               />

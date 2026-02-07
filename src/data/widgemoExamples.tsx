@@ -3147,6 +3147,104 @@ export const currencyEdgeCasesConfig: WidgemoConfig = {
   }
 };
 
+// Unified config with itemActions for table and grid
+export const unifiedItemActionsConfig: any = {
+  id: 'unified-item-actions',
+  zones: {
+    header: {
+      title: 'Unified Item Actions',
+      subtitle: 'Per-item actions in unified table and grid modes'
+    },
+    content: {
+      mode: 'table',
+      data: teaserSampleData.slice(0, 3),
+      layout: {
+        table: {
+          type: 'traditional',
+          striped: true,
+          hover: true,
+          showHeader: true
+        }
+      },
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' }
+        ],
+        layout: { type: 'auto' },
+        style: {}
+      },
+      itemActions: [
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          onClick: (entity: any) => console.log('Edit clicked for', entity.name)
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'delete',
+          variant: 'danger',
+          onClick: (entity: any) => console.log('Delete clicked for', entity.name)
+        }
+      ]
+    }
+  }
+};
+
+// Unified config with itemActions for grid mode
+export const unifiedGridItemActionsConfig: any = {
+  id: 'unified-grid-item-actions',
+  zones: {
+    header: {
+      title: 'Unified Grid Item Actions',
+      subtitle: 'Per-item actions in unified grid mode'
+    },
+    content: {
+      mode: 'grid',
+      data: teaserSampleData.slice(0, 6),
+      layout: {},
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' }
+        ],
+        layout: { type: 'auto' },
+        style: {
+          padding: '12px',
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          backgroundColor: '#f9f9f9'
+        }
+      },
+      itemActions: [
+        {
+          id: 'view',
+          label: 'View',
+          icon: 'eye',
+          onClick: (entity: any) => console.log('View clicked for', entity.name)
+        },
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          onClick: (entity: any) => console.log('Edit clicked for', entity.name)
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'delete',
+          variant: 'danger',
+          onClick: (entity: any) => console.log('Delete clicked for', entity.name)
+        }
+      ]
+    }
+  }
+};
+
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples = [
   {
@@ -3606,6 +3704,20 @@ const widgemoExamples = [
         }
       }
     }
+  },
+  {
+    id: 'unified-item-actions',
+    title: 'Unified Item Actions',
+    description: 'Per-item actions in unified table and grid modes',
+    data: teaserSampleData.slice(0, 3),
+    config: unifiedItemActionsConfig
+  },
+  {
+    id: 'unified-grid-item-actions',
+    title: 'Unified Grid Item Actions',
+    description: 'Per-item actions in unified grid mode',
+    data: teaserSampleData.slice(0, 6),
+    config: unifiedGridItemActionsConfig
   }
 ];
 
