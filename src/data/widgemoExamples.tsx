@@ -3148,7 +3148,7 @@ export const currencyEdgeCasesConfig: WidgemoConfig = {
 };
 
 // Unified config with itemActions for table and grid
-export const unifiedItemActionsConfig: WidgemoConfig = {
+export const unifiedItemActionsConfig: any = {
   id: 'unified-item-actions',
   zones: {
     header: {
@@ -3173,7 +3173,7 @@ export const unifiedItemActionsConfig: WidgemoConfig = {
           { key: 'role', label: 'Role' }
         ],
         layout: { type: 'auto' },
-        style: {}
+        style: 'default'
       },
       itemActions: [
         {
@@ -3195,7 +3195,7 @@ export const unifiedItemActionsConfig: WidgemoConfig = {
 };
 
 // Unified config with itemActions for grid mode
-export const unifiedGridItemActionsConfig: WidgemoConfig = {
+export const unifiedGridItemActionsConfig: any = {
   id: 'unified-grid-item-actions',
   zones: {
     header: {
@@ -3213,12 +3213,7 @@ export const unifiedGridItemActionsConfig: WidgemoConfig = {
           { key: 'role', label: 'Role' }
         ],
         layout: { type: 'auto' },
-        style: {
-          padding: '12px',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9'
-        }
+        style: 'default'
       },
       itemActions: [
         {
@@ -3246,7 +3241,13 @@ export const unifiedGridItemActionsConfig: WidgemoConfig = {
 };
 
 // Array of examples for dynamic rendering in SimplifiedTest.
-const widgemoExamples = [
+const widgemoExamples: Array<{
+  id: string;
+  title: string;
+  description: string;
+  data: Entity[];
+  config: any;
+}> = [
   {
     id: 'collapsible-header',
     title: 'Collapsible Header Zone',
@@ -3734,7 +3735,7 @@ const widgemoExamples = [
                 gap: '0.5rem' 
               } 
             },
-            style: {}
+            style: 'default'
           }
         }
       }
@@ -3770,7 +3771,7 @@ const widgemoExamples = [
                 align: 'center' 
               } 
             },
-            style: {}
+            style: 'default'
           }
         }
       }
@@ -3813,7 +3814,7 @@ const widgemoExamples = [
                 }
               ]
             },
-            style: {}
+            style: 'default'
           }
         }
       }
@@ -3862,9 +3863,74 @@ const widgemoExamples = [
                 }
               ]
             },
-            style: {}
+            style: 'default'
           }
         }
+      }
+    }
+  },
+  {
+    id: 'rich-cells-table',
+    title: 'Rich Cells Table',
+    description: 'Table with rich cell content - each cell contains structured fields instead of single values',
+    data: teaserSampleData.slice(0, 4),
+    config: {
+      zones: {
+        header: {
+          title: 'Rich Cells Table Example',
+          subtitle: 'Each cell contains multiple fields with custom layouts'
+        },
+        content: {
+          mode: 'table',
+          data: teaserSampleData.slice(0, 4),
+          layout: {
+            table: {
+              type: 'rich-cells',
+              columns: 4,
+              showHeader: true,
+              striped: true,
+              hover: true
+            }
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status' },
+              { key: 'progressPercent', label: 'Progress' },
+              { key: 'budget', label: 'Budget' }
+            ],
+            layout: {
+              type: 'sections',
+              sections: [
+                {
+                  title: 'User',
+                  fields: ['name', 'role'],
+                  layout: { type: 'flex', flex: { direction: 'column' } }
+                },
+                {
+                  title: 'Project',
+                  fields: ['department', 'email'],
+                  layout: { type: 'grid', grid: { columns: '1fr 1fr' } }
+                },
+                {
+                  title: 'Progress',
+                  fields: ['status', 'progressPercent'],
+                  layout: { type: 'grid', grid: { columns: '1fr 1fr' } }
+                },
+                {
+                  title: 'Budget',
+                  fields: ['budget'],
+                  layout: { type: 'auto' }
+                }
+              ]
+            },
+            style: 'default'
+          }
+        },
+        footer: { enabled: false }
       }
     }
   }
