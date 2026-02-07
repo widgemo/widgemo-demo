@@ -3148,7 +3148,7 @@ export const currencyEdgeCasesConfig: WidgemoConfig = {
 };
 
 // Unified config with itemActions for table and grid
-export const unifiedItemActionsConfig: WidgemoConfig<SampleData> = {
+export const unifiedItemActionsConfig: WidgemoConfig = {
   id: 'unified-item-actions',
   zones: {
     header: {
@@ -3195,7 +3195,7 @@ export const unifiedItemActionsConfig: WidgemoConfig<SampleData> = {
 };
 
 // Unified config with itemActions for grid mode
-export const unifiedGridItemActionsConfig: WidgemoConfig<SampleData> = {
+export const unifiedGridItemActionsConfig: WidgemoConfig = {
   id: 'unified-grid-item-actions',
   zones: {
     header: {
@@ -3769,6 +3769,98 @@ const widgemoExamples = [
                 justify: 'flex-start', 
                 align: 'center' 
               } 
+            },
+            style: {}
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'unified-sections-layout',
+    title: 'Unified Sections Item Layout',
+    description: 'Fields organized into titled sections with different layouts',
+    data: teaserSampleData.slice(0, 2),
+    config: {
+      zones: {
+        header: {
+          title: 'Sections Layout Demo',
+          subtitle: 'Fields grouped into sections with custom layouts'
+        },
+        content: {
+          mode: 'grid',
+          data: teaserSampleData.slice(0, 2),
+          layout: {},
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { 
+              type: 'sections', 
+              sections: [
+                { 
+                  title: 'Personal Info', 
+                  fields: ['name', 'email'], 
+                  layout: { type: 'flex', flex: { direction: 'column' } } 
+                },
+                { 
+                  title: 'Work Details', 
+                  fields: ['role', 'department'], 
+                  layout: { type: 'grid', grid: { columns: '1fr 1fr' } } 
+                }
+              ]
+            },
+            style: {}
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'unified-nested-sections',
+    title: 'Unified Nested Sections Layout',
+    description: 'Sections containing sub-sections for complex hierarchical layouts',
+    data: teaserSampleData.slice(0, 1),
+    config: {
+      zones: {
+        header: {
+          title: 'Nested Sections Demo',
+          subtitle: 'Sections with recursive sub-sections'
+        },
+        content: {
+          mode: 'grid',
+          data: teaserSampleData.slice(0, 1),
+          layout: {},
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { 
+              type: 'sections', 
+              sections: [
+                { 
+                  title: 'Contact Information', 
+                  fields: ['name', 'email'], 
+                  layout: { 
+                    type: 'sections',
+                    sections: [
+                      { title: 'Basic', fields: ['name'], layout: { type: 'auto' } },
+                      { title: 'Communication', fields: ['email'], layout: { type: 'auto' } }
+                    ]
+                  }
+                },
+                { 
+                  title: 'Professional', 
+                  fields: ['role', 'department'], 
+                  layout: { type: 'flex', flex: { direction: 'row' } } 
+                }
+              ]
             },
             style: {}
           }
