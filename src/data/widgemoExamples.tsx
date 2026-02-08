@@ -3427,6 +3427,64 @@ export const unifiedGridItemActionsConfig: any = {
   }
 };
 
+// Unified config with itemActions for rich-cells table mode
+export const unifiedRichCellsItemActionsConfig: any = {
+  id: 'unified-rich-cells-item-actions',
+  zones: {
+    header: {
+      title: 'Unified Rich Cells Table with Item Actions',
+      subtitle: 'Rich-cells table mode with per-item actions using unified config'
+    },
+    content: {
+      mode: 'table',
+      data: teaserSampleData.slice(0, 6),
+      layout: {
+        table: {
+          type: 'rich-cells',
+          columns: 2,
+          showHeader: true,
+          striped: true,
+          hover: true
+        }
+      },
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' },
+          { key: 'department', label: 'Department' }
+        ],
+        layout: { type: 'sections', sections: [
+          { title: 'Profile', fields: ['name', 'role'] },
+          { title: 'Contact', fields: ['email', 'department'] }
+        ] },
+        style: 'card'
+      },
+      itemActions: [
+        {
+          id: 'view',
+          label: 'View',
+          icon: 'eye',
+          onClick: (entity: SampleData) => console.log('View clicked for', entity.name)
+        },
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          onClick: (entity: SampleData) => console.log('Edit clicked for', entity.name)
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'delete',
+          variant: 'danger',
+          onClick: (entity: SampleData) => console.log('Delete clicked for', entity.name)
+        }
+      ]
+    }
+  }
+};
+
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples: Array<{
   id: string;
@@ -3539,6 +3597,27 @@ const widgemoExamples: Array<{
     description: 'Grid mode with custom item renderer and conditional borders',
     data: sixUsersData,
     config: gridModeWithItemRendererConfig
+  },
+  {
+    id: 'unified-grid-item-actions',
+    title: 'Unified Grid Mode with Item Actions',
+    description: 'Grid mode with per-item actions using unified config',
+    data: teaserSampleData.slice(0, 6),
+    config: unifiedGridItemActionsConfig
+  },
+  {
+    id: 'unified-table-traditional-item-actions',
+    title: 'Unified Table Traditional with Item Actions',
+    description: 'Traditional table mode with per-item actions using unified config',
+    data: teaserSampleData.slice(0, 6),
+    config: unifiedItemActionsConfig
+  },
+  {
+    id: 'unified-rich-cells-item-actions',
+    title: 'Unified Rich Cells Table with Item Actions',
+    description: 'Rich-cells table mode with per-item actions using unified config',
+    data: teaserSampleData.slice(0, 6),
+    config: unifiedRichCellsItemActionsConfig
   },
   {
     id: 'table-alternating',
