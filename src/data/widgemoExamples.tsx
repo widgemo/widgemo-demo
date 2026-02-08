@@ -2604,6 +2604,193 @@ export const tableGroupingConfig: WidgemoConfig = {
   }
 };
 
+// Grid Grouping Example - Legacy Config
+export const gridGroupingConfig: any = {
+  zones: {
+    header: {
+      title: 'Grid Grouping Demo',
+      subtitle: 'Cards grouped by department with collapsible sections',
+      actions: [
+        {
+          id: 'add',
+          label: 'Add Item',
+          icon: 'add',
+          variant: 'primary',
+          onTrigger: () => alert('Add Item clicked!')
+        }
+      ]
+    },
+    content: {
+      enabled: true,
+      mode: 'grid',
+      groupings: [
+        {
+          fieldKey: 'department',
+          collapse: true,
+          renderer: (groupValue: any) => (
+            <span style={{ fontWeight: 'bold', color: '#007bff' }}>
+              {String(groupValue || 'No Department')}
+            </span>
+          )
+        }
+      ],
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' },
+          { key: 'department', label: 'Department' },
+          { key: 'status', label: 'Status' }
+        ]
+      },
+      itemConfig: {
+        actions: {
+          item: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            }
+          ]
+        }
+      }
+    }
+  }
+};
+
+// Table Traditional Grouping Example - Legacy Config
+export const tableTraditionalGroupingConfig: any = {
+  zones: {
+    header: {
+      title: 'Table Traditional Grouping Demo',
+      subtitle: 'Rows grouped by department with collapsible groups',
+      actions: [
+        {
+          id: 'add',
+          label: 'Add Item',
+          icon: 'add',
+          variant: 'primary',
+          onTrigger: () => alert('Add Item clicked!')
+        }
+      ]
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      columns: [
+        { field: 'name', header: 'Name', type: 'text' },
+        { field: 'email', header: 'Email', type: 'email' },
+        { field: 'role', header: 'Role', type: 'text' },
+        { field: 'department', header: 'Department', type: 'text' },
+        { field: 'status', header: 'Status', type: 'text' },
+        { field: 'lastLogin', header: 'Last Login', type: 'date' }
+      ] as ColumnConfig[],
+      table: {
+        actionsColumn: true,
+        alternatingRows: true,
+        rowSeparator: false,
+        grouping: {
+          groupBy: 'department',
+          initialExpanded: true,
+          collapsible: true,
+          groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
+            <span style={{
+              fontWeight: 'bold',
+              color: isExpanded ? '#28a745' : '#007bff'
+            }}>
+              {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+            </span>
+          )
+        }
+      },
+      itemConfig: {
+        actions: {
+          item: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'delete',
+              handler: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+            }
+          ]
+        }
+      }
+    }
+  }
+};
+
+// Table Rich-Cells Grouping Example - Legacy Config
+export const tableRichCellsGroupingConfig: any = {
+  zones: {
+    header: {
+      title: 'Table Rich-Cells Grouping Demo',
+      subtitle: 'Multi-field cells grouped by department',
+      actions: [
+        {
+          id: 'add',
+          label: 'Add Item',
+          icon: 'add',
+          variant: 'primary',
+          onTrigger: () => alert('Add Item clicked!')
+        }
+      ]
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      table: {
+        columns: 3,
+        showHeader: true,
+        striped: true,
+        hover: true,
+        actionsColumn: true,
+        grouping: {
+          groupBy: 'department',
+          initialExpanded: true,
+          collapsible: true,
+          groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
+            <span style={{
+              fontWeight: 'bold',
+              color: isExpanded ? '#dc3545' : '#007bff'
+            }}>
+              {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+            </span>
+          )
+        }
+      },
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' },
+          { key: 'department', label: 'Department' },
+          { key: 'status', label: 'Status' },
+          { key: 'lastLogin', label: 'Last Login' }
+        ]
+      },
+      itemConfig: {
+        actions: {
+          item: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            }
+          ]
+        }
+      }
+    }
+  }
+};
+
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 export const currencyFieldRenderingConfig: WidgemoConfig = {
   zones: {
@@ -3508,6 +3695,27 @@ const widgemoExamples: Array<{
     config: tableGroupingConfig
   },
   {
+    id: 'grid-grouping',
+    title: 'Mode - Grid - Grouping',
+    description: 'Grid cards grouped by department',
+    data: teaserSampleData,
+    config: gridGroupingConfig
+  },
+  {
+    id: 'table-traditional-grouping',
+    title: 'Mode - Table Traditional - Grouping',
+    description: 'Traditional table with collapsible groups',
+    data: teaserSampleData,
+    config: tableTraditionalGroupingConfig
+  },
+  {
+    id: 'table-rich-cells-grouping',
+    title: 'Mode - Table Rich-Cells - Grouping',
+    description: 'Rich-cells table with grouped sections',
+    data: teaserSampleData,
+    config: tableRichCellsGroupingConfig
+  },
+  {
     id: 'currency-field-rendering',
     title: 'Currency Field Rendering',
     description: 'Currency field rendering',
@@ -3931,6 +4139,51 @@ const widgemoExamples: Array<{
           }
         },
         footer: { enabled: false }
+      }
+    }
+  },
+  {
+    id: 'table-rich-cells-grouping',
+    title: 'Table Rich Cells with Grouping',
+    description: 'Rich cells table with collapsible department grouping',
+    data: teaserSampleData,
+    config: {
+      zones: {
+        content: {
+          mode: 'table',
+          data: teaserSampleData,
+          table: {
+            columns: 3,
+            showHeader: true,
+            striped: true,
+            hover: true,
+            grouping: {
+              groupBy: 'department',
+              initialExpanded: true,
+              collapsible: true,
+              groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
+                <span style={{
+                  fontWeight: 'bold',
+                  color: isExpanded ? '#dc3545' : '#007bff'
+                }}>
+                  {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+                </span>
+              )
+            }
+          },
+          itemConfig: {
+            actions: {
+              item: [
+                {
+                  id: 'edit',
+                  label: 'Edit',
+                  icon: 'edit',
+                  handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+                }
+              ]
+            }
+          }
+        }
       }
     }
   }
