@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Entity } from 'widgemo-core';
-import { ItemRenderer } from 'widgemo-core';
 
 /**
  * Timeline mode configuration
@@ -163,10 +162,10 @@ const TimelineMode: React.FC<TimelineModeProps> = ({
               ) : null}
 
               {/* Item content using ItemRenderer */}
-              <ItemRenderer
+              {/* <ItemRenderer
                 entity={item}
                 config={{}}
-              />
+              /> */}
             </div>
           </div>
         );

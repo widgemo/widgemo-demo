@@ -2,14 +2,13 @@ import React from 'react';
 import { Alert, Nav } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
-import { IconsTab } from './IconsTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
-import type { LegacyWidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from 'widgemo-core';
 
 interface PresetOption {
   name: string;
-  config: LegacyWidgemoConfig;
+  config: WidgemoConfig;
 }
 
 export interface LeftPanelProps {
@@ -25,7 +24,7 @@ export interface LeftPanelProps {
   onJsonChange: (json: string) => void;
   onApplyJson: () => void;
   presets: PresetOption[];
-  onLoadPreset: (presetConfig: LegacyWidgemoConfig, presetName?: string) => void;
+  onLoadPreset: (presetConfig: WidgemoConfig, presetName?: string) => void;
   jsonError: string | null;
   onShowReference: () => void;
   onShowCodeSandbox: () => void;
@@ -55,10 +54,6 @@ export interface LeftPanelProps {
   onShowConfigDetailsChange: (value: boolean) => void;
   onApplyAdvancedProperties: () => void;
   onResetAll: () => void;
-
-  // IconsTab props
-  iconLibrary: 'none' | 'react-icons' | 'lucide' | 'heroicons';
-  onIconLibraryChange: (library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => void;
 
   // SampleDataTab props
   currentData: Record<string, unknown>[];
@@ -119,9 +114,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onShowConfigDetailsChange,
   onApplyAdvancedProperties,
   onResetAll,
-  // IconsTab props
-  iconLibrary,
-  onIconLibraryChange,
   // SampleDataTab props
   currentData,
   jsonEditorText,
@@ -143,7 +135,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
 }) => {
   const tabs = [
     { id: 'config-editor', label: 'Config Editor' },
-    { id: 'icons', label: 'Icons' },
     { id: 'loading-states', label: 'Loading & States' },
     { id: 'sample-data', label: 'Sample Data' },
     { id: 'advanced-properties', label: 'Advanced Properties' },
@@ -269,13 +260,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             onShowConfigDetailsChange={onShowConfigDetailsChange}
             onApplyAdvancedProperties={onApplyAdvancedProperties}
             onResetAll={onResetAll}
-          />
-        )}
-
-        {activeTab === 'icons' && (
-          <IconsTab
-            iconLibrary={iconLibrary}
-            onIconLibraryChange={onIconLibraryChange}
           />
         )}
 

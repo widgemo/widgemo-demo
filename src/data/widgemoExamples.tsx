@@ -1,49 +1,6 @@
-import type { ActionContext, Entity, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
-import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
-import { FaUserSlash } from 'react-icons/fa6';
-import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData, projectExampleSampleData } from './sampleData';
+import { teaserSampleData } from './sampleData';
 import type { SampleData } from './types';
-interface TaskEntity {
-  id: number;
-  name: string;
-  progress: number;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  size: 'small' | 'medium' | 'large';
-}
-interface LinkDemoEntity {
-  id: number;
-  name: string;
-  url: string;
-  displayText: string;
-  category: 'internal' | 'external';
-}
-interface ActionLinkEntity {
-  id: number;
-  name: string;
-  action: string;
-  target: string;
-  url: string;
-  text: string;
-}
-interface CurrencyDemoEntity {
-  id: number;
-  name: string;
-  price: number;
-  currency: string;
-  locale: string;
-  country?: string;
-  amount?: number;
-  description?: string;
-  position?: string;
-  minFrac?: number;
-  maxFrac?: number;
-  threshold?: number;
-  category?: string;
-  product?: string;
-  region?: string;
-  discount?: number;
-  value?: number;
-}
+import type { Entity } from 'widgemo-core';
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twoUsersData = teaserSampleData.slice(0, 2);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.

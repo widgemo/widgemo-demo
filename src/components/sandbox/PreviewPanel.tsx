@@ -2,8 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
 import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
-import { legacyToUnified } from 'widgemo-core';
+import type { WidgemoConfig } from 'widgemo-core';
 
 interface PreviewPanelProps {
   // Configuration
@@ -36,23 +35,23 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   const previewRef = React.useRef<HTMLDivElement>(null);
 
   // Toggle for config version
-  const [useUnified, setUseUnified] = React.useState(true);
+  const [useUnified, setUseUnified] = React.useState(false);
   const [selectedTheme, setSelectedTheme] = React.useState('default');
 
   // Sugar props for testing
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Modify unified config to include theme
+  // Modify unified config to include devMode
   const getUnifiedConfig = () => {
-    // If config already has zones, it's already unified
-    const unifiedConfig = config.zones ? config : legacyToUnified(config as LegacyWidgemoConfig, data);
-    unifiedConfig.theme = selectedTheme; // Set global theme
+    const unifiedConfig = { ...config };
     // Enable devMode for testing
     unifiedConfig.devMode = {
       enabled: true,
-      position: 'top-right',
-      excludeFields: ['zones.content.data', 'zones.content.status', 'zones.content.error']
+      zone: 'auto',
+      overlay: {
+        excludeFields: ['zones.content.data', 'zones.content.status', 'zones.content.error']
+      }
     };
     return unifiedConfig;
   };
@@ -147,7 +146,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         <Widgemo 
           data={data} 
           config={useUnified ? getUnifiedConfig() : config} 
-          configVersion={useUnified ? 'unified' : 'unified'} 
+          configVersion={useUnified ? 'unified' : 'legacy'} 
           className="my-custom-widgemo"
           loading={loading}
           error={error}

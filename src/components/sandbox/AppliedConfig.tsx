@@ -1,26 +1,24 @@
 import React from 'react';
 import { AppliedConfigViewer } from './AppliedConfigViewer';
-import type { ResolvedWidgemoProps, LegacyWidgemoConfig, WidgemoAdapters, RenderIcon, WidgemoTheme } from 'widgemo-core';
+import type { ResolvedWidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
 
 interface AppliedConfigProps {
-  config: LegacyWidgemoConfig;
+  config: WidgemoConfig;
   adapters: WidgemoAdapters;
   showConfigDetails?: boolean;
-  renderIcon?: RenderIcon;
-  overrides?: Partial<LegacyWidgemoConfig>;
+  overrides?: Partial<WidgemoConfig>;
   className?: string;
   style?: React.CSSProperties;
   loading?: boolean;
   error?: string | Error;
   currentSandboxTheme?: WidgemoTheme | null;
-  currentIconRenderer?: RenderIcon;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
   resolvedConfig?: ResolvedWidgemoProps | null;
 }
 
 export function AppliedConfig(props: AppliedConfigProps) {
-  const { config, showConfigDetails, renderIcon, overrides, className, style, loading, error, currentSandboxTheme, currentIconRenderer, customLoading, customError, resolvedConfig } = props;
+  const { config, showConfigDetails, overrides, className, style, loading, error, currentSandboxTheme, customLoading, customError, resolvedConfig } = props;
   // Build the effective configuration object
   let resolvedProps;
   if (resolvedConfig) {
@@ -33,7 +31,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
         deleteRecord: '[Function: deleteRecord]',
       },
       ...(showConfigDetails && { showConfigDetails }),
-      ...(renderIcon && { renderIcon: currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer' }),
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
       ...(style && { style }),
@@ -47,15 +44,15 @@ export function AppliedConfig(props: AppliedConfigProps) {
     // Build theme with baseColor included
     const effectiveTheme = currentSandboxTheme === null ? undefined :
       currentSandboxTheme !== undefined ? currentSandboxTheme :
-      config.theme ? config.theme : undefined;
+      (config as any).theme ? (config as any).theme : undefined;
 
     resolvedProps = {
       config: {
         ...config,
         ...(effectiveTheme && { theme: effectiveTheme }),
-        styling: config.styling ? {
-          ...config.styling,
-          themeOverrides: config.styling.themeOverrides
+        styling: (config as any).styling ? {
+          ...(config as any).styling,
+          themeOverrides: (config as any).styling.themeOverrides
         } : undefined
       },
       adapters: {
@@ -65,7 +62,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
         deleteRecord: '[Function: deleteRecord]',
       },
       showConfigDetails,
-      renderIcon: renderIcon ? (currentIconRenderer === renderIcon ? 'Custom renderer (from Icons tab)' : 'FontAwesome renderer') : undefined,
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
       ...(style && { style }),

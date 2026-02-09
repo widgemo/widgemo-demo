@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Card } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaCopy, FaEye, FaEyeSlash, FaTable, FaTh, FaChartBar, FaCog, FaSync, FaPlus, FaChevronRight, FaChevronDown, FaEllipsisV, FaChartLine, FaChartPie } from 'react-icons/fa';
-import { LuCopy, LuEye, LuEyeOff, LuTable, LuLayoutGrid, LuChartBar, LuSettings, LuRefreshCw, LuPlus, LuChevronRight, LuChevronDown, LuEllipsisVertical, LuChartLine, LuChartPie } from 'react-icons/lu';
-import { HiClipboardCopy, HiEye, HiEyeOff, HiTable, HiViewGrid, HiChartBar, HiCog, HiRefresh, HiPlus, HiChevronRight, HiChevronDown, HiDotsVertical, HiChartPie } from 'react-icons/hi';
-import type { WidgemoAdapters, WidgemoConfig, LegacyWidgemoConfig } from 'widgemo-core';
+import { FaCopy } from 'react-icons/fa';
+import type { WidgemoAdapters, WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -56,9 +54,9 @@ const CustomErrorComponent: React.FC<{
 );
 
 interface SandboxSectionProps {
-  initialConfig: LegacyWidgemoConfig;
+  initialConfig: WidgemoConfig;
   initialData: Record<string, unknown>[];
-  onConfigChange?: (config: LegacyWidgemoConfig) => void;
+  onConfigChange?: (config: WidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: Theme;
   // initialThemeMode?: 'defaults' | 'config' | 'custom';
@@ -137,9 +135,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   // Note: darkMode is used by ThemingTab for palette generation display
   // const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
 
-  // Icons state
-  const [iconLibrary, setIconLibrary] = useState<'none' | 'react-icons' | 'lucide' | 'heroicons'>('none');
-
 
   const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
   const [entityLabel, setEntityLabel] = useState('User');
@@ -187,122 +182,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const presetOptions = useMemo(() => {
     return widgemoExamples.map(config => ({
       name: config.title,
-      config: config.config as LegacyWidgemoConfig
+      config: config.config as WidgemoConfig
     }));
   }, []);
-
-  // Current icon renderer based on icons tab settings
-  interface IconProps {
-    size?: number;
-    className?: string;
-    color?: string;
-  }
-
-  const currentIconRenderer = useMemo(() => {
-    if (iconLibrary === 'none') {
-      return undefined; // Let Widgemo use its default renderIcon
-    }
-    if (iconLibrary === 'react-icons') {
-      // Create a renderIcon function that uses react-icons
-      return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
-        // Map common icon names to react-icons components
-        const iconMap: Record<string, React.ComponentType<IconProps>> = {
-          'copy': FaCopy,
-          'view': FaEye,
-          'eye': FaEye,
-          'eye-slash': FaEyeSlash,
-          'table': FaTable,
-          'grid': FaTh,
-          'chart-bar': FaChartBar,
-          'chart-line': FaChartLine,
-          'chart-pie': FaChartPie,
-          'settings': FaCog,
-          'refresh': FaSync,
-          'sync': FaSync,
-          'plus': FaPlus,
-          'add': FaPlus,
-          'chevron-right': FaChevronRight,
-          'chevron-down': FaChevronDown,
-          'ellipsis-vertical': FaEllipsisV,
-        };
-
-        const IconComponent = iconMap[name];
-        if (IconComponent) {
-          return <IconComponent size={size} className={className} color={color} />;
-        } else {
-          // Fallback to a generic icon or default
-          return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⚠️</span>;
-        }
-      };
-    }
-    if (iconLibrary === 'lucide') {
-      // Create a renderIcon function that uses Lucide icons from react-icons
-      return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
-        // Map common icon names to Lucide react-icons components
-        const iconMap: Record<string, React.ComponentType<IconProps>> = {
-          'copy': LuCopy,
-          'view': LuEye,
-          'eye': LuEye,
-          'eye-slash': LuEyeOff,
-          'table': LuTable,
-          'grid': LuLayoutGrid,
-          'chart-bar': LuChartBar,
-          'chart-line': LuChartLine,
-          'chart-pie': LuChartPie,
-          'settings': LuSettings,
-          'refresh': LuRefreshCw,
-          'sync': LuRefreshCw,
-          'plus': LuPlus,
-          'add': LuPlus,
-          'chevron-right': LuChevronRight,
-          'chevron-down': LuChevronDown,
-          'ellipsis-vertical': LuEllipsisVertical,
-        };
-
-        const IconComponent = iconMap[name];
-        if (IconComponent) {
-          return <IconComponent size={size} className={className} color={color} />;
-        } else {
-          // Fallback to a generic icon or default
-          return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⚠️</span>;
-        }
-      };
-    }
-    if (iconLibrary === 'heroicons') {
-      // Create a renderIcon function that uses Heroicons from react-icons
-      return ({ name, size = 16, className, color = 'currentColor' }: { name: string; size?: number; className?: string; color?: string }) => {
-        // Map common icon names to Heroicons react-icons components
-        const iconMap: Record<string, React.ComponentType<IconProps>> = {
-          'copy': HiClipboardCopy,
-          'view': HiEye,
-          'eye': HiEye,
-          'eye-slash': HiEyeOff,
-          'table': HiTable,
-          'grid': HiViewGrid,
-          'chart-bar': HiChartBar,
-          'chart-pie': HiChartPie,
-          'settings': HiCog,
-          'refresh': HiRefresh,
-          'sync': HiRefresh,
-          'plus': HiPlus,
-          'add': HiPlus,
-          'chevron-right': HiChevronRight,
-          'chevron-down': HiChevronDown,
-          'ellipsis-vertical': HiDotsVertical,
-        };
-
-        const IconComponent = iconMap[name];
-        if (IconComponent) {
-          return <IconComponent size={size} className={className} color={color} />;
-        } else {
-          // Fallback to a generic icon or default
-          return <span className={className} style={{ fontSize: `${size}px`, color }} title={name}>⚠️</span>;
-        }
-      };
-    }
-    // For other libraries (coming soon), fall back to undefined
-    return undefined;
-  }, [iconLibrary]);
 
   // Copy JSON to clipboard
   const copyToClipboard = useCallback(async () => {
@@ -439,7 +321,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     lastAppliedThemeRef.current = currentTheme;
   }, [currentTheme]);
 
-  const loadPreset = (presetConfig: LegacyWidgemoConfig, presetTitle?: string) => {
+  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
     const json = JSON.stringify(presetConfig, null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
@@ -568,11 +450,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     setApplyAdvancedProps(false);
     setExportStatus('Advanced properties reset to defaults!');
     setTimeout(() => setExportStatus(null), 3000);
-  }, []);
-
-  // Icons handlers
-  const handleIconLibraryChange = useCallback((library: 'none' | 'react-icons' | 'lucide' | 'heroicons') => {
-    setIconLibrary(library);
   }, []);
 
   // Sample Data handlers
@@ -823,9 +700,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onShowConfigDetailsChange={handleShowConfigDetailsChange}
                 onApplyAdvancedProperties={handleApplyAdvancedProperties}
                 onResetAll={handleResetAll}
-                // IconsTab props
-                iconLibrary={iconLibrary}
-                onIconLibraryChange={handleIconLibraryChange}
                 // SampleDataTab props
                 currentData={customData}
                 jsonEditorText={jsonEditorText}
@@ -893,14 +767,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                       config={config}
                       adapters={dynamicAdapters}
                       showConfigDetails={showConfigDetails}
-                      renderIcon={currentIconRenderer}
                       loading={loading}
                       error={error}
                       overrides={applyAdvancedProps && Object.keys(appliedOverrides || {}).length > 0 ? appliedOverrides : undefined}
                       className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
                       style={applyAdvancedProps && appliedStyleJson?.trim() ? JSON.parse(appliedStyleJson) : undefined}
                       currentSandboxTheme={currentSandboxTheme}
-                      currentIconRenderer={currentIconRenderer}
                       customLoading={useCustomLoading ? CustomLoadingComponent : undefined}
                       customError={useCustomError ? CustomErrorComponent : undefined}
                     />

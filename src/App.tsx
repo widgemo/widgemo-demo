@@ -6,7 +6,6 @@ import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
 import { useTheme } from './hooks/useTheme';
-import { registerProgressBarField, registerJsonField } from './components/custom-fields';
 import { TimelineMode } from './components/custom-modes';
 import './App.css';
 
@@ -14,11 +13,6 @@ function AppContent() {
   console.log('🔄 AppContent rendering');
   const { currentTheme } = useTheme();
   
-  // Register custom renderAs renderers
-  widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
-
-  widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
-
   // Register custom modes
   widgemoRegistry.registerWidgemoMode({
     name: 'timeline',

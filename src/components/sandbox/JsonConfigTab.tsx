@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { FaCopy, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
-import type { LegacyWidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from 'widgemo-core';
 
 interface PresetOption {
   name: string;
-  config: LegacyWidgemoConfig;
+  config: WidgemoConfig;
 }
 
 interface JsonConfigTabProps {
@@ -18,7 +18,7 @@ interface JsonConfigTabProps {
   /** Available preset configurations */
   presets: PresetOption[];
   /** Callback when a preset is loaded */
-  onLoadPreset: (presetConfig: LegacyWidgemoConfig, presetName?: string) => void;
+  onLoadPreset: (presetConfig: WidgemoConfig, presetName?: string) => void;
   /** JSON validation error message, if any */
   jsonError?: string | null;
   /** Callback to show reference modal */

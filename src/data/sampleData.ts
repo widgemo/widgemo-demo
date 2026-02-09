@@ -1,4 +1,4 @@
-import type { LegacyWidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { WidgemoConfig, LegacyWidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import type { SampleData } from './types';
 
 // Neutral sample data for teaser - User Database
@@ -267,7 +267,6 @@ export const galleryConfigs: Array<{
       name: 'Data Management',
       mode: 'table',
       config: {
-        title: 'Users',
         mode: 'table',
         dataSource: { type: 'static' },
         fields: [
@@ -278,37 +277,28 @@ export const galleryConfigs: Array<{
           { name: 'department', label: 'Department', type: 'text' },
           { name: 'status', label: 'Active', type: 'boolean' },
         ],
-        actions: {
-          definitions: [
-            { id: 'add', label: 'Add User' },
-            { id: 'refresh' },
-            { id: 'columnSelector' },
-            { id: 'deletedToggle' },
-            {
-              id: 'edit',
-              label: 'Edit',
-              icon: 'edit',
-              variant: 'secondary',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
-            },
-            {
-              id: 'delete',
-              label: 'Delete',
-              icon: 'trash',
-              variant: 'danger',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
-            }
-          ],
-          header: {
-            always: ['refresh', 'add'],
-            onMenu: ['columnSelector', 'deletedToggle']
+        actions: [
+          { id: 'add', label: 'Add User' },
+          { id: 'refresh' },
+          { id: 'columnSelector' },
+          { id: 'deletedToggle' },
+          {
+            id: 'edit',
+            label: 'Edit',
+            icon: 'edit',
+            variant: 'secondary',
+            iconOnly: true,
+            onTrigger: () => { } // Demo action
           },
-          item: {
-            onMenu: ['edit', 'delete']
+          {
+            id: 'delete',
+            label: 'Delete',
+            icon: 'trash',
+            variant: 'danger',
+            iconOnly: true,
+            onTrigger: () => { } // Demo action
           }
-        },
+        ],
         styling: { compact: true },
         collapsible: 'fixed',
       },
@@ -320,7 +310,6 @@ export const galleryConfigs: Array<{
       name: 'Kanban Board',
       mode: 'board',
       config: {
-        title: 'Users by Role and Dept',
         mode: 'board',
         dataSource: { type: 'static' },
         fields: [
@@ -370,7 +359,6 @@ export const galleryConfigs: Array<{
       name: 'Image Grid - Contain Fit',
       mode: 'grid',
       config: {
-        title: 'Image Grid - Contain Fit',
         mode: 'grid',
         dataSource: { type: 'static' },
         fields: [
@@ -378,13 +366,13 @@ export const galleryConfigs: Array<{
           { name: 'category', label: 'Category', type: 'text' },
         ],
         mediaConfig: {
-          fields: [{
-            field: 'src',
-            fit: 'contain',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+              fields: [{
+                field: 'src',
+                fit: 'contain',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
         },
         styling: {
           grid: {
@@ -415,20 +403,23 @@ export const galleryConfigs: Array<{
       name: 'Clean Chart',
       mode: 'chart',
       config: {
-        title: 'Chart',
-        mode: 'chart',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'name', label: 'User', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean' },
-        ],
-        chartConfig: {
-          type: 'bar',
-          xAxis: 'department',
-          yAxis: 'status',
-        },
-        styling: {},
+        zones: {
+          content: {
+            mode: 'chart',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'department', label: 'Department', type: 'text' },
+              { name: 'name', label: 'User', type: 'text' },
+              { name: 'status', label: 'Active', type: 'boolean' },
+            ],
+            chartConfig: {
+              type: 'bar',
+              xAxis: 'department',
+              yAxis: 'status',
+            },
+            styling: {},
+          }
+        }
       },
       description: 'Chart showing active users by department',
       data: teaserSampleData
@@ -438,33 +429,36 @@ export const galleryConfigs: Array<{
       name: 'Basic Grid',
       mode: 'grid',
       config: {
-        title: 'Basic Grid',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'name', label: 'Lead', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text' },
-        ],
-        styling: {
-          compact: true,
-          grid: {
-            columns: 3,
-            cellSize: {
-              width: 200,
-              height: 200
+        zones: {
+          content: {
+            mode: 'grid',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'department', label: 'Department', type: 'text' },
+              { name: 'name', label: 'Lead', type: 'text' },
+              { name: 'role', label: 'Role', type: 'text' },
+            ],
+            styling: {
+              compact: true,
+              grid: {
+                columns: 3,
+                cellSize: {
+                  width: 200,
+                  height: 200
+                },
+                gap: '10px',
+                showGridLines: true,
+                aspectRatio: '1/1'
+              }
             },
-            gap: '10px',
-            showGridLines: true,
-            aspectRatio: '1/1'
-          }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            }
           }
         }
       },
@@ -476,16 +470,20 @@ export const galleryConfigs: Array<{
       name: 'Dynamic Background',
       mode: 'table',
       config: {
-        title: 'Dynamic Background',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Name', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text' },
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean' },
-        ],
-        styling: {},
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Name', type: 'text' },
+              { name: 'role', label: 'Role', type: 'text' },
+              { name: 'department', label: 'Department', type: 'text' },
+              { name: 'status', label: 'Active', type: 'boolean' },
+            ],
+            styling: {},
+          }
+        }
       },
       description: 'Table with dynamic background turned off. Dynamic background adapts to theme (lighter on dark themes, darker on light themes) by default',
       data: teaserSampleData
@@ -495,21 +493,26 @@ export const galleryConfigs: Array<{
       name: 'Minimal Table',
       mode: 'table',
       config: {
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Name', type: 'text' },
-          { name: 'lastLogin', label: 'Last Login', type: 'date' },
-        ],
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            onMenu: ['refresh']
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Name', type: 'text' },
+              { name: 'lastLogin', label: 'Last Login', type: 'date' },
+            ],
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                onMenu: ['refresh']
+              }
+            },
+            styling: { compact: true },
           }
-        },
-        styling: { compact: true },
+        }
       },
       description: 'Simple table view without header and controls',
       data: teaserSampleData
@@ -519,60 +522,64 @@ export const galleryConfigs: Array<{
       name: 'Advanced',
       mode: 'table',
       config: {
-        title: 'Advanced',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'id', label: 'ID', type: 'number', sortable: true },
-          { name: 'name', label: 'Name', type: 'text', filterable: true },
-          { name: 'email', label: 'Email', type: 'text', filterable: true },
-          {
-            name: 'department', label: 'Department', type: 'select', options: [
-              { value: 'Engineering', label: 'Engineering' },
-              { value: 'Design', label: 'Design' },
-              { value: 'Business', label: 'Business' },
-            ], filterable: true
-          },
-          { name: 'role', label: 'Role', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean', filterable: true },
-          { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
-        ],
-        actions: {
-          definitions: [
-            { id: 'refresh' },
-            { id: 'viewToggle' },
-            { id: 'columnSelector' },
-            { id: 'add' },
-            {
-              id: 'edit',
-              label: 'Edit',
-              icon: 'edit',
-              variant: 'secondary',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'id', label: 'ID', type: 'number', sortable: true },
+              { name: 'name', label: 'Name', type: 'text', filterable: true },
+              { name: 'email', label: 'Email', type: 'text', filterable: true },
+              {
+                name: 'department', label: 'Department', type: 'select', options: [
+                  { value: 'Engineering', label: 'Engineering' },
+                  { value: 'Design', label: 'Design' },
+                  { value: 'Business', label: 'Business' },
+                ], filterable: true
+              },
+              { name: 'role', label: 'Role', type: 'text' },
+              { name: 'status', label: 'Active', type: 'boolean', filterable: true },
+              { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
+            ],
+            actions: {
+              definitions: [
+                { id: 'refresh' },
+                { id: 'viewToggle' },
+                { id: 'columnSelector' },
+                { id: 'add' },
+                {
+                  id: 'edit',
+                  label: 'Edit',
+                  icon: 'edit',
+                  variant: 'secondary',
+                  iconOnly: true,
+                  onTrigger: () => { } // Demo action
+                },
+                {
+                  id: 'delete',
+                  label: 'Delete',
+                  icon: 'trash',
+                  variant: 'danger',
+                  iconOnly: true,
+                  onTrigger: () => { } // Demo action
+                }
+              ],
+              header: {
+                always: ['refresh'],
+                discoverable: ['viewToggle'],
+                onMenu: ['columnSelector', 'add']
+              },
+              item: {
+                onMenu: ['edit', 'delete']
+              }
             },
-            {
-              id: 'delete',
-              label: 'Delete',
-              icon: 'trash',
-              variant: 'danger',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
-            }
-          ],
-          header: {
-            always: ['refresh'],
-            discoverable: ['viewToggle'],
-            onMenu: ['columnSelector', 'add']
-          },
-          item: {
-            onMenu: ['edit', 'delete']
+            pagination: { enabled: true, defaultPageSize: 5 },
+            sorting: { enabled: true },
+            filtering: { enabled: true },
+            styling: {},
           }
-        },
-        pagination: { enabled: true, defaultPageSize: 5 },
-        sorting: { enabled: true },
-        filtering: { enabled: true },
-        styling: {},
+        }
       },
       description: 'Full-featured user management with pagination, sorting, and filtering',
       data: teaserSampleData
@@ -582,24 +589,28 @@ export const galleryConfigs: Array<{
       name: 'Sales Dashboard',
       mode: 'chart',
       config: {
-        title: 'Sales Performance',
-        mode: 'chart',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'month', label: 'Month', type: 'text' },
-          { name: 'sales', label: 'Sales', type: 'number' },
-          { name: 'target', label: 'Target', type: 'number' },
-        ],
-        chartConfig: {
-          type: 'line',
-          xAxis: 'month',
-          yAxis: 'sales',
-          settings: {
-            colors: ['#2196f3', '#4caf50'],
-            showLegend: true,
-          },
-        },
-        styling: {},
+
+        zones: {
+          content: {
+            mode: 'chart',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'month', label: 'Month', type: 'text' },
+              { name: 'sales', label: 'Sales', type: 'number' },
+              { name: 'target', label: 'Target', type: 'number' },
+            ],
+            chartConfig: {
+              type: 'line',
+              xAxis: 'month',
+              yAxis: 'sales',
+              settings: {
+                colors: ['#2196f3', '#4caf50'],
+                showLegend: true,
+              },
+            },
+            styling: {},
+          }
+        }
       },
       description: 'Line chart showing sales performance over time',
       data: [
@@ -616,52 +627,56 @@ export const galleryConfigs: Array<{
       name: 'Task Management',
       mode: 'board',
       config: {
-        title: 'Task Board',
-        mode: 'board',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'title', label: 'Task', type: 'text' },
-          {
-            name: 'priority', label: 'Priority', type: 'select', options: [
-              { value: 'high', label: 'High' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'low', label: 'Low' },
+
+        zones: {
+          content: {
+            mode: 'board',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'title', label: 'Task', type: 'text' },
+              {
+                name: 'priority', label: 'Priority', type: 'select', options: [
+                  { value: 'high', label: 'High' },
+                  { value: 'medium', label: 'Medium' },
+                  { value: 'low', label: 'Low' },
+                ],
+                visible: false,
+              },
+              { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
+              { name: 'assignee', label: 'Assignee', type: 'text' },
             ],
-            visible: false,
-          },
-          { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
-          { name: 'assignee', label: 'Assignee', type: 'text' },
-        ],
-        actions: {
-          definitions: [
-            {
-              id: 'edit',
-              label: 'Edit',
-              icon: 'edit',
-              variant: 'secondary',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
+            actions: {
+              definitions: [
+                {
+                  id: 'edit',
+                  label: 'Edit',
+                  icon: 'edit',
+                  variant: 'secondary',
+                  iconOnly: true,
+                  onTrigger: () => { } // Demo action
+                },
+                {
+                  id: 'delete',
+                  label: 'Delete',
+                  icon: 'trash',
+                  variant: 'danger',
+                  iconOnly: true,
+                  onTrigger: () => { } // Demo action
+                }
+              ],
+              item: {
+                onMenu: ['edit', 'delete']
+              }
             },
-            {
-              id: 'delete',
-              label: 'Delete',
-              icon: 'trash',
-              variant: 'danger',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
-            }
-          ],
-          item: {
-            onMenu: ['edit', 'delete']
+            styling: {
+              board: {
+                groupBy: 'status',
+                swimlaneBy: 'priority',
+              },
+            },
+            collapsible: 'fixed',
           }
-        },
-        styling: {
-          board: {
-            groupBy: 'status',
-            swimlaneBy: 'priority',
-          },
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Kanban-style task board with priority and status',
       data: [
@@ -676,42 +691,46 @@ export const galleryConfigs: Array<{
       name: 'Image Gallery',
       mode: 'grid',
       config: {
-        title: 'Image Gallery',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          grid: {
-            columns: 'auto',
-            cellSize: { width: 250, height: 200 },
-            gap: '15px',
-            imageGrid: {
-              masonry: true
-            }
+
+        zones: {
+          content: {
+            mode: 'grid',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              grid: {
+                columns: 'auto',
+                cellSize: { width: 250, height: 200 },
+                gap: '15px',
+                imageGrid: {
+                  masonry: true
+                }
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Image gallery with masonry layout, lazy loading, and hover overlays. Click images to view details.',
       data: imageGalleryData
@@ -721,41 +740,45 @@ export const galleryConfigs: Array<{
       name: 'Image Grid - No Text',
       mode: 'grid',
       config: {
-        title: 'Image Grid - No Text',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          grid: {
-            columns: 4,
-            cellSize: { width: 200, height: 180 },
-            gap: '12px',
-            imageGrid: {
-              masonry: false // Fixed height grid
-            }
+
+        zones: {
+          content: {
+            mode: 'grid',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              grid: {
+                columns: 4,
+                cellSize: { width: 200, height: 180 },
+                gap: '12px',
+                imageGrid: {
+                  masonry: false // Fixed height grid
+                }
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Clean image grid without text overlays, fixed height layout with 4 columns.',
       data: imageGalleryData.slice(0, 8) // Use first 8 images
@@ -765,41 +788,45 @@ export const galleryConfigs: Array<{
       name: 'Compact Image Grid',
       mode: 'grid',
       config: {
-        title: 'Compact Image Grid',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          grid: {
-            columns: 6,
-            cellSize: { width: 150, height: 120 },
-            gap: '8px',
-            imageGrid: {
-              masonry: false
-            }
-          },
-          compact: true
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
+
+        zones: {
+          content: {
+            mode: 'grid',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              grid: {
+                columns: 6,
+                cellSize: { width: 150, height: 120 },
+                gap: '8px',
+                imageGrid: {
+                  masonry: false
+                }
+              },
+              compact: true
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Compact 6-column image grid with small cells, perfect for thumbnails or overview displays.',
       data: imageGalleryData
@@ -809,41 +836,45 @@ export const galleryConfigs: Array<{
       name: 'Large Image Showcase',
       mode: 'grid',
       config: {
-        title: 'Large Image Showcase',
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          grid: {
-            columns: 2,
-            gap: '20px',
-            imageGrid: {
-              masonry: true
-            }
+
+        zones: {
+          content: {
+            mode: 'grid',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              grid: {
+                columns: 2,
+                gap: '20px',
+                imageGrid: {
+                  masonry: true
+                }
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Large 2-column masonry layout showcasing images with detailed text overlays.',
       data: imageGalleryData
@@ -853,51 +884,55 @@ export const galleryConfigs: Array<{
       name: 'Nature Gallery - Background Images',
       mode: 'board',
       config: {
-        title: 'Nature Gallery - Background Images',
-        mode: 'board',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            placement: 'background',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: true,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+',
-          errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          board: {
-            groupBy: 'category',
-            draggable: true,
-            showColumnHeaders: true,
-            showItemCount: true,
-            minColumnWidth: '280px',
-            gap: '12px',
-            imagePlacement: 'background'
-          },
-          card: {
-            showBorder: true,
-            borderRadius: '8px',
-            shadow: true,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)'
+
+        zones: {
+          content: {
+            mode: 'board',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                placement: 'background',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: true,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+',
+              errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              board: {
+                groupBy: 'category',
+                draggable: true,
+                showColumnHeaders: true,
+                showItemCount: true,
+                minColumnWidth: '280px',
+                gap: '12px',
+                imagePlacement: 'background'
+              },
+              card: {
+                showBorder: true,
+                borderRadius: '8px',
+                shadow: true,
+                backgroundColor: 'rgba(255, 255, 255, 0.9)'
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Board view with images as card backgrounds, overlay text for readability, and dynamic color backgrounds',
       data: imageGalleryData
@@ -907,57 +942,61 @@ export const galleryConfigs: Array<{
       name: 'Image Gallery Board - Header & Body',
       mode: 'board',
       config: {
-        title: 'Photo Portfolio - Header & Body Images',
-        mode: 'board',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            placement: 'header',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: true,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=',
-          errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmVkN2Q3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          board: {
-            columns: [
-              { id: 'Nature', label: 'Nature & Landscapes' },
-              { id: 'Urban', label: 'Urban & Architecture' },
-              { id: 'Art', label: 'Art & Abstract' },
-              { id: 'Portrait', label: 'Portraits' }
+
+        zones: {
+          content: {
+            mode: 'board',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
             ],
-            groupBy: 'category',
-            draggable: true,
-            showColumnHeaders: true,
-            showItemCount: true,
-            minColumnWidth: '320px',
-            gap: '16px',
-            imagePlacement: 'header'
-          },
-          card: {
-            showBorder: true,
-            borderRadius: '12px',
-            shadow: true,
-            backgroundColor: '#ffffff'
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                placement: 'header',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: true,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=',
+              errorPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmVkN2Q3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              board: {
+                columns: [
+                  { id: 'Nature', label: 'Nature & Landscapes' },
+                  { id: 'Urban', label: 'Urban & Architecture' },
+                  { id: 'Art', label: 'Art & Abstract' },
+                  { id: 'Portrait', label: 'Portraits' }
+                ],
+                groupBy: 'category',
+                draggable: true,
+                showColumnHeaders: true,
+                showItemCount: true,
+                minColumnWidth: '320px',
+                gap: '16px',
+                imagePlacement: 'header'
+              },
+              card: {
+                showBorder: true,
+                borderRadius: '12px',
+                shadow: true,
+                backgroundColor: '#ffffff'
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Board view with images as card headers, custom column definitions, and static backgrounds with borders',
       data: imageGalleryData
@@ -967,39 +1006,43 @@ export const galleryConfigs: Array<{
       name: 'Table with Avatar Images',
       mode: 'table',
       config: {
-        title: 'User Profiles with Avatars',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Name', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text' },
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean', booleanTrueLabel: "🟢 Online", booleanFalseLabel: "🔴 Offline" },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            label: '',
-            placement: 'cell',
-            size: 'small',
-            shape: 'circle',
-            fit: 'cover',
-            lightbox: true,
-            position: 'start'
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
-        },
-        styling: { compact: true },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Name', type: 'text' },
+              { name: 'role', label: 'Role', type: 'text' },
+              { name: 'department', label: 'Department', type: 'text' },
+              { name: 'status', label: 'Active', type: 'boolean', booleanTrueLabel: "🟢 Online", booleanFalseLabel: "🔴 Offline" },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                label: '',
+                placement: 'cell',
+                size: 'small',
+                shape: 'circle',
+                fit: 'cover',
+                lightbox: true,
+                position: 'start'
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
+            },
+            styling: { compact: true },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Table view with circular avatar images in cells, showing user profiles with online status',
       data: teaserSampleData
@@ -1009,51 +1052,55 @@ export const galleryConfigs: Array<{
       name: 'Table with Multiple Images',
       mode: 'table',
       config: {
-        title: 'Image Gallery Table',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [
-            {
-              field: 'thumbnail',
-              label: '',
-              placement: 'cell',
-              size: 'small',
-              shape: 'rounded',
-              fit: 'cover',
-              position: 'start',
-              priority: 1
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [
+                {
+                  field: 'thumbnail',
+                  label: '',
+                  placement: 'cell',
+                  size: 'small',
+                  shape: 'rounded',
+                  fit: 'cover',
+                  position: 'start',
+                  priority: 1
+                },
+                {
+                  field: 'src',
+                  label: 'Image Preview',
+                  placement: 'cell',
+                  size: 'medium',
+                  shape: 'square',
+                  fit: 'contain',
+                  lightbox: true,
+                  afterField: 'category',
+                  priority: 2
+                }
+              ],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjxwYXRoIGQ9Im02MCA3MCAxMCAxMCAxMC0xMCIgc3Ryb2tlPSIjYWRiNWJkIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
             },
-            {
-              field: 'src',
-              label: 'Image Preview',
-              placement: 'cell',
-              size: 'medium',
-              shape: 'square',
-              fit: 'contain',
-              lightbox: true,
-              afterField: 'category',
-              priority: 2
-            }
-          ],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjxwYXRoIGQ9Im02MCA3MCAxMCAxMCAxMC0xMCIgc3Ryb2tlPSIjYWRiNWJkIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
-        },
-        styling: { compact: true },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
+            styling: { compact: true },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Table with multiple image columns - thumbnail and full-size preview with different sizes and shapes',
       data: imageGalleryData.map(item => ({
@@ -1068,38 +1115,42 @@ export const galleryConfigs: Array<{
       name: 'Table with Medium Size Images',
       mode: 'table',
       config: {
-        title: 'Image Portfolio Table',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            placement: 'cell',
-            fit: 'cover',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiBy0iMjAiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-        },
-        styling: {
-          table: {
-            // backgroundColor: 'rgba(255, 255, 255, 0.9)'
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                placement: 'cell',
+                fit: 'cover',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiBy0iMjAiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            },
+            styling: {
+              table: {
+                // backgroundColor: 'rgba(255, 255, 255, 0.9)'
+              }
+            },
+            actions: {
+              definitions: [
+                { id: 'refresh' }
+              ],
+              header: {
+                always: ['refresh']
+              }
+            },
+            collapsible: 'fixed',
           }
-        },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        }
       },
       description: 'Table with images displayed in cells with cover fit',
       data: imageGalleryData.slice(0, 6)
@@ -1109,34 +1160,38 @@ export const galleryConfigs: Array<{
       name: 'Table with Large Images',
       mode: 'table',
       config: {
-        title: 'Image Showcase Table',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        mediaConfig: {
-          fields: [{
-            field: 'src',
-            placement: 'cell',
-            size: 'large',
-            shape: 'rounded',
-            fit: 'contain',
-            lightbox: true
-          }],
-          lazy: false,
-          loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
-        },
-        styling: {
-          table: {
-            cellBorder: true,
-            borderColor: '#e9ecef'
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'name', label: 'Title', type: 'text' },
+              { name: 'category', label: 'Category', type: 'text' },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            mediaConfig: {
+              fields: [{
+                field: 'src',
+                placement: 'cell',
+                size: 'large',
+                shape: 'rounded',
+                fit: 'contain',
+                lightbox: true
+              }],
+              lazy: false,
+              loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
+            },
+            styling: {
+              table: {
+                cellBorder: true,
+                borderColor: '#e9ecef'
+              }
+            },
+            collapsible: 'fixed',
+            header: { always: ['refresh'] }
           }
-        },
-        collapsible: 'fixed',
-        header: { always: ['refresh'] }
+        }
       },
       description: 'Table with large rounded images using contain fit, showing full image content with borders',
       data: imageGalleryData.slice(0, 4)
@@ -1146,30 +1201,34 @@ export const galleryConfigs: Array<{
       name: 'Link Rendering Test',
       mode: 'table',
       config: {
-        title: 'Clickable Links',
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'id', label: 'ID', type: 'number' },
-          { name: 'name', label: 'Name', type: 'text' },
-          {
-            name: 'url',
-            label: 'URL',
-            type: 'text',
-            renderAs: 'link',
-            linkOptions: {
-              newTab: true,
-              externalWarning: true
-            }
-          },
-          { name: 'description', label: 'Description', type: 'text' },
-        ],
-        actions: {
-          definitions: [
-            { id: 'refresh' },
-          ]
-        },
-        header: { always: ['refresh'] }
+
+        zones: {
+          content: {
+            mode: 'table',
+            dataSource: { type: 'static' },
+            fields: [
+              { name: 'id', label: 'ID', type: 'number' },
+              { name: 'name', label: 'Name', type: 'text' },
+              {
+                name: 'url',
+                label: 'URL',
+                type: 'text',
+                renderAs: 'link',
+                linkOptions: {
+                  newTab: true,
+                  externalWarning: true
+                }
+              },
+              { name: 'description', label: 'Description', type: 'text' },
+            ],
+            actions: {
+              definitions: [
+                { id: 'refresh' },
+              ]
+            },
+            header: { always: ['refresh'] }
+          }
+        }
       },
       description: 'Table demonstrating clickable link rendering with external link warnings',
       data: linkTestData
@@ -1177,55 +1236,10 @@ export const galleryConfigs: Array<{
   ];
 
 // Default sandbox configuration
-export const defaultSandboxConfig: LegacyWidgemoConfig = {
-  title: 'User Sandbox',
-  mode: 'table',
-  dataSource: { type: 'static' },
-  fields: [
-    { name: 'id', label: 'ID', type: 'number' },
-    { name: 'name', label: 'Name', type: 'text' },
-    { name: 'email', label: 'Email', type: 'text' },
-    { name: 'role', label: 'Role', type: 'text' },
-    { name: 'department', label: 'Department', type: 'text' },
-    { name: 'status', label: 'Active', type: 'boolean' },
-  ],
-  actions: {
-    definitions: [
-      { id: 'add' },
-      { id: 'refresh' },
-      {
-        id: 'edit',
-        label: 'Edit',
-        icon: 'edit',
-        variant: 'secondary',
-        iconOnly: true,
-        onTrigger: () => { } // Demo action
-      },
-      {
-        id: 'delete',
-        label: 'Delete',
-        icon: 'trash',
-        variant: 'danger',
-        iconOnly: true,
-        onTrigger: () => { } // Demo action
-      }
-    ],
-    header: {
-      always: ['refresh', 'add'],
-      onMenu: ['deleteToggle']
-    },
-    item: {
-      onMenu: ['edit', 'delete']
-    }
-  },
-  styling: {},
-};
-
-// Teaser configurations with varying settings for each mode
-export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: string }> = [
-  {
-    config: {
-      title: 'User Management Table',
+export const defaultSandboxConfig: WidgemoConfig = {
+  id: 'default-sandbox',
+  zones: {
+    content: {
       mode: 'table',
       dataSource: { type: 'static' },
       fields: [
@@ -1234,13 +1248,12 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
         { name: 'email', label: 'Email', type: 'text' },
         { name: 'role', label: 'Role', type: 'text' },
         { name: 'department', label: 'Department', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
+        { name: 'status', label: 'Active', type: 'boolean' },
       ],
       actions: {
         definitions: [
-          { id: 'add', label: 'Add User' },
+          { id: 'add' },
           { id: 'refresh' },
-          { id: 'deleteToggle' },
           {
             id: 'edit',
             label: 'Edit',
@@ -1266,117 +1279,183 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
           onMenu: ['edit', 'delete']
         }
       },
-      styling: { compact: true },
-      labels: { add: 'Add User' }
+      styling: {},
+    }
+  }
+};
+
+// Teaser configurations with varying settings for each mode
+export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: string }> = [
+  {
+    config: {
+      id: 'teaser-table',
+      zones: {
+        content: {
+          mode: 'table',
+          dataSource: { type: 'static' },
+          fields: [
+            { name: 'id', label: 'ID', type: 'number' },
+            { name: 'name', label: 'Name', type: 'text' },
+            { name: 'email', label: 'Email', type: 'text' },
+            { name: 'role', label: 'Role', type: 'text' },
+            { name: 'department', label: 'Department', type: 'text' },
+            { name: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
+          ],
+          actions: {
+            definitions: [
+              { id: 'add', label: 'Add User' },
+              { id: 'refresh' },
+              { id: 'deleteToggle' },
+              {
+                id: 'edit',
+                label: 'Edit',
+                icon: 'edit',
+                variant: 'secondary',
+                iconOnly: true,
+                onTrigger: () => { } // Demo action
+              },
+              {
+                id: 'delete',
+                label: 'Delete',
+                icon: 'trash',
+                variant: 'danger',
+                iconOnly: true,
+                onTrigger: () => { } // Demo action
+              }
+            ],
+            header: {
+              always: ['refresh', 'add'],
+              onMenu: ['deleteToggle']
+            },
+            item: {
+              onMenu: ['edit', 'delete']
+            }
+          },
+          styling: { compact: true },
+          labels: { add: 'Add User' }
+        }
+      }
     },
     description: 'A table view with actions and custom labels'
   },
   {
     config: {
-      title: 'User Profiles Board',
-      mode: 'board',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'email', label: 'Email', type: 'text' },
-        { name: 'department', label: 'Department', type: 'text' },
-      ],
-      actions: {
-        definitions: [
-          { id: 'refresh' },
-          {
-            id: 'view',
-            label: 'View',
-            icon: 'eye',
-            variant: 'secondary',
-            iconOnly: true,
-            onTrigger: () => { } // Demo action
-          }
-        ],
-        header: {
-          always: ['refresh']
-        },
-        item: {
-          always: ['view']
+      id: 'teaser-board',
+      zones: {
+        content: {
+          mode: 'board',
+          dataSource: { type: 'static' },
+          fields: [
+            { name: 'name', label: 'Name', type: 'text' },
+            { name: 'email', label: 'Email', type: 'text' },
+            { name: 'department', label: 'Department', type: 'text' },
+          ],
+          actions: {
+            definitions: [
+              { id: 'refresh' },
+              {
+                id: 'view',
+                label: 'View',
+                icon: 'eye',
+                variant: 'secondary',
+                iconOnly: true,
+                onTrigger: () => { } // Demo action
+              }
+            ],
+            header: {
+              always: ['refresh']
+            },
+            item: {
+              always: ['view']
+            }
+          },
+          styling: {
+            board: {
+              groupBy: "role",
+            },
+          },
+          collapsible: 'fixed',
         }
-      },
-      styling: {
-        board: {
-          groupBy: "role",
-        },
-      },
-      collapsible: 'fixed',
+      }
     },
     description: 'A kanban-style board with contact info'
   },
   {
     config: {
-      title: 'Department Overview',
-      mode: 'grid',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'name', label: 'Lead', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-      ],
-      actions: {
-        definitions: [
-          { id: 'refresh' }
-        ],
-        header: {
-          always: ['refresh']
-        }
-      },
-      styling: {
-        compact: true,
-        grid: {
-          columns: 3,
-          cellSize: {
-            width: 170,
-            height: 170
+      id: 'teaser-grid',
+      zones: {
+        content: {
+          mode: 'grid',
+          dataSource: { type: 'static' },
+          fields: [
+            { name: 'department', label: 'Department', type: 'text' },
+            { name: 'name', label: 'Lead', type: 'text' },
+            { name: 'role', label: 'Role', type: 'text' },
+          ],
+          actions: {
+            definitions: [
+              { id: 'refresh' }
+            ],
+            header: {
+              always: ['refresh']
+            }
           },
-          showGridLines: true,
-          aspectRatio: '1/1'
+          styling: {
+            compact: true,
+            grid: {
+              columns: 3,
+              cellSize: {
+                width: 170,
+                height: 170
+              },
+              showGridLines: true,
+              aspectRatio: '1/1'
+            }
+          },
         }
-      },
+      }
     },
     description: 'A grid showing departments and leads'
   },
   {
     config: {
-      title: 'User Avatars',
-      mode: 'grid',
-      dataSource: { type: 'static' },
-      fields: [
-        { name: 'name', label: 'Name', type: 'text', showLabel: false },
-        { name: 'role', label: 'Role', type: 'text', visible: false },
-      ],
-      mediaConfig: {
-        fields: [{
-          field: 'src',
-          fit: 'cover',
-          lightbox: true
-        }],
-        lazy: false,
-        loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
-      },
-      styling: {
-        compact: true,
-        grid: {
-          columns: 5,
-          cellSize: { width: 120, height: 150 },
-          gap: '8px',
-          imageGrid: {
-            masonry: false
+      id: 'teaser-gallery',
+      zones: {
+        content: {
+          mode: 'grid',
+          dataSource: { type: 'static' },
+          fields: [
+            { name: 'name', label: 'Name', type: 'text', showLabel: false },
+            { name: 'role', label: 'Role', type: 'text', visible: false },
+          ],
+          mediaConfig: {
+            fields: [{
+              field: 'src',
+              fit: 'cover',
+              lightbox: true
+            }],
+            lazy: false,
+            loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+          },
+          styling: {
+            compact: true,
+            grid: {
+              columns: 5,
+              cellSize: { width: 120, height: 150 },
+              gap: '8px',
+              imageGrid: {
+                masonry: false
+              }
+            }
+          },
+          actions: {
+            definitions: [
+              { id: 'refresh' }
+            ],
+            header: {
+              always: ['refresh']
+            }
           }
-        }
-      },
-      actions: {
-        definitions: [
-          { id: 'refresh' }
-        ],
-        header: {
-          always: ['refresh']
         }
       }
     },

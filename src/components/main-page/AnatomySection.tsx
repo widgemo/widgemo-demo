@@ -145,11 +145,7 @@ const customAdapters = {
       data: response.data.items,
       total: response.data.total
     };
-  },
-  // Override renderers
-  renderCell: (value, column) => (
-    <CustomCell value={value} column={column} />
-  )
+  }
 };`}
                   </pre>
                 </div>
