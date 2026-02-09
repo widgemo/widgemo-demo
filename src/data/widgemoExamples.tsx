@@ -4349,45 +4349,126 @@ const widgemoExamples: Array<{
     }
   },
   {
-    id: 'table-rich-cells-grouping',
-    title: 'Table Rich Cells with Grouping',
-    description: 'Rich cells table with collapsible department grouping',
-    data: teaserSampleData,
+    id: 'actions-overflow-demo',
+    title: 'Actions Overflow Demo',
+    description: 'Demonstrates responsive action overflow with tuck-to-menu functionality',
+    data: twoUsersData,
     config: {
       zones: {
+        header: {
+          title: 'Actions Overflow Demo',
+          subtitle: 'Resize the window to see actions tuck into overflow menu',
+          actions: [
+            {
+              id: 'add-user',
+              label: 'Add User',
+              icon: 'add',
+              placement: 'always',
+              onClick: () => alert('Add User clicked!')
+            },
+            {
+              id: 'edit-user',
+              label: 'Edit User',
+              icon: 'edit',
+              placement: 'always',
+              onClick: () => alert('Edit User clicked!')
+            },
+            {
+              id: 'delete-user',
+              label: 'Delete User',
+              icon: 'delete',
+              placement: 'onHover',
+              onClick: () => alert('Delete User clicked!')
+            },
+            {
+              id: 'view-profile',
+              label: 'View Profile',
+              icon: 'view',
+              placement: 'onHover',
+              onClick: () => alert('View Profile clicked!')
+            },
+            {
+              id: 'send-message',
+              label: 'Send Message',
+              icon: 'message',
+              placement: 'menu',
+              onClick: () => alert('Send Message clicked!')
+            },
+            {
+              id: 'share-user',
+              label: 'Share User',
+              icon: 'share',
+              placement: 'menu',
+              onClick: () => alert('Share User clicked!')
+            },
+            {
+              id: 'export-user',
+              label: 'Export User',
+              icon: 'export',
+              placement: 'menu',
+              onClick: () => alert('Export User clicked!')
+            },
+            {
+              id: 'archive-user',
+              label: 'Archive User',
+              icon: 'archive',
+              placement: 'menu',
+              pinned: true,
+              onClick: () => alert('Archive User clicked!')
+            }
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 3 },
+            menuLabel: 'More Actions',
+            indicator: 'pulse'
+          }
+        },
         content: {
           mode: 'table',
-          data: teaserSampleData,
-          table: {
-            columns: 3,
-            showHeader: true,
-            striped: true,
-            hover: true,
-            grouping: {
-              groupBy: 'department',
-              initialExpanded: true,
-              collapsible: true,
-              groupHeaderRenderer: (groupValue: unknown, count: number, isExpanded: boolean) => (
-                <span style={{
-                  fontWeight: 'bold',
-                  color: isExpanded ? '#dc3545' : '#007bff'
-                }}>
-                  {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
-                </span>
-              )
-            }
+          data: twoUsersData,
+          layout: {},
+          item: {
+            fields: [
+              { key: 'id', label: 'ID', width: '60px' },
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'department', label: 'Department' }
+            ]
           },
-          itemConfig: {
-            actions: {
-              item: [
-                {
-                  id: 'edit',
-                  label: 'Edit',
-                  icon: 'edit',
-                  handler: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-                }
-              ]
+          itemActions: [
+            {
+              id: 'edit-item',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'always',
+              onClick: (entity) => alert(`Edit ${entity.name}`)
+            },
+            {
+              id: 'delete-item',
+              label: 'Delete',
+              icon: 'delete',
+              placement: 'onHover',
+              onClick: (entity) => alert(`Delete ${entity.name}`)
+            },
+            {
+              id: 'view-item',
+              label: 'View Details',
+              icon: 'view',
+              placement: 'menu',
+              onClick: (entity) => alert(`View details for ${entity.name}`)
+            },
+            {
+              id: 'duplicate-item',
+              label: 'Duplicate',
+              icon: 'duplicate',
+              placement: 'menu',
+              onClick: (entity) => alert(`Duplicate ${entity.name}`)
             }
+          ],
+          actionOverflow: {
+            maxInline: 2,
+            menuLabel: 'More',
+            indicator: 'scale'
           }
         }
       }
