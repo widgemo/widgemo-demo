@@ -3485,6 +3485,119 @@ export const unifiedRichCellsItemActionsConfig: any = {
   }
 };
 
+// Unified config with groupings for table mode
+export const unifiedTableGroupingConfig: any = {
+  id: 'unified-table-grouping',
+  zones: {
+    header: {
+      title: 'Unified Table Grouping',
+      subtitle: 'Table with collapsible groups using unified config'
+    },
+    content: {
+      mode: 'table',
+      data: teaserSampleData,
+      layout: {
+        table: {
+          type: 'traditional',
+          showHeader: true,
+          striped: true,
+          hover: true
+        }
+      },
+      groupings: [
+        {
+          fieldKey: 'department',
+          initiallyCollapsed: false,
+          renderer: (groupValue: any, count: number, isExpanded: boolean) => (
+            <span style={{
+              fontWeight: 'bold',
+              color: isExpanded ? '#28a745' : '#007bff'
+            }}>
+              {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+            </span>
+          )
+        }
+      ],
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' }
+        ],
+        layout: { type: 'auto' },
+        style: 'default'
+      },
+      itemActions: [
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          onClick: (entity: SampleData) => console.log('Edit clicked for', entity.name)
+        }
+      ]
+    }
+  }
+};
+
+// Unified config with groupings for rich-cells table mode
+export const unifiedRichCellsGroupingConfig: any = {
+  id: 'unified-rich-cells-grouping',
+  zones: {
+    header: {
+      title: 'Unified Rich Cells Table Grouping',
+      subtitle: 'Rich-cells table with collapsible groups using unified config'
+    },
+    content: {
+      mode: 'table',
+      data: teaserSampleData,
+      layout: {
+        table: {
+          type: 'rich-cells',
+          columns: 2,
+          showHeader: true,
+          striped: true,
+          hover: true
+        }
+      },
+      groupings: [
+        {
+          fieldKey: 'department',
+          initiallyCollapsed: false,
+          renderer: (groupValue: any, count: number, isExpanded: boolean) => (
+            <span style={{
+              fontWeight: 'bold',
+              color: isExpanded ? '#28a745' : '#007bff'
+            }}>
+              {String(groupValue || 'No Department')} ({count} {count === 1 ? 'member' : 'members'})
+            </span>
+          )
+        }
+      ],
+      item: {
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'role', label: 'Role' },
+          { key: 'email', label: 'Email' }
+        ],
+        layout: { type: 'sections', sections: [
+          { title: 'Profile', fields: ['name', 'role'] },
+          { title: 'Contact', fields: ['email'] }
+        ] },
+        style: 'card'
+      },
+      itemActions: [
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          onClick: (entity: SampleData) => console.log('Edit clicked for', entity.name)
+        }
+      ]
+    }
+  }
+};
+
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples: Array<{
   id: string;
@@ -3618,6 +3731,20 @@ const widgemoExamples: Array<{
     description: 'Rich-cells table mode with per-item actions using unified config',
     data: teaserSampleData.slice(0, 6),
     config: unifiedRichCellsItemActionsConfig
+  },
+  {
+    id: 'unified-table-grouping',
+    title: 'Unified Table Grouping',
+    description: 'Traditional table with collapsible groups using unified config',
+    data: teaserSampleData,
+    config: unifiedTableGroupingConfig
+  },
+  {
+    id: 'unified-rich-cells-grouping',
+    title: 'Unified Rich Cells Table Grouping',
+    description: 'Rich-cells table with collapsible groups using unified config',
+    data: teaserSampleData,
+    config: unifiedRichCellsGroupingConfig
   },
   {
     id: 'table-alternating',
