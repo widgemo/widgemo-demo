@@ -295,6 +295,251 @@ const widgemoExamples: Array<{
       },
       devMode: true
     }
+  },
+
+  // New unified examples
+  {
+    id: 'traditional-table',
+    title: 'Traditional Table',
+    description: 'Simple table layout with basic field display',
+    data: fourUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'User Directory',
+          subtitle: 'Traditional table view'
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'id', label: 'ID', width: '60px' },
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'department', label: 'Department' },
+              { key: 'role', label: 'Role' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'rich-cells-table',
+    title: 'Rich Cells Table',
+    description: 'Table with rich content including images and formatted data',
+    data: fourUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'User Profiles',
+          subtitle: 'Rich table with images and formatted content'
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image', width: '60px' },
+              { key: 'name', label: 'Name', type: 'text' },
+              { key: 'email', label: 'Email', type: 'email' },
+              { key: 'department', label: 'Department', type: 'badge' },
+              { key: 'progress', label: 'Progress', type: 'progress', width: '120px' },
+              { key: 'amount', label: 'Salary', type: 'currency', currency: 'USD' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'basic-grid-layout',
+    title: 'Basic Grid Layout',
+    description: 'Responsive grid with flex/grid layout and card-based display',
+    data: sixUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'User Grid',
+          subtitle: 'Responsive card layout'
+        },
+        content: {
+          mode: 'grid',
+          columns: { mobile: 1, tablet: 2, desktop: 3 },
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image' },
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', type: 'badge' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'grouped-traditional-table',
+    title: 'Grouped Traditional Table',
+    description: 'Traditional table with data grouped by department',
+    data: eightUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Users by Department',
+          subtitle: 'Grouped traditional table view'
+        },
+        content: {
+          mode: 'table',
+          groupBy: 'department',
+          item: {
+            fields: [
+              { key: 'id', label: 'ID', width: '60px' },
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'role', label: 'Role' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'grouped-rich-cells-table',
+    title: 'Grouped Rich Cells Table',
+    description: 'Rich cells table with data grouped by department and enhanced formatting',
+    data: eightUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Department Teams',
+          subtitle: 'Grouped rich table with enhanced content'
+        },
+        content: {
+          mode: 'table',
+          groupBy: 'department',
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image', width: '50px' },
+              { key: 'name', label: 'Name', type: 'text' },
+              { key: 'role', label: 'Role', type: 'badge' },
+              { key: 'progress', label: 'Progress', type: 'progress', width: '100px' },
+              { key: 'rating', label: 'Rating', type: 'rating', width: '80px' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'per-item-actions-demo',
+    title: 'Per-Item Actions',
+    description: 'Table demonstrating various action placements: pinned, onHover, and menu',
+    data: fourUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'User Management',
+          subtitle: 'Per-item actions with different placements'
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'id', label: 'ID', width: '60px' },
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', type: 'badge' }
+            ]
+          },
+          itemActions: [
+            {
+              id: 'edit-user',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'always',
+              onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
+            },
+            {
+              id: 'view-profile',
+              label: 'View Profile',
+              icon: 'view',
+              placement: 'onHover',
+              onClick: (entity: SampleData) => alert(`View profile for ${entity.name}`)
+            },
+            {
+              id: 'send-message',
+              label: 'Send Message',
+              icon: 'message',
+              placement: 'onHover',
+              onClick: (entity: SampleData) => alert(`Send message to ${entity.name}`)
+            },
+            {
+              id: 'duplicate-user',
+              label: 'Duplicate',
+              icon: 'duplicate',
+              placement: 'menu',
+              onClick: (entity: SampleData) => alert(`Duplicate ${entity.name}`)
+            },
+            {
+              id: 'archive-user',
+              label: 'Archive',
+              icon: 'archive',
+              placement: 'menu',
+              onClick: (entity: SampleData) => alert(`Archive ${entity.name}`)
+            }
+          ]
+        }
+      }
+    }
+  },
+
+  {
+    id: 'compact-list-view',
+    title: 'Compact List View',
+    description: 'Minimal list layout with essential information and actions',
+    data: sixUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'User List',
+          subtitle: 'Compact list with inline actions'
+        },
+        content: {
+          mode: 'list',
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image', width: '40px' },
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email' },
+              { key: 'department', label: 'Department', type: 'badge' }
+            ]
+          },
+          itemActions: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'always',
+              onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'delete',
+              placement: 'onHover',
+              onClick: (entity: SampleData) => alert(`Delete ${entity.name}`)
+            }
+          ]
+        }
+      }
+    }
   }
 ];
 export default widgemoExamples;
