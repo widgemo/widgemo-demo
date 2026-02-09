@@ -36,7 +36,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   const previewRef = React.useRef<HTMLDivElement>(null);
 
   // Toggle for config version
-  const [useUnified, setUseUnified] = React.useState(false);
+  const [useUnified, setUseUnified] = React.useState(true);
   const [selectedTheme, setSelectedTheme] = React.useState('default');
 
   // Sugar props for testing

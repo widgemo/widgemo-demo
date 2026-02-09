@@ -134,6 +134,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             <Widgemo
               data={selectedItem.data}
               config={selectedItem.config}
+              configVersion="unified"
               className="my-custom-widgemo"
             />
             <div className="mt-3">

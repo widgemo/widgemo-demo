@@ -4371,6 +4371,7 @@ const widgemoExamples: Array<{
               label: 'Edit User',
               icon: 'edit',
               placement: 'always',
+              pinned: true,
               onClick: () => alert('Edit User clicked!')
             },
             {
@@ -4378,6 +4379,7 @@ const widgemoExamples: Array<{
               label: 'Delete User',
               icon: 'delete',
               placement: 'onHover',
+              pinned: true,
               onClick: () => alert('Delete User clicked!')
             },
             {
@@ -4413,7 +4415,6 @@ const widgemoExamples: Array<{
               label: 'Archive User',
               icon: 'archive',
               placement: 'menu',
-              pinned: true,
               onClick: () => alert('Archive User clicked!')
             }
           ],
@@ -4441,28 +4442,28 @@ const widgemoExamples: Array<{
               label: 'Edit',
               icon: 'edit',
               placement: 'always',
-              onClick: (entity) => alert(`Edit ${entity.name}`)
+              onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
             },
             {
               id: 'delete-item',
               label: 'Delete',
               icon: 'delete',
               placement: 'onHover',
-              onClick: (entity) => alert(`Delete ${entity.name}`)
+              onClick: (entity: SampleData) => alert(`Delete ${entity.name}`)
             },
             {
               id: 'view-item',
               label: 'View Details',
               icon: 'view',
               placement: 'menu',
-              onClick: (entity) => alert(`View details for ${entity.name}`)
+              onClick: (entity: SampleData) => alert(`View details for ${entity.name}`)
             },
             {
               id: 'duplicate-item',
               label: 'Duplicate',
               icon: 'duplicate',
               placement: 'menu',
-              onClick: (entity) => alert(`Duplicate ${entity.name}`)
+              onClick: (entity: SampleData) => alert(`Duplicate ${entity.name}`)
             }
           ],
           actionOverflow: {
