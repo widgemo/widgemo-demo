@@ -268,15 +268,17 @@ const widgemoExamples: Array<{
           title: 'User Grid',
           subtitle: 'Card-based grid layout with user profiles',
           themeOverrides: {
-            titleFontSize: '1rem',
-            padding: '0.5rem',
-            backgroundColor: '#f8f9fa',
-            borderColor: '#dee2e6',
-            borderRadius: '8px',
-            titleColor: '#aa7c12',
-            subtitleColor: '#6c757d',
-            iconColor: '#495057',
-            iconSize: 32
+            //titleFontSize: '1.5rem',
+            //padding: '1rem',
+            //backgroundColor: '#f8f9fa',
+            //borderColor: 'none',
+            //borderWidth: '5px',
+            //borderStyle: 'solid', 
+            //borderRadius: '8px',
+            //titleColor: '#aa7c12',
+            //subtitleColor: '#0c599c',
+            //iconColor: '#495057',
+            //iconSize: 26
           },
           actions: [
             {
