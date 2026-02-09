@@ -208,44 +208,35 @@ export const SimplifiedTest: React.FC = () => {
         </div>
 
         {/* TEST: Only render the first example */}
-        {(() => {
-          const firstExample = examplesWithDevMode[0];
-          if (!firstExample) {
-            return <div>No examples found</div>;
-          }
-          console.log('Rendering first example:', firstExample.id, firstExample.title);
-          return (
-            <div key={firstExample.id} className="col-12 mb-4">
-              <h2>{firstExample.title}</h2>
-              <p>{firstExample.description}</p>
-              <div style={{ border: '2px solid red', padding: '10px', margin: '10px 0' }}>
-                <strong>DEBUG: This should render a Widgemo component below</strong>
-              </div>
-              {/* Rendering Widgemo with stable props from examples array. */}
-              {useWidgemoCoreDefaultTheming ? (
-                <WidgemoThemeProvider theme={currentTheme}>
-                  <Widgemo
-                    key={`${firstExample.id}-${includeWidgemoInspector}`}
-                    data={firstExample.data}
-                    config={firstExample.config}
-                    configVersion='legacy'
-                    className="my-custom-widgemo"
-                    {...(firstExample.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
-                  />
-                </WidgemoThemeProvider>
-              ) : (
+        {/* RESTORED: Now rendering ALL examples with unified configs */}
+        {examplesWithDevMode.map((example) => (
+          <div key={example.id} className="col-12 mb-4">
+            <h2>{example.title}</h2>
+            <p>{example.description}</p>
+            {/* Rendering Widgemo with stable props from examples array. */}
+            {useWidgemoCoreDefaultTheming ? (
+              <WidgemoThemeProvider theme={currentTheme}>
                 <Widgemo
-                  key={`${firstExample.id}-${includeWidgemoInspector}`}
-                  data={firstExample.data}
-                  config={firstExample.config}
-                  configVersion='legacy'
+                  key={`${example.id}-${includeWidgemoInspector}`}
+                  data={example.data}
+                  config={example.config}
+                  configVersion='unified'
                   className="my-custom-widgemo"
-                  {...(firstExample.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+                  {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
                 />
-              )}
-            </div>
-          );
-        })()}
+              </WidgemoThemeProvider>
+            ) : (
+              <Widgemo
+                key={`${example.id}-${includeWidgemoInspector}`}
+                data={example.data}
+                config={example.config}
+                configVersion='unified'
+                className="my-custom-widgemo"
+                {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -45,7 +45,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 
   // Modify unified config to include theme
   const getUnifiedConfig = () => {
-    const unifiedConfig = legacyToUnified(config as LegacyWidgemoConfig, data);
+    // If config already has zones, it's already unified
+    const unifiedConfig = config.zones ? config : legacyToUnified(config as LegacyWidgemoConfig, data);
     unifiedConfig.theme = selectedTheme; // Set global theme
     // Enable devMode for testing
     unifiedConfig.devMode = {
