@@ -1,4 +1,4 @@
-import type { ActionContext, Entity, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
+import type { ActionContext, Entity, WidgemoConfig, ColumnConfig, BoardColumnConfig } from 'widgemo-core';
 import { FaPlus, FaEdit, FaSync, FaDownload, FaWifi } from 'react-icons/fa';
 import { FaUserSlash } from 'react-icons/fa6';
 import { currencyDecimalSampleData, currencyCompactSampleData, currencyEdgeCasesSampleData, currencyExamplesSampleData, currencyInternationalSampleData, currencyPositioningSampleData, currencyPrecisionSampleData, teaserSampleData, actionLinksSampleData, actionOptionsSampleData, currencyDynamicSampleData, linkTestData, kanbanSampleData, swatchesSampleData, ratingsSampleData, progressSampleData, progressVariantsSampleData, progressExampleSampleData, badgeSampleData, projectExampleSampleData } from './sampleData';
@@ -59,7 +59,7 @@ export const eightUsersData = teaserSampleData.slice(0, 8);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const collapsibleHeaderConfig: any = {
+export const collapsibleHeaderConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -67,20 +67,20 @@ export const collapsibleHeaderConfig: any = {
       collapse: { initialState: 'expanded', button: true },
       icon: { src: 'database', size: 24, color: '#c4530d' },
       title: 'User Database',
-      subtitle: (data: Entity[]) => `Manage your ${data.length} team member(s)`,
+      subtitle: (data) => `Manage your ${data.length} team member(s)`,
       actions: [
         {
           id: 'add-user',
           label: 'Add User',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add User clicked!')
+          onClick: () => alert('Add User clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -88,7 +88,7 @@ export const collapsibleHeaderConfig: any = {
           id: 'export',
           label: 'Export Data',
           icon: 'download',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         }
@@ -106,7 +106,7 @@ export const collapsibleHeaderConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const fixedHeaderConfig: any = {
+export const fixedHeaderConfig: WidgemoConfig = {
   devMode: {
     enabled: true,
     zone: 'footer'
@@ -127,7 +127,7 @@ export const fixedHeaderConfig: any = {
       enabled: true,
       icon: { src: 'users'},
       className: 'custom-footer-class',
-      title: (data: Entity[]) => `Team Members (${data.length} users)`,
+      title: (data) => `Team Members (${data.length} users)`,
       subtitle: '- "Manage your team efficiently"',
       actions: [
         {
@@ -135,13 +135,13 @@ export const fixedHeaderConfig: any = {
           label: 'Export Data',
           icon: 'export',
           variant: 'primary',
-          onTrigger: () => alert('Export Data clicked!')
+          onClick: () => alert('Export Data clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         }
@@ -150,7 +150,7 @@ export const fixedHeaderConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const reactElementTitleConfig: any = {
+export const reactElementTitleConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -187,13 +187,13 @@ export const reactElementTitleConfig: any = {
           label: 'Add User',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add User clicked!')
+          onClick: () => alert('Add User clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -201,7 +201,7 @@ export const reactElementTitleConfig: any = {
           id: 'export',
           label: 'Export Data',
           icon: 'export',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         }
@@ -214,7 +214,7 @@ export const reactElementTitleConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const actionsSystemTestConfig: any = {
+export const actionsSystemTestConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -229,20 +229,20 @@ export const actionsSystemTestConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'secondary',
-          onTrigger: () => alert('Refresh clicked!')
+          onClick: () => alert('Refresh clicked!')
         },
         {
           id: 'export',
           label: 'Export',
           icon: 'export',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: true
         },
         {
@@ -250,7 +250,7 @@ export const actionsSystemTestConfig: any = {
           label: 'Settings',
           icon: 'settings',
           variant: 'danger',
-          onTrigger: () => alert('Settings clicked!'),
+          onClick: () => alert('Settings clicked!'),
           placement: 'discoverable'
         },
         {
@@ -258,7 +258,7 @@ export const actionsSystemTestConfig: any = {
           label: 'View All',
           icon: 'eye',
           variant: 'success',
-          onTrigger: () => alert('View All clicked!'),
+          onClick: () => alert('View All clicked!'),
           placement: 'menu'
         },
         {
@@ -266,7 +266,7 @@ export const actionsSystemTestConfig: any = {
           label: 'Chart Mode',
           icon: 'chart-pie',
           variant: 'success',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           iconOnly: true
         },
         {
@@ -274,7 +274,7 @@ export const actionsSystemTestConfig: any = {
           label: 'Bar Chart Mode',
           icon: 'chart-bar',
           variant: 'primary',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           placement: 'menu'
         }
       ]
@@ -284,7 +284,7 @@ export const actionsSystemTestConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const compactLayoutConfig: any = {
+export const compactLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -298,14 +298,14 @@ export const compactLayoutConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -313,7 +313,7 @@ export const compactLayoutConfig: any = {
           id: 'delete',
           label: 'Delete All',
           icon: 'trash',
-          onTrigger: () => alert('Delete clicked!'),
+          onClick: () => alert('Delete clicked!'),
           placement: 'menu'
         }
       ]
@@ -325,7 +325,7 @@ export const compactLayoutConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const minimalLayoutConfig: any = {
+export const minimalLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -339,14 +339,14 @@ export const minimalLayoutConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         }
@@ -359,7 +359,7 @@ export const minimalLayoutConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const centeredLayoutConfig: any = {
+export const centeredLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -378,35 +378,35 @@ export const centeredLayoutConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'secondary',
-          onTrigger: () => alert('Refresh clicked!')
+          onClick: () => alert('Refresh clicked!')
         },
         {
           id: 'export',
           label: 'Export',
           icon: 'export',
           variant: 'secondary',
-          onTrigger: () => alert('Export clicked!')
+          onClick: () => alert('Export clicked!')
         },
         {
           id: 'share',
           label: 'Share',
           icon: 'share',
           variant: 'secondary',
-          onTrigger: () => alert('Share clicked!')
+          onClick: () => alert('Share clicked!')
         }
       ]
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutConfig: any = {
+export const customLayoutConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -426,14 +426,14 @@ export const customLayoutConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'secondary',
-          onTrigger: () => alert('Refresh clicked!')
+          onClick: () => alert('Refresh clicked!')
         }
       ]
     },
@@ -444,7 +444,7 @@ export const customLayoutConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutWithCustomElementConfig: any = {
+export const customLayoutWithCustomElementConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -463,14 +463,14 @@ export const customLayoutWithCustomElementConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'secondary',
-          onTrigger: () => alert('Refresh clicked!')
+          onClick: () => alert('Refresh clicked!')
         }
       ]
     },
@@ -481,7 +481,7 @@ export const customLayoutWithCustomElementConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutVerticalConfig: any = {
+export const customLayoutVerticalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -502,21 +502,21 @@ export const customLayoutVerticalConfig: any = {
           label: 'Add Metric',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Metric clicked!')
+          onClick: () => alert('Add Metric clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh Data',
           icon: 'refresh',
           variant: 'secondary',
-          onTrigger: () => alert('Refresh Data clicked!')
+          onClick: () => alert('Refresh Data clicked!')
         },
         {
           id: 'export',
           label: 'Export Report',
           icon: 'export',
           variant: 'secondary',
-          onTrigger: () => alert('Export Report clicked!')
+          onClick: () => alert('Export Report clicked!')
         }
       ]
     },
@@ -527,7 +527,7 @@ export const customLayoutVerticalConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const customLayoutWithGroupsConfig: any = {
+export const customLayoutWithGroupsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -577,7 +577,7 @@ export const customLayoutWithGroupsConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const headlessWidgemoConfig: any = {
+export const headlessWidgemoConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -597,10 +597,10 @@ export const headlessWidgemoConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Add Item clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Add Item clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Add Item clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -608,10 +608,10 @@ export const headlessWidgemoConfig: any = {
           label: 'Bulk Edit',
           icon: 'edit',
           variant: 'secondary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Bulk Edit clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Bulk Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -619,10 +619,10 @@ export const headlessWidgemoConfig: any = {
           label: 'Export Data',
           icon: 'export',
           variant: 'success',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Export Data clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Export Data clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Export Data clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Export Data clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         }
       ]
@@ -630,7 +630,7 @@ export const headlessWidgemoConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const headlessFooterlessWidgemoConfig: any = {
+export const headlessFooterlessWidgemoConfig: WidgemoConfig = {
   devMode: true,
   zones: {
     header: {
@@ -650,10 +650,10 @@ export const headlessFooterlessWidgemoConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Add Item clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Add Item clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Add Item clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -661,10 +661,10 @@ export const headlessFooterlessWidgemoConfig: any = {
           label: 'Bulk Edit',
           icon: 'edit',
           variant: 'secondary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Bulk Edit clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Bulk Edit clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Bulk Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -672,10 +672,10 @@ export const headlessFooterlessWidgemoConfig: any = {
           label: 'Export Data',
           icon: 'export',
           variant: 'success',
-          onTrigger: (context: ActionContext) => {
-            console.log(`🆔 Export Data clicked on headless widgemo: ${context.zone}`);
-            console.log(`📍 Placement: ${context.zone}`);
-            alert(`Export Data clicked!\nWidgemo ID: ${context.zone}\nPlacement: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Export Data clicked on headless widgemo: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            alert(`Export Data clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         }
       ]
@@ -683,7 +683,7 @@ export const headlessFooterlessWidgemoConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const instanceIdDemoConfig: any = {
+export const instanceIdDemoConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -695,9 +695,13 @@ export const instanceIdDemoConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`Add Item clicked on widgemo instance: ${context.zone}`);
-            alert(`Add Item clicked!\nWidgemo ID: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Add Item clicked on widgemo instance: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            if (context.record) {
+              console.log(`👤 Item ID: ${context.record.id}`);
+            }
+            alert(`Add Item clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -705,9 +709,13 @@ export const instanceIdDemoConfig: any = {
           label: 'Edit',
           icon: 'edit',
           variant: 'secondary',
-          onTrigger: (context: ActionContext) => {
-            console.log(`Edit clicked on widgemo instance: ${context.zone}`);
-            alert(`Edit clicked!\nWidgemo ID: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Edit clicked on widgemo instance: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            if (context.record) {
+              console.log(`👤 Item ID: ${context.record.id}`);
+            }
+            alert(`Edit clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         },
         {
@@ -715,9 +723,13 @@ export const instanceIdDemoConfig: any = {
           label: 'Delete',
           icon: 'delete',
           variant: 'danger',
-          onTrigger: (context: ActionContext) => {
-            console.log(`Delete clicked on widgemo instance: ${context.zone}`);
-            alert(`Delete clicked!\nWidgemo ID: ${context.zone}`);
+          onClick: (context) => {
+            console.log(`🆔 Delete clicked on widgemo instance: ${context.widgemoId}`);
+            console.log(`📍 Placement: ${context.placement}`);
+            if (context.record) {
+              console.log(`👤 Item ID: ${context.record.id}`);
+            }
+            alert(`Delete clicked!\nWidgemo ID: ${context.widgemoId}\nPlacement: ${context.placement}`);
           }
         }
       ]
@@ -729,7 +741,7 @@ export const instanceIdDemoConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const gridModeWithItemRendererConfig: any = {
+export const gridModeWithItemRendererConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -741,7 +753,7 @@ export const gridModeWithItemRendererConfig: any = {
           label: 'Share',
           icon: 'share',
           variant: 'primary',
-          onTrigger: () => alert('Share clicked!')
+          onClick: () => alert('Share clicked!')
         }
       ]
     },
@@ -770,7 +782,19 @@ export const gridModeWithItemRendererConfig: any = {
           ]
         },
         cardOptions: {
-          conditionalBorder: (_: Entity) => ({ color: '#007bff', thickness: 3 })
+          conditionalBorder: (entity: Entity) => {
+            const role = (entity as unknown as SampleData).role as string;
+            switch (role) {
+              case 'Manager':
+                return { color: '#007bff', thickness: 3, placement: 'all' };
+              case 'Developer':
+                return { color: '#28a745', thickness: 4 };
+              case 'Analyst':
+                return { color: '#dc3545', thickness: 6, placement: 'top' };
+              default:
+                return undefined;
+            }
+          }
         }
       }
     },
@@ -778,7 +802,7 @@ export const gridModeWithItemRendererConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const itemLayoutPresetsConfig: any = {
+export const itemLayoutPresetsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -790,28 +814,28 @@ export const itemLayoutPresetsConfig: any = {
           label: 'Default Layout',
           icon: 'layout',
           variant: 'primary',
-          onTrigger: () => alert('Switched to default layout (full sections with labels)')
+          onClick: () => alert('Switched to default layout (full sections with labels)')
         },
         {
           id: 'switch-compact',
           label: 'Compact Layout',
           icon: 'compress',
           variant: 'secondary',
-          onTrigger: () => alert('Switched to compact layout (no labels, reduced spacing)')
+          onClick: () => alert('Switched to compact layout (no labels, reduced spacing)')
         },
         {
           id: 'switch-minimal',
           label: 'Minimal Layout',
           icon: 'minus',
           variant: 'secondary',
-          onTrigger: () => alert('Switched to minimal layout (essential fields only)')
+          onClick: () => alert('Switched to minimal layout (essential fields only)')
         },
         {
           id: 'switch-custom',
           label: 'Custom Layout',
           icon: 'cogs',
           variant: 'secondary',
-          onTrigger: () => alert('Switched to custom layout (reordered sections, inline fields)')
+          onClick: () => alert('Switched to custom layout (reordered sections, inline fields)')
         }
       ]
     },
@@ -857,7 +881,7 @@ export const itemLayoutPresetsConfig: any = {
   }
 };
 // Compact layout config
-export const itemLayoutCompactConfig: any = {
+export const itemLayoutCompactConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -896,7 +920,7 @@ export const itemLayoutCompactConfig: any = {
   }
 };
 // Minimal layout config
-export const itemLayoutMinimalConfig: any = {
+export const itemLayoutMinimalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -927,7 +951,7 @@ export const itemLayoutMinimalConfig: any = {
   }
 };
 // Custom layout config
-export const itemLayoutCustomConfig: any = {
+export const itemLayoutCustomConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -979,7 +1003,7 @@ export const itemLayoutCustomConfig: any = {
   }
 };
 // Enhanced grid mode config
-export const enhancedGridModeConfig: any = {
+export const enhancedGridModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1053,7 +1077,7 @@ export const enhancedGridModeConfig: any = {
      }
   }
 };
-export const complexGridCardConfig: any = {
+export const complexGridCardConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1167,7 +1191,7 @@ export const complexGridCardConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableAlternatingConfig: any = {
+export const tableAlternatingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1180,14 +1204,14 @@ export const tableAlternatingConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -1195,7 +1219,7 @@ export const tableAlternatingConfig: any = {
           id: 'export',
           label: 'Export',
           icon: 'export',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: false,
           placement: 'menu'
         },
@@ -1204,7 +1228,7 @@ export const tableAlternatingConfig: any = {
           label: 'Settings',
           icon: 'settings',
           variant: 'danger',
-          onTrigger: () => alert('Settings clicked!'),
+          onClick: () => alert('Settings clicked!'),
           placement: 'discoverable'
         },
         {
@@ -1212,7 +1236,7 @@ export const tableAlternatingConfig: any = {
           label: 'View All',
           icon: 'eye',
           variant: 'success',
-          onTrigger: () => alert('View All clicked!'),
+          onClick: () => alert('View All clicked!'),
           placement: 'menu'
         },
         {
@@ -1220,7 +1244,7 @@ export const tableAlternatingConfig: any = {
           label: 'Chart Mode',
           icon: 'chart-pie',
           variant: 'primary',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           iconOnly: false,
           placement: 'discoverable'
         },
@@ -1229,7 +1253,7 @@ export const tableAlternatingConfig: any = {
           label: 'Bar Chart Mode',
           icon: 'chart-bar',
           variant: 'primary',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           placement: 'menu'
         }
       ]
@@ -1293,12 +1317,12 @@ export const tableAlternatingConfig: any = {
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableRowDividersConfig: any = {
+export const tableRowDividersConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1311,14 +1335,14 @@ export const tableRowDividersConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -1326,7 +1350,7 @@ export const tableRowDividersConfig: any = {
           id: 'export',
           label: 'Export',
           icon: 'export',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: false,
           placement: 'menu'
         },
@@ -1335,7 +1359,7 @@ export const tableRowDividersConfig: any = {
           label: 'Settings',
           icon: 'settings',
           variant: 'danger',
-          onTrigger: () => alert('Settings clicked!'),
+          onClick: () => alert('Settings clicked!'),
           placement: 'discoverable'
         },
         {
@@ -1343,7 +1367,7 @@ export const tableRowDividersConfig: any = {
           label: 'View All',
           icon: 'eye',
           variant: 'success',
-          onTrigger: () => alert('View All clicked!'),
+          onClick: () => alert('View All clicked!'),
           placement: 'menu'
         },
         {
@@ -1351,7 +1375,7 @@ export const tableRowDividersConfig: any = {
           label: 'Chart Mode',
           icon: 'chart-pie',
           variant: 'primary',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           iconOnly: false,
           placement: 'discoverable'
         },
@@ -1360,7 +1384,7 @@ export const tableRowDividersConfig: any = {
           label: 'Bar Chart Mode',
           icon: 'chart-bar',
           variant: 'primary',
-          onTrigger: () => alert('Chart Mode clicked!'),
+          onClick: () => alert('Chart Mode clicked!'),
           placement: 'menu'
         }
       ]
@@ -1410,12 +1434,12 @@ export const tableRowDividersConfig: any = {
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableGroupableColumnsConfig: any = {
+export const tableGroupableColumnsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1427,7 +1451,7 @@ export const tableGroupableColumnsConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         }
       ]
     },
@@ -1475,12 +1499,12 @@ export const tableGroupableColumnsConfig: any = {
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tablePlainConfig: any = {
+export const tablePlainConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1513,12 +1537,12 @@ export const tablePlainConfig: any = {
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const fieldRendererTestConfig: any = {
+export const fieldRendererTestConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1558,7 +1582,7 @@ export const fieldRendererTestConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const imageGalleryConfig: any = {
+export const imageGalleryConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1588,7 +1612,7 @@ export const imageGalleryConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarFieldsConfig: any = {
+export const progressBarFieldsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1609,7 +1633,7 @@ export const progressBarFieldsConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarVariantsConfig: any = {
+export const progressBarVariantsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1633,7 +1657,7 @@ export const progressBarVariantsConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const progressBarFunctionsConfig: any = {
+export const progressBarFunctionsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1654,7 +1678,15 @@ export const progressBarFunctionsConfig: any = {
           type: 'number',
           renderAs: 'progress',
           progressOptions: {
-            color: (_: TaskEntity) => '#007bff',
+            color: (entity: TaskEntity) => {
+              switch (entity.priority) {
+                case 'critical': return '#dc3545';
+                case 'high': return '#fd7e14';
+                case 'medium': return '#ffc107';
+                case 'low': return '#28a745';
+                default: return '#007bff';
+              }
+            },
             backgroundColor: 'var(--bg-color)',
             height: (entity: TaskEntity) => entity.size === 'large' ? '30px' : entity.size === 'medium' ? '25px' : '20px',
             showPercentage: (entity: TaskEntity) => entity.priority === 'critical' || entity.progress > 80,
@@ -1667,7 +1699,7 @@ export const progressBarFunctionsConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const ratingFieldConfig: any = {
+export const ratingFieldConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1716,7 +1748,7 @@ export const ratingFieldConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const badgeFieldConfig: any = {
+export const badgeFieldConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1873,7 +1905,7 @@ export const badgeFieldConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const carouselModeConfig: any = {
+export const carouselModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1920,7 +1952,7 @@ export const carouselModeConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const swatchExampleConfig: any = {
+export const swatchExampleConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -1950,7 +1982,7 @@ export const swatchExampleConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const hooksSystemTestConfig: any = {
+export const hooksSystemTestConfig: WidgemoConfig = {
   preRender: () => {
     console.log('🔧 Pre-render hook executed: Preparing Widgemo component');
   },
@@ -1987,7 +2019,7 @@ export const hooksSystemTestConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const carouselConfig: any = {
+export const carouselConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2034,20 +2066,58 @@ export const carouselConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-// export const conditionalBackgroundColorsConfig: any = {
-//   zones: {
-//     header: {
-//       enabled: true,
-//       title: 'User Management',
-//       subtitle: 'Conditional background colors'
-//     },
-//     content: {
-//       enabled: true,
-//       mode: 'table'
-//     }
-//   }
-// };
-export const conditionalBordersConfig: any = {
+export const conditionalBackgroundColorsConfig: WidgemoConfig = {
+  zones: {
+    header: {
+      enabled: true,
+      title: 'User Management',
+      subtitle: 'Conditional background colors with matching text colors - Active: Green, Inactive: Red'
+    },
+    content: {
+      enabled: true,
+      mode: 'table',
+      columns: [
+        { field: 'name', header: 'Name', sortable: true },
+        { field: 'email', header: 'Email', sortable: true },
+        { field: 'role', header: 'Role', align: 'center' },
+        { field: 'status', header: 'Status', align: 'center' }
+      ],
+      table: {
+        actionsColumn: true,
+        alternatingRows: false,
+        rowSeparator: true
+      },
+      itemActions: [
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'view',
+              variant: 'ghost',
+              onClick: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+            }
+          ]
+        },
+        conditionalBackgroundColor: (entity: Entity) => {
+          const status = entity.status as string;
+          if (status === 'active') {
+            return { backgroundColor: '#469446', color: '#c7dec7' }; // Green bg with light green text
+          } else if (status === 'inactive') {
+            return { backgroundColor: '#af1010', color: '#e8d2d2' }; // Red bg with light red text
+          } else {
+            return { backgroundColor: '#9f9f9f', color: '#292929' };
+          }
+          return undefined;
+        }
+      }
+    },
+    footer: {
+      enabled: true,
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
+    }
+  }
+};
+// Moved outside to prevent recreation on every render, ensuring stable props for better performance.
+export const conditionalBordersConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2069,24 +2139,45 @@ export const conditionalBordersConfig: any = {
         rowSeparator: true
       },
       itemActions: [
-        {
-          id: 'view',
-          label: 'View',
-          icon: 'view',
-          variant: 'ghost',
-          onClick: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+        conditionalBorder: (entity: Entity) => {
+          const role = entity.role as string;
+          switch (role) {
+            case 'Manager':
+              return { color: '#007bff', thickness: 5 };
+            case 'Developer':
+              return { color: '#28a745', thickness: 5 };
+            case 'Analyst':
+              return { color: '#dc3545', thickness: 5, placement: 'right' };
+            default:
+              return undefined;
+          }
+        },
+
+
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'view',
+              variant: 'ghost',
+              onClick: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+            }
+          ]
         }
-      ],
-      conditionalBorder: (_: Entity) => ({ color: '#007bff', thickness: 5 })
+      }
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const performanceMonitoringConfig: any = {
+export const performanceMonitoringConfig: WidgemoConfig = {
+  preRender: () => {
+    if (!window.performanceMeasured && performance.getEntriesByName('widgemo-start').length === 0) {
+      performance.mark('widgemo-start');
+    }
+  },
   zones: {
     header: {
       enabled: true,
@@ -2116,7 +2207,7 @@ export const performanceMonitoringConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const boardModeConfig: any = {
+export const boardModeConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2159,7 +2250,7 @@ export const boardModeConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingConfig: any = {
+export const linkRenderingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2171,7 +2262,7 @@ export const linkRenderingConfig: any = {
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         }
@@ -2204,7 +2295,7 @@ export const linkRenderingConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingCustomConfig: any = {
+export const linkRenderingCustomConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2276,7 +2367,7 @@ export const linkRenderingCustomConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const linkRenderingActionLinksConfig: any = {
+export const linkRenderingActionLinksConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2327,7 +2418,7 @@ export const linkRenderingActionLinksConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const tableGroupingConfig: any = {
+export const tableGroupingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2339,14 +2430,14 @@ export const tableGroupingConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         },
         {
           id: 'refresh',
           label: 'Refresh',
           icon: 'refresh',
           variant: 'ghost',
-          onTrigger: () => alert('Refresh clicked!'),
+          onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
           placement: 'discoverable'
         },
@@ -2354,7 +2445,7 @@ export const tableGroupingConfig: any = {
           id: 'export',
           label: 'Export',
           icon: 'export',
-          onTrigger: () => alert('Export clicked!'),
+          onClick: () => alert('Export clicked!'),
           iconOnly: false,
           placement: 'menu'
         }
@@ -2397,36 +2488,38 @@ export const tableGroupingConfig: any = {
         }
       },
       itemActions: [
-        {
-          id: 'edit',
-          label: 'Edit',
-          icon: 'edit',
-          variant: 'ghost',
-          placement: 'always',
-          iconOnly: true,
-          onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
-        },
-        {
-          id: 'view',
-          label: 'View Details',
-          icon: 'eye',
-          variant: 'secondary',
-          placement: 'discoverable',
-          onClick: (context: ActionContext) => alert(`View ${context.entity?.name}`)
-        },
-        {
-          id: 'delete',
-          label: 'Delete',
-          icon: 'delete',
-          variant: 'danger',
-          placement: 'menu',
-          onClick: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              variant: 'ghost',
+              placement: 'always',
+              iconOnly: true,
+              onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            },
+            {
+              id: 'view',
+              label: 'View Details',
+              icon: 'eye',
+              variant: 'secondary',
+              placement: 'discoverable',
+              onClick: (context: ActionContext) => alert(`View ${context.entity?.name}`)
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'delete',
+              variant: 'danger',
+              placement: 'menu',
+              onClick: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
+            }
+          ]
         }
-      ]
+      }
     },
     footer: {
       enabled: true,
-      subtitle: "widgemo.id: test"
+      subtitle: (_data, id) => `widgemo.id: ${JSON.stringify(id)}`
     }
   }
 };
@@ -2442,7 +2535,7 @@ export const gridGroupingConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         }
       ]
     },
@@ -2470,13 +2563,15 @@ export const gridGroupingConfig: any = {
         ]
       },
       itemActions: [
-        {
-          id: 'edit',
-          label: 'Edit',
-          icon: 'edit',
-          onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            }
+          ]
         }
-      ]
+      }
     }
   }
 };
@@ -2492,7 +2587,7 @@ export const tableTraditionalGroupingConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         }
       ]
     },
@@ -2539,6 +2634,7 @@ export const tableTraditionalGroupingConfig: any = {
           onClick: (context: ActionContext) => alert(`Delete ${context.entity?.name}`)
         }
       ]
+      }
     }
   }
 };
@@ -2554,7 +2650,7 @@ export const tableRichCellsGroupingConfig: any = {
           label: 'Add Item',
           icon: 'add',
           variant: 'primary',
-          onTrigger: () => alert('Add Item clicked!')
+          onClick: () => alert('Add Item clicked!')
         }
       ]
     },
@@ -2592,18 +2688,20 @@ export const tableRichCellsGroupingConfig: any = {
         ]
       },
       itemActions: [
-        {
-          id: 'edit',
-          label: 'Edit',
-          icon: 'edit',
-          onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              onClick: (context: ActionContext) => alert(`Edit ${context.entity?.name}`)
+            }
+          ]
         }
-      ]
+      }
     }
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyFieldRenderingConfig: any = {
+export const currencyFieldRenderingConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2719,7 +2817,7 @@ export const currencyFieldRenderingConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyInternationalConfig: any = {
+export const currencyInternationalConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2756,7 +2854,7 @@ export const currencyInternationalConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencySymbolPositioningConfig: any = {
+export const currencySymbolPositioningConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2810,7 +2908,7 @@ export const currencySymbolPositioningConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDecimalAlignmentConfig: any = {
+export const currencyDecimalAlignmentConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2875,7 +2973,7 @@ export const currencyDecimalAlignmentConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDecimalPrecisionConfig: any = {
+export const currencyDecimalPrecisionConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -2946,7 +3044,7 @@ export const currencyDecimalPrecisionConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyCompactNotationConfig: any = {
+export const currencyCompactNotationConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -3015,7 +3113,7 @@ export const currencyCompactNotationConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyDynamicOptionsConfig: any = {
+export const currencyDynamicOptionsConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -3074,7 +3172,7 @@ export const currencyDynamicOptionsConfig: any = {
   }
 };
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
-export const currencyEdgeCasesConfig: any = {
+export const currencyEdgeCasesConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
@@ -3579,13 +3677,13 @@ const widgemoExamples: Array<{
     data: fourUsersData,
     config: fieldRendererTestConfig
   },
-  // {
-  //   id: 'conditional-background-colors',
-  //   title: 'Mode - Table Mode - Conditional Background Colors',
-  //   description: 'Table mode with conditional background colors',
-  //   data: eightUsersData,
-  //   config: conditionalBackgroundColorsConfig
-  // },
+  {
+    id: 'conditional-background-colors',
+    title: 'Mode - Table Mode - Conditional Background Colors',
+    description: 'Table mode with conditional background colors',
+    data: eightUsersData,
+    config: conditionalBackgroundColorsConfig
+  },
   {
     id: 'conditional-borders',
     title: 'Mode - Table Mode - Conditional Borders',
@@ -4162,7 +4260,7 @@ const widgemoExamples: Array<{
               label: 'Add User',
               icon: 'add',
               placement: 'always',
-              onTrigger: () => alert('Add User clicked!')
+              onClick: () => alert('Add User clicked!')
             },
             {
               id: 'edit-user',
@@ -4170,7 +4268,7 @@ const widgemoExamples: Array<{
               icon: 'edit',
               placement: 'always',
               pinned: true,
-              onTrigger: () => alert('Edit User clicked!')
+              onClick: () => alert('Edit User clicked!')
             },
             {
               id: 'delete-user',
@@ -4178,42 +4276,42 @@ const widgemoExamples: Array<{
               icon: 'delete',
               placement: 'onHover',
               pinned: true,
-              onTrigger: () => alert('Delete User clicked!')
+              onClick: () => alert('Delete User clicked!')
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
               placement: 'onHover',
-              onTrigger: () => alert('View Profile clicked!')
+              onClick: () => alert('View Profile clicked!')
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
               placement: 'menu',
-              onTrigger: () => alert('Send Message clicked!')
+              onClick: () => alert('Send Message clicked!')
             },
             {
               id: 'share-user',
               label: 'Share User',
               icon: 'share',
               placement: 'menu',
-              onTrigger: () => alert('Share User clicked!')
+              onClick: () => alert('Share User clicked!')
             },
             {
               id: 'export-user',
               label: 'Export User',
               icon: 'export',
               placement: 'menu',
-              onTrigger: () => alert('Export User clicked!')
+              onClick: () => alert('Export User clicked!')
             },
             {
               id: 'archive-user',
               label: 'Archive User',
               icon: 'archive',
               placement: 'menu',
-              onTrigger: () => alert('Archive User clicked!')
+              onClick: () => alert('Archive User clicked!')
             }
           ],
           actionOverflow: {

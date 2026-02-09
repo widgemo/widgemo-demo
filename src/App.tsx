@@ -11,6 +11,7 @@ import { TimelineMode } from './components/custom-modes';
 import './App.css';
 
 function AppContent() {
+  console.log('🔄 AppContent rendering');
   const { currentTheme } = useTheme();
   
   // Register custom renderAs renderers
@@ -155,6 +156,16 @@ function AppContent() {
             <Route
               path="/simplified-test"
               element={<SimplifiedTest />}
+            />
+            <Route
+              path="*"
+              element={
+                <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
+                  <h1>Route Not Found</h1>
+                  <p>Current path: {window.location.pathname}</p>
+                  <p>Available routes: /, /sandbox, /simplified-test</p>
+                </div>
+              }
             />
           </Routes>
         </div>

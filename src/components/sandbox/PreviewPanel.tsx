@@ -146,7 +146,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         <Widgemo 
           data={data} 
           config={useUnified ? getUnifiedConfig() : config} 
-          configVersion={useUnified ? 'unified' : 'legacy'} 
+          configVersion={useUnified ? 'unified' : 'unified'} 
           className="my-custom-widgemo"
           loading={loading}
           error={error}

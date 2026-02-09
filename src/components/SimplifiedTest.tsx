@@ -1,98 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, widgemoRegistry, /* registerWidgemoHook, registerWidgemoIcon, */ WidgemoThemeProvider } from 'widgemo-core';
+import { Widgemo, WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { Entity, WidgemoConfig, ColumnConfig } from 'widgemo-core';
+import type { WidgemoConfig, ColumnConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
-// import { fontAwesomeRenderIcon } from '../utils/fontAwesomeIconRenderer';
 import { useTheme } from '../hooks/useTheme';
-// Extend Window interface for performance metrics
-declare global {
-  interface Window {
-    lastRenderTime?: number;
-    lastRenderCount?: number;
-    performanceMeasured?: boolean;
-  }
-}
-// Global variable to store pending metrics
-// Register performance monitoring hooks at module level
-let renderCount = 0;
-const renderQueue: number[] = [];
-// Pre-render hook to start timing
-widgemoRegistry.registerWidgemoHook({
-  name: 'preRender',
-  hook: (...args: unknown[]) => {
-    const [componentName] = args as [string, { data: Entity[]; className?: string }];
-    if (componentName === 'Widgemo') {
-      renderCount++;
-      renderQueue.push(renderCount);
-      const markName = `widgemo-render-${renderCount}-start`;
-      performance.mark(markName);
-    }
-  }
-});
-// Post-render hook to measure and log performance
-widgemoRegistry.registerWidgemoHook({
-  name: 'postRender',
-  hook: (...args: unknown[]) => {
-    const renderId = renderQueue.shift();
-    if (renderId) {
-      const markName = `widgemo-render-${renderId}-end`;
-      performance.mark(markName);
-      try {
-        const measureName = `widgemo-render-${renderId}`;
-        performance.measure(measureName, `widgemo-render-${renderId}-start`, markName);
-        const measure = performance.getEntriesByName(measureName)[0];
-        const duration = measure.duration;
-        console.log(`⏱️ Render #${renderId} completed in ${duration.toFixed(2)}ms`);
-        // Store in global for potential display
-        window.lastRenderTime = duration;
-        window.lastRenderCount = renderId;
-      } catch (error) {
-        console.warn('Performance measurement error:', error);
-      }
-    }
-    // Also check for component-specific mark
-    if (performance.getEntriesByName('widgemo-start').length > 0) {
-      performance.mark('widgemo-end');
-      try {
-        performance.measure('widgemo-total', 'widgemo-start', 'widgemo-end');
-        const measure = performance.getEntriesByName('widgemo-total')[0];
-        const duration = measure.duration;
-        console.log(`⏱️ Total Widgemo render completed in ${duration.toFixed(2)}ms`);
-        // Set flag to prevent further measurements
-        window.performanceMeasured = true;
-        // Clear marks to prevent repeated measurements
-        performance.clearMarks('widgemo-start');
-        performance.clearMarks('widgemo-end');
-        performance.clearMeasures('widgemo-total');
-      } catch (error) {
-        console.warn('Performance measurement error for widgemo-total:', error);
-      }
-    }
-    return args[1] as React.ReactElement;
-  }
-});
-// Register FontAwesome icons for the demo - overrides widgemo-core defaults
-
-// Register FontAwesome versions of common icons to override widgemo-core defaults
-/*
-const iconNames = [
-  'database', 'add', 'plus', 'refresh', 'sync', 'download', 'settings',
-  'delete', 'trash', 'edit', 'view', 'search', 'filter', 'sort', 'chevron-up',
-  'chevron-down', 'users', 'teamspeak', 'clock', 'square', 'html5', 'centercode',
-  'puzzle-piece', 'chart-line', 'chart-bar', 'chart-pie', 'table', 'th', 'columns',
-  'copy', 'upload', 'random', 'external-link-alt', 'book', 'check', 'undo',
-  'ellipsis-vertical', 'question-circle', 'star', 'heart', 'currency-dollar', 'dollar-sign', 'globe', 'info-circle'
-];
-
-iconNames.forEach(iconName => {
-  registerWidgemoIcon({
-    name: iconName,
-    component: (props) => fontAwesomeRenderIcon({ name: iconName, ...props }), // Wrap to match expected signature
-    defaultProps: { size: 16, color: 'currentColor' }
-  });
-});
-*/
 
 /**
  * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state.
@@ -122,13 +33,8 @@ function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
   }
 }
 
-/**
- * Refactored to separate configs and data from rendering logic, allowing dynamic rendering
- * and easier addition of new examples by modifying only the examples file.
- * Optimizations include module-level constants for configs/data to prevent recreation on renders.
- */
 export const SimplifiedTest: React.FC = () => {
-  console.log('SimplifiedTest rendering');
+  console.log('🚀 SimplifiedTest component rendering');
 
   const { currentTheme } = useTheme();
 
@@ -177,47 +83,14 @@ export const SimplifiedTest: React.FC = () => {
   }, [includeWidgemoInspector, isDevEnvironment]);
 
   return (
-    <div className="container mt-5" style={{ 
-      minHeight: '100vh', 
+    <div className="container mt-5" style={{
+      minHeight: '100vh',
       padding: '2rem'
     }}>
-      {/* <style>{`
-        .my-custom-widgemo {
-          background-color: var(--widgemo-bg-color);
-          border: 1px solid var(--widgemo-border-color);
-          border-radius: 0.375rem;
-          box-shadow: 0px 0px 8px var(--widgemo-shadow-color);
-          padding: 0.5rem;
-        } 
-        .custom-footer-class {
-          background-color: var(--widgemo-row-alt-bg);
-          border-radius: 0.25rem;
-          padding: 0.3rem;S
-        }
-        .custom-footer-class .zone-title {
-          font-size: 14px; 
-          color: #4f8fc7;
-          padding-left: 0.5rem;
-        }
-        .custom-footer-class .zone-subtitle {
-          font-size: 14px; 
-          color: var(--widgemo-text-color);
-        }
-        .devmode-toggle-text {
-          color: var(--widgemo-text-color);
-        }
-      `}</style> */}
-      <h1 >Widgemo Product Primitive</h1>
+      <h1>Widgemo Product Primitive</h1>
       <h4 className="mb-3">Below are various examples demonstrating the capabilities of the Widgemo Product Primitive using the Widgemo component.</h4>
       <h4 className="mb-3">Each example showcases different configurations and data sets to illustrate the flexibility and power of Widgemo in rendering complex data-driven UIs.</h4>
-      {/* <h5 className="mb-4"><strong>Note:</strong> all widgemos below use the <code className="css-class-code" title=".my-custom-widgemo {
-          background-color: var(--bg-color);
-          border: 1px solid var(--border-color);
-          border-radius: 0.375rem;
-          box-shadow: 0px 0px 8px var(--shadow-color);
-          padding: 0.5rem;
-        }">my-custom-widgemo</code> class for consistent styling.</h5> */}
-      
+
       {/* Theme Toggle - Available in all environments */}
       <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}>
         <div className="form-check">
@@ -237,7 +110,7 @@ export const SimplifiedTest: React.FC = () => {
             When disabled, the widgemos will use the widgemo-demo app theme (matching the current light/dark mode).
         </small>
       </div>
-      
+
       {/* DevMode Toggle - Only shown in development environment */}
       {isDevEnvironment && (
         <div className="mb-4 p-3 rounded" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}>
@@ -259,7 +132,7 @@ export const SimplifiedTest: React.FC = () => {
           </small>
         </div>
       )}
-      
+
       <div className="row">
         {/* Test section for custom field types */}
         <div className="col-12 mb-4">
@@ -334,37 +207,46 @@ export const SimplifiedTest: React.FC = () => {
           />
         </div>
 
-        {/* Dynamically rendering examples from widgemoExamples for better maintainability. */}
-        {examplesWithDevMode.map((example) => (
-          <div key={example.id} className="col-12 mb-4">
-            <h2>{example.title}</h2>
-            <p>{example.description}</p>
-            {/* Rendering Widgemo with stable props from examples array. */}
-            {useWidgemoCoreDefaultTheming ? (
-              <WidgemoThemeProvider theme={currentTheme}>
+        {/* TEST: Only render the first example */}
+        {(() => {
+          const firstExample = examplesWithDevMode[0];
+          if (!firstExample) {
+            return <div>No examples found</div>;
+          }
+          console.log('Rendering first example:', firstExample.id, firstExample.title);
+          return (
+            <div key={firstExample.id} className="col-12 mb-4">
+              <h2>{firstExample.title}</h2>
+              <p>{firstExample.description}</p>
+              <div style={{ border: '2px solid red', padding: '10px', margin: '10px 0' }}>
+                <strong>DEBUG: This should render a Widgemo component below</strong>
+              </div>
+              {/* Rendering Widgemo with stable props from examples array. */}
+              {useWidgemoCoreDefaultTheming ? (
+                <WidgemoThemeProvider theme={currentTheme}>
+                  <Widgemo
+                    key={`${firstExample.id}-${includeWidgemoInspector}`}
+                    data={firstExample.data}
+                    config={firstExample.config}
+                    configVersion='legacy'
+                    className="my-custom-widgemo"
+                    {...(firstExample.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+                  />
+                </WidgemoThemeProvider>
+              ) : (
                 <Widgemo
-                  key={`${example.id}-${includeWidgemoInspector}`}
-                  data={example.data}
-                  config={example.config}
-                  configVersion={example.id === 'unified-item-actions' || example.id === 'unified-grid-item-actions' || example.id === 'rich-cells-table' ? 'unified' : 'legacy'}
+                  key={`${firstExample.id}-${includeWidgemoInspector}`}
+                  data={firstExample.data}
+                  config={firstExample.config}
+                  configVersion='legacy'
                   className="my-custom-widgemo"
-                  {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
+                  {...(firstExample.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
                 />
-              </WidgemoThemeProvider>
-            ) : (
-              <Widgemo
-                key={`${example.id}-${includeWidgemoInspector}`}
-                data={example.data}
-                config={example.config}
-                configVersion={example.id === 'unified-item-actions' || example.id === 'unified-grid-item-actions' || example.id === 'rich-cells-table' ? 'unified' : 'legacy'}
-                className="my-custom-widgemo"
-                {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
-              />
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
 };
-export default SimplifiedTest;
