@@ -310,6 +310,18 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' }
             ]
           }
+        },
+        footer: {
+          subtitle: 'Responsive grid layout with 3 columns on desktop',
+          themeOverrides: {
+            //padding: '0.5rem',
+            //backgroundColor: '#f1f3f5',
+            //borderColor: '#dee2e6',
+            //borderWidth: '1px',
+            //borderStyle: 'solid', 
+            //borderRadius: '0 0 8px 8px',
+            //subtitleColor: '#212529'
+          }
         }
       },
       devMode: true
