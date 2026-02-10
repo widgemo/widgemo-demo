@@ -286,6 +286,7 @@ const widgemoExamples: Array<{
               label: 'Add User',
               icon: 'add',
               variant: 'primary',
+              placement: 'always',
               onTrigger: () => alert('Add User clicked!')
             },
             {
@@ -293,6 +294,7 @@ const widgemoExamples: Array<{
               label: 'Refresh',
               icon: 'refresh',
               variant: 'secondary',
+              placement: 'always',
               onTrigger: () => alert('Refresh clicked!')
             }
           ]
