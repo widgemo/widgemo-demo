@@ -93,7 +93,7 @@ const widgemoExamples: Array<{
         header: {
           title: 'Project Timeline',
           subtitle: 'Chronological view of project milestones and events',
-          icon: { src: 'calendar', size: 24, color: '#2196f3' }
+          icon: { name: 'calendar', size: 24, color: '#2196f3' }
         },
         content: {
           mode: 'timeline',
