@@ -1,4 +1,4 @@
-import type { WidgemoConfig, LegacyWidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
 import type { SampleData } from './types';
 
 // Neutral sample data for teaser - User Database
@@ -256,7 +256,7 @@ export const imageGalleryData: SampleData[] = [
 
 export const galleryConfigs: Array<{
   id: string;
-  config: LegacyWidgemoConfig;
+  config: WidgemoConfig;
   name: string;
   description: string;
   data?: SampleData[];
@@ -267,40 +267,50 @@ export const galleryConfigs: Array<{
       name: 'Data Management',
       mode: 'table',
       config: {
-        mode: 'table',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'id', label: 'ID', type: 'number' },
-          { name: 'name', label: 'Name', type: 'text' },
-          { name: 'email', label: 'Email', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text' },
-          { name: 'department', label: 'Department', type: 'text' },
-          { name: 'status', label: 'Active', type: 'boolean' },
-        ],
-        actions: [
-          { id: 'add', label: 'Add User' },
-          { id: 'refresh' },
-          { id: 'columnSelector' },
-          { id: 'deletedToggle' },
-          {
-            id: 'edit',
-            label: 'Edit',
-            icon: 'edit',
-            variant: 'secondary',
-            iconOnly: true,
-            onTrigger: () => { } // Demo action
+        id: 'data-management',
+        zones: {
+          header: {
+            actions: [
+              { id: 'add', label: 'Add User', icon: 'add', placement: 'always' },
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+              { id: 'columnSelector', label: 'Columns', icon: 'settings', placement: 'menu' },
+              { id: 'deletedToggle', label: 'Show Deleted', icon: 'eye', placement: 'menu' }
+            ]
           },
-          {
-            id: 'delete',
-            label: 'Delete',
-            icon: 'trash',
-            variant: 'danger',
-            iconOnly: true,
-            onTrigger: () => { } // Demo action
+          content: {
+            mode: 'table',
+            layout: {},
+            item: {
+              fields: [
+                { key: 'id', label: 'ID', type: 'number' },
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'email', label: 'Email', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'status', label: 'Active', type: 'boolean' },
+              ]
+            },
+            itemActions: [
+              {
+                id: 'edit',
+                label: 'Edit',
+                icon: 'edit',
+                variant: 'secondary',
+                placement: 'always',
+                onClick: () => { } // Demo action
+              },
+              {
+                id: 'delete',
+                label: 'Delete',
+                icon: 'trash',
+                variant: 'danger',
+                placement: 'always',
+                onClick: () => { } // Demo action
+              }
+            ]
           }
-        ],
-        styling: { compact: true },
-        collapsible: 'fixed',
+        },
+        collapse: { initialState: 'expanded' }
       },
       description: 'Full-featured data management table with CRUD operations',
       data: teaserSampleData
@@ -310,36 +320,49 @@ export const galleryConfigs: Array<{
       name: 'Kanban Board',
       mode: 'board',
       config: {
-        mode: 'board',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Name', type: 'text' },
-          { name: 'email', label: 'Email', type: 'text' },
-          { name: 'role', label: 'Role', type: 'text', visible: false },
-          { name: 'department', label: 'Department', type: 'text', visible: false },
-          { name: 'status', label: 'Active', type: 'boolean' },
-        ],
-        actions: {
-          definitions: [
-            { id: 'add', label: 'Add User Profile' },
-            {
-              id: 'view',
-              label: 'View',
-              icon: 'eye',
-              variant: 'secondary',
-              iconOnly: true,
-              onTrigger: () => { } // Demo action
-            }
-          ],
+        id: 'kanban-board',
+        zones: {
           header: {
-            always: ['add']
+            actions: [
+              {
+                id: 'add',
+                label: 'Add User Profile',
+                icon: 'add',
+                placement: 'always',
+                onTrigger: () => alert('Add User Profile clicked!')
+              }
+            ]
           },
-          item: {
-            always: ['view']
+          content: {
+            mode: 'board',
+            layout: {},
+            item: {
+              fields: [
+                { key: 'name', label: 'Name' },
+                { key: 'role', label: 'Role' },
+                { key: 'department', label: 'Department' },
+                { key: 'status', label: 'Active', type: 'boolean' }
+              ]
+            },
+            itemActions: [
+              {
+                id: 'view',
+                label: 'View',
+                icon: 'eye',
+                variant: 'secondary',
+                placement: 'always',
+                onTrigger: (entity: any) => alert(`View ${entity.name}`)
+              }
+            ]
           }
         },
         styling: {
           board: {
+            columns: [
+              { id: 'developer', label: 'Developer' },
+              { id: 'designer', label: 'Designer' },
+              { id: 'manager', label: 'Manager' }
+            ],
             groupBy: 'role',
             swimlaneBy: 'department',
             draggable: true,
@@ -349,7 +372,7 @@ export const galleryConfigs: Array<{
             gap: '8px'
           }
         },
-        collapsible: 'fixed',
+        collapse: { initialState: 'expanded' }
       },
       description: 'Kanban style board with configurable columns and swimlanes. Drag and drop to rearrange cards.',
       data: teaserSampleData
@@ -359,13 +382,23 @@ export const galleryConfigs: Array<{
       name: 'Image Grid - Contain Fit',
       mode: 'grid',
       config: {
-        mode: 'grid',
-        dataSource: { type: 'static' },
-        fields: [
-          { name: 'name', label: 'Title', type: 'text' },
-          { name: 'category', label: 'Category', type: 'text' },
-        ],
-        mediaConfig: {
+        id: 'image-grid-contain-fit',
+        zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            ]
+          },
+          content: {
+            mode: 'grid',
+            layout: {},
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+              ]
+            },
+            mediaConfig: {
               fields: [{
                 field: 'src',
                 fit: 'contain',
@@ -373,6 +406,8 @@ export const galleryConfigs: Array<{
               }],
               lazy: false,
               loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+            }
+          }
         },
         styling: {
           grid: {
@@ -385,15 +420,7 @@ export const galleryConfigs: Array<{
             }
           }
         },
-        actions: {
-          definitions: [
-            { id: 'refresh' }
-          ],
-          header: {
-            always: ['refresh']
-          }
-        },
-        collapsible: 'fixed',
+        collapse: { initialState: 'expanded' }
       },
       description: 'Image grid using "contain" object-fit, showing full images with potential letterboxing/pillarboxing.',
       data: imageGalleryData.slice(0, 9)
@@ -403,15 +430,23 @@ export const galleryConfigs: Array<{
       name: 'Clean Chart',
       mode: 'chart',
       config: {
+        id: 'image-gallery',
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            ]
+          },
           content: {
             mode: 'chart',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'department', label: 'Department', type: 'text' },
-              { name: 'name', label: 'User', type: 'text' },
-              { name: 'status', label: 'Active', type: 'boolean' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'name', label: 'User', type: 'text' },
+                { key: 'status', label: 'Active', type: 'boolean' },
+              ]
+            },
             chartConfig: {
               type: 'bar',
               xAxis: 'department',
@@ -429,15 +464,23 @@ export const galleryConfigs: Array<{
       name: 'Basic Grid',
       mode: 'grid',
       config: {
+        id: 'basic-grid',
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            ]
+          },
           content: {
             mode: 'grid',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'department', label: 'Department', type: 'text' },
-              { name: 'name', label: 'Lead', type: 'text' },
-              { name: 'role', label: 'Role', type: 'text' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'name', label: 'Lead', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+              ]
+            },
             styling: {
               compact: true,
               grid: {
@@ -449,14 +492,6 @@ export const galleryConfigs: Array<{
                 gap: '10px',
                 showGridLines: true,
                 aspectRatio: '1/1'
-              }
-            },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
               }
             }
           }
@@ -474,13 +509,15 @@ export const galleryConfigs: Array<{
         zones: {
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Name', type: 'text' },
-              { name: 'role', label: 'Role', type: 'text' },
-              { name: 'department', label: 'Department', type: 'text' },
-              { name: 'status', label: 'Active', type: 'boolean' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { name: 'name', label: 'Name', type: 'text' },
+                { name: 'role', label: 'Role', type: 'text' },
+                { name: 'department', label: 'Department', type: 'text' },
+                { name: 'status', label: 'Active', type: 'boolean' },
+              ]
+            },
             styling: {},
           }
         }
@@ -493,24 +530,23 @@ export const galleryConfigs: Array<{
       name: 'Minimal Table',
       mode: 'table',
       config: {
-
+        id: 'minimal-table',
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'menu' }
+            ]
+          },
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Name', type: 'text' },
-              { name: 'lastLogin', label: 'Last Login', type: 'date' },
-            ],
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                onMenu: ['refresh']
-              }
+            layout: {},
+            item: {
+              fields: [
+                { name: 'name', label: 'Name', type: 'text' },
+                { name: 'lastLogin', label: 'Last Login', type: 'date' },
+              ]
             },
-            styling: { compact: true },
+            styling: { compact: true }
           }
         }
       },
@@ -522,62 +558,58 @@ export const galleryConfigs: Array<{
       name: 'Advanced',
       mode: 'table',
       config: {
-
+        id: 'advanced',
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+              { id: 'viewToggle', label: 'View Toggle', icon: 'eye', placement: 'discoverable' },
+              { id: 'columnSelector', label: 'Columns', icon: 'settings', placement: 'menu' },
+              { id: 'add', label: 'Add', icon: 'add', placement: 'menu' }
+            ]
+          },
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'id', label: 'ID', type: 'number', sortable: true },
-              { name: 'name', label: 'Name', type: 'text', filterable: true },
-              { name: 'email', label: 'Email', type: 'text', filterable: true },
-              {
-                name: 'department', label: 'Department', type: 'select', options: [
-                  { value: 'Engineering', label: 'Engineering' },
-                  { value: 'Design', label: 'Design' },
-                  { value: 'Business', label: 'Business' },
-                ], filterable: true
-              },
-              { name: 'role', label: 'Role', type: 'text' },
-              { name: 'status', label: 'Active', type: 'boolean', filterable: true },
-              { name: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
-            ],
-            actions: {
-              definitions: [
-                { id: 'refresh' },
-                { id: 'viewToggle' },
-                { id: 'columnSelector' },
-                { id: 'add' },
+            layout: {},
+            item: {
+              fields: [
+                { key: 'id', label: 'ID', type: 'number', sortable: true },
+                { key: 'name', label: 'Name', type: 'text', filterable: true },
+                { key: 'email', label: 'Email', type: 'text', filterable: true },
                 {
-                  id: 'edit',
-                  label: 'Edit',
-                  icon: 'edit',
-                  variant: 'secondary',
-                  iconOnly: true,
-                  onTrigger: () => { } // Demo action
+                  key: 'department', label: 'Department', type: 'select', options: [
+                    { value: 'Engineering', label: 'Engineering' },
+                    { value: 'Design', label: 'Design' },
+                    { value: 'Business', label: 'Business' },
+                  ], filterable: true
                 },
-                {
-                  id: 'delete',
-                  label: 'Delete',
-                  icon: 'trash',
-                  variant: 'danger',
-                  iconOnly: true,
-                  onTrigger: () => { } // Demo action
-                }
-              ],
-              header: {
-                always: ['refresh'],
-                discoverable: ['viewToggle'],
-                onMenu: ['columnSelector', 'add']
-              },
-              item: {
-                onMenu: ['edit', 'delete']
-              }
+                { key: 'role', label: 'Role', type: 'text' },
+                { key: 'status', label: 'Active', type: 'boolean', filterable: true },
+                { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
+              ]
             },
-            pagination: { enabled: true, defaultPageSize: 5 },
-            sorting: { enabled: true },
-            filtering: { enabled: true },
-            styling: {},
+            itemActions: [
+              {
+                id: 'edit',
+                label: 'Edit',
+                icon: 'edit',
+                variant: 'secondary',
+                placement: 'menu',
+                onClick: () => { } // Demo action
+              },
+              {
+                id: 'delete',
+                label: 'Delete',
+                icon: 'trash',
+                variant: 'danger',
+                placement: 'menu',
+                onClick: () => { } // Demo action
+              }
+            ],
+            pagination: { pageSize: 5, initialPage: 1 },
+            sorting: [{ fieldKey: 'id', direction: 'asc' }],
+            filtering: [],
+            styling: {}
           }
         }
       },
@@ -593,12 +625,14 @@ export const galleryConfigs: Array<{
         zones: {
           content: {
             mode: 'chart',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'month', label: 'Month', type: 'text' },
-              { name: 'sales', label: 'Sales', type: 'number' },
-              { name: 'target', label: 'Target', type: 'number' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { name: 'month', label: 'Month', type: 'text' },
+                { name: 'sales', label: 'Sales', type: 'number' },
+                { name: 'target', label: 'Target', type: 'number' },
+              ]
+            },
             chartConfig: {
               type: 'line',
               xAxis: 'month',
@@ -627,56 +661,53 @@ export const galleryConfigs: Array<{
       name: 'Task Management',
       mode: 'board',
       config: {
-
+        id: 'task-management',
         zones: {
           content: {
             mode: 'board',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'title', label: 'Task', type: 'text' },
-              {
-                name: 'priority', label: 'Priority', type: 'select', options: [
-                  { value: 'high', label: 'High' },
-                  { value: 'medium', label: 'Medium' },
-                  { value: 'low', label: 'Low' },
-                ],
-                visible: false,
-              },
-              { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
-              { name: 'assignee', label: 'Assignee', type: 'text' },
-            ],
-            actions: {
-              definitions: [
+            layout: {},
+            item: {
+              fields: [
+                { name: 'title', label: 'Task', type: 'text' },
                 {
-                  id: 'edit',
-                  label: 'Edit',
-                  icon: 'edit',
-                  variant: 'secondary',
-                  iconOnly: true,
-                  onTrigger: () => { } // Demo action
+                  name: 'priority', label: 'Priority', type: 'select', options: [
+                    { value: 'high', label: 'High' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'low', label: 'Low' },
+                  ],
+                  visible: false,
                 },
-                {
-                  id: 'delete',
-                  label: 'Delete',
-                  icon: 'trash',
-                  variant: 'danger',
-                  iconOnly: true,
-                  onTrigger: () => { } // Demo action
-                }
-              ],
-              item: {
-                onMenu: ['edit', 'delete']
-              }
+                { name: 'status', label: 'Status', type: 'boolean', booleanTrueLabel: "☒ Completed", booleanFalseLabel: "☐ Pending", visible: false },
+                { name: 'assignee', label: 'Assignee', type: 'text' },
+              ]
             },
+            itemActions: [
+              {
+                id: 'edit',
+                label: 'Edit',
+                icon: 'edit',
+                variant: 'secondary',
+                placement: 'menu',
+                onClick: () => { } // Demo action
+              },
+              {
+                id: 'delete',
+                label: 'Delete',
+                icon: 'trash',
+                variant: 'danger',
+                placement: 'menu',
+                onClick: () => { } // Demo action
+              }
+            ],
             styling: {
               board: {
                 groupBy: 'status',
                 swimlaneBy: 'priority',
               },
-            },
-            collapsible: 'fixed',
+            }
           }
-        }
+        },
+        collapse: { initialState: 'expanded' }
       },
       description: 'Kanban-style task board with priority and status',
       data: [
@@ -695,12 +726,14 @@ export const galleryConfigs: Array<{
         zones: {
           content: {
             mode: 'grid',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { name: 'name', label: 'Title', type: 'text' },
+                { name: 'category', label: 'Category', type: 'text' },
+                { name: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -720,14 +753,6 @@ export const galleryConfigs: Array<{
                 }
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
         }
@@ -740,15 +765,22 @@ export const galleryConfigs: Array<{
       name: 'Image Grid - No Text',
       mode: 'grid',
       config: {
-
+        id: 'image-grid-no-text',
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            ]
+          },
           content: {
             mode: 'grid',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { name: 'name', label: 'Title', type: 'text' },
+                { name: 'category', label: 'Category', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -768,14 +800,6 @@ export const galleryConfigs: Array<{
                 }
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
         }
@@ -793,9 +817,11 @@ export const galleryConfigs: Array<{
           content: {
             mode: 'grid',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -816,16 +842,13 @@ export const galleryConfigs: Array<{
               },
               compact: true
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Compact 6-column image grid with small cells, perfect for thumbnails or overview displays.',
@@ -841,11 +864,13 @@ export const galleryConfigs: Array<{
           content: {
             mode: 'grid',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -864,16 +889,13 @@ export const galleryConfigs: Array<{
                 }
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Large 2-column masonry layout showcasing images with detailed text overlays.',
@@ -889,11 +911,13 @@ export const galleryConfigs: Array<{
           content: {
             mode: 'board',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -922,16 +946,13 @@ export const galleryConfigs: Array<{
                 backgroundColor: 'rgba(255, 255, 255, 0.9)'
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Board view with images as card backgrounds, overlay text for readability, and dynamic color backgrounds',
@@ -947,11 +968,13 @@ export const galleryConfigs: Array<{
           content: {
             mode: 'board',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -986,16 +1009,13 @@ export const galleryConfigs: Array<{
                 backgroundColor: '#ffffff'
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Board view with images as card headers, custom column definitions, and static backgrounds with borders',
@@ -1011,12 +1031,14 @@ export const galleryConfigs: Array<{
           content: {
             mode: 'table',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Name', type: 'text' },
-              { name: 'role', label: 'Role', type: 'text' },
-              { name: 'department', label: 'Department', type: 'text' },
-              { name: 'status', label: 'Active', type: 'boolean', booleanTrueLabel: "🟢 Online", booleanFalseLabel: "🔴 Offline" },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'status', label: 'Active', type: 'boolean', booleanTrueLabel: "🟢 Online", booleanFalseLabel: "🔴 Offline" },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -1032,16 +1054,13 @@ export const galleryConfigs: Array<{
               loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTUiIHI9IjMiIGZpbGw9IiNhZGI1YmQiLz48L3N2Zz4='
             },
             styling: { compact: true },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Table view with circular avatar images in cells, showing user profiles with online status',
@@ -1052,16 +1071,17 @@ export const galleryConfigs: Array<{
       name: 'Table with Multiple Images',
       mode: 'table',
       config: {
-
+        dataSource: { type: 'static' },
         zones: {
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [
                 {
@@ -1090,16 +1110,13 @@ export const galleryConfigs: Array<{
               loadingPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmOGY5ZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiBy0iMTUiIGZpbGw9IiNhZGI1YmQiIG9wYWNpdHk9IjAuMyIvPjxwYXRoIGQ9Im02MCA3MCAxMCAxMCAxMC0xMCIgc3Ryb2tlPSIjYWRiNWJkIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMyIvPjx0ZXh0IHg9IjYwIiB5PSI5NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='
             },
             styling: { compact: true },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Table with multiple image columns - thumbnail and full-size preview with different sizes and shapes',
@@ -1115,16 +1132,17 @@ export const galleryConfigs: Array<{
       name: 'Table with Medium Size Images',
       mode: 'table',
       config: {
-
+        dataSource: { type: 'static' },
         zones: {
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Title', type: 'text' },
+                { key: 'category', label: 'Category', type: 'text' },
+                { key: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -1140,16 +1158,13 @@ export const galleryConfigs: Array<{
                 // backgroundColor: 'rgba(255, 255, 255, 0.9)'
               }
             },
-            actions: {
-              definitions: [
-                { id: 'refresh' }
-              ],
-              header: {
-                always: ['refresh']
-              }
-            },
             collapsible: 'fixed',
           }
+        },
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
         }
       },
       description: 'Table with images displayed in cells with cover fit',
@@ -1162,14 +1177,27 @@ export const galleryConfigs: Array<{
       config: {
 
         zones: {
+          header: {
+            actions: [
+              {
+                id: 'refresh',
+                label: 'Refresh',
+                icon: 'refresh',
+                placement: 'always',
+                onTrigger: () => alert('Refresh clicked!')
+              }
+            ]
+          },
           content: {
             mode: 'table',
-            dataSource: { type: 'static' },
-            fields: [
-              { name: 'name', label: 'Title', type: 'text' },
-              { name: 'category', label: 'Category', type: 'text' },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
+            layout: {},
+            item: {
+              fields: [
+                { name: 'name', label: 'Title', type: 'text' },
+                { name: 'category', label: 'Category', type: 'text' },
+                { name: 'description', label: 'Description', type: 'text' },
+              ]
+            },
             mediaConfig: {
               fields: [{
                 field: 'src',
@@ -1187,11 +1215,10 @@ export const galleryConfigs: Array<{
                 cellBorder: true,
                 borderColor: '#e9ecef'
               }
-            },
-            collapsible: 'fixed',
-            header: { always: ['refresh'] }
+            }
           }
-        }
+        },
+        collapse: { initialState: 'expanded' }
       },
       description: 'Table with large rounded images using contain fit, showing full image content with borders',
       data: imageGalleryData.slice(0, 4)
@@ -1203,30 +1230,31 @@ export const galleryConfigs: Array<{
       config: {
 
         zones: {
+          header: {
+            actions: [
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            ]
+          },
           content: {
             mode: 'table',
             dataSource: { type: 'static' },
-            fields: [
-              { name: 'id', label: 'ID', type: 'number' },
-              { name: 'name', label: 'Name', type: 'text' },
-              {
-                name: 'url',
-                label: 'URL',
-                type: 'text',
-                renderAs: 'link',
-                linkOptions: {
-                  newTab: true,
-                  externalWarning: true
-                }
-              },
-              { name: 'description', label: 'Description', type: 'text' },
-            ],
-            actions: {
-              definitions: [
-                { id: 'refresh' },
+            item: {
+              fields: [
+                { key: 'id', label: 'ID', type: 'number' },
+                { key: 'name', label: 'Name', type: 'text' },
+                {
+                  key: 'url',
+                  label: 'URL',
+                  type: 'text',
+                  renderAs: 'link',
+                  linkOptions: {
+                    newTab: true,
+                    externalWarning: true
+                  }
+                },
+                { key: 'description', label: 'Description', type: 'text' },
               ]
-            },
-            header: { always: ['refresh'] }
+            }
           }
         }
       },
@@ -1239,98 +1267,87 @@ export const galleryConfigs: Array<{
 export const defaultSandboxConfig: WidgemoConfig = {
   id: 'default-sandbox',
   zones: {
+    header: {
+      actions: [
+        { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+        { id: 'add', label: 'Add', icon: 'add', placement: 'always' }
+      ]
+    },
     content: {
       mode: 'table',
       dataSource: { type: 'static' },
-      fields: [
-        { name: 'id', label: 'ID', type: 'number' },
-        { name: 'name', label: 'Name', type: 'text' },
-        { name: 'email', label: 'Email', type: 'text' },
-        { name: 'role', label: 'Role', type: 'text' },
-        { name: 'department', label: 'Department', type: 'text' },
-        { name: 'status', label: 'Active', type: 'boolean' },
-      ],
-      actions: {
-        definitions: [
-          { id: 'add' },
-          { id: 'refresh' },
-          {
-            id: 'edit',
-            label: 'Edit',
-            icon: 'edit',
-            variant: 'secondary',
-            iconOnly: true,
-            onTrigger: () => { } // Demo action
-          },
-          {
-            id: 'delete',
-            label: 'Delete',
-            icon: 'trash',
-            variant: 'danger',
-            iconOnly: true,
-            onTrigger: () => { } // Demo action
-          }
-        ],
-        header: {
-          always: ['refresh', 'add'],
-          onMenu: ['deleteToggle']
-        },
-        item: {
-          onMenu: ['edit', 'delete']
-        }
+      item: {
+        fields: [
+          { key: 'id', label: 'ID', type: 'number' },
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'email', label: 'Email', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          { key: 'status', label: 'Active', type: 'boolean' },
+        ]
       },
-      styling: {},
-    }
+      itemActions: [
+        {
+          id: 'edit',
+          label: 'Edit',
+          icon: 'edit',
+          variant: 'secondary',
+          placement: 'menu'
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: 'trash',
+          variant: 'danger',
+          placement: 'menu'
+        }
+      ]
+    },
+    styling: {},
   }
 };
 
 // Teaser configurations with varying settings for each mode
-export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: string }> = [
+export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }> = [
   {
     config: {
       id: 'teaser-table',
       zones: {
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+            { id: 'add', label: 'Add User', icon: 'add', placement: 'always' }
+          ]
+        },
         content: {
           mode: 'table',
           dataSource: { type: 'static' },
-          fields: [
-            { name: 'id', label: 'ID', type: 'number' },
-            { name: 'name', label: 'Name', type: 'text' },
-            { name: 'email', label: 'Email', type: 'text' },
-            { name: 'role', label: 'Role', type: 'text' },
-            { name: 'department', label: 'Department', type: 'text' },
-            { name: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
-          ],
-          actions: {
-            definitions: [
-              { id: 'add', label: 'Add User' },
-              { id: 'refresh' },
-              { id: 'deleteToggle' },
-              {
-                id: 'edit',
-                label: 'Edit',
-                icon: 'edit',
-                variant: 'secondary',
-                iconOnly: true,
-                onTrigger: () => { } // Demo action
-              },
-              {
-                id: 'delete',
-                label: 'Delete',
-                icon: 'trash',
-                variant: 'danger',
-                iconOnly: true,
-                onTrigger: () => { } // Demo action
-              }
-            ],
-            header: {
-              always: ['refresh', 'add'],
-              onMenu: ['deleteToggle']
-            },
-            item: {
-              onMenu: ['edit', 'delete']
-            }
+          item: {
+            fields: [
+              { key: 'id', label: 'ID', type: 'number' },
+              { key: 'name', label: 'Name', type: 'text' },
+              { key: 'email', label: 'Email', type: 'text' },
+              { key: 'role', label: 'Role', type: 'text' },
+              { key: 'department', label: 'Department', type: 'text' },
+              { key: 'status', label: 'Active', type: 'boolean', "booleanTrueLabel": "🟢 Online", "booleanFalseLabel": "🔴 Offline" },
+            ]
           },
+          itemActions: [
+            {
+              id: 'edit',
+              label: 'Edit',
+              icon: 'edit',
+              variant: 'secondary',
+              placement: 'menu'
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'trash',
+              variant: 'danger',
+              placement: 'menu'
+            }
+          ],
           styling: { compact: true },
           labels: { add: 'Add User' }
         }
@@ -1342,33 +1359,30 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
     config: {
       id: 'teaser-board',
       zones: {
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
+        },
         content: {
           mode: 'board',
           dataSource: { type: 'static' },
-          fields: [
-            { name: 'name', label: 'Name', type: 'text' },
-            { name: 'email', label: 'Email', type: 'text' },
-            { name: 'department', label: 'Department', type: 'text' },
-          ],
-          actions: {
-            definitions: [
-              { id: 'refresh' },
-              {
-                id: 'view',
-                label: 'View',
-                icon: 'eye',
-                variant: 'secondary',
-                iconOnly: true,
-                onTrigger: () => { } // Demo action
-              }
-            ],
-            header: {
-              always: ['refresh']
-            },
-            item: {
-              always: ['view']
-            }
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' },
+              { key: 'email', label: 'Email', type: 'text' },
+              { key: 'department', label: 'Department', type: 'text' },
+            ]
           },
+          itemActions: [
+            {
+              id: 'view',
+              label: 'View',
+              icon: 'eye',
+              variant: 'secondary',
+              placement: 'always'
+            }
+          ],
           styling: {
             board: {
               groupBy: "role",
@@ -1384,21 +1398,20 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
     config: {
       id: 'teaser-grid',
       zones: {
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
+        },
         content: {
           mode: 'grid',
           dataSource: { type: 'static' },
-          fields: [
-            { name: 'department', label: 'Department', type: 'text' },
-            { name: 'name', label: 'Lead', type: 'text' },
-            { name: 'role', label: 'Role', type: 'text' },
-          ],
-          actions: {
-            definitions: [
-              { id: 'refresh' }
-            ],
-            header: {
-              always: ['refresh']
-            }
+          item: {
+            fields: [
+              { key: 'department', label: 'Department', type: 'text' },
+              { key: 'name', label: 'Lead', type: 'text' },
+              { key: 'role', label: 'Role', type: 'text' },
+            ]
           },
           styling: {
             compact: true,
@@ -1421,13 +1434,20 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
     config: {
       id: 'teaser-gallery',
       zones: {
+        header: {
+          actions: [
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+          ]
+        },
         content: {
           mode: 'grid',
           dataSource: { type: 'static' },
-          fields: [
-            { name: 'name', label: 'Name', type: 'text', showLabel: false },
-            { name: 'role', label: 'Role', type: 'text', visible: false },
-          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text', showLabel: false },
+              { key: 'role', label: 'Role', type: 'text', visible: false },
+            ]
+          },
           mediaConfig: {
             fields: [{
               field: 'src',
@@ -1446,14 +1466,6 @@ export const teaserConfigs: Array<{ config: LegacyWidgemoConfig; description: st
               imageGrid: {
                 masonry: false
               }
-            }
-          },
-          actions: {
-            definitions: [
-              { id: 'refresh' }
-            ],
-            header: {
-              always: ['refresh']
             }
           }
         }
