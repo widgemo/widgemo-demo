@@ -34,26 +34,24 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  // Toggle for config version
-  const [useUnified, setUseUnified] = React.useState(false);
   const [selectedTheme, setSelectedTheme] = React.useState('default');
 
   // Sugar props for testing
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Modify unified config to include devMode
-  const getUnifiedConfig = () => {
-    const unifiedConfig = { ...config };
+  // Modify config to include devMode
+  const getConfig = () => {
+    const modifiedConfig = { ...config };
     // Enable devMode for testing
-    unifiedConfig.devMode = {
+    modifiedConfig.devMode = {
       enabled: true,
       zone: 'auto',
       overlay: {
         excludeFields: ['zones.content.data', 'zones.content.status', 'zones.content.error']
       }
     };
-    return unifiedConfig;
+    return modifiedConfig;
   };
 
   return (
@@ -61,23 +59,15 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="mb-0">Live Preview</h5>
         <div className="d-flex align-items-center gap-3">
-          <Form.Check
-            type="checkbox"
-            label="Unified Config"
-            checked={useUnified}
-            onChange={(e) => setUseUnified(e.target.checked)}
-          />
-          {useUnified && (
-            <Form.Select
-              value={selectedTheme}
-              onChange={(e) => setSelectedTheme(e.target.value)}
-              size="sm"
-              style={{ width: '120px' }}
-            >
-              <option value="default">Default Theme</option>
-              <option value="dark">Dark Theme</option>
-            </Form.Select>
-          )}
+          <Form.Select
+            value={selectedTheme}
+            onChange={(e) => setSelectedTheme(e.target.value)}
+            size="sm"
+            style={{ width: '120px' }}
+          >
+            <option value="default">Default Theme</option>
+            <option value="dark">Dark Theme</option>
+          </Form.Select>
           <Form.Check
             type="checkbox"
             label="Loading"
@@ -145,8 +135,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       >
         <Widgemo 
           data={data} 
-          config={useUnified ? getUnifiedConfig() : config} 
-          configVersion={useUnified ? 'unified' : 'legacy'} 
+          config={getConfig()} 
           className="my-custom-widgemo"
           loading={loading}
           error={error}

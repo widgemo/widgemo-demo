@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Widgemo, WidgemoThemeProvider } from 'widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { WidgemoConfig, ColumnConfig } from 'widgemo-core';
+import type { WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { useTheme } from '../hooks/useTheme';
 
@@ -146,14 +146,25 @@ export const SimplifiedTest: React.FC = () => {
               { id: 4, name: 'Task D', progress: 25 }
             ]}
             config={{
+              id: 'progress-test',
               devMode: true,
               zones: {
                 content: {
                   mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Task Name', type: 'text' } as const,
-                    { field: 'progress', header: 'Progress', type: 'number', renderAs: 'customProgress', renderAsOptions: { showPercentage: true, color: '#28a745' } } as const
-                  ] as ColumnConfig[]
+                  data: [
+                    { id: 1, name: 'Task A', progress: 75 },
+                    { id: 2, name: 'Task B', progress: 45 },
+                    { id: 3, name: 'Task C', progress: 90 },
+                    { id: 4, name: 'Task D', progress: 25 }
+                  ],
+                  layout: {},
+                  item: {
+                    fields: [
+                      { key: 'name', label: 'Task Name' },
+                      { key: 'progress', label: 'Progress' }
+                    ],
+                    layout: { type: 'auto' }
+                  }
                 }
               }
             }}
@@ -192,14 +203,44 @@ export const SimplifiedTest: React.FC = () => {
               }
             ]}
             config={{
+              id: 'json-test',
               devMode: true,
               zones: {
                 content: {
                   mode: 'table',
-                  columns: [
-                    { field: 'name', header: 'Data Type', type: 'text' } as const,
-                    { field: 'jsonData', header: 'JSON Data', type: 'text', renderAs: 'jsonView', renderAsOptions: { collapsed: true, maxDepth: 4 } } as const
-                  ] as ColumnConfig[]
+                  data: [
+                    {
+                      id: 1,
+                      name: 'Simple Object',
+                      jsonData: JSON.stringify({ name: "John", age: 30, active: true, score: 85.5 })
+                    },
+                    {
+                      id: 2,
+                      name: 'Nested Object',
+                      jsonData: JSON.stringify({
+                        user: { id: 123, profile: { theme: "dark", notifications: true } },
+                        settings: { autoSave: false, language: "en" }
+                      })
+                    },
+                    {
+                      id: 3,
+                      name: 'Array Data',
+                      jsonData: JSON.stringify({
+                        items: [
+                          { id: 1, name: "Item A", tags: ["red", "small"] },
+                          { id: 2, name: "Item B", tags: ["blue", "large"] }
+                        ]
+                      })
+                    }
+                  ],
+                  layout: {},
+                  item: {
+                    fields: [
+                      { key: 'name', label: 'Data Type' },
+                      { key: 'jsonData', label: 'JSON Data' }
+                    ],
+                    layout: { type: 'auto' }
+                  }
                 }
               }
             }}
@@ -220,7 +261,6 @@ export const SimplifiedTest: React.FC = () => {
                   key={`${example.id}-${includeWidgemoInspector}`}
                   data={example.data}
                   config={example.config}
-                  configVersion='unified'
                   className="my-custom-widgemo"
                   {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
                 />
@@ -230,7 +270,6 @@ export const SimplifiedTest: React.FC = () => {
                 key={`${example.id}-${includeWidgemoInspector}`}
                 data={example.data}
                 config={example.config}
-                configVersion='unified'
                 className="my-custom-widgemo"
                 {...(example.id === 'performance-monitoring' ? { id: 'performance-monitoring-demo' } : {})}
               />
