@@ -448,15 +448,8 @@ export const customLayoutWithCustomElementConfig: WidgemoConfig = {
   zones: {
     header: {
       enabled: true,
-      layout: {
-        custom: {
-          order: ['title', { type: 'custom', content: <span style={{ backgroundColor: '#ff4444', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold' }}>LIVE</span> }, { type: 'spacer' }, 'actions'],
-          align: 'space-between',
-          gap: '1rem'
-        }
-      },
       title: 'Live Dashboard',
-      subtitle: 'Real-time data with custom status indicator',
+      subtitle: 'Real-time data with status indicator',
       actions: [
         {
           id: 'add',
