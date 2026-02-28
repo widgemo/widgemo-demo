@@ -1,8 +1,6 @@
 // Configuration reference data for documentation and examples
 
-// Existing fieldTypes, chartTypes, viewModes, presetConfigs remain unchanged...
-
-// New: Comprehensive property references for the Reference modal
+// Unified zones-based configuration properties for the Reference modal
 export const widgemoConfigProperties: Array<{
   category: string;
   property: string;
@@ -14,40 +12,35 @@ export const widgemoConfigProperties: Array<{
   isComplexType?: boolean;
   complexTypeSection?: string;
 }> = [
-  // WidgemoConfig properties
-  { category: 'WidgemoConfig', property: 'id', type: 'string', status: 'implemented', description: 'Optional ID for debugging/configuration management', usage: 'Used for component identification but not extensively in logic.', example: '"my-widgemo"' },
-  { category: 'WidgemoConfig', property: 'title', type: 'string', status: 'implemented', description: 'Title displayed in the component header', usage: 'Rendered in WidgemoHeader.tsx.', example: '"User Management"' },
-  { category: 'WidgemoConfig', property: 'mode', type: "'table' | 'board' | 'grid' | 'chart'", status: 'implemented', description: 'Display mode for data', usage: "Controls rendering in Widgemo.tsx; 'table', 'board', 'grid' fully supported; 'chart' partially via ChartView.tsx.", example: "'table'" },
-  { category: 'WidgemoConfig', property: 'defaultMode', type: "Same as mode", status: 'implemented', description: 'Default view mode if mode not specified', usage: 'Sets initial mode if mode not specified.', example: "'table'" },
-  { category: 'WidgemoConfig', property: 'collapsible', type: "'collapsed' | 'expanded' | 'fixed'", status: 'implemented', description: 'Component collapsibility with toggle logic', usage: 'Handled in Widgemo.tsx with toggle logic.', example: "'expanded'" },
-  { category: 'WidgemoConfig', property: 'tableName', type: 'string', status: 'implemented', description: 'Table name passed to CRUD modals', usage: 'Passed to modals for CRUD operations.', example: '"users"' },
-  { category: 'WidgemoConfig', property: 'customComponent', type: 'React.ComponentType<any>', status: 'not-implemented', description: 'Custom component for rendering records', usage: 'Not implemented: Property exists but not used in rendering logic.', example: 'MyCustomComponent' },
-  { category: 'WidgemoConfig', property: 'drillDown', type: '(record: any) => void', status: 'not-implemented', description: 'Drill-down navigation function', usage: 'Partially implemented: Property exists, but no UI triggers or full integration.', example: '(record) => console.log(record)' },
-  { category: 'WidgemoConfig', property: 'dataSource', type: "{ type?: 'static' | 'api' | 'graphql' | 'custom'; config?: Record<string, any> }", status: 'partial', description: 'Data source configuration', usage: "Used to determine data fetching; 'api' handled via adapters.", example: "{ type: 'api', config: { url: '/api/users' } }" },
-  { category: 'WidgemoConfig', property: 'fields', type: 'FieldConfig[]', status: 'implemented', description: 'Field definitions (core functionality)', usage: 'Core to rendering in views like TableView.tsx.', example: "[{ name: 'id', label: 'ID', type: 'text' }]", isComplexType: true, complexTypeSection: 'FieldConfig' },
-  { category: 'WidgemoConfig', property: 'actions', type: 'ActionsConfig', status: 'partial', description: 'Unified action configuration system', usage: 'New action system with definitions and placements; replaces legacy boolean actions.', example: '{ definitions: [{ id: "add" }], header: { always: ["refresh"] } }', isComplexType: true, complexTypeSection: 'ActionsConfig' },
-  { category: 'WidgemoConfig', property: 'chartConfig', type: "{ type: 'bar' | 'line' | 'pie' | 'area' | 'scatter'; xAxis?: string; yAxis?: string | string[]; groupBy?: string; settings?: Record<string, any> }", status: 'partial', description: 'Chart-specific config', usage: 'Basic types via Recharts in ChartView.tsx; advanced features like groupBy not implemented.', example: "{ type: 'bar', xAxis: 'name', yAxis: 'value' }", isComplexType: true, complexTypeSection: 'ChartConfig' },
-  { category: 'WidgemoConfig', property: 'pagination', type: '{ enabled?: boolean; defaultPageSize?: number; pageSizeOptions?: number[] }', status: 'implemented', description: 'Pagination config', usage: 'Handled with PaginationControls.tsx.', example: '{ enabled: true, defaultPageSize: 10 }', isComplexType: true, complexTypeSection: 'PaginationConfig' },
-  { category: 'WidgemoConfig', property: 'sorting', type: "{ enabled?: boolean; defaultSort?: { field: string; direction: 'asc' | 'desc' } }", status: 'partial', description: 'Sorting config', usage: 'Default sort applied; UI toggles incomplete.', example: "{ enabled: true, defaultSort: { field: 'name', direction: 'asc' } }", isComplexType: true, complexTypeSection: 'SortingConfig' },
-  { category: 'WidgemoConfig', property: 'filtering', type: '{ enabled?: boolean; filters?: Array<{...}> }', status: 'not-implemented', description: 'Filtering config', usage: 'Not implemented: Property defined but no filtering UI.', example: '{ enabled: true }', isComplexType: true, complexTypeSection: 'FilteringConfig' },
-  { category: 'WidgemoConfig', property: 'styling', type: 'StylingConfig', status: 'partial', description: 'Styling and theming options', usage: 'Applied in views; not all sub-properties fully supported.', example: '{ theme: "dark", compact: true }', isComplexType: true, complexTypeSection: 'StylingConfig' },
-  { category: 'WidgemoConfig', property: 'emptyState', type: '{ message?: string; icon?: React.ComponentType; action?: {...} }', status: 'implemented', description: 'Empty state config', usage: 'Custom empty component in Widgemo.tsx.', example: '{ message: "No data", action: { label: "Add", onClick: () => {} } }', isComplexType: true, complexTypeSection: 'EmptyStateConfig' },
-  { category: 'WidgemoConfig', property: 'i18n', type: '{ locale?: string; messages?: Record<string, string> }', status: 'not-implemented', description: 'Internationalization', usage: 'Not implemented: Property exists but no localization logic.', example: '{ locale: "en", messages: { add: "Add Item" } }' },
-  { category: 'WidgemoConfig', property: 'header', type: '{ discoverable?: string[]; always?: string[]; onMenu?: string[]; includeDeleted?: boolean }', status: 'partial', description: 'Header config', usage: 'Button arrays handled in WidgemoHeader.tsx; onMenu and includeDeleted not fully.', example: '{ always: ["refresh"], discoverable: ["add"] }', isComplexType: true, complexTypeSection: 'HeaderConfig' },
-  { category: 'WidgemoConfig', property: 'labels', type: '{ add?: string; empty?: string; loading?: string; refresh?: string; actions?: string }', status: 'partial', description: 'UI labels', usage: 'Some used in components; not all customizable.', example: '{ add: "Create New" }' },
-  { category: 'WidgemoConfig', property: 'mediaConfig', type: '{ fields: Array<{field: string; placement?: string; size?: ...; fit?: ...; shape?: ...; lightbox?: boolean; altFn?: Function; priority?: number}>; defaultFit?: string; lazy?: boolean; loadingPlaceholder?: string; errorPlaceholder?: string; enableLightbox?: boolean }', status: 'implemented', description: 'Media configuration for images/videos', usage: 'Used in MediaRenderer.tsx for rendering media in views. Placement options vary by mode: Table=cell, Grid=cell/background, Board=background/header/body.', example: '{ fields: [{ field: "src", placement: "cell" }], lazy: false }', isComplexType: true, complexTypeSection: 'MediaConfig' },
+  // UnifiedConfig properties
+  { category: 'UnifiedConfig', property: 'id', type: 'string', status: 'implemented', description: 'Optional ID for debugging/configuration management', usage: 'Used for component identification but not extensively in logic.', example: '"my-widgemo"' },
+  { category: 'UnifiedConfig', property: 'title', type: 'string', status: 'implemented', description: 'Title displayed in the component header', usage: 'Rendered in WidgemoHeader.tsx.', example: '"User Management"' },
+  { category: 'UnifiedConfig', property: 'zones', type: 'ZoneConfig[]', status: 'implemented', description: 'Array of zone configurations defining the component layout and behavior', usage: 'Core to unified architecture; each zone defines a section of the component.', example: '[{ type: "data", mode: "table", fields: [...] }]', isComplexType: true, complexTypeSection: 'ZoneConfig' },
+  { category: 'UnifiedConfig', property: 'theme', type: 'WidgemoTheme', status: 'implemented', description: 'Theme configuration for colors, fonts, and styling', usage: 'Applied throughout the component for consistent theming.', example: '{ colors: { primary: "#007bff" }, fonts: { body: "Arial" } }', isComplexType: true, complexTypeSection: 'WidgemoTheme' },
+  { category: 'UnifiedConfig', property: 'actions', type: 'ActionsConfig', status: 'partial', description: 'Unified action configuration system', usage: 'New action system with definitions and placements; replaces legacy boolean actions.', example: '{ definitions: [{ id: "add" }], header: { always: ["refresh"] } }', isComplexType: true, complexTypeSection: 'ActionsConfig' },
+  { category: 'UnifiedConfig', property: 'data', type: 'DataConfig', status: 'implemented', description: 'Data source and management configuration', usage: 'Defines how data is fetched, transformed, and managed.', example: '{ source: { type: "api", url: "/api/users" }, transform: {...} }', isComplexType: true, complexTypeSection: 'DataConfig' },
+  { category: 'UnifiedConfig', property: 'pagination', type: '{ enabled?: boolean; defaultPageSize?: number; pageSizeOptions?: number[] }', status: 'implemented', description: 'Pagination config', usage: 'Handled with PaginationControls.tsx.', example: '{ enabled: true, defaultPageSize: 10 }', isComplexType: true, complexTypeSection: 'PaginationConfig' },
+  { category: 'UnifiedConfig', property: 'sorting', type: "{ enabled?: boolean; defaultSort?: { field: string; direction: 'asc' | 'desc' } }", status: 'partial', description: 'Sorting config', usage: 'Default sort applied; UI toggles incomplete.', example: "{ enabled: true, defaultSort: { field: 'name', direction: 'asc' } }", isComplexType: true, complexTypeSection: 'SortingConfig' },
+  { category: 'UnifiedConfig', property: 'filtering', type: '{ enabled?: boolean; filters?: Array<{...}> }', status: 'not-implemented', description: 'Filtering config', usage: 'Not implemented: Property defined but no filtering UI.', example: '{ enabled: true }', isComplexType: true, complexTypeSection: 'FilteringConfig' },
+  { category: 'UnifiedConfig', property: 'emptyState', type: '{ message?: string; icon?: React.ComponentType; action?: {...} }', status: 'implemented', description: 'Empty state config', usage: 'Custom empty component in Widgemo.tsx.', example: '{ message: "No data", action: { label: "Add", onClick: () => {} } }', isComplexType: true, complexTypeSection: 'EmptyStateConfig' },
+  { category: 'UnifiedConfig', property: 'i18n', type: '{ locale?: string; messages?: Record<string, string> }', status: 'not-implemented', description: 'Internationalization', usage: 'Not implemented: Property exists but no localization logic.', example: '{ locale: "en", messages: { add: "Add Item" } }' },
 
-  // StylingConfig properties
-  { category: 'StylingConfig', property: 'className', type: 'string', status: 'implemented', description: 'Additional CSS class name', usage: 'Applied to root element.', example: '"my-custom-class"' },
-  { category: 'StylingConfig', property: 'theme', type: "'light' | 'dark' | 'auto'", status: 'implemented', description: 'Theme selection', usage: 'Controls color scheme.', example: "'dark'" },
-  { category: 'StylingConfig', property: 'compact', type: 'boolean', status: 'implemented', description: 'Compact spacing and sizing', usage: 'Reduces padding and margins.', example: 'true' },
-  { category: 'StylingConfig', property: 'shadow', type: 'boolean', status: 'implemented', description: 'Show shadow for the component', usage: 'Adds drop shadow.', example: 'true' },
-  { category: 'StylingConfig', property: 'showBorder', type: 'boolean', status: 'implemented', description: 'Show border for the component', usage: 'Adds border around component.', example: 'true' },
-  { category: 'StylingConfig', property: 'dynamicBackground', type: 'boolean', status: 'implemented', description: 'Adapt background color based on theme', usage: 'Automatically adjusts background.', example: 'true' },
-  { category: 'StylingConfig', property: 'table', type: 'TableStylingConfig', status: 'implemented', description: 'Table-specific styling options', usage: 'Controls table appearance.', example: '{ showBorder: true, cellBorder: true }', isComplexType: true, complexTypeSection: 'TableStylingConfig' },
-  { category: 'StylingConfig', property: 'card', type: 'CardStylingConfig', status: 'implemented', description: 'Card-specific styling options', usage: 'Controls card appearance.', example: '{ showBorder: true, shadow: true }', isComplexType: true, complexTypeSection: 'CardStylingConfig' },
-  { category: 'StylingConfig', property: 'grid', type: 'GridStylingConfig', status: 'partial', description: 'Grid-specific styling options', usage: 'Controls grid layout.', example: '{ columns: 3, gap: "10px" }', isComplexType: true, complexTypeSection: 'GridStylingConfig' },
-  { category: 'StylingConfig', property: 'board', type: 'BoardStylingConfig', status: 'partial', description: 'Board-specific styling options', usage: 'Controls kanban board appearance.', example: '{ draggable: true, showColumnHeaders: true }', isComplexType: true, complexTypeSection: 'BoardStylingConfig' },
+  // ZoneConfig properties
+  { category: 'ZoneConfig', property: 'type', type: "'data' | 'header' | 'footer' | 'sidebar'", status: 'implemented', description: 'Zone type defining its purpose and layout', usage: 'Controls zone behavior and rendering.', example: "'data'" },
+  { category: 'ZoneConfig', property: 'id', type: 'string', status: 'implemented', description: 'Unique identifier for the zone', usage: 'Used for zone management and theming.', example: '"main-data-zone"' },
+  { category: 'ZoneConfig', property: 'title', type: 'string', status: 'implemented', description: 'Zone title for display', usage: 'Shown in zone headers.', example: '"User Data"' },
+  { category: 'ZoneConfig', property: 'mode', type: "'table' | 'grid' | 'board' | 'chart'", status: 'implemented', description: 'Display mode for the zone', usage: 'Controls how data is rendered in this zone.', example: "'table'" },
+  { category: 'ZoneConfig', property: 'fields', type: 'FieldConfig[]', status: 'implemented', description: 'Field definitions for this zone', usage: 'Defines which fields to display and how.', example: "[{ name: 'name', label: 'Name', type: 'text' }]", isComplexType: true, complexTypeSection: 'FieldConfig' },
+  { category: 'ZoneConfig', property: 'grid', type: 'GridConfig', status: 'implemented', description: 'Grid-specific configuration', usage: 'Controls grid layout and behavior.', example: '{ minItemWidth: "200px" }', isComplexType: true, complexTypeSection: 'GridConfig' },
+  { category: 'ZoneConfig', property: 'table', type: 'TableConfig', status: 'implemented', description: 'Table-specific configuration', usage: 'Controls table appearance and behavior.', example: '{ showBorders: true }', isComplexType: true, complexTypeSection: 'TableConfig' },
+  { category: 'ZoneConfig', property: 'board', type: 'BoardConfig', status: 'implemented', description: 'Board/kanban-specific configuration', usage: 'Controls kanban board layout.', example: '{ columns: [{ id: "todo" }] }', isComplexType: true, complexTypeSection: 'BoardConfig' },
+  { category: 'ZoneConfig', property: 'chart', type: 'ChartConfig', status: 'partial', description: 'Chart-specific configuration', usage: 'Controls chart rendering.', example: '{ type: "bar", xAxis: "name" }', isComplexType: true, complexTypeSection: 'ChartConfig' },
+  { category: 'ZoneConfig', property: 'collapsible', type: 'boolean', status: 'implemented', description: 'Whether the zone can be collapsed', usage: 'Allows users to hide/show the zone.', example: 'true' },
+  { category: 'ZoneConfig', property: 'defaultCollapsed', type: 'boolean', status: 'implemented', description: 'Whether the zone starts collapsed', usage: 'Sets initial collapse state.', example: 'false' },
+  { category: 'ZoneConfig', property: 'icon', type: 'string | IconConfig', status: 'implemented', description: 'Icon for the zone', usage: 'Displayed in zone headers.', example: '"table"' },
+  { category: 'ZoneConfig', property: 'subtitle', type: 'string | SubtitleRenderer', status: 'implemented', description: 'Zone subtitle or renderer function', usage: 'Additional zone description.', example: '"Current users"' },
+  { category: 'ZoneConfig', property: 'actions', type: 'ZoneActionsConfig', status: 'partial', description: 'Zone-specific actions', usage: 'Actions available in this zone.', example: '{ header: ["refresh"] }', isComplexType: true, complexTypeSection: 'ZoneActionsConfig' },
+  { category: 'ZoneConfig', property: 'theme', type: 'ZoneTheme', status: 'implemented', description: 'Zone-specific theming', usage: 'Overrides global theme for this zone.', example: '{ backgroundColor: "#f0f0f0" }', isComplexType: true, complexTypeSection: 'ZoneTheme' },
 
   // TableStylingConfig properties
   { category: 'TableStylingConfig', property: 'showBorder', type: 'boolean', status: 'implemented', description: 'Show table border', usage: 'Adds border around table.', example: 'true' },
@@ -58,36 +51,33 @@ export const widgemoConfigProperties: Array<{
   { category: 'TableStylingConfig', property: 'headerBorder', type: 'boolean', status: 'implemented', description: 'Show border under header row', usage: 'Adds border below table header.', example: 'true' },
   { category: 'TableStylingConfig', property: 'backgroundColor', type: 'string', status: 'implemented', description: 'Table background color', usage: 'Sets table background.', example: "'#ffffff'" },
 
-  // CardStylingConfig properties
-  { category: 'CardStylingConfig', property: 'showBorder', type: 'boolean', status: 'implemented', description: 'Show card borders', usage: 'Adds borders around cards.', example: 'true' },
-  { category: 'CardStylingConfig', property: 'borderStyle', type: 'string', status: 'implemented', description: 'Card border style', usage: 'CSS border-style property.', example: "'solid'" },
-  { category: 'CardStylingConfig', property: 'borderWidth', type: 'string', status: 'implemented', description: 'Card border width', usage: 'CSS border-width property.', example: "'1px'" },
-  { category: 'CardStylingConfig', property: 'borderColor', type: 'string', status: 'implemented', description: 'Card border color', usage: 'CSS border-color property.', example: "'#ddd'" },
-  { category: 'CardStylingConfig', property: 'borderRadius', type: 'string', status: 'implemented', description: 'Card border radius', usage: 'CSS border-radius property.', example: "'8px'" },
-  { category: 'CardStylingConfig', property: 'shadow', type: 'boolean', status: 'implemented', description: 'Show card drop shadow', usage: 'Adds shadow to cards.', example: 'true' },
-  { category: 'CardStylingConfig', property: 'backgroundColor', type: 'string', status: 'implemented', description: 'Card background color', usage: 'Sets card background.', example: "'#ffffff'" },
+  // DataConfig properties
+  { category: 'DataConfig', property: 'source', type: 'DataSourceConfig', status: 'implemented', description: 'Data source configuration', usage: 'Defines how data is fetched and managed.', example: '{ type: "api", url: "/api/users" }', isComplexType: true, complexTypeSection: 'DataSourceConfig' },
+  { category: 'DataConfig', property: 'transform', type: 'DataTransformConfig', status: 'partial', description: 'Data transformation configuration', usage: 'Transforms data after fetching.', example: '{ mapFields: {...} }', isComplexType: true, complexTypeSection: 'DataTransformConfig' },
+  { category: 'DataConfig', property: 'cache', type: 'CacheConfig', status: 'not-implemented', description: 'Data caching configuration', usage: 'Not implemented.', example: '{ enabled: true, ttl: 300 }', isComplexType: true, complexTypeSection: 'CacheConfig' },
 
-  // GridStylingConfig properties
-  { category: 'GridStylingConfig', property: 'columns', type: 'number | "auto"', status: 'implemented', description: 'Number of grid columns', usage: 'Sets grid column count.', example: '3' },
-  { category: 'GridStylingConfig', property: 'cellSize', type: 'Object', status: 'not-implemented', description: 'Grid cell dimensions', usage: 'Not implemented.', example: '{ width: 200, height: 150 }' },
-  { category: 'GridStylingConfig', property: 'gap', type: 'string', status: 'implemented', description: 'Gap between grid items', usage: 'CSS gap property.', example: "'10px'" },
-  { category: 'GridStylingConfig', property: 'showGridLines', type: 'boolean', status: 'not-implemented', description: 'Show grid lines', usage: 'Not implemented.', example: 'true' },
-  { category: 'GridStylingConfig', property: 'aspectRatio', type: 'string', status: 'not-implemented', description: 'Grid aspect ratio', usage: 'Not implemented.', example: "'16/9'" },
-  { category: 'GridStylingConfig', property: 'backgroundColor', type: 'string', status: 'implemented', description: 'Grid background color', usage: 'Sets grid background.', example: "'#f5f5f5'" },
-  { category: 'GridStylingConfig', property: 'imageGrid', type: 'Object', status: 'not-implemented', description: 'Image grid configuration', usage: 'Not implemented.', example: '{ masonry: true }' },
+  // DataSourceConfig properties
+  { category: 'DataSourceConfig', property: 'type', type: "'static' | 'api' | 'graphql' | 'custom'", status: 'implemented', description: 'Data source type', usage: 'Determines fetching method.', example: "'api'" },
+  { category: 'DataSourceConfig', property: 'url', type: 'string', status: 'implemented', description: 'API endpoint URL', usage: 'For API data sources.', example: '"/api/users"' },
+  { category: 'DataSourceConfig', property: 'method', type: "'GET' | 'POST'", status: 'implemented', description: 'HTTP method', usage: 'Request method for API calls.', example: "'GET'" },
+  { category: 'DataSourceConfig', property: 'headers', type: 'Record<string, string>', status: 'implemented', description: 'HTTP headers', usage: 'Additional request headers.', example: '{ "Authorization": "Bearer token" }' },
+  { category: 'DataSourceConfig', property: 'params', type: 'Record<string, any>', status: 'implemented', description: 'Query parameters', usage: 'URL query parameters.', example: '{ "limit": 10 }' },
+  { category: 'DataSourceConfig', property: 'data', type: 'any[]', status: 'implemented', description: 'Static data array', usage: 'For static data sources.', example: '[{ id: 1, name: "John" }]' },
 
-  // BoardStylingConfig properties
-  { category: 'BoardStylingConfig', property: 'columns', type: 'Array<{ id: string; label?: string }>', status: 'implemented', description: 'Board column definitions', usage: 'Defines kanban columns.', example: '[{ id: "todo", label: "To Do" }]' },
-  { category: 'BoardStylingConfig', property: 'groupBy', type: 'string', status: 'not-implemented', description: 'Field to group items by', usage: 'Not implemented.', example: '"status"' },
-  { category: 'BoardStylingConfig', property: 'swimlanes', type: 'Array<{ id: string; label?: string }>', status: 'not-implemented', description: 'Swimlane definitions', usage: 'Not implemented.', example: '[{ id: "high", label: "High Priority" }]' },
-  { category: 'BoardStylingConfig', property: 'swimlaneBy', type: 'string', status: 'not-implemented', description: 'Field for swimlane grouping', usage: 'Not implemented.', example: '"priority"' },
-  { category: 'BoardStylingConfig', property: 'draggable', type: 'boolean', status: 'partial', description: 'Enable drag and drop', usage: 'Basic drag logic exists.', example: 'true' },
-  { category: 'BoardStylingConfig', property: 'showColumnHeaders', type: 'boolean', status: 'implemented', description: 'Show column headers', usage: 'Displays column titles.', example: 'true' },
-  { category: 'BoardStylingConfig', property: 'showItemCount', type: 'boolean', status: 'not-implemented', description: 'Show item count in columns', usage: 'Not implemented.', example: 'true' },
-  { category: 'BoardStylingConfig', property: 'minColumnWidth', type: 'string', status: 'not-implemented', description: 'Minimum column width', usage: 'Not implemented.', example: "'200px'" },
-  { category: 'BoardStylingConfig', property: 'gap', type: 'string', status: 'implemented', description: 'Gap between columns', usage: 'CSS gap property.', example: "'10px'" },
-  { category: 'BoardStylingConfig', property: 'imagePlacement', type: 'string', status: 'implemented', description: 'Image placement in board cards', usage: 'Controls image position.', example: "'header'" },
-  { category: 'BoardStylingConfig', property: 'columnCornerRadius', type: 'string', status: 'not-implemented', description: 'Corner radius for columns', usage: 'Not implemented.', example: "'8px'" },
+  // GridConfig properties
+  { category: 'GridConfig', property: 'minItemWidth', type: 'string', status: 'implemented', description: 'Minimum width for grid items', usage: 'Creates responsive grid with auto-fit.', example: '"200px"' },
+  { category: 'GridConfig', property: 'gap', type: 'string', status: 'implemented', description: 'Gap between grid items', usage: 'CSS gap property.', example: '"10px"' },
+  { category: 'GridConfig', property: 'aspectRatio', type: 'string', status: 'not-implemented', description: 'Grid item aspect ratio', usage: 'Not implemented.', example: '"16/9"' },
+
+  // TableConfig properties
+  { category: 'TableConfig', property: 'showBorders', type: 'boolean', status: 'implemented', description: 'Show table borders', usage: 'Adds borders to table.', example: 'true' },
+  { category: 'TableConfig', property: 'striped', type: 'boolean', status: 'implemented', description: 'Striped table rows', usage: 'Alternating row colors.', example: 'true' },
+  { category: 'TableConfig', property: 'compact', type: 'boolean', status: 'implemented', description: 'Compact table spacing', usage: 'Reduces padding.', example: 'true' },
+
+  // BoardConfig properties
+  { category: 'BoardConfig', property: 'columns', type: 'Array<{ id: string; label?: string; color?: string }>', status: 'implemented', description: 'Board column definitions', usage: 'Defines kanban columns.', example: '[{ id: "todo", label: "To Do" }]' },
+  { category: 'BoardConfig', property: 'groupBy', type: 'string', status: 'not-implemented', description: 'Field to group items by', usage: 'Not implemented.', example: '"status"' },
+  { category: 'BoardConfig', property: 'draggable', type: 'boolean', status: 'partial', description: 'Enable drag and drop', usage: 'Basic drag logic exists.', example: 'true' },
 
   // EmptyStateConfig properties
   { category: 'EmptyStateConfig', property: 'message', type: 'string', status: 'implemented', description: 'Empty state message', usage: 'Displayed when no data.', example: '"No items found"' },
