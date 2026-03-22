@@ -763,6 +763,38 @@ const widgemoExamples: Array<{
     },
   },
   {
+    id: 'responsive-mode-switching',
+    title: 'Responsive Mode Switching',
+    description: 'content.responsive.breakpoints switches the display mode per viewport: table on desktop → grid on tablet → carousel on mobile. Resize the window to see the mode change live.',
+    data: twelveUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'Responsive View',
+          subtitle: 'Desktop: table · Tablet: grid · Mobile: carousel',
+          icon: 'table',
+        },
+        content: {
+          mode: 'table',
+          responsive: {
+            breakpoints: {
+              tablet: { mode: 'grid' },
+              mobile: { mode: 'carousel' },
+            },
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+      },
+    },
+  },
+  {
     id: 'search-grid',
     title: 'Search — Grid (live filter)',
     description: 'content.search enables a debounced search bar that filters all string fields client-side. Try searching by name, role, or department.',
