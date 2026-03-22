@@ -571,6 +571,139 @@ const widgemoExamples: Array<{
         }
       }
     }
+  },
+  // ── Zone Layout Examples (Item 4) ────────────────────────────────────
+  {
+    id: 'zone-layout-icon-above',
+    title: 'Zone Layout: Icon Above Title',
+    description: 'header.layout.iconPosition = "above" — icon stacks vertically above the title instead of sitting beside it. Useful for dashboard-style headers where the icon acts as a visual anchor.',
+    data: fourUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Team Overview',
+          subtitle: 'Engineering department',
+          icon: { name: 'users', size: 28, color: '#4f46e5' },
+          layout: { iconPosition: 'above' },
+          actions: [
+            {
+              id: 'add-member',
+              label: 'Add Member',
+              icon: 'add',
+              variant: 'primary',
+              placement: 'always',
+              onClick: () => alert('Add member')
+            }
+          ]
+        },
+        content: {
+          mode: 'grid',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' }
+            ],
+            layout: { type: 'auto' }
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'zone-layout-actions-below',
+    title: 'Zone Layout: Actions Below Header',
+    description: 'header.layout.actionsPosition = "below" — actions render in a dedicated row beneath the title/icon row. Ideal when you have many actions and want them clearly separated from the title.',
+    data: threeUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Reports Dashboard',
+          subtitle: 'Monthly summary',
+          icon: { name: 'chart', size: 22, color: '#059669' },
+          layout: { actionsPosition: 'below' },
+          actions: [
+            {
+              id: 'export-csv',
+              label: 'Export CSV',
+              icon: 'download',
+              variant: 'secondary',
+              placement: 'always',
+              onClick: () => alert('Export CSV')
+            },
+            {
+              id: 'export-pdf',
+              label: 'Export PDF',
+              icon: 'download',
+              placement: 'always',
+              onClick: () => alert('Export PDF')
+            },
+            {
+              id: 'share',
+              label: 'Share',
+              icon: 'share',
+              placement: 'always',
+              onClick: () => alert('Share')
+            }
+          ]
+        },
+        content: {
+          mode: 'table',
+          layout: { table: { type: 'traditional' } },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+            ],
+            layout: { type: 'auto' }
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'zone-layout-vertical',
+    title: 'Zone Layout: Vertical Orientation',
+    description: 'header.layout.orientation = "vertical" — all zone sections (icon/title, subtitle, actions) stack top-to-bottom instead of side-by-side. Good for narrow panels or card-style widgets.',
+    data: twoUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Active Alerts',
+          subtitle: '2 unresolved issues require attention',
+          icon: { name: 'warning', size: 24, color: '#d97706' },
+          layout: { orientation: 'vertical' },
+          actions: [
+            {
+              id: 'resolve-all',
+              label: 'Resolve All',
+              icon: 'check',
+              variant: 'primary',
+              placement: 'always',
+              onClick: () => alert('Resolve all')
+            }
+          ]
+        },
+        content: {
+          mode: 'grid',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' }
+          }
+        },
+        footer: {
+          title: 'Last updated: just now',
+          layout: { orientation: 'vertical' }
+        }
+      }
+    }
   }
 ];
 export default widgemoExamples;
