@@ -374,9 +374,9 @@ const widgemoExamples: Array<{
               { key: 'src', label: 'Avatar', type: 'image', width: '60px' },
               { key: 'name', label: 'Name', type: 'text' },
               { key: 'email', label: 'Email', type: 'email' },
-              { key: 'department', label: 'Department', type: 'badge' },
-              { key: 'progress', label: 'Progress', type: 'progress', width: '120px' },
-              { key: 'amount', label: 'Salary', type: 'currency', currency: 'USD' }
+              { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' },
+              { key: 'progress', label: 'Progress', type: 'number', renderAs: 'progress', width: '120px' },
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
             ]
           }
         }
@@ -404,7 +404,7 @@ const widgemoExamples: Array<{
               { key: 'name', label: 'Name' },
               { key: 'role', label: 'Role' },
               { key: 'department', label: 'Department' },
-              { key: 'status', label: 'Status', type: 'badge' }
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           }
         }
@@ -457,9 +457,9 @@ const widgemoExamples: Array<{
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '50px' },
               { key: 'name', label: 'Name', type: 'text' },
-              { key: 'role', label: 'Role', type: 'badge' },
-              { key: 'progress', label: 'Progress', type: 'progress', width: '100px' },
-              { key: 'rating', label: 'Rating', type: 'rating', width: '80px' }
+              { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
+              { key: 'progress', label: 'Progress', type: 'number', renderAs: 'progress', width: '100px' },
+              { key: 'rating', label: 'Rating', type: 'number', renderAs: 'rating', width: '80px' }
             ]
           }
         }
@@ -486,7 +486,7 @@ const widgemoExamples: Array<{
               { key: 'name', label: 'Name' },
               { key: 'email', label: 'Email' },
               { key: 'department', label: 'Department' },
-              { key: 'status', label: 'Status', type: 'badge' }
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           },
           itemActions: [
@@ -549,7 +549,7 @@ const widgemoExamples: Array<{
               { key: 'src', label: 'Avatar', type: 'image', width: '40px' },
               { key: 'name', label: 'Name' },
               { key: 'email', label: 'Email' },
-              { key: 'department', label: 'Department', type: 'badge' }
+              { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' }
             ]
           },
           itemActions: [
