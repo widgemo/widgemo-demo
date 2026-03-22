@@ -762,5 +762,60 @@ const widgemoExamples: Array<{
       },
     },
   },
+  {
+    id: 'search-grid',
+    title: 'Search — Grid (live filter)',
+    description: 'content.search enables a debounced search bar that filters all string fields client-side. Try searching by name, role, or department.',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'Team Directory',
+          subtitle: 'Type to filter 20 members',
+          icon: 'users',
+        },
+        content: {
+          mode: 'grid',
+          search: { placeholder: 'Search by name, role…' },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', renderAs: 'text' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'search-with-pagination',
+    title: 'Search + Pagination combined',
+    description: 'Search filters the full dataset first, then pagination slices the filtered results. Page resets to 1 on each new query.',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'User Directory',
+          subtitle: 'Search then page through results',
+          icon: 'table',
+        },
+        content: {
+          mode: 'table',
+          search: { placeholder: 'Search members…' },
+          pagination: { pageSize: 5 },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+      },
+    },
+  },
 ];
 export default widgemoExamples;
