@@ -13,6 +13,7 @@ export const fiveUsersData = teaserSampleData.slice(0, 5);
 export const sixUsersData = teaserSampleData.slice(0, 6);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const eightUsersData = teaserSampleData.slice(0, 8);
+export const twentyUsersData = teaserSampleData.slice(0, 20);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
@@ -704,6 +705,62 @@ const widgemoExamples: Array<{
         }
       }
     }
-  }
+  },
+  {
+    id: 'pagination-grid',
+    title: 'Pagination — Grid (5 per page)',
+    description: 'ContentConfig.pagination: 20 items displayed 5 at a time with prev/next controls.',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'Team Directory',
+          subtitle: '20 members · 5 per page',
+          icon: 'users',
+        },
+        content: {
+          mode: 'grid',
+          pagination: { pageSize: 5, initialPage: 1 },
+          modeConfig: {
+            columns: 3,
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', renderAs: 'text' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'pagination-table',
+    title: 'Pagination — Table (4 per page)',
+    description: 'Same data in table mode, 4 rows per page. More than 7 pages shows X / Y indicator.',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'User Table',
+          subtitle: '20 records · 4 per page',
+          icon: 'table',
+        },
+        content: {
+          mode: 'table',
+          pagination: { pageSize: 4, initialPage: 1 },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+      },
+    },
+  },
 ];
 export default widgemoExamples;
