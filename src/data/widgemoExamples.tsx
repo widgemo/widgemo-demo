@@ -1318,9 +1318,9 @@ const widgemoExamples: Array<{
     title: 'renderAs: link — linkOptions',
     description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Shows unified renderAsOptions API alongside legacy linkOptions.',
     data: [
-      { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice' },
-      { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob'   },
-      { id: 3, name: 'Dashboard', url: 'https://app.example.com',     username: 'carol' },
+      { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice', docUrl: 'https://github.com' },
+      { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob',   docUrl: 'https://docs.example.com' },
+      { id: 3, name: 'Dashboard', url: 'https://app.example.com',     username: 'carol', docUrl: 'https://app.example.com' },
     ] as Entity[],
     config: {
       id: 'renderas-link',
@@ -1340,7 +1340,7 @@ const widgemoExamples: Array<{
                 newTab: true,
               }},
               // Legacy linkOptions approach
-              { key: 'url', label: 'External Warning', renderAs: 'link', linkOptions: { newTab: true, externalWarning: true } },
+              { key: 'docUrl', label: 'External Warning', renderAs: 'link', linkOptions: { newTab: true, externalWarning: true } },
             ],
             layout: { type: 'auto' },
           },
@@ -1517,7 +1517,7 @@ const widgemoExamples: Array<{
     id: 'image-advanced',
     title: 'Image Field — all imageOptions',
     description: 'imageOptions: objectFit (cover/contain/scale-down), circular, borderRadius, border, shadow, backgroundColor, lightbox, lazy. Table with multiple image columns for comparison.',
-    data: fourUsersData as Entity[],
+    data: fourUsersData.map(u => ({ ...u, srcCover: u.src, srcCircular: u.src, srcContain: u.src, srcScale: u.src })) as Entity[],
     config: {
       id: 'image-advanced',
       zones: {
@@ -1528,7 +1528,7 @@ const widgemoExamples: Array<{
             fields: [
               { key: 'name', label: 'Name' },
               // Cover fit + lightbox + shadow + lazy
-              { key: 'src', label: 'Cover + Lightbox', type: 'image' as const, imageOptions: {
+              { key: 'srcCover', label: 'Cover + Lightbox', type: 'image' as const, imageOptions: {
                 objectFit: 'cover' as const,
                 width: 60, height: 60,
                 lightbox: true,
@@ -1536,20 +1536,20 @@ const widgemoExamples: Array<{
                 lazy: true,
               }},
               // Circular + border
-              { key: 'src', label: 'Circular + border', type: 'image' as const, imageOptions: {
+              { key: 'srcCircular', label: 'Circular + border', type: 'image' as const, imageOptions: {
                 circular: true,
                 width: 50, height: 50,
                 border: '2px solid #0d6efd',
               }},
               // Contain + background + borderRadius
-              { key: 'src', label: 'Contain + BG', type: 'image' as const, imageOptions: {
+              { key: 'srcContain', label: 'Contain + BG', type: 'image' as const, imageOptions: {
                 objectFit: 'contain' as const,
                 width: 60, height: 60,
                 borderRadius: '8px',
                 backgroundColor: '#f0f2f5',
               }},
               // Scale-down
-              { key: 'src', label: 'Scale-down', type: 'image' as const, imageOptions: {
+              { key: 'srcScale', label: 'Scale-down', type: 'image' as const, imageOptions: {
                 objectFit: 'scale-down' as const,
                 width: 60, height: 60,
                 borderRadius: 4,
