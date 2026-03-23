@@ -336,7 +336,7 @@ const widgemoExamples: Array<{
   {
     id: 'traditional-table',
     title: 'Traditional Table',
-    description: 'Simple table layout with basic field display',
+    description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation.',
     data: fourUsersData,
     config: {
       zones: {
@@ -350,7 +350,8 @@ const widgemoExamples: Array<{
             fields: [
               { key: 'id', label: 'ID', width: '60px' },
               { key: 'name', label: 'Name' },
-              { key: 'email', label: 'Email' },
+              // wrap: true + type: 'email' — wraps with forced break-word for long addresses
+              { key: 'email', label: 'Email', type: 'email', wrap: true },
               { key: 'department', label: 'Department' },
               { key: 'role', label: 'Role' }
             ]
@@ -419,18 +420,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-traditional-table',
     title: 'Grouped Traditional Table',
-    description: 'Traditional table with data grouped by department',
+    description: 'Traditional table with data grouped by department. item.wrap: true enables natural line wrapping across all columns.',
     data: eightUsersData,
     config: {
       zones: {
         header: {
           title: 'Users by Department',
-          subtitle: 'Grouped traditional table view'
+          subtitle: 'Grouped traditional table — item.wrap: true'
         },
         content: {
           mode: 'table',
           groupBy: 'department',
           item: {
+            // item-level wrap: true — all fields in every cell wrap freely
+            wrap: true,
             fields: [
               { key: 'id', label: 'ID', width: '60px' },
               { key: 'name', label: 'Name' },
