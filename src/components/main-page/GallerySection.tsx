@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
-import { Widgemo, type Entity, type WidgemoConfig } from 'widgemo-core';
+import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from 'widgemo-core';
 import widgemoExamples from '../../data/widgemoExamples';
 import type { Theme } from '../../utils/themeConfig';
 
@@ -78,11 +78,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               height: '200%',
               pointerEvents: 'none'
             }}>
-              <Widgemo
-                data={item.data}
-                config={item.config}
-                className="my-custom-widgemo"
-              />
+              <WidgemoThemeProvider theme={currentTheme}>
+                <Widgemo
+                  data={item.data}
+                  config={item.config}
+                  className="my-custom-widgemo"
+                />
+              </WidgemoThemeProvider>
             </div>
             <div className="gallery-overlay">
               <FaPlay className="play-icon" />
@@ -131,11 +133,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className={currentTheme} style={{ minHeight: '500px' }}>
-            <Widgemo
-              data={selectedItem.data}
-              config={selectedItem.config}
-              className="my-custom-widgemo"
-            />
+            <WidgemoThemeProvider theme={currentTheme}>
+              <Widgemo
+                data={selectedItem.data}
+                config={selectedItem.config}
+                className="my-custom-widgemo"
+              />
+            </WidgemoThemeProvider>
             <div className="mt-3">
               <p >{selectedItem.description}</p>
             </div>
