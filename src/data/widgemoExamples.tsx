@@ -849,5 +849,82 @@ const widgemoExamples: Array<{
       },
     },
   },
+  {
+    id: 'board-basic',
+    title: 'Board — Columns by field value',
+    description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'Team Status Board',
+          subtitle: 'Columns driven by item.status — WIP limits on Active & Pending',
+          icon: 'table',
+        },
+        content: {
+          mode: 'board',
+          modeConfig: {
+            board: {
+              columnField: 'status',
+              columns: [
+                { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
+                { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
+                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+              ],
+              dragEnabled: true,
+              item: {
+                fields: [
+                  { key: 'name',       label: 'Name',       type: 'text' as const },
+                  { key: 'role',       label: 'Role' },
+                  { key: 'department', label: 'Department' },
+                ],
+                layout: { type: 'auto' as const },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'board-swimlanes',
+    title: 'Board — Columns × Swimlane rows',
+    description: 'Status columns crossed with department swimlane rows. Each cell shows items matching both column value (status) and row value (department).',
+    data: twentyUsersData as Entity[],
+    config: {
+      zones: {
+        header: {
+          title: 'Team Board by Dept',
+          subtitle: 'Columns = status · Rows = department',
+          icon: 'table',
+        },
+        content: {
+          mode: 'board',
+          modeConfig: {
+            board: {
+              columnField: 'status',
+              columns: [
+                { id: 'active',   label: 'Active',   color: '#28a745' },
+                { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
+                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+              ],
+              swimlanes: {
+                field: 'department',
+                order: ['Engineering', 'Design', 'Business'],
+              },
+              dragEnabled: true,
+              item: {
+                fields: [
+                  { key: 'name', label: 'Name', type: 'text' as const },
+                  { key: 'role', label: 'Role' },
+                ],
+                layout: { type: 'auto' as const },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 ];
 export default widgemoExamples;
