@@ -336,16 +336,22 @@ const widgemoExamples: Array<{
   {
     id: 'traditional-table',
     title: 'Traditional Table',
-    description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation.',
+    description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
       zones: {
         header: {
           title: 'User Directory',
-          subtitle: 'Traditional table view'
+          subtitle: 'Traditional table view · hover=false'
         },
         content: {
           mode: 'table',
+          layout: {
+            table: {
+              type: 'traditional',
+              hover: false,
+            },
+          },
           item: {
             fields: [
               { key: 'id', label: 'ID', width: '60px' },
@@ -364,16 +370,22 @@ const widgemoExamples: Array<{
   {
     id: 'rich-cells-table',
     title: 'Rich Cells Table',
-    description: 'Table with rich content including images and formatted data',
+    description: 'Table with rich content including images and formatted data. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
       zones: {
         header: {
           title: 'User Profiles',
-          subtitle: 'Rich table with images and formatted content'
+          subtitle: 'Rich table with images and formatted content · hover=false'
         },
         content: {
           mode: 'table',
+          layout: {
+            table: {
+              type: 'rich-cells',
+              hover: false,
+            },
+          },
           item: {
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '60px' },
@@ -1230,14 +1242,14 @@ const widgemoExamples: Array<{
   {
     id: 'table-layout-options',
     title: 'Table layout.table & ColumnConfig',
-    description: 'layout.table: striped, hover, showHeader. ModeConfig.columns as ColumnConfig[] for per-column width, align, header label, sortable. FieldConfig.align on fields.',
+    description: 'layout.table: striped, hover (default: true), showHeader. ModeConfig.columns as ColumnConfig[] for per-column width, align, header label, sortable. FieldConfig.align on fields. hover is omitted here \u2014 it defaults to true.',
     data: sixUsersData as Entity[],
     config: {
       id: 'table-layout-options',
       zones: {
         header: {
           title: 'Table Layout Options',
-          subtitle: 'striped=true · hover=true · ColumnConfig[] for per-column settings',
+          subtitle: 'striped=true · hover omitted (default: true) · ColumnConfig[] for per-column settings',
           icon: { name: 'table', size: 22, color: '#0d6efd' },
         },
         content: {
@@ -1246,7 +1258,6 @@ const widgemoExamples: Array<{
             table: {
               type: 'traditional',
               striped: true,
-              hover: true,
               showHeader: true,
             },
           },
