@@ -16,26 +16,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
 }) => {
   const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [isLargeScreen, setIsLargeScreen] = useState(() => {
-    // Detect initial screen size
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(min-width: 992px)').matches;
-    }
-    return true; // Default to large screen
-  });
   const configsLength = widgemoExamples.length;
-
-  // Detect screen size changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 992px)'); // Bootstrap lg breakpoint
-
-    const handleResize = (e: MediaQueryListEvent) => {
-      setIsLargeScreen(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleResize);
-    return () => mediaQuery.removeEventListener('change', handleResize);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -60,36 +41,33 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
   // const teaserConfig = mergeThemeIntoConfig(currentTeaserItem.config, currentTheme);
   
   return (
-    <section id="teaser" className="py-5 theme-aware-section" style={{
-      color: shouldHaveDarkText ? '#161616' : 'white',
-      height: isLargeScreen ? '800px' : '1200px' // Responsive height based on screen size
+    <section id="teaser" className="theme-aware-section" style={{
+      color: shouldHaveDarkText ? '#161616' : 'white'
     }}>
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+      <div className="max-w-screen-2xl mx-auto px-4 pt-5 pb-4 sm:px-6 sm:pt-6 lg:px-8 lg:pt-8 xl:px-12 xl:pt-12 2xl:px-16 2xl:pt-16">
         <Row>
           <Col lg={4} className="mb-5 mb-lg-0">
             <h1 className="display-1 fw-bold mb-4">
               Experience <span className="text-warning">Widgemo</span>
             </h1>
-            <h2 className="h3 mb-4 fw-light">
+            <h2 className="mb-3 fw-light" style={{ fontSize: '1.125rem' }}>
               One Configurable React Primitive for Infinite UIs
             </h2>
-            <p className="lead mb-4" style={{ color: shouldHaveDarkText ? '#161616' : 'white' }}>
+            <p className="mb-4" style={{ fontSize: '1rem', color: shouldHaveDarkText ? '#161616' : 'white' }}>
               Configuration over custom code. Render boards, tables, grids, charts, and more—from a single component,
               data-agnostic and themeable.
             </p>
             <div className="d-flex gap-3 flex-wrap">
               <Button
-                size="lg"
                 variant="secondary"
-                className="px-4 py-3 fw-bold"
+                className="px-3 py-2 fw-bold"
                 onClick={onExploreGallery}
               >
                 Explore Gallery
               </Button>
               <Button
-                size="lg"
                 variant="primary"
-                className="px-4 py-3 fw-bold shadow"
+                className="px-3 py-2 fw-bold shadow"
                 onClick={onJumpToSandbox}
               >
                 Jump to Sandbox
@@ -101,7 +79,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
               <Card.Body className="p-3 d-flex flex-column h-100">
                 <div className="mb-3 flex-shrink-0">
                   <small className="text-muted d-flex justify-content-between align-items-center ms-2">
-                    <span style={{fontSize: '1.2rem'}}>Present your data as - <strong>{currentTeaserItem.description}</strong></span>
+                    <span style={{fontSize: '0.875rem'}}>Present your data as - <strong>{currentTeaserItem.description}</strong></span>
                     <div style={{ width: '120px' }}>
                       <div className="progress" style={{ height: '4px' }}>
                         <div

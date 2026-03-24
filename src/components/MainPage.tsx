@@ -25,10 +25,7 @@ export const MainPage: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      paddingTop: '60px', 
-      minHeight: '100vh'
-    }}>
+    <div style={{ minHeight: '100vh' }}>
       <TeaserSection
         onExploreGallery={() => scrollToSection('gallery')}
         onJumpToSandbox={() => navigate('/sandbox')}

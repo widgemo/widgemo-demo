@@ -57,14 +57,14 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
     console.log('Grid View - Config for', item.title + ':', item.config);
 
     return (
-      <Col xs={12} sm={6} md={6} lg={4} xl={3} xxl={3} key={index} className="mb-4" style={{ minWidth: '280px', maxWidth: '400px' }}>
+      <Col xs={12} sm={6} md={6} lg={4} xl={3} xxl={3} key={index} className="mb-3" style={{ minWidth: '260px', maxWidth: '400px' }}>
         <Card
           className="h-100 shadow-sm hover-lift theme-aware-card gallery-item"
-          style={{ cursor: 'pointer', minHeight: '280px' }}
+          style={{ cursor: 'pointer', minHeight: '240px' }}
           onClick={() => handleItemClick(item)}
         >
           <div className="gallery-preview-container" style={{
-            height: '180px',
+            height: '160px',
             overflow: 'hidden',
             position: 'relative',
             backgroundColor: 'transparent',
@@ -90,15 +90,15 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               <FaPlay className="play-icon" />
             </div>
           </div>
-          <Card.Body className="d-flex flex-column p-3">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <Card.Title className="h6 mb-0 flex-grow-1">{item.title}</Card.Title>
+          <Card.Body className="d-flex flex-column p-2">
+            <div className="d-flex justify-content-between align-items-start mb-1">
+              <Card.Title className="mb-0 flex-grow-1" style={{ fontSize: '0.8125rem', fontWeight: 600 }}>{item.title}</Card.Title>
             </div>
-            <Card.Text className="text-muted small flex-grow-1">
+            <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.75rem' }}>
               {item.description}
             </Card.Text>
             <div className="mt-auto">
-              <small className="text-muted">Click to preview</small>
+              <small className="text-muted" style={{ fontSize: '0.6875rem' }}>Click to preview</small>
             </div>
           </Card.Body>
         </Card>
@@ -107,16 +107,18 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   };
 
   return (
-    <section id="gallery" className="py-5 theme-aware-section">
-        <div className="text-center mb-5">
-          <h2 className="display-4 fw-bold mb-3 theme-aware-text">Gallery</h2>
-          <p className="lead theme-aware-text">Explore different configurations and modes</p>
+    <section id="gallery" className="section-block theme-aware-section">
+      <div className="px-4">
+        <div className="section-header">
+          <h2 className="section-title theme-aware-text">Gallery</h2>
+          <p className="section-subtitle theme-aware-text">Explore different configurations and modes</p>
         </div>
 
       {/* Gallery Content */}
       <Row className="g-3">
         {filteredItems.map((item, index) => renderGalleryItem(item, index))}
       </Row>
+      </div>
 
       {/* Preview Modal */}
       {selectedItem && (
