@@ -162,7 +162,7 @@ export const SimplifiedTest: React.FC = () => {
                   item: {
                     fields: [
                       { key: 'name', label: 'Task Name' },
-                      { key: 'progress', label: 'Progress' }
+                      { key: 'progress', label: 'Progress', renderAs: 'customProgress', renderAsOptions: { showPercentage: true, color: '#007bff', height: '8px' } }
                     ],
                     layout: { type: 'auto' }
                   }
@@ -238,7 +238,7 @@ export const SimplifiedTest: React.FC = () => {
                   item: {
                     fields: [
                       { key: 'name', label: 'Data Type' },
-                      { key: 'jsonData', label: 'JSON Data' }
+                      { key: 'jsonData', label: 'JSON Data', renderAs: 'jsonView', renderAsOptions: { collapsed: true, maxDepth: 3 } }
                     ],
                     layout: { type: 'auto' }
                   }

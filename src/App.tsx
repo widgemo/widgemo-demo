@@ -7,7 +7,12 @@ import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
 import { useTheme } from './hooks/useTheme';
 import { TimelineMode } from './components/custom-modes';
+import { registerProgressBarField, registerJsonField } from './components/custom-fields';
 import './App.css';
+
+// Register custom renderAs renderers once at module level
+widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
+widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
 
 function AppContent() {
   console.log('🔄 AppContent rendering');
