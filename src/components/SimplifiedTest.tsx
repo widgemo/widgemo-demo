@@ -150,6 +150,10 @@ export const SimplifiedTest: React.FC = () => {
               id: 'progress-test',
               devMode: true,
               zones: {
+                header: {
+                  title: 'Task Progress Tracker',
+                  subtitle: 'Custom progress bar field renderer via widgemoRegistry.registerWidgemoRenderAs'
+                },
                 content: {
                   mode: 'table',
                   data: [
@@ -242,6 +246,9 @@ export const SimplifiedTest: React.FC = () => {
                     ],
                     layout: { type: 'auto' }
                   }
+                },
+                footer: {
+                  subtitle: 'Custom JSON tree renderer via widgemoRegistry.registerWidgemoRenderAs — collapsible nodes, color-coded values'
                 }
               }
             }}
