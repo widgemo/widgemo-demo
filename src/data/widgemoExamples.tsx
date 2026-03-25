@@ -1238,18 +1238,18 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Table Layout Options (striped/hover/showHeader) + ColumnConfig ───
+  // ── Table Layout Options — item.fields with table-specific options ────────
   {
     id: 'table-layout-options',
-    title: 'Table layout.table & ColumnConfig',
-    description: 'layout.table: striped, hover (default: true), showHeader. ModeConfig.columns as ColumnConfig[] for per-column width, align, header label, sortable. FieldConfig.align on fields. hover is omitted here \u2014 it defaults to true.',
+    title: 'Table layout.table & item.fields',
+    description: 'layout.table: striped, showHeader. item.fields (FieldConfig) is the unified config for all modes — use key/label, align, width, sortable on fields directly.',
     data: sixUsersData as Entity[],
     config: {
       id: 'table-layout-options',
       zones: {
         header: {
           title: 'Table Layout Options',
-          subtitle: 'striped=true · hover omitted (default: true) · ColumnConfig[] for per-column settings',
+          subtitle: 'striped=true · item.fields with align, width, sortable',
           icon: { name: 'table', size: 22, color: '#0d6efd' },
         },
         content: {
@@ -1261,24 +1261,14 @@ const widgemoExamples: Array<{
               showHeader: true,
             },
           },
-          modeConfig: {
-            columns: [
-              { field: 'id', header: '#', width: '50px', align: 'center' as const },
-              { field: 'name', header: 'Full Name', width: '180px', align: 'left' as const, sortable: true },
-              { field: 'email', header: 'Email Address', type: 'email' as const, sortable: true },
-              { field: 'department', header: 'Team', align: 'center' as const },
-              { field: 'progress', header: 'Progress %', align: 'center' as const, renderAs: 'progress' as const, progressOptions: { color: '#28a745', height: 8, showPercentage: true } },
-              { field: 'amount', header: 'Salary', align: 'right' as const, renderAs: 'currency' as const, currencyOptions: { currency: 'USD', decimalAlign: true } },
-            ] ,
-          },
           item: {
             fields: [
               { key: 'id', label: '#', width: '50px', align: 'center' as const },
-              { key: 'name', label: 'Full Name', align: 'left' as const },
-              { key: 'email', label: 'Email Address', type: 'email' as const },
+              { key: 'name', label: 'Full Name', width: '180px', align: 'left' as const, sortable: true },
+              { key: 'email', label: 'Email Address', type: 'email' as const, sortable: true },
               { key: 'department', label: 'Team', align: 'center' as const },
-              { key: 'progress', label: 'Progress %', renderAs: 'progress', renderAsOptions: { color: '#28a745', height: 8, showPercentage: true } },
-              { key: 'amount', label: 'Salary', renderAs: 'currency', renderAsOptions: { currency: 'USD', decimalAlign: true }, align: 'right' as const },
+              { key: 'progress', label: 'Progress %', align: 'center' as const, renderAs: 'progress', renderAsOptions: { color: '#28a745', height: 8, showPercentage: true } },
+              { key: 'amount', label: 'Salary', align: 'right' as const, renderAs: 'currency', renderAsOptions: { currency: 'USD', decimalAlign: true } },
             ],
             layout: { type: 'auto' },
           },
