@@ -137,7 +137,7 @@ export const SimplifiedTest: React.FC = () => {
       <div className="row">
         {/* Test section for custom field types */}
         <div className="col-12 mb-3">
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, marginBottom: '0.1rem' }}>🧪 Custom Field Type Test: Progress Bar</h2>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>🧪 Custom Field Type Test: Progress Bar</h2>
           <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing the custom 'progress' field type registered above.</p>
           <Widgemo
             data={[
@@ -179,7 +179,7 @@ export const SimplifiedTest: React.FC = () => {
 
         {/* JSON Field Type Test */}
         <div className="col-12 mb-3">
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, marginBottom: '0.1rem' }}>JSON Field Type Test</h2>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>JSON Field Type Test</h2>
           <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing custom JSON field type with collapsible sections and color coding</p>
           <Widgemo
             data={[
@@ -260,7 +260,7 @@ export const SimplifiedTest: React.FC = () => {
         {/* RESTORED: Now rendering ALL examples with unified configs */}
         {examplesWithDevMode.map((example) => (
           <div key={example.id} className="col-12 mb-3">
-            <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, marginBottom: '0.1rem' }}>{example.title}</h2>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>{example.title}</h2>
             <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>{example.description}</p>
             {/* Rendering Widgemo with stable props from examples array. */}
             {useWidgemoCoreDefaultTheming ? (
