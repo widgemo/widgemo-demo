@@ -1999,7 +1999,7 @@ const widgemoExamples: Array<{
     data: twentyUsersData as Entity[],
     config: {
       id: 'board-advanced',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Advanced Board Config', subtitle: 'card actions · actionsPosition=hover · hooks · swimlane labels+defaultLabel · column.value' },
         content: {
