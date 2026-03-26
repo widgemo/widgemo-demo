@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
-import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from 'widgemo-core';
+import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../../data/widgemoExamples';
 import type { Theme } from '../../utils/themeConfig';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { FaCopy, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
   name: string;

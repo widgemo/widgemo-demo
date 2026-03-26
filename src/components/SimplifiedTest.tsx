@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Widgemo, WidgemoThemeProvider } from 'widgemo-core';
+import { Widgemo, WidgemoThemeProvider } from '@widgemo/widgemo-core';
 import '../../node_modules/widgemo-core/dist/style.css';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { useTheme } from '../hooks/useTheme';
 

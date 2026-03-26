@@ -15,7 +15,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      'widgemo-core': path.resolve(__dirname, '../widgemo-core/src/index.ts')
+      '@widgemo/widgemo-core': path.resolve(__dirname, '../widgemo-core/src/index.ts')
     },
     dedupe: ['react', 'react-dom']
   },

@@ -1,4 +1,4 @@
-import type { WidgemoConfig, WidgemoAdapters } from 'widgemo-core';
+import type { WidgemoConfig, WidgemoAdapters } from '@widgemo/widgemo-core';
 import type { SampleData } from './types';
 
 // Neutral sample data for teaser - User Database

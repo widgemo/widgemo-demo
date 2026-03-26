@@ -55,7 +55,7 @@ root.render(<App />);`
         },
         'App.js': {
           content: `import React, { useState } from 'react';
-import { Widgemo } from 'widgemo-core';
+import { Widgemo } from '@widgemo/widgemo-core';
 
 function App() {
   const [data] = useState(${JSON.stringify(customData, null, 2)});

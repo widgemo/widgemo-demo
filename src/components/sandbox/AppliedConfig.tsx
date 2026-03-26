@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppliedConfigViewer } from './AppliedConfigViewer';
-import type { ResolvedWidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from 'widgemo-core';
+import type { ResolvedWidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from '@widgemo/widgemo-core';
 
 interface AppliedConfigProps {
   config: WidgemoConfig;

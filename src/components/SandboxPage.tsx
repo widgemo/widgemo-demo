@@ -4,7 +4,7 @@ import { useTheme } from '../hooks/useTheme';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData } from '../data/sampleData';
 import widgemoExamples from '../data/widgemoExamples';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 export const SandboxPage: React.FC = () => {
   const { currentTheme } = useTheme();

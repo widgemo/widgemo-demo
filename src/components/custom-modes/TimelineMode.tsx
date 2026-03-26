@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Entity } from 'widgemo-core';
+import type { Entity } from '@widgemo/widgemo-core';
 
 /**
  * Timeline mode configuration

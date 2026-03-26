@@ -1,7 +1,7 @@
 import React from 'react';
 import { teaserSampleData } from './sampleData';
 import type { SampleData } from './types';
-import type { Entity, ActionContext } from 'widgemo-core';
+import type { Entity, ActionContext } from '@widgemo/widgemo-core';
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twoUsersData = teaserSampleData.slice(0, 2);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.

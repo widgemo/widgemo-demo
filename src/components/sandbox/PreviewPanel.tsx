@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 // import { Widgemo } from 'widgemo-core';
-import { Widgemo } from 'widgemo-core';
-import type { WidgemoConfig } from 'widgemo-core';
+import { Widgemo } from '@widgemo/widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PreviewPanelProps {
   // Configuration

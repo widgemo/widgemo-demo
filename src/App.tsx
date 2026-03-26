@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { WidgemoThemeProvider, widgemoRegistry } from 'widgemo-core';
+import { WidgemoThemeProvider, widgemoRegistry } from '@widgemo/widgemo-core';
 import { AppNavbar } from './components/navigation';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';

@@ -4,7 +4,7 @@ import { JsonConfigTab } from './JsonConfigTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
 import { SampleDataTab } from './SampleDataTab';
 import { LoadingStatesTab } from './LoadingStatesTab';
-import type { WidgemoConfig } from 'widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
   name: string;
