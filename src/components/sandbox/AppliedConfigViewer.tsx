@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Collapse } from 'react-bootstrap';
 import { BsInfoCircle } from 'react-icons/bs';
+import { sanitizeReactInternals } from '../../utils';
 
 interface AppliedConfigViewerProps {
   /** The resolved/merged props object to display */
@@ -71,7 +72,7 @@ export const AppliedConfigViewer: React.FC<AppliedConfigViewerProps> = ({
               color: 'var(--bs-light)',
             }}
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(resolvedProps, null, 2)
+              __html: JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(resolvedProps))), null, 2)
                 .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, (match) => {
                   let style = 'color: #6f42c1;'; // purple for strings
                   if (/^"/.test(match)) {

@@ -11,6 +11,7 @@ import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceMod
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
 import type { Theme } from '../utils/themeConfig';
+import { sanitizeReactInternals } from '../utils';
 
 // Custom loading component that matches widgemo-core's expected interface
 const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
@@ -70,7 +71,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   currentTheme,
   // initialThemeMode = 'config'
 }) => {
-  const [configJson, setConfigJson] = useState(JSON.stringify(initialConfig, null, 2));
+  const [configJson, setConfigJson] = useState(JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(initialConfig))), null, 2));
   const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
@@ -218,7 +219,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const copyAppliedConfigToClipboard = useCallback(async () => {
     console.log('Copy button clicked, config:', config);
     
-    const configText = JSON.stringify(config, null, 2);
+    const configText = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(config))), null, 2);
     console.log('Config text to copy:', configText.substring(0, 100) + '...');
     
     // Try fallback first (more reliable in localhost/development)
@@ -307,7 +308,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   // Sync with initial props
   useEffect(() => {
     setConfig(initialConfig);
-    setConfigJson(JSON.stringify(initialConfig, null, 2));
+    setConfigJson(JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(initialConfig))), null, 2));
   }, [initialConfig]);
 
   useEffect(() => {
@@ -323,7 +324,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
-    const json = JSON.stringify(presetConfig, null, 2);
+    const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(presetConfig))), null, 2);
     const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
