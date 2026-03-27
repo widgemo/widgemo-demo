@@ -93,6 +93,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Project Timeline',
@@ -135,6 +136,7 @@ const widgemoExamples: Array<{
     description: 'Demonstrates responsive action overflow with tuck-to-menu functionality',
     data: twoUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Actions Overflow Demo',
@@ -263,9 +265,7 @@ const widgemoExamples: Array<{
     description: 'Grid mode with a centered header (header.layout.titlePosition = "center"). Title and subtitle stack below each other and are horizontally centered in the header bar.',
     data: teaserSampleData,
     config: {
-      collapse: {
-          initialState: 'expanded'
-        },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           icon: { name: 'database', size: 32, color: '#af654c' },
@@ -340,6 +340,7 @@ const widgemoExamples: Array<{
     description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'User Directory',
@@ -374,6 +375,7 @@ const widgemoExamples: Array<{
     description: 'Table with rich content including images and formatted data. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'User Profiles',
@@ -408,6 +410,7 @@ const widgemoExamples: Array<{
     description: 'Responsive grid with flex/grid layout and card-based display',
     data: sixUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'User Grid',
@@ -436,6 +439,7 @@ const widgemoExamples: Array<{
     description: 'Traditional table with data grouped by department. item.wrap: true enables natural line wrapping across all columns.',
     data: eightUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Users by Department',
@@ -465,6 +469,7 @@ const widgemoExamples: Array<{
     description: 'Rich cells table with data grouped by department and enhanced formatting',
     data: eightUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Department Teams',
@@ -601,6 +606,7 @@ const widgemoExamples: Array<{
     description: 'header.layout.iconPosition = "above" stacks the icon vertically above the title. header.layout.subtitlePosition = "inline" places the subtitle in its own centre column rather than stacking below the title — useful when you want a brief tagline separated from the heading.',
     data: fourUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Team Overview',
@@ -639,6 +645,7 @@ const widgemoExamples: Array<{
     description: 'Combines two layout options: header.layout.actionsPosition = "below" places actions in a dedicated row beneath the title bar; header.layout.titlePosition = "right" right-aligns the title and subtitle block.',
     data: threeUsersData,
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Reports Dashboard',
@@ -692,6 +699,7 @@ const widgemoExamples: Array<{
     description: 'header.layout.orientation = "vertical" stacks all zone sections top-to-bottom. The footer uses layout.titlePosition = "center" to center its label — demonstrating that layout options apply to both header and footer zones independently.',
     data: twoUsersData,
     config: {
+      collapse: { initialState: 'fixed' },
       zones: {
         header: {
           title: 'Active Alerts',
@@ -881,6 +889,7 @@ const widgemoExamples: Array<{
     description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',
     data: twentyUsersData as Entity[],
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Team Status Board',
@@ -918,6 +927,7 @@ const widgemoExamples: Array<{
     description: 'Status columns crossed with department swimlane rows. Each cell shows items matching both column value (status) and row value (department).',
     data: twentyUsersData as Entity[],
     config: {
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Team Board by Dept',
@@ -999,6 +1009,7 @@ const widgemoExamples: Array<{
     data: threeUsersData as Entity[],
     config: {
       id: 'zone-theme-overrides',
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Custom Styled Zone',
@@ -1053,6 +1064,7 @@ const widgemoExamples: Array<{
     data: fourUsersData as Entity[],
     config: {
       id: 'zone-collapse-options',
+      collapse: { initialState: 'collapsed' },
       zones: {
         header: {
           title: 'Collapsible Header Zone',
@@ -1093,7 +1105,7 @@ const widgemoExamples: Array<{
     data: eightUsersData as Entity[],
     config: {
       id: 'zone-dynamic-renderers',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'fixed' },
       zones: {
         header: {
           titleRenderer: (data: Entity[]) => `Team Overview (${data.length} members)`,
@@ -1134,7 +1146,7 @@ const widgemoExamples: Array<{
     data: threeUsersData as Entity[],
     config: {
       id: 'zone-title-node',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: React.createElement('span', null,
@@ -1541,6 +1553,7 @@ const widgemoExamples: Array<{
     data: fourUsersData.map(u => ({ ...u, srcCover: u.src, srcCircular: u.src, srcContain: u.src, srcScale: u.src })) as Entity[],
     config: {
       id: 'image-advanced',
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Image Field Options', subtitle: 'objectFit · circular · border · shadow · lightbox · lazy' },
         content: {
@@ -1638,7 +1651,7 @@ const widgemoExamples: Array<{
     data: threeUsersData as Entity[],
     config: {
       id: 'item-layout-flex',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Flex Item Layout', subtitle: 'layout.type="flex" · direction="row" · align="center"' },
         content: {
@@ -1675,7 +1688,7 @@ const widgemoExamples: Array<{
     data: threeUsersData as Entity[],
     config: {
       id: 'item-layout-sections',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Sectioned Item Layout', subtitle: 'layout.type="sections" · SectionConfig with title + fields keys' },
         content: {
@@ -1712,7 +1725,7 @@ const widgemoExamples: Array<{
     data: threeUsersData as Entity[],
     config: {
       id: 'item-layout-grid',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Grid Item Layout', subtitle: 'layout.type="grid" with columns, gap, and template areas' },
         content: {
@@ -1751,7 +1764,7 @@ const widgemoExamples: Array<{
     data: twelveUsersData as Entity[],
     config: {
       id: 'grid-modeconfig-full',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Grid Mode Full Config', subtitle: 'gap · minItemWidth · maxColumns · autoFlow · justifyItems · alignItems · breakpoints' },
         content: {
@@ -1793,7 +1806,7 @@ const widgemoExamples: Array<{
     data: eightUsersData as Entity[],
     config: {
       id: 'carousel-full',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Carousel Mode Full Config', subtitle: 'itemWidth · itemHeight · gap · indicators · arrows · infinite · autoPlay · dragThreshold' },
         content: {
@@ -1833,7 +1846,7 @@ const widgemoExamples: Array<{
     data: fourUsersData as Entity[],
     config: {
       id: 'content-loading-state',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Loading State', subtitle: 'status="loading" · indicator="skeleton" · message fn' },
         content: {
@@ -1864,7 +1877,7 @@ const widgemoExamples: Array<{
     data: [] as Entity[],
     config: {
       id: 'content-error-state',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Error State', subtitle: 'status="error" · errorState message fn · retry · severity="warning"' },
         content: {
@@ -1894,7 +1907,7 @@ const widgemoExamples: Array<{
     data: eightUsersData as Entity[],
     config: {
       id: 'content-groupings',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Groupings Config', subtitle: 'groupings[].fieldKey · initiallyCollapsed · custom renderer fn' },
         content: {
@@ -1928,7 +1941,7 @@ const widgemoExamples: Array<{
     data: twentyUsersData as Entity[],
     config: {
       id: 'content-filtering-sorting',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Static Filtering & Sorting', subtitle: 'filtering: status=active · sorting: name asc · content.style · content.themeOverrides' },
         content: {
@@ -1965,7 +1978,7 @@ const widgemoExamples: Array<{
     data: twentyUsersData as Entity[],
     config: {
       id: 'search-advanced',
-      collapse: { initialState: 'collapsed' },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500 · onSearch callback (check console)' },
         content: {
