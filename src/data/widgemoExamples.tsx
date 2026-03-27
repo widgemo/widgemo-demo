@@ -370,6 +370,41 @@ const widgemoExamples: Array<{
   },
 
   {
+    id: 'row-click',
+    title: 'Row Click (onRowClick)',
+    description: 'Demonstrates interaction.onRowClick — the parent app passes a callback and Widgemo calls it with the row item when the user clicks. Email/URL cells stop propagation so they do not fire the row handler.',
+    data: fourUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Clickable Rows',
+          subtitle: 'Click any row — the parent app receives the item via onRowClick'
+        },
+        content: {
+          mode: 'table',
+          layout: { table: { type: 'traditional' } },
+          item: {
+            fields: [
+              { key: 'id',         label: 'ID',         width: '60px' },
+              { key: 'name',       label: 'Name' },
+              { key: 'email',      label: 'Email',      type: 'email' },
+              { key: 'department', label: 'Department' },
+              { key: 'role',       label: 'Role' },
+            ]
+          },
+          interaction: {
+            onRowClick: (item: unknown) => {
+              const row = item as { name: string; department: string };
+              alert(`Row clicked!\n\nName: ${row.name}\nDepartment: ${row.department}`);
+            }
+          }
+        }
+      }
+    }
+  },
+
+  {
     id: 'rich-cells-table',
     title: 'Rich Cells Table',
     description: 'Table with rich content including images and formatted data. hover=false: row hover highlight is disabled.',
