@@ -1333,6 +1333,54 @@ const widgemoExamples: Array<{
     },
   },
 
+  // ── Actions: visibleIf — conditional per-row action visibility ───────────
+  {
+    id: 'action-visible-if',
+    title: 'Actions: visibleIf (conditional visibility)',
+    description: 'visibleIf: (entity) => boolean controls whether an action renders for a given row. "Deactivate" appears only for active users; "Activate" only for inactive/pending. Rows with different statuses show different action sets.',
+    data: fiveUsersData as Entity[],
+    config: {
+      id: 'action-visible-if',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'visibleIf Demo',
+          subtitle: 'Each row shows only the action that matches its status',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' as const },
+            ],
+            layout: { type: 'auto' },
+          },
+          itemActions: [
+            {
+              id: 'deactivate',
+              label: 'Deactivate',
+              icon: 'close',
+              placement: 'always' as const,
+              visibleIf: (e: Entity) => e.status === 'active',
+              onClick: (e: Entity) => alert(`Deactivated ${e.name as string}`),
+            },
+            {
+              id: 'activate',
+              label: 'Activate',
+              icon: 'refresh',
+              placement: 'always' as const,
+              visibleIf: (e: Entity) => e.status !== 'active',
+              onClick: (e: Entity) => alert(`Activated ${e.name as string}`),
+            },
+          ],
+          actionOverflow: { maxInline: 1, menuLabel: 'More', indicator: 'none' as const },
+        },
+      },
+    },
+  },
+
   // ── Table Layout Options — item.fields with table-specific options ────────
   {
     id: 'table-layout-options',
