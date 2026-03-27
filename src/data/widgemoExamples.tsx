@@ -244,14 +244,13 @@ const widgemoExamples: Array<{
             {
               id: 'duplicate-item',
               label: 'Duplicate',
-              icon: 'duplicate',
+              icon: 'copy',
               placement: 'menu',
               onClick: (entity: SampleData) => alert(`Duplicate ${entity.name}`)
             }
           ],
           actionOverflow: {
             maxInline: 2,
-            menuLabel: 'More',
             indicator: 'scale'
           }
         }
@@ -1253,28 +1252,19 @@ const widgemoExamples: Array<{
   {
     id: 'action-types-dropdown',
     title: 'Actions: dropdown, handler, visibleIf, pinned',
-    description: 'ActionConfig type="dropdown" with nested items[]. ActionConfig.handler receives ActionContext. ActionConfig.visibleIf filters per entity. .pinned prevents tucking. actionOverflow indicator="color-shift"/"none".',
+    description: 'ActionConfig placement API: always / onHover / menu / discoverable. ActionConfig.handler receives ActionContext. ActionConfig.visibleIf filters per entity. .pinned prevents tucking. actionOverflow indicator="color-shift"/"none".',
     data: threeUsersData as Entity[],
     config: {
       id: 'action-types-dropdown',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
-          title: 'Dropdown Actions Demo',
-          subtitle: 'type="dropdown" with nested items · handler(ActionContext) · indicator="color-shift"',
+          title: 'Zone Actions Demo',
+          subtitle: 'placement: always / menu · handler(ActionContext) · indicator="color-shift"',
           actions: [
-            {
-              id: 'create',
-              label: 'Create',
-              icon: 'add',
-              type: 'dropdown' as const,
-              placement: 'always' as const,
-              items: [
-                { id: 'create-user', label: 'New User', icon: 'user', onClick: () => alert('New User') },
-                { id: 'create-team', label: 'New Team', icon: 'users', onClick: () => alert('New Team') },
-                { id: 'create-report', label: 'New Report', icon: 'chart', onClick: () => alert('New Report') },
-              ],
-            },
+            { id: 'create-user', label: 'New User', icon: 'user', placement: 'always' as const, onClick: () => alert('New User') },
+            { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const, onClick: () => alert('New Team') },
+            { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const, onClick: () => alert('New Report') },
             {
               id: 'export-all',
               label: 'Export All',
@@ -1307,16 +1297,8 @@ const widgemoExamples: Array<{
             layout: { type: 'auto' },
           },
           itemActions: [
-            {
-              id: 'item-actions-menu',
-              label: 'Actions',
-              type: 'dropdown' as const,
-              placement: 'always' as const,
-              items: [
-                { id: 'view', label: 'View', icon: 'view', onClick: (e: Entity) => alert(`View ${e.name as string}`) },
-                { id: 'edit', label: 'Edit', icon: 'edit', onClick: (e: Entity) => alert(`Edit ${e.name as string}`) },
-              ],
-            },
+            { id: 'view', label: 'View', icon: 'view', placement: 'always' as const, onClick: (e: Entity) => alert(`View ${e.name as string}`) },
+            { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onClick: (e: Entity) => alert(`Edit ${e.name as string}`) },
             {
               id: 'pinned-delete',
               label: 'Delete',
