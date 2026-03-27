@@ -372,14 +372,14 @@ const widgemoExamples: Array<{
   {
     id: 'row-click',
     title: 'Row Click (onRowClick)',
-    description: 'Demonstrates interaction.onRowClick — the parent app passes a callback and Widgemo calls it with the row item when the user clicks. Email/URL cells stop propagation so they do not fire the row handler.',
+    description: 'Demonstrates interaction.onRowClick. Click any row — including the email cell — to fire the parent callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-          subtitle: 'Click any row — the parent app receives the item via onRowClick'
+          subtitle: 'Click any cell (including the plain-text email) to fire onRowClick'
         },
         content: {
           mode: 'table',
@@ -388,7 +388,44 @@ const widgemoExamples: Array<{
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
+              // type: 'email' renders plain text — clicking it fires onRowClick like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
+              { key: 'department', label: 'Department' },
+              { key: 'role',       label: 'Role' },
+            ]
+          },
+          interaction: {
+            onRowClick: (item: unknown) => {
+              const row = item as { name: string; email: string; department: string };
+              alert(`Row clicked!\n\nName: ${row.name}\nEmail: ${row.email}\nDepartment: ${row.department}`);
+            }
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'row-click-with-link',
+    title: 'Row Click with Email Link (renderAs: link)',
+    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire onRowClick (stopPropagation). Clicking any other cell still fires the row handler.',
+    data: fourUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Clickable Rows + Email Link',
+          subtitle: 'Click a row to fire onRowClick · click the email to open mailto: (no row handler)'
+        },
+        content: {
+          mode: 'table',
+          layout: { table: { type: 'traditional' } },
+          item: {
+            fields: [
+              { key: 'id',         label: 'ID',         width: '60px' },
+              { key: 'name',       label: 'Name' },
+              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops row-click propagation
+              { key: 'email',      label: 'Email',      type: 'email', renderAs: 'link' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
