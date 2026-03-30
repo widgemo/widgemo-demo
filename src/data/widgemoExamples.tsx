@@ -146,7 +146,7 @@ const widgemoExamples: Array<{
               id: 'add-user',
               label: 'Add User',
               icon: 'add',
-              placement: 'always',
+              placement: 'pinned',
               variant: 'primary',
               onTrigger: () => alert('Add User clicked!')
             },
@@ -154,8 +154,7 @@ const widgemoExamples: Array<{
               id: 'edit-user',
               label: 'Edit User',
               icon: 'edit',
-              placement: 'always',
-              pinned: true,
+              placement: 'pinned',
               variant: 'secondary',
               onTrigger: () => alert('Edit User clicked!')
             },
@@ -164,7 +163,6 @@ const widgemoExamples: Array<{
               label: 'Delete User',
               icon: 'delete',
               placement: 'onHover',
-              pinned: true,
               variant: 'danger',
               onTrigger: () => alert('Delete User clicked!')
             },
@@ -227,7 +225,7 @@ const widgemoExamples: Array<{
               id: 'edit-item',
               label: 'Edit',
               icon: 'edit',
-              placement: 'always',
+              placement: 'pinned',
               variant: 'secondary',
               onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
             },
@@ -302,7 +300,7 @@ const widgemoExamples: Array<{
               label: 'Add User',
               icon: 'add',
               variant: 'primary',
-              placement: 'always',
+              placement: 'pinned',
               onTrigger: () => alert('Add User clicked!')
             },
             {
@@ -310,7 +308,7 @@ const widgemoExamples: Array<{
               label: 'Refresh',
               icon: 'refresh',
               variant: 'secondary',
-              placement: 'always',
+              placement: 'pinned',
               onTrigger: () => alert('Refresh clicked!')
             }
           ]
@@ -603,7 +601,7 @@ const widgemoExamples: Array<{
               id: 'edit-user',
               label: 'Edit',
               icon: 'edit',
-              placement: 'always',
+              placement: 'pinned',
               onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
             },
             {
@@ -667,7 +665,7 @@ const widgemoExamples: Array<{
               id: 'edit',
               label: 'Edit',
               icon: 'edit',
-              placement: 'always',
+              placement: 'pinned',
               onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
             },
             {
@@ -702,7 +700,7 @@ const widgemoExamples: Array<{
               label: 'Add Member',
               icon: 'add',
               variant: 'primary',
-              placement: 'always',
+              placement: 'pinned',
               onClick: () => alert('Add member')
             }
           ]
@@ -741,21 +739,21 @@ const widgemoExamples: Array<{
               label: 'Export CSV',
               icon: 'download',
               variant: 'secondary',
-              placement: 'always',
+              placement: 'pinned',
               onClick: () => alert('Export CSV')
             },
             {
               id: 'export-pdf',
               label: 'Export PDF',
               icon: 'download',
-              placement: 'always',
+              placement: 'pinned',
               onClick: () => alert('Export PDF')
             },
             {
               id: 'share',
               label: 'Share',
               icon: 'share',
-              placement: 'always',
+              placement: 'pinned',
               onClick: () => alert('Share')
             }
           ]
@@ -795,7 +793,7 @@ const widgemoExamples: Array<{
               label: 'Resolve All',
               icon: 'check',
               variant: 'primary',
-              placement: 'always',
+              placement: 'pinned',
               onClick: () => alert('Resolve all')
             }
           ]
@@ -1201,7 +1199,7 @@ const widgemoExamples: Array<{
               id: 'export',
               label: 'Export',
               icon: 'download',
-              placement: 'always' as const,
+              placement: 'pinned' as const,
               handler: (context: ActionContext) => alert(`Exporting ${context.data.length} records from zone: ${context.zone}`),
             },
           ],
@@ -1263,8 +1261,8 @@ const widgemoExamples: Array<{
   // ── NEW: Action Types: Dropdown, handler, visibleIf, pinned ──────────────
   {
     id: 'action-types-dropdown',
-    title: 'Actions: dropdown, handler, visibleIf, pinned',
-    description: 'ActionConfig placement API: always / onHover / menu / discoverable. ActionConfig.handler receives ActionContext. ActionConfig.visibleIf filters per entity. .pinned prevents tucking. actionOverflow indicator="color-shift"/"none".',
+    title: 'Actions: placement API, handler, visibleIf',
+    description: 'ActionConfig placement API: pinned / onHover / menu. ActionConfig.handler receives ActionContext. ActionConfig.visibleIf filters per entity. actionOverflow indicator="color-shift"/"none".',
     data: threeUsersData as Entity[],
     config: {
       id: 'action-types-dropdown',
@@ -1272,16 +1270,16 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Zone Actions Demo',
-          subtitle: 'placement: always / menu · handler(ActionContext) · indicator="color-shift"',
+          subtitle: 'placement: pinned / menu · handler(ActionContext) · indicator="color-shift"',
           actions: [
-            { id: 'create-user', label: 'New User', icon: 'user', placement: 'always' as const, onClick: () => alert('New User') },
+            { id: 'create-user', label: 'New User', icon: 'user', placement: 'pinned' as const, onClick: () => alert('New User') },
             { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const, onClick: () => alert('New Team') },
             { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const, onClick: () => alert('New Report') },
             {
               id: 'export-all',
               label: 'Export All',
               icon: 'download',
-              placement: 'always' as const,
+              placement: 'pinned' as const,
               handler: (ctx: ActionContext) => alert(`Exporting ${ctx.data.length} items from zone: ${ctx.zone}`),
             },
             {
@@ -1309,14 +1307,13 @@ const widgemoExamples: Array<{
             layout: { type: 'auto' },
           },
           itemActions: [
-            { id: 'view', label: 'View', icon: 'view', placement: 'always' as const, onClick: (e: Entity) => alert(`View ${e.name as string}`) },
+            { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onClick: (e: Entity) => alert(`View ${e.name as string}`) },
             { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onClick: (e: Entity) => alert(`Edit ${e.name as string}`) },
             {
               id: 'pinned-delete',
               label: 'Delete',
               icon: 'delete',
-              placement: 'always' as const,
-              pinned: true,
+              placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
               onClick: (e: Entity) => alert(`Delete ${e.name as string}`),
             },
@@ -1356,7 +1353,7 @@ const widgemoExamples: Array<{
               id: 'deactivate',
               label: 'Deactivate',
               icon: 'close',
-              placement: 'always' as const,
+              placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
               onClick: (e: Entity) => alert(`Deactivated ${e.name as string}`),
             },
@@ -1364,7 +1361,7 @@ const widgemoExamples: Array<{
               id: 'activate',
               label: 'Activate',
               icon: 'refresh',
-              placement: 'always' as const,
+              placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status !== 'active',
               onClick: (e: Entity) => alert(`Activated ${e.name as string}`),
             },
@@ -2157,7 +2154,7 @@ const widgemoExamples: Array<{
                     id: 'card-view',
                     label: 'View',
                     icon: 'view',
-                    placement: 'always' as const,
+                    placement: 'pinned' as const,
                     onClick: (entity: Entity) => alert(`Viewing: ${entity.name as string}`),
                   },
                   {
