@@ -9,7 +9,7 @@ export interface JsonRenderAsOptions {
 
 export const registerJsonField = () => ({
   name: 'jsonView',
-  render: (value: unknown, options: import('widgemo-core').RenderAsOptions) => {
+  render: (value: unknown, options: import('@widgemo/widgemo-core').RenderAsOptions) => {
     const jsonOptions = options as JsonRenderAsOptions;
     const collapsed = jsonOptions.collapsed ?? true;
     const maxDepth = jsonOptions.maxDepth ?? 3;

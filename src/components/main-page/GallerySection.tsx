@@ -53,9 +53,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   };
 
   const renderGalleryItem = (item: GalleryItem, index: number) => {
-    // Debug: Log config for grid view
-    console.log('Grid View - Config for', item.title + ':', item.config);
-
     return (
       <Col xs={12} sm={6} md={6} lg={4} xl={3} xxl={3} key={index} className="mb-3" style={{ minWidth: '260px', maxWidth: '400px' }}>
         <Card

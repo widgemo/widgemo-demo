@@ -1044,7 +1044,7 @@ const widgemoExamples: Array<{
       id: 'config-root-options',
       collapse: { initialState: 'collapsed' },
       style: { border: '2px solid #6610f2', borderRadius: '12px' },
-      preRender: () => console.log('[preRender] config-root-options rendered'),
+      preRender: () => {},
       zones: {
         header: {
           title: 'Collapsible Widget',

@@ -15,7 +15,6 @@ widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
 widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
 
 function AppContent() {
-  console.log('🔄 AppContent rendering');
   const { currentTheme } = useTheme();
   
   // Register custom modes
@@ -174,7 +173,6 @@ function AppContent() {
 }
 
 function App() {
-  console.log('🚀 App component rendering');
   return (
     <ThemeProvider>
       <AppContent />

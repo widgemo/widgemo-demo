@@ -2,13 +2,8 @@ import React from 'react';
 import widgemoExamples from '../data/widgemoExamples';
 
 export const SimplifiedTest: React.FC = () => {
-  console.log('🚀 SimplifiedTest component rendering');
-
   try {
-    // Test if widgemoExamples can be imported
-    console.log('Testing widgemoExamples import...');
     const examples = widgemoExamples;
-    console.log('widgemoExamples loaded:', examples?.length, 'examples');
 
     return (
       <div style={{ padding: '2rem', backgroundColor: 'lightblue', minHeight: '100vh' }}>

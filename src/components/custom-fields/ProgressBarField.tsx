@@ -8,7 +8,7 @@ export interface ProgressBarRenderAsOptions {
 
 export const registerProgressBarField = () => ({
   name: 'customProgress',
-  render: (value: unknown, options: import('widgemo-core').RenderAsOptions) => {
+  render: (value: unknown, options: import('@widgemo/widgemo-core').RenderAsOptions) => {
     const progressOptions = options as ProgressBarRenderAsOptions;
     const progress = Math.min(100, Math.max(0, Number(value) || 0));
     const showPercentage = progressOptions.showPercentage !== false;

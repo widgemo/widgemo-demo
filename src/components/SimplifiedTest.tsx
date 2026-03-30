@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Widgemo, WidgemoThemeProvider } from '@widgemo/widgemo-core';
-import '../../node_modules/@widgemo/widgemo-core/dist/style.css';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { useTheme } from '../hooks/useTheme';
@@ -34,12 +33,11 @@ function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
 }
 
 export const SimplifiedTest: React.FC = () => {
-  console.log('🚀 SimplifiedTest component rendering');
 
   const { currentTheme } = useTheme();
 
   // Production gating: Only enable devMode toggle in development environment
-  const isDevEnvironment = process.env.NODE_ENV === 'development';
+  const isDevEnvironment = import.meta.env.DEV || window.location.hostname === "dev.widgemo.com" || window.location.hostname === "localhost" || window.location.hostname === "10.0.0.229";
 
   // State for devMode toggle (only used in development) - loads from localStorage initially
   const [includeWidgemoInspector, setIncludeWidgemoInspectorState] = useState(() => {
