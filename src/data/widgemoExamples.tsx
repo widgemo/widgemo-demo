@@ -147,6 +147,7 @@ const widgemoExamples: Array<{
               label: 'Add User',
               icon: 'add',
               placement: 'always',
+              variant: 'primary',
               onTrigger: () => alert('Add User clicked!')
             },
             {
@@ -155,6 +156,7 @@ const widgemoExamples: Array<{
               icon: 'edit',
               placement: 'always',
               pinned: true,
+              variant: 'secondary',
               onTrigger: () => alert('Edit User clicked!')
             },
             {
@@ -163,6 +165,7 @@ const widgemoExamples: Array<{
               icon: 'delete',
               placement: 'onHover',
               pinned: true,
+              variant: 'danger',
               onTrigger: () => alert('Delete User clicked!')
             },
             {
@@ -198,12 +201,12 @@ const widgemoExamples: Array<{
               label: 'Archive User',
               icon: 'archive',
               placement: 'menu',
-              onTrigger: () => alert('Archive User clicked!')
+              onClick: () => alert('Archive User clicked!')
             }
           ],
           actionOverflow: {
             maxInline: { mobile: 1, tablet: 2, desktop: 3 },
-            menuLabel: 'More Actions',
+            menuLabel: 'More...',
             indicator: 'pulse'
           }
         },
@@ -225,6 +228,7 @@ const widgemoExamples: Array<{
               label: 'Edit',
               icon: 'edit',
               placement: 'always',
+              variant: 'secondary',
               onClick: (entity: SampleData) => alert(`Edit ${entity.name}`)
             },
             {
@@ -232,7 +236,15 @@ const widgemoExamples: Array<{
               label: 'Delete',
               icon: 'delete',
               placement: 'onHover',
+              variant: 'danger',
               onClick: (entity: SampleData) => alert(`Delete ${entity.name}`)
+            },
+            {
+              id: 'archive-item',
+              label: 'Archive',
+              icon: 'archive',
+              placement: 'onHover',
+              onClick: (entity: SampleData) => alert(`Archive ${entity.name}`)
             },
             {
               id: 'view-item',
