@@ -3,7 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
 import { ThemeToggle } from './ThemeToggle';
 
-export const AppNavbar: React.FC = () => {
+interface AppNavbarProps {
+  topOffset?: number;
+}
+
+export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
   const location = useLocation();
   const isSandbox = location.pathname === '/sandbox';
 
@@ -32,7 +36,7 @@ export const AppNavbar: React.FC = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow">
+      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow" style={{ top: `${topOffset}px` }}>
         <BootstrapNavbar.Brand 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           as={Link as any} 
@@ -42,7 +46,7 @@ export const AppNavbar: React.FC = () => {
           <img src="/widgemo_deco.svg" alt="Widgemo" className="me-2" style={{ height: '32px', width: 'auto' }} />
           <div className="d-flex flex-column">
             <strong>Widgemo</strong>
-            {window.location?.port === '5173' && (  // Show in dev, hidden in prod
+            {(window.location?.port === '5173' || window.location.hostname === 'dev.widgemo.com') && (
               <small className="text-warning opacity-75" style={{ fontSize: '0.65rem', lineHeight: '1', marginTop: '-2px' }}>
                 DEVELOPMENT MODE
               </small>

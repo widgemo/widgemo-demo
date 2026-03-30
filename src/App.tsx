@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider, widgemoRegistry } from '@widgemo/widgemo-core';
-import { AppNavbar } from './components/navigation';
+import { AppNavbar, DevBanner } from './components/navigation';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
@@ -16,6 +17,11 @@ widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
 
 function AppContent() {
   const { currentTheme } = useTheme();
+  const [bannerVisible, setBannerVisible] = useState(
+    window.location.hostname === 'dev.widgemo.com' &&
+    localStorage.getItem('widgemo-devbanner-dismissed') !== 'true'
+  );
+  const [navOffset, setNavOffset] = useState(0);
   
   // Register custom modes
   widgemoRegistry.registerWidgemoMode({
@@ -134,14 +140,19 @@ function AppContent() {
   
   return (
     <WidgemoThemeProvider theme={currentTheme}>
-      <div className="App" style={{ 
+      <DevBanner
+        visible={bannerVisible}
+        onDismiss={() => setBannerVisible(false)}
+        onHeightChange={setNavOffset}
+      />
+      <div className="App" style={{
         minHeight: '100vh',
         color: 'var(--app-text-primary)',
         transition: 'color 0.3s ease'
       }}>
-        <AppNavbar />
+        <AppNavbar topOffset={navOffset} />
 
-        <div style={{ marginTop: '56px' }}>
+        <div style={{ marginTop: `${56 + navOffset}px` }}>
           <Routes>
             <Route
               path="/"
