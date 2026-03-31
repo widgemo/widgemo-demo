@@ -82,7 +82,7 @@ export const collapsibleHeaderConfig: WidgemoConfig = {
           icon: 'refresh',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         },
         {
           id: 'export',
@@ -90,7 +90,7 @@ export const collapsibleHeaderConfig: WidgemoConfig = {
           icon: 'download',
           onClick: () => alert('Export clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         }
       ]
     },
@@ -143,7 +143,7 @@ export const fixedHeaderConfig: WidgemoConfig = {
           icon: 'refresh',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         }
       ]
     }
@@ -195,7 +195,7 @@ export const reactElementTitleConfig: WidgemoConfig = {
           icon: 'refresh',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         },
         {
           id: 'export',
@@ -203,7 +203,7 @@ export const reactElementTitleConfig: WidgemoConfig = {
           icon: 'export',
           onClick: () => alert('Export clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         }
       ]
     },
@@ -251,7 +251,7 @@ export const actionsSystemTestConfig: WidgemoConfig = {
           icon: 'settings',
           variant: 'danger',
           onClick: () => alert('Settings clicked!'),
-          placement: 'discoverable'
+          placement: 'onHover'
         },
         {
           id: 'all',
@@ -307,7 +307,7 @@ export const compactLayoutConfig: WidgemoConfig = {
           variant: 'ghost',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         },
         {
           id: 'delete',
@@ -348,7 +348,7 @@ export const minimalLayoutConfig: WidgemoConfig = {
           variant: 'ghost',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         }
       ]
     },

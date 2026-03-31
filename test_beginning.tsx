@@ -82,7 +82,7 @@ export const collapsibleHeaderConfig: WidgemoConfig = {
           icon: 'refresh',
           onClick: () => alert('Refresh clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         },
         {
           id: 'export',
@@ -90,7 +90,7 @@ export const collapsibleHeaderConfig: WidgemoConfig = {
           icon: 'download',
           onClick: () => alert('Export clicked!'),
           iconOnly: true,
-          placement: 'discoverable'
+          placement: 'onHover'
         }
       ]
     },

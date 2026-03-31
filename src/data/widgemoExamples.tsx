@@ -162,7 +162,7 @@ const widgemoExamples: Array<{
               id: 'delete-user',
               label: 'Delete User',
               icon: 'delete',
-              placement: 'onHover',
+              placement: 'pinned',
               variant: 'danger',
               onTrigger: () => alert('Delete User clicked!')
             },

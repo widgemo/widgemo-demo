@@ -85,7 +85,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'EmptyStateConfig', property: 'action', type: 'Object', status: 'implemented', description: 'Empty state action button', usage: 'Button shown in empty state.', example: '{ label: "Add Item", onClick: () => {} }' },
 
   // HeaderConfig properties
-  { category: 'HeaderConfig', property: 'discoverable', type: 'string[]', status: 'implemented', description: 'Buttons shown on hover', usage: 'Controls shown when hovering header.', example: '["viewToggle", "columnSelector"]' },
+  { category: 'HeaderConfig', property: 'onHover', type: 'string[]', status: 'implemented', description: 'Buttons shown on hover', usage: 'Controls shown when hovering header.', example: '["viewToggle", "columnSelector"]' },
   { category: 'HeaderConfig', property: 'always', type: 'string[]', status: 'implemented', description: 'Buttons always visible', usage: 'Controls always shown in header.', example: '["refresh", "add"]' },
   { category: 'HeaderConfig', property: 'onMenu', type: 'string[]', status: 'not-implemented', description: 'Buttons in dropdown menu', usage: 'Not implemented.', example: '["export", "import"]' },
   { category: 'HeaderConfig', property: 'includeDeleted', type: 'boolean', status: 'not-implemented', description: 'Include deleted records', usage: 'Not implemented.', example: 'false' },
