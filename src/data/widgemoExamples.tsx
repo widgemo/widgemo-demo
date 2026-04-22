@@ -21,7 +21,6 @@ export const twelveUsersData = teaserSampleData.slice(0, 12);
 
 
 // Array of examples for dynamic rendering in SimplifiedTest.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const widgemoExamples: Array<{
   id: string;
   title: string;
@@ -501,6 +500,45 @@ const widgemoExamples: Array<{
           mode: 'grid',
           columns: { mobile: 1, tablet: 2, desktop: 3 },
           item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image' },
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
+            ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'borderless-grid-cards',
+    title: 'Grid / No Container Chrome',
+    description: 'Grid/card layout with normal item card styling, while omitting only the outer Widgemo container chrome.',
+    data: sixUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      style: {
+        border: 'none',
+        borderRadius: 0,
+        boxShadow: 'none',
+        background: 'transparent',
+        overflow: 'visible'
+      },
+      zones: {
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '220px',
+              maxColumns: 4,
+              gap: '0.75rem'
+            }
+          },
+          item: {
+            layout: { type: 'auto' },
             fields: [
               { key: 'src', label: 'Avatar', type: 'image' },
               { key: 'name', label: 'Name' },
