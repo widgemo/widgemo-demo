@@ -519,26 +519,12 @@ const widgemoExamples: Array<{
     description: 'Grid/card layout with normal item card styling, while omitting only the outer Widgemo container chrome.',
     data: sixUsersData,
     config: {
+      containerTrim: 'none',
       collapse: { initialState: 'expanded' },
-      style: {
-        border: 'none',
-        borderRadius: 0,
-        boxShadow: 'none',
-        background: 'transparent',
-        overflow: 'visible'
-      },
       zones: {
         header: {
           title: 'Containerless Grid',
-          subtitle: 'Grid layout without outer container styling — ideal for embedding within other card components',
-          themeOverrides: {
-            backgroundColor: 'transparent',
-            borderStyle: 'none',
-            borderWidth: '0',
-            borderColor: 'transparent',
-            borderRadius: '0',
-            padding: '0'
-          }
+          subtitle: 'Grid layout without outer container styling — ideal for embedding within other card components'
         },
         content: {
           mode: 'grid',
@@ -558,6 +544,232 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' },
               { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-table',
+    title: 'Container Trim None (Table)',
+    description: 'Uses config.containerTrim = "none" to remove outer shell trim while keeping normal table and item rendering.',
+    data: fourUsersData,
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded User Table',
+          subtitle: 'No outer widgemo shell chrome'
+        },
+        content: {
+          mode: 'table',
+          layout: { table: { type: 'traditional' } },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'email', label: 'Email', type: 'email' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' }
+            ]
+          }
+        },
+        footer: {
+          subtitle: 'containerTrim none keeps content rendering but removes shell trim'
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-grid-basic',
+    title: 'Container Trim None (Grid)',
+    description: 'Grid mode with containerTrim set to none; content cards render normally without outer Widgemo shell trim.',
+    data: sixUsersData,
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded Grid',
+          subtitle: 'No outer shell, normal card rendering'
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '220px',
+              maxColumns: 4,
+              gap: '0.75rem'
+            }
+          },
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image' },
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' }
+            ],
+            layout: { type: 'auto' }
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-list',
+    title: 'Container Trim None (List)',
+    description: 'List mode with containerTrim none for embedding in parent cards or custom page sections.',
+    data: sixUsersData,
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded List',
+          subtitle: 'List mode without outer shell trim'
+        },
+        content: {
+          mode: 'list',
+          item: {
+            fields: [
+              { key: 'src', label: 'Avatar', type: 'image', width: '40px' },
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' }
+            ],
+            layout: { type: 'auto' }
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-timeline',
+    title: 'Container Trim None (Timeline)',
+    description: 'Timeline mode with containerTrim none; timeline visuals render without the outer Widgemo shell.',
+    data: [
+      {
+        id: 1,
+        date: '2024-01-15',
+        title: 'Kickoff',
+        description: 'Project kickoff and planning complete.',
+        status: 'completed'
+      },
+      {
+        id: 2,
+        date: '2024-02-01',
+        title: 'Design',
+        description: 'Design finalized and approved.',
+        status: 'completed'
+      },
+      {
+        id: 3,
+        date: '2024-02-15',
+        title: 'Development',
+        description: 'Development started.',
+        status: 'in-progress'
+      }
+    ],
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded Timeline',
+          subtitle: 'Timeline mode without outer shell trim'
+        },
+        content: {
+          mode: 'timeline',
+          timeline: {
+            dateField: 'date',
+            sortOrder: 'asc' as const,
+            orientation: 'horizontal' as const,
+            showLines: true,
+            color: '#2196f3'
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-carousel',
+    title: 'Container Trim None (Carousel)',
+    description: 'Carousel mode with containerTrim none for seamless embedding in custom layouts.',
+    data: eightUsersData,
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded Carousel',
+          subtitle: 'Carousel mode without outer shell trim'
+        },
+        content: {
+          mode: 'carousel',
+          modeConfig: {
+            carousel: {
+              itemWidth: 260,
+              itemHeight: 200,
+              gap: 16,
+              showIndicators: true,
+              showArrows: true,
+              infinite: true
+            }
+          },
+          item: {
+            fields: [
+              { key: 'src', label: 'Photo', type: 'image', imageOptions: { objectFit: 'cover', width: '100%', height: 100 } },
+              { key: 'name', label: 'Name', showLabel: false },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' }
+          }
+        }
+      }
+    }
+  },
+
+  {
+    id: 'container-trim-none-board',
+    title: 'Container Trim None (Board)',
+    description: 'Board mode with containerTrim none while keeping normal column and card rendering.',
+    data: twentyUsersData as Entity[],
+    config: {
+      containerTrim: 'none',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Embedded Board',
+          subtitle: 'Board mode without outer shell trim'
+        },
+        content: {
+          mode: 'board',
+          modeConfig: {
+            board: {
+              columnField: 'status',
+              columns: [
+                { id: 'active', label: 'Active', color: '#28a745' },
+                { id: 'pending', label: 'Pending', color: '#fd7e14' },
+                { id: 'inactive', label: 'Inactive', color: '#6c757d' }
+              ],
+              dragEnabled: true,
+              item: {
+                fields: [
+                  { key: 'name', label: 'Name', type: 'text' as const },
+                  { key: 'role', label: 'Role' },
+                  { key: 'department', label: 'Department' }
+                ],
+                layout: { type: 'auto' as const }
+              }
+            }
           }
         }
       }
