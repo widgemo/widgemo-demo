@@ -528,6 +528,18 @@ const widgemoExamples: Array<{
         overflow: 'visible'
       },
       zones: {
+        header: {
+          title: 'Containerless Grid',
+          subtitle: 'Grid layout without outer container styling — ideal for embedding within other card components',
+          themeOverrides: {
+            backgroundColor: 'transparent',
+            borderStyle: 'none',
+            borderWidth: '0',
+            borderColor: 'transparent',
+            borderRadius: '0',
+            padding: '0'
+          }
+        },
         content: {
           mode: 'grid',
           modeConfig: {
