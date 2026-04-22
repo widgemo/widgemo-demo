@@ -92,6 +92,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -276,6 +277,7 @@ const widgemoExamples: Array<{
     description: 'Grid mode with a centered header (header.layout.titlePosition = "center"). Title and subtitle stack below each other and are horizontally centered in the header bar.',
     data: teaserSampleData,
     config: {
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -354,6 +356,7 @@ const widgemoExamples: Array<{
     description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -915,6 +918,7 @@ const widgemoExamples: Array<{
     description: 'Minimal list layout with essential information and actions',
     data: sixUsersData,
     config: {
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -1244,6 +1248,7 @@ const widgemoExamples: Array<{
     description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',
     data: twentyUsersData as Entity[],
     config: {
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -2194,6 +2199,7 @@ const widgemoExamples: Array<{
     data: eightUsersData as Entity[],
     config: {
       id: 'carousel-full',
+      containerShadow: 'none',
       collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Carousel Mode Full Config', subtitle: 'itemWidth · itemHeight · gap · indicators · arrows · infinite · autoPlay · dragThreshold' },
