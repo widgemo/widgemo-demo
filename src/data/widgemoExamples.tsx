@@ -101,6 +101,9 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'timeline',
+          themeOverrides: {
+            padding: '1rem'
+          },
           timeline: {
             dateField: 'date',
             sortOrder: 'asc' as const,
@@ -314,6 +317,9 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'grid',
+          themeOverrides: {
+            padding: '1rem'
+          },
           columns: 3,
           item: {
             fields: [
@@ -356,6 +362,9 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
+          themeOverrides: {
+            padding: '1rem'
+          },
           layout: {
             table: {
               type: 'traditional',
@@ -914,6 +923,9 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'list',
+          themeOverrides: {
+            padding: '1rem'
+          },
           item: {
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '40px' },
@@ -1241,6 +1253,9 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'board',
+          themeOverrides: {
+            padding: '1rem'
+          },
           modeConfig: {
             board: {
               columnField: 'status',
@@ -2184,6 +2199,9 @@ const widgemoExamples: Array<{
         header: { title: 'Carousel Mode Full Config', subtitle: 'itemWidth · itemHeight · gap · indicators · arrows · infinite · autoPlay · dragThreshold' },
         content: {
           mode: 'carousel',
+          themeOverrides: {
+            padding: '1rem'
+          },
           modeConfig: {
             carousel: {
               itemWidth: 260,
