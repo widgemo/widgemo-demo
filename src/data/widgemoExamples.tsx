@@ -2044,6 +2044,172 @@ const widgemoExamples: Array<{
     },
   },
 
+  // ── Grouping — individual settings showcased ────────────────────────────
+  {
+    id: 'grouping-expanded-default',
+    title: 'Grouping: fieldKey only (expanded by default)',
+    description: 'groupings[0] with only fieldKey set — the minimum required config. Groups expand by default (initiallyCollapsed defaults to false). The default group header renders as "GroupValue (N)".',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-expanded-default',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouped by Department', subtitle: 'groupings[].fieldKey only · expanded by default · default label format' },
+        content: {
+          mode: 'table',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
+          item: {
+            fields: [
+              { key: 'name',   label: 'Name' },
+              { key: 'role',   label: 'Role',   renderAs: 'badge' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-by-different-field',
+    title: 'Grouping by a different field (status)',
+    description: 'Any field can be used as groupings[].fieldKey. Here fieldKey="status" groups rows by active/inactive/pending. initiallyCollapsed: false is set explicitly (same as the default) to show the option.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-by-different-field',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouped by Status', subtitle: 'fieldKey="status" · initiallyCollapsed=false (explicit)' },
+        content: {
+          mode: 'table',
+          groupings: [
+            { fieldKey: 'status', initiallyCollapsed: false },
+          ],
+          item: {
+            fields: [
+              { key: 'name',       label: 'Name' },
+              { key: 'role',       label: 'Role',       renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-renderer-jsx',
+    title: 'Grouping: renderer returning JSX',
+    description: 'renderer receives (groupValue, count, isCollapsed) and returns a React element — here a styled inline badge. Groups start collapsed (initiallyCollapsed: true). All three renderer params are used.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-renderer-jsx',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouped by Department', subtitle: 'renderer → JSX badge · all three params: groupValue, count, isCollapsed' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: true,
+              renderer: (groupValue: unknown, count: number, isCollapsed: boolean) => (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    backgroundColor: '#4f46e5',
+                    color: '#fff',
+                    borderRadius: '12px',
+                    padding: '2px 10px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                  }}>
+                    {String(groupValue)}
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                    {count} {count === 1 ? 'member' : 'members'} · {isCollapsed ? 'click to expand' : 'click to collapse'}
+                  </span>
+                </span>
+              ),
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name',   label: 'Name' },
+              { key: 'role',   label: 'Role',   renderAs: 'badge' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-rich-cells',
+    title: 'Grouping in rich-cells table',
+    description: 'groupings also works with layout.table.type="rich-cells". Groups are expanded by default. fieldKey="department", columns=2.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-rich-cells',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouped Rich-Cells Table', subtitle: 'groupings · type="rich-cells" · columns=2' },
+        content: {
+          mode: 'table',
+          layout: { table: { type: 'rich-cells', columns: 2 } },
+          groupings: [
+            { fieldKey: 'department' },
+          ],
+          item: {
+            fields: [
+              { key: 'name',   label: 'Name' },
+              { key: 'role',   label: 'Role',   renderAs: 'badge' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'email',  label: 'Email' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-with-sorting',
+    title: 'Grouping combined with sorting',
+    description: 'sorting applies within each group. groupings: fieldKey="department", sorting: name asc. Items inside each department group are sorted alphabetically by name.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-with-sorting',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouped + Sorted', subtitle: 'groupings · sorting name asc · items sorted alphabetically within each group' },
+        content: {
+          mode: 'table',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
+          sorting: [
+            { fieldKey: 'name', direction: 'asc' as const },
+          ],
+          item: {
+            fields: [
+              { key: 'name',   label: 'Name' },
+              { key: 'role',   label: 'Role',   renderAs: 'badge' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
   // ── NEW: Content filtering, sorting, virtualization, style, themeOverrides ─
   {
     id: 'content-filtering-sorting',
