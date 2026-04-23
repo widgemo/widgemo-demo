@@ -271,8 +271,8 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'add', label: 'Add User', icon: 'add', placement: 'always' },
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+              { id: 'add', label: 'Add User', icon: 'add', placement: 'pinned' },
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' },
               { id: 'columnSelector', label: 'Columns', icon: 'settings', placement: 'menu' },
               { id: 'deletedToggle', label: 'Show Deleted', icon: 'eye', placement: 'menu' }
             ]
@@ -297,7 +297,7 @@ export const galleryConfigs: Array<{
                 label: 'Edit',
                 icon: 'edit',
                 variant: 'secondary',
-                placement: 'always',
+                placement: 'pinned',
                 onClick: () => { } // Demo action
               },
               {
@@ -305,7 +305,7 @@ export const galleryConfigs: Array<{
                 label: 'Delete',
                 icon: 'trash',
                 variant: 'danger',
-                placement: 'always',
+                placement: 'pinned',
                 onClick: () => { } // Demo action
               }
             ],
@@ -329,7 +329,7 @@ export const galleryConfigs: Array<{
                 id: 'add',
                 label: 'Add User Profile',
                 icon: 'add',
-                placement: 'always',
+                placement: 'pinned',
                 onClick: () => alert('Add User Profile clicked!')
               }
             ]
@@ -352,7 +352,7 @@ export const galleryConfigs: Array<{
                 label: 'View',
                 icon: 'eye',
                 variant: 'secondary',
-                placement: 'always',
+                placement: 'pinned',
                 onClick: (entity: any) => alert(`View ${entity.name}`)
               }
             ],
@@ -372,7 +372,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -401,7 +401,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -430,7 +430,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -513,7 +513,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' },
               { id: 'viewToggle', label: 'View Toggle', icon: 'eye', placement: 'menu' },
               { id: 'columnSelector', label: 'Columns', icon: 'settings', placement: 'menu' },
               { id: 'add', label: 'Add', icon: 'add', placement: 'menu' }
@@ -684,7 +684,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -713,7 +713,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -741,7 +741,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -771,7 +771,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -802,7 +802,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -832,7 +832,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -866,7 +866,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -901,7 +901,7 @@ export const galleryConfigs: Array<{
                 id: 'refresh',
                 label: 'Refresh',
                 icon: 'refresh',
-                placement: 'always',
+                placement: 'pinned',
                 onClick: () => alert('Refresh clicked!')
               }
             ]
@@ -933,7 +933,7 @@ export const galleryConfigs: Array<{
         zones: {
           header: {
             actions: [
-              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+              { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
             ]
           },
           content: {
@@ -965,8 +965,8 @@ export const defaultSandboxConfig: WidgemoConfig = {
   zones: {
     header: {
       actions: [
-        { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
-        { id: 'add', label: 'Add', icon: 'add', placement: 'always' }
+        { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' },
+        { id: 'add', label: 'Add', icon: 'add', placement: 'pinned' }
       ]
     },
     content: {
@@ -1012,8 +1012,8 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       zones: {
         header: {
           actions: [
-            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' },
-            { id: 'add', label: 'Add User', icon: 'add', placement: 'always' }
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' },
+            { id: 'add', label: 'Add User', icon: 'add', placement: 'pinned' }
           ]
         },
         content: {
@@ -1058,7 +1058,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       zones: {
         header: {
           actions: [
-            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
           ]
         },
         content: {
@@ -1078,7 +1078,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
               label: 'View',
               icon: 'eye',
               variant: 'secondary',
-              placement: 'always'
+              placement: 'pinned'
             }
           ],
           data: teaserSampleData
@@ -1093,7 +1093,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       zones: {
         header: {
           actions: [
-            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
           ]
         },
         content: {
@@ -1119,7 +1119,7 @@ export const teaserConfigs: Array<{ config: WidgemoConfig; description: string }
       zones: {
         header: {
           actions: [
-            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'always' }
+            { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' }
           ]
         },
         content: {
