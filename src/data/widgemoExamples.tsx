@@ -14,6 +14,8 @@ export const fiveUsersData = teaserSampleData.slice(0, 5);
 export const sixUsersData = teaserSampleData.slice(0, 6);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const eightUsersData = teaserSampleData.slice(0, 8);
+// Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
+export const tenUsersData = teaserSampleData.slice(0, 10);
 export const twentyUsersData = teaserSampleData.slice(0, 20);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twelveUsersData = teaserSampleData.slice(0, 12);
@@ -714,7 +716,7 @@ const widgemoExamples: Array<{
     id: 'container-trim-none-carousel',
     title: 'Container Trim None (Carousel)',
     description: 'Carousel mode with containerTrim none for seamless embedding in custom layouts.',
-    data: eightUsersData,
+    data: tenUsersData,
     config: {
       containerTrim: 'none',
       collapse: { initialState: 'expanded' },
@@ -2196,7 +2198,7 @@ const widgemoExamples: Array<{
     id: 'carousel-full',
     title: 'Carousel — all ModeConfig options',
     description: 'ModeConfig.carousel: itemWidth, itemHeight, gap, showIndicators, showArrows, infinite, autoPlay, autoPlayInterval, dragThreshold.',
-    data: eightUsersData as Entity[],
+    data: tenUsersData as Entity[],
     config: {
       id: 'carousel-full',
       containerShadow: 'none',
