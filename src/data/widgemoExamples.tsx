@@ -730,7 +730,6 @@ const widgemoExamples: Array<{
           modeConfig: {
             carousel: {
               itemWidth: 260,
-              itemHeight: 200,
               gap: 16,
               showIndicators: true,
               showArrows: true,
@@ -2197,7 +2196,7 @@ const widgemoExamples: Array<{
   {
     id: 'carousel-full',
     title: 'Carousel — all ModeConfig options',
-    description: 'ModeConfig.carousel: itemWidth, itemHeight, gap, showIndicators, showArrows, infinite, autoPlay, autoPlayInterval, dragThreshold.',
+    description: 'ModeConfig.carousel: itemWidth, itemHeight, gap, showIndicators, showArrows, infinite, revolving, autoPlay, autoPlayInterval, dragThreshold.',
     data: tenUsersData as Entity[],
     config: {
       id: 'carousel-full',
@@ -2218,6 +2217,7 @@ const widgemoExamples: Array<{
               showIndicators: true,
               showArrows: true,
               infinite: true,
+              revolving: true,
               autoPlay: true,
               autoPlayInterval: 3500,
               dragThreshold: 50,
@@ -2228,6 +2228,128 @@ const widgemoExamples: Array<{
               { key: 'src',        label: 'Photo', type: 'image' as const, imageOptions: { objectFit: 'cover' as const, width: '100%', height: 100, borderRadius: '6px 6px 0 0' } },
               { key: 'name',       label: 'Name',  showLabel: false },
               { key: 'role',       label: 'Role',  renderAs: 'badge' },
+              { key: 'department', label: 'Dept' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'carousel-revolving-default',
+    title: 'Carousel Revolving: default (unset)',
+    description: 'Revolving is not set here (default). Infinite wrapping is enabled to verify default revolving behavior.',
+    data: tenUsersData as Entity[],
+    config: {
+      id: 'carousel-revolving-default',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Carousel Revolving Default',
+          subtitle: 'infinite: true · revolving: (unset/default)',
+        },
+        content: {
+          mode: 'carousel',
+          modeConfig: {
+            carousel: {
+              itemWidth: 260,
+              itemHeight: 200,
+              gap: 16,
+              showIndicators: true,
+              showArrows: true,
+              infinite: true,
+              autoPlay: false,
+            },
+          },
+          item: {
+            fields: [
+              { key: 'src', label: 'Photo', type: 'image' as const, imageOptions: { objectFit: 'cover' as const, width: '100%', height: 100, borderRadius: '6px 6px 0 0' } },
+              { key: 'name', label: 'Name', showLabel: false },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Dept' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'carousel-revolving-true',
+    title: 'Carousel Revolving: true',
+    description: 'Infinite wrap with revolving=true (no rewind animation on boundary wrap).',
+    data: tenUsersData as Entity[],
+    config: {
+      id: 'carousel-revolving-true',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Carousel Revolving True',
+          subtitle: 'infinite: true · revolving: true',
+        },
+        content: {
+          mode: 'carousel',
+          modeConfig: {
+            carousel: {
+              itemWidth: 260,
+              itemHeight: 200,
+              gap: 16,
+              showIndicators: true,
+              showArrows: true,
+              infinite: true,
+              revolving: true,
+              autoPlay: false,
+            },
+          },
+          item: {
+            fields: [
+              { key: 'src', label: 'Photo', type: 'image' as const, imageOptions: { objectFit: 'cover' as const, width: '100%', height: 100, borderRadius: '6px 6px 0 0' } },
+              { key: 'name', label: 'Name', showLabel: false },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Dept' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'carousel-revolving-false',
+    title: 'Carousel Revolving: false',
+    description: 'Infinite wrap with revolving=false (uses rewind-style wrap behavior).',
+    data: tenUsersData as Entity[],
+    config: {
+      id: 'carousel-revolving-false',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Carousel Revolving False',
+          subtitle: 'infinite: true · revolving: false',
+        },
+        content: {
+          mode: 'carousel',
+          modeConfig: {
+            carousel: {
+              itemWidth: 260,
+              itemHeight: 200,
+              gap: 16,
+              showIndicators: true,
+              showArrows: true,
+              infinite: true,
+              revolving: false,
+              autoPlay: false,
+            },
+          },
+          item: {
+            fields: [
+              { key: 'src', label: 'Photo', type: 'image' as const, imageOptions: { objectFit: 'cover' as const, width: '100%', height: 100, borderRadius: '6px 6px 0 0' } },
+              { key: 'name', label: 'Name', showLabel: false },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
               { key: 'department', label: 'Dept' },
             ],
             layout: { type: 'auto' },
