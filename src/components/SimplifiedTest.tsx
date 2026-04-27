@@ -1,8 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Widgemo, WidgemoThemeProvider } from '@widgemo/widgemo-core';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { useTheme } from '../hooks/useTheme';
+import { setDemoActionListener } from '../utils/demoActionBus';
+import type { DemoActionPayload } from '../utils/demoActionBus';
+import { DemoActionModal } from './DemoActionModal';
 
 /**
  * Injects devMode configuration into a Widgemo config, preserving existing settings except enabled state.
@@ -33,6 +36,14 @@ function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
 }
 
 export const SimplifiedTest: React.FC = () => {
+
+  const [actionPayload, setActionPayload] = useState<DemoActionPayload | null>(null);
+
+  // Register the demo action listener so fireDemoAction() in examples opens this modal
+  useEffect(() => {
+    setDemoActionListener(setActionPayload);
+    return () => setDemoActionListener(null);
+  }, []);
 
   const { currentTheme } = useTheme();
 
@@ -283,6 +294,11 @@ export const SimplifiedTest: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <DemoActionModal
+        payload={actionPayload}
+        onClose={() => setActionPayload(null)}
+      />
     </div>
   );
 };
