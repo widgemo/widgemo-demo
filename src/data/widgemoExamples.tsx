@@ -153,7 +153,7 @@ const widgemoExamples: Array<{
               icon: 'add',
               placement: 'pinned',
               variant: 'primary',
-              onTrigger: () => alert('Add User clicked!')
+              onClick: () => alert('Add User clicked!')
             },
             {
               id: 'edit-user',
@@ -161,7 +161,7 @@ const widgemoExamples: Array<{
               icon: 'edit',
               placement: 'pinned',
               variant: 'secondary',
-              onTrigger: () => alert('Edit User clicked!')
+              onClick: () => alert('Edit User clicked!')
             },
             {
               id: 'delete-user',
@@ -169,35 +169,35 @@ const widgemoExamples: Array<{
               icon: 'delete',
               placement: 'pinned',
               variant: 'danger',
-              onTrigger: () => alert('Delete User clicked!')
+              onClick: () => alert('Delete User clicked!')
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
               placement: 'onHover',
-              onTrigger: () => alert('View Profile clicked!')
+              onClick: () => alert('View Profile clicked!')
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
               placement: 'menu',
-              onTrigger: () => alert('Send Message clicked!')
+              onClick: () => alert('Send Message clicked!')
             },
             {
               id: 'share-user',
               label: 'Share User',
               icon: 'share',
               placement: 'menu',
-              onTrigger: () => alert('Share User clicked!')
+              onClick: () => alert('Share User clicked!')
             },
             {
               id: 'export-user',
               label: 'Export User',
               icon: 'export',
               placement: 'menu',
-              onTrigger: () => alert('Export User clicked!')
+              onClick: () => alert('Export User clicked!')
             },
             {
               id: 'archive-user',
@@ -307,7 +307,7 @@ const widgemoExamples: Array<{
               icon: 'add',
               variant: 'primary',
               placement: 'pinned',
-              onTrigger: () => alert('Add User clicked!')
+              onClick: () => alert('Add User clicked!')
             },
             {
               id: 'refresh',
@@ -315,7 +315,7 @@ const widgemoExamples: Array<{
               icon: 'refresh',
               variant: 'secondary',
               placement: 'pinned',
-              onTrigger: () => alert('Refresh clicked!')
+              onClick: () => alert('Refresh clicked!')
             }
           ]
         },
