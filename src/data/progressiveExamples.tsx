@@ -655,6 +655,168 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+  // ── modeConfig.table: traditional settings ────────────────────────────────
+  {
+    id: 'progressive-16-traditional-striped',
+    title: 'Progressive 16 — Traditional: striped',
+    description:
+      'Sets modeConfig.table.striped = true on a traditional table. Bootstrap\'s table-striped class is applied, giving every other row an alternating background so long lists are easier to scan.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-16',
+      zones: {
+        header: {
+          title: 'Striped Table',
+          subtitle: 'modeConfig.table.striped = true',
+          icon: 'table',
+        },
+        content: createTableContent(tenUsersData, badgeCurrencyFields, {
+          table: { type: 'traditional', striped: true },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-17-traditional-hover-off',
+    title: 'Progressive 17 — Traditional: hover disabled',
+    description:
+      'Sets modeConfig.table.hover = false. By default the table-hover class is present and rows highlight on mouse-over. This example explicitly opts out so the table stays visually static on hover — useful for read-heavy dashboards where highlight creates noise.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-17',
+      zones: {
+        header: {
+          title: 'No Hover Effect',
+          subtitle: 'modeConfig.table.hover = false',
+          icon: 'table',
+        },
+        content: createTableContent(tenUsersData, badgeCurrencyFields, {
+          table: { type: 'traditional', striped: true, hover: false },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-18-traditional-no-header',
+    title: 'Progressive 18 — Traditional: no header',
+    description:
+      'Sets modeConfig.table.showHeader = false. The <thead> row is omitted entirely. This is useful for compact inline tables where column meaning is already established by surrounding context.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-18',
+      zones: {
+        header: {
+          title: 'Headerless Table',
+          subtitle: 'modeConfig.table.showHeader = false',
+          icon: 'table',
+        },
+        content: createTableContent(eightUsersData, namedFields, {
+          table: { type: 'traditional', showHeader: false },
+        }),
+      },
+    },
+  },
+  // ── modeConfig.table: rich-cells settings ────────────────────────────────
+  {
+    id: 'progressive-19-rich-cells-1col',
+    title: 'Progressive 19 — Rich Cells: 1 column',
+    description:
+      'Sets modeConfig.table.type = "rich-cells" with columns = 1 (the default). Each row is rendered as a full-width card that contains the full item layout rather than a flat row of cells. Avatar, badges, progress bars, and ratings render inside the card.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-19',
+      zones: {
+        header: {
+          title: 'Rich Cells — Single Column',
+          subtitle: 'modeConfig.table = { type: "rich-cells", columns: 1 }',
+          icon: 'grid',
+        },
+        content: createTableContent(eightUsersData, richFields, {
+          table: { type: 'rich-cells', columns: 1 },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-20-rich-cells-2col',
+    title: 'Progressive 20 — Rich Cells: 2 columns',
+    description:
+      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-20',
+      zones: {
+        header: {
+          title: 'Rich Cells — Two Columns',
+          subtitle: 'modeConfig.table = { type: "rich-cells", columns: 2 }',
+          icon: 'grid',
+        },
+        content: createTableContent(eightUsersData, richFields, {
+          table: { type: 'rich-cells', columns: 2 },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-21-rich-cells-3col-no-header',
+    title: 'Progressive 21 — Rich Cells: 3 columns, no header',
+    description:
+      'Combines columns = 3 with showHeader = false on rich-cells. The column label row is hidden so the card grid flows without any header row, which suits compact dashboard panels where visual density matters more than explicit column titles.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-21',
+      zones: {
+        header: {
+          title: 'Rich Cells — Three Columns, No Header',
+          subtitle: 'modeConfig.table = { type: "rich-cells", columns: 3, showHeader: false }',
+          icon: 'grid',
+        },
+        content: createTableContent(tenUsersData, richFields, {
+          table: { type: 'rich-cells', columns: 3, showHeader: false },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-22-rich-cells-striped',
+    title: 'Progressive 22 — Rich Cells: striped rows',
+    description:
+      'Sets modeConfig.table.striped = true on rich-cells. Alternating row backgrounds are applied the same way they are in traditional tables, while content remains split into rich cell columns.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-22',
+      zones: {
+        header: {
+          title: 'Rich Cells — Striped Rows',
+          subtitle: 'modeConfig.table = { type: "rich-cells", columns: 2, striped: true }',
+          icon: 'grid',
+        },
+        content: createTableContent(tenUsersData, richFields, {
+          table: { type: 'rich-cells', columns: 2, striped: true },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-23-rich-cells-hover-off',
+    title: 'Progressive 23 — Rich Cells: hover disabled',
+    description:
+      'Sets modeConfig.table.hover = false on rich-cells. This disables row highlight-on-hover while preserving the striped row treatment.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-23',
+      zones: {
+        header: {
+          title: 'Rich Cells — No Hover Highlight',
+          subtitle: 'modeConfig.table = { type: "rich-cells", columns: 2, striped: true, hover: false }',
+          icon: 'grid',
+        },
+        content: createTableContent(tenUsersData, richFields, {
+          table: { type: 'rich-cells', columns: 2, striped: true, hover: false },
+        }),
+      },
+    },
+  },
 ];
 
 export default progressiveExamples;
