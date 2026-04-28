@@ -5,6 +5,7 @@ import type {
   Entity,
   FieldConfig,
   ItemConfig,
+  TableModeConfig,
   WidgemoConfig,
 } from '@widgemo/widgemo-core';
 import { teaserSampleData } from './sampleData';
@@ -23,7 +24,7 @@ const tenUsersData = teaserSampleData.slice(0, 10) as Entity[];
 const twentyUsersData = teaserSampleData.slice(0, 20) as Entity[];
 
 const autoItemLayout = { type: 'auto' as const };
-const traditionalTableLayout = { table: { type: 'traditional' as const } };
+const traditionalTableConfig = { type: 'traditional' as const };
 const statusColorMap = {
   active: '#198754',
   pending: '#ffc107',
@@ -127,16 +128,16 @@ const createItem = (fields: FieldConfig[], overrides: Partial<ItemConfig<Entity>
 const createTableContent = (
   data: Entity[],
   fields: FieldConfig[],
-  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item'> & {
-    layout?: ContentConfig<Entity>['layout'];
+  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item' | 'modeConfig'> & {
+    table?: TableModeConfig;
     item?: Partial<ItemConfig<Entity>>;
   } = {},
 ): ContentConfig<Entity> => {
-  const { layout, item, ...rest } = overrides;
+  const { table, item, ...rest } = overrides;
   void data;
   return {
     mode: 'table',
-    layout: layout ?? {},
+    ...(table ? { modeConfig: { table } } : {}),
     item: createItem(fields, item),
     ...rest,
   };
@@ -192,7 +193,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-1-zero-config',
     title: 'Progressive 1 — Zero Config',
     description:
-      'This is the smallest configuration that is fully type-safe against the current WidgemoConfig contract: table mode plus the required content.data, content.layout, and item.fields/layout scaffolding. The fields mirror what runtime auto-discovery would surface.',
+      'This is the smallest configuration that is fully type-safe against the current WidgemoConfig contract: table mode plus item.fields/layout scaffolding. The fields mirror what runtime auto-discovery would surface.',
     data: eightUsersData,
     config: {
       id: 'progressive-1',
@@ -224,7 +225,7 @@ export const progressiveExamples: ProgressiveExample[] = [
       id: 'progressive-3',
       zones: {
         content: createTableContent(tenUsersData, sortableFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
         }),
       },
     },
@@ -310,7 +311,7 @@ export const progressiveExamples: ProgressiveExample[] = [
       id: 'progressive-5',
       zones: {
         content: createTableContent(tenUsersData, badgeCurrencyFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
         }),
       },
     },
@@ -325,7 +326,7 @@ export const progressiveExamples: ProgressiveExample[] = [
       id: 'progressive-6',
       zones: {
         content: createTableContent(eightUsersData, richFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
         }),
       },
     },
@@ -349,7 +350,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             ratingField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             groupings: [
               {
                 fieldKey: 'department',
@@ -376,7 +377,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           icon: 'users',
         },
         content: createTableContent(tenUsersData, badgeCurrencyFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
         }),
       },
     },
@@ -400,7 +401,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
         },
         content: createTableContent(tenUsersData, badgeCurrencyFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
         }),
       },
     },
@@ -430,7 +431,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             statusField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             itemActions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
@@ -467,7 +468,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             statusField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             itemActions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
@@ -504,7 +505,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             statusField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             interaction: {
               onRowClick: (item) =>
                 fireDemoAction({
@@ -537,7 +538,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           icon: 'users',
         },
         content: createTableContent(twentyUsersData, badgeCurrencyFields, {
-          layout: traditionalTableLayout,
+          table: traditionalTableConfig,
           filtering: [{ fieldKey: 'status', operator: 'eq', value: 'active' }],
           sorting: [{ fieldKey: 'name', direction: 'asc' }],
         }),
@@ -576,7 +577,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             ratingField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             pagination: { pageSize: 5 },
             search: {
               enabled: true,
@@ -632,7 +633,7 @@ export const progressiveExamples: ProgressiveExample[] = [
             ratingField,
           ],
           {
-            layout: traditionalTableLayout,
+            table: traditionalTableConfig,
             pagination: { pageSize: 5 },
             search: {
               enabled: true,
