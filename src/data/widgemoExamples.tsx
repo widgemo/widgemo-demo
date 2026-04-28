@@ -215,7 +215,6 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          data: twoUsersData,
           layout: {},
           item: {
             fields: [
@@ -2776,7 +2775,7 @@ const widgemoExamples: Array<{
           showHeader: true,
           showDocsLink: 'https://docs.widgemo.com',
           showBranding: true,
-          excludeFields: ['zones.content.data'],
+          excludeFields: [],
         },
       },
       zones: {
