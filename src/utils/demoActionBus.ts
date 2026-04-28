@@ -7,20 +7,20 @@
  *          SimplifiedTest calls `setDemoActionListener(fn)` on mount.
  */
 
-export type DemoActionSource = 'onClick' | 'handler';
+export type DemoActionSource = 'onAction' | 'onClick';
 
 export interface DemoActionPayload {
   /** The action id from ActionConfig */
   actionId: string;
   /** The action label from ActionConfig */
   actionLabel: string;
-  /** Whether this came from onClick (entity only) or handler (full ActionContext) */
+  /** Which callback shape triggered this event in the demo */
   source: DemoActionSource;
   /** The entity the action was triggered on (present for item-level actions) */
   entity?: Record<string, unknown>;
-  /** The full dataset in scope at the time of the action (present when using handler) */
+  /** The full dataset in scope at the time of the action (zone actions typically use this) */
   data?: Record<string, unknown>[];
-  /** The zone name where the action was triggered (present when using handler) */
+  /** The zone name where the action was triggered */
   zone?: string;
 }
 
