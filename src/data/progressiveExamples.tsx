@@ -52,11 +52,11 @@ const namedFields: FieldConfig[] = [
 
 const sortableFields: FieldConfig[] = [
   { key: 'name', label: 'Name', type: 'text', sortable: true, width: '160px' },
-  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'email', label: 'Email', type: 'email', sortable: false },
   { key: 'role', label: 'Role', type: 'text' },
   { key: 'department', label: 'Department', type: 'text', sortable: true, width: '140px' },
   { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true, width: '130px' },
-  { key: 'status', label: 'Status', type: 'text' },
+  { key: 'status', label: 'Status', type: 'text', sortable: false },
 ];
 
 const statusField: FieldConfig = {
@@ -248,6 +248,54 @@ export const progressiveExamples: ProgressiveExample[] = [
             placeholder: 'Search users…',
             fields: ['name', 'email', 'department'],
           },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-4a-table-padding-zero',
+    title: 'Progressive 4A — Table Horizontal Padding: 0',
+    description:
+      'Overrides table content horizontal padding to 0. Search and pagination stay inside the same content container, so they align with the zero-padding table edges.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4a',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+          style: { paddingLeft: '0', paddingRight: '0' },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-4b-table-padding-wide',
+    title: 'Progressive 4B — Table Horizontal Padding: 1.5rem',
+    description:
+      'Overrides table content horizontal padding to 1.5rem. Search and pagination inherit the same container spacing, so all table controls align consistently.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4b',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+          style: { paddingLeft: '1.5rem', paddingRight: '1.5rem' },
         }),
       },
     },
