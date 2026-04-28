@@ -678,7 +678,7 @@ export const progressiveExamples: Array<{
             { fieldKey: 'status', operator: 'eq', value: 'active' },
           ],
           sorting: [
-            { fieldKey: 'name', direction: 'asc' as const },
+            { fieldKey: 'name', direction: 'asc' },
           ],
           item: {
             fields: [
