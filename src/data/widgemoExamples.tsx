@@ -404,7 +404,7 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: { table: { type: 'traditional' } },
+          modeConfig: { table: { type: 'traditional' } },
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
@@ -440,7 +440,7 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: { table: { type: 'traditional' } },
+          modeConfig: { table: { type: 'traditional' } },
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
@@ -578,7 +578,7 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: { table: { type: 'traditional' } },
+          modeConfig: { table: { type: 'traditional' } },
           item: {
             fields: [
               { key: 'name', label: 'Name' },
@@ -1038,7 +1038,7 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: { table: { type: 'traditional' } },
+          modeConfig: { table: { type: 'traditional' } },
           item: {
             fields: [
               { key: 'name', label: 'Name' },
@@ -2570,7 +2570,7 @@ const widgemoExamples: Array<{
         header: { title: 'Grouped Rich-Cells Table', subtitle: 'groupings · type="rich-cells" · columns=2' },
         content: {
           mode: 'table',
-          layout: { table: { type: 'rich-cells', columns: 2 } },
+          modeConfig: { table: { type: 'rich-cells', columns: 2 } },
           groupings: [
             { fieldKey: 'department' },
           ],
