@@ -1,290 +1,323 @@
+import type {
+  ActionConfig,
+  ActionContext,
+  ContentConfig,
+  Entity,
+  FieldConfig,
+  ItemConfig,
+  WidgemoConfig,
+} from '@widgemo/widgemo-core';
 import { teaserSampleData } from './sampleData';
-import type { Entity, ActionContext, WidgemoConfig } from '@widgemo/widgemo-core';
 import { fireDemoAction } from '../utils/demoActionBus';
 
-// Data slices used across progressive examples
-const eightUsersData = teaserSampleData.slice(0, 8) as Entity[];
-const tenUsersData = teaserSampleData.slice(0, 10) as Entity[];
-const twentyUsersData = teaserSampleData.slice(0, 20) as Entity[];
-
-// ─── Progressive Examples ─────────────────────────────────────────────────────
-// Each example builds on the previous one, introducing one or two new features
-// so the progression is educational: start from zero config and grow to full.
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const progressiveExamples: Array<{
+type ProgressiveExample = {
   id: string;
   title: string;
   description: string;
   data: Entity[];
-  config: WidgemoConfig;
-}> = [
-  // ── Phase 1 — Table Basics ────────────────────────────────────────────────
+  config: WidgemoConfig<Entity>;
+};
 
+const eightUsersData = teaserSampleData.slice(0, 8) as Entity[];
+const tenUsersData = teaserSampleData.slice(0, 10) as Entity[];
+const twentyUsersData = teaserSampleData.slice(0, 20) as Entity[];
+
+const autoItemLayout = { type: 'auto' as const };
+const traditionalTableLayout = { table: { type: 'traditional' as const } };
+const statusColorMap = {
+  active: '#198754',
+  pending: '#ffc107',
+  inactive: '#dc3545',
+};
+
+const toTitle = (value: string): string =>
+  value
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (char) => char.toUpperCase())
+    .trim();
+
+const autoDiscoveredFields: FieldConfig[] = Object.keys(teaserSampleData[0] ?? {}).map((key) => ({
+  key,
+  label: toTitle(key),
+}));
+
+const namedFields: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text' },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'role', label: 'Role', type: 'text' },
+  { key: 'department', label: 'Department', type: 'text' },
+  { key: 'lastLogin', label: 'Last Login', type: 'date' },
+  { key: 'status', label: 'Status', type: 'text' },
+];
+
+const sortableFields: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text', sortable: true, width: '160px' },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'role', label: 'Role', type: 'text' },
+  { key: 'department', label: 'Department', type: 'text', sortable: true, width: '140px' },
+  { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true, width: '130px' },
+  { key: 'status', label: 'Status', type: 'text' },
+];
+
+const statusField: FieldConfig = {
+  key: 'status',
+  label: 'Status',
+  type: 'text',
+  renderAs: 'badge',
+  renderAsOptions: {
+    colorMap: statusColorMap,
+  },
+};
+
+const currencyField: FieldConfig = {
+  key: 'amount',
+  label: 'Salary',
+  type: 'number',
+  renderAs: 'currency',
+  renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
+};
+
+const ratingField: FieldConfig = {
+  key: 'rating',
+  label: 'Rating',
+  type: 'number',
+  renderAs: 'rating',
+  renderAsOptions: { max: 5, color: '#f59e0b' },
+};
+
+const progressField: FieldConfig = {
+  key: 'progress',
+  label: 'Progress',
+  type: 'number',
+  renderAs: 'progress',
+  renderAsOptions: { color: '#4caf50', showPercentage: true },
+};
+
+const avatarField: FieldConfig = {
+  key: 'src',
+  label: 'Avatar',
+  type: 'image',
+  imageOptions: { circular: true, width: 36, height: 36 },
+};
+
+const badgeCurrencyFields: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text', sortable: true },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'role', label: 'Role', type: 'text' },
+  { key: 'department', label: 'Department', type: 'text', sortable: true },
+  statusField,
+  currencyField,
+];
+
+const richFields: FieldConfig[] = [
+  avatarField,
+  { key: 'name', label: 'Name', type: 'text', sortable: true },
+  { key: 'department', label: 'Department', type: 'text' },
+  statusField,
+  progressField,
+  ratingField,
+];
+
+const createItem = (fields: FieldConfig[], overrides: Partial<ItemConfig<Entity>> = {}): ItemConfig<Entity> => ({
+  fields,
+  layout: autoItemLayout,
+  ...overrides,
+});
+
+const createTableContent = (
+  data: Entity[],
+  fields: FieldConfig[],
+  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item'> & {
+    layout?: ContentConfig<Entity>['layout'];
+    item?: Partial<ItemConfig<Entity>>;
+  } = {},
+): ContentConfig<Entity> => {
+  const { layout, item, ...rest } = overrides;
+  return {
+    mode: 'table',
+    data,
+    layout: layout ?? {},
+    item: createItem(fields, item),
+    ...rest,
+  };
+};
+
+const zoneAction = (
+  id: string,
+  label: string,
+  icon: string,
+  placement: ActionConfig<Entity>['placement'],
+  variant?: string,
+): ActionConfig<Entity> => ({
+  id,
+  label,
+  icon,
+  placement,
+  ...(variant ? { variant } : {}),
+  onAction: (ctx: ActionContext) =>
+    fireDemoAction({
+      actionId: id,
+      actionLabel: label,
+      source: 'onAction',
+      data: ctx.data as Record<string, unknown>[],
+      zone: ctx.zone,
+    }),
+});
+
+const itemAction = (
+  id: string,
+  label: string,
+  icon: string,
+  placement: ActionConfig<Entity>['placement'],
+  variant?: string,
+  visibleIf?: (entity: Entity) => boolean,
+): ActionConfig<Entity> => ({
+  id,
+  label,
+  icon,
+  placement,
+  ...(variant ? { variant } : {}),
+  ...(visibleIf ? { visibleIf } : {}),
+  onAction: (ctx: ActionContext) =>
+    fireDemoAction({
+      actionId: id,
+      actionLabel: label,
+      source: 'onAction',
+      entity: ctx.entity as Record<string, unknown>,
+    }),
+});
+
+export const progressiveExamples: ProgressiveExample[] = [
   {
     id: 'progressive-1-zero-config',
     title: 'Progressive 1 — Zero Config',
-    description: 'Raw Widgemo with the absolute minimum: just { id, zones.content.mode }. No fields, no header, no footer, no actions. Widgemo auto-discovers all entity keys and renders them as plain text columns.',
+    description:
+      'This is the smallest configuration that is fully type-safe against the current WidgemoConfig contract: table mode plus the required content.data, content.layout, and item.fields/layout scaffolding. The fields mirror what runtime auto-discovery would surface.',
     data: eightUsersData,
     config: {
       id: 'progressive-1',
       zones: {
-        content: {
-          mode: 'table',
-        },
+        content: createTableContent(eightUsersData, autoDiscoveredFields),
       },
     },
   },
-
   {
     id: 'progressive-2-named-fields',
     title: 'Progressive 2 — Named Fields',
-    description: 'Adds zones.content.item.fields to define columns explicitly. Each field has a key (entity property), type (text/email/date/number), and label shown as the column header. Without this, Widgemo auto-discovers keys in insertion order.',
+    description:
+      'Adds explicit item.fields with key, label, and type so the columns are intentional instead of auto-shaped. This is the first step from generic rendering to a curated schema.',
     data: eightUsersData,
     config: {
       id: 'progressive-2',
       zones: {
-        content: {
-          mode: 'table',
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text' },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text' },
-              { key: 'lastLogin', label: 'Last Login', type: 'date' },
-              { key: 'status', label: 'Status', type: 'text' },
-            ],
-          },
-        },
+        content: createTableContent(eightUsersData, namedFields),
       },
     },
   },
-
   {
     id: 'progressive-3-sortable',
     title: 'Progressive 3 — Sortable Columns + Table Layout',
-    description: 'Adds sortable: true on name, department, and lastLogin. Adds zones.content.layout.table.type: "traditional" for a classic bordered table. Width hints applied to constrain certain columns.',
+    description:
+      'Adds sortable columns and a traditional table layout, plus width hints on selected fields. This is where the table starts behaving like a data grid rather than a plain listing.',
     data: tenUsersData,
     config: {
       id: 'progressive-3',
       zones: {
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true, width: '160px' },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true, width: '140px' },
-              { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true, width: '130px' },
-              { key: 'status', label: 'Status', type: 'text' },
-            ],
-          },
-        },
+        content: createTableContent(tenUsersData, sortableFields, {
+          layout: traditionalTableLayout,
+        }),
       },
     },
   },
-
   {
     id: 'progressive-4-pagination-search',
     title: 'Progressive 4 — Pagination + Search',
-    description: 'Adds zones.content.pagination (pageSize: 5) to split 20 rows into pages, and zones.content.search with enabled, placeholder, and fields restriction to name/email/department. Page resets to 1 on each new query.',
+    description:
+      'Adds search and pagination. Search is restricted to name, email, and department, while pagination limits the table to 5 rows per page.',
     data: twentyUsersData,
     config: {
       id: 'progressive-4',
       zones: {
-        content: {
-          mode: 'table',
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
           pagination: { pageSize: 5 },
           search: {
             enabled: true,
             placeholder: 'Search users…',
             fields: ['name', 'email', 'department'],
           },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
-              { key: 'status', label: 'Status', type: 'text' },
-            ],
-          },
-        },
+        }),
       },
     },
   },
-
-  // ── Phase 2 — Rich Field Display ─────────────────────────────────────────
-
   {
     id: 'progressive-5-badges-currency',
     title: 'Progressive 5 — Badges + Currency',
-    description: 'Adds renderAs: "badge" on status with a colorMap: { active: "success", pending: "warning", inactive: "danger" }, and renderAs: "currency" on amount (salary) with renderAsOptions: { currency: "USD", locale: "en-US", compact: false }.',
+    description:
+      'Introduces rich field rendering with a badge-based status field and a currency-formatted salary field. The underlying data stays the same; only presentation changes.',
     data: tenUsersData,
     config: {
       id: 'progressive-5',
       zones: {
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text' },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-            ],
-          },
-        },
+        content: createTableContent(tenUsersData, badgeCurrencyFields, {
+          layout: traditionalTableLayout,
+        }),
       },
     },
   },
-
   {
     id: 'progressive-6-progress-rating-avatar',
     title: 'Progressive 6 — Progress Bar + Star Rating + Avatar',
-    description: 'Adds renderAs: "progress" on progress with renderAsOptions: { color: "#4caf50", showPercentage: true }; renderAs: "rating" on rating with renderAsOptions: { max: 5, color: "#f59e0b" }; and type: "image" with imageOptions: { shape: "circle", width: 36, height: 36 } on src.',
+    description:
+      'Adds richer per-field visualization: circular avatar images, progress bars, and rating stars alongside the existing status badge.',
     data: eightUsersData,
     config: {
       id: 'progressive-6',
       zones: {
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              {
-                key: 'src',
-                label: 'Avatar',
-                type: 'image',
-                imageOptions: { shape: 'circle', width: 36, height: 36 },
-              },
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'department', label: 'Department', type: 'text' },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'progress',
-                label: 'Progress',
-                type: 'number',
-                renderAs: 'progress',
-                renderAsOptions: { color: '#4caf50', showPercentage: true },
-              },
-              {
-                key: 'rating',
-                label: 'Rating',
-                type: 'number',
-                renderAs: 'rating',
-                renderAsOptions: { max: 5, color: '#f59e0b' },
-              },
-            ],
-          },
-        },
+        content: createTableContent(eightUsersData, richFields, {
+          layout: traditionalTableLayout,
+        }),
       },
     },
   },
-
   {
     id: 'progressive-7-grouping',
-    title: 'Progressive 7 — Grouping + Aggregates',
-    description: 'Adds zones.content.groupings with fieldKey: "department" and initiallyCollapsed: false so groups expand by default. Aggregates count name, avg rating, and sum amount per group. Sortable columns and status badges from previous examples are retained.',
+    title: 'Progressive 7 — Grouping',
+    description:
+      'Adds table grouping by department. Groups are expanded by default so the same table becomes easier to scan in clustered sections.',
     data: twentyUsersData,
     config: {
       id: 'progressive-7',
       zones: {
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          groupings: [
-            {
-              fieldKey: 'department',
-              initiallyCollapsed: false,
-              aggregates: [
-                { type: 'count', fieldKey: 'name', label: 'Members' },
-                { type: 'avg', fieldKey: 'rating', label: 'Avg Rating' },
-                { type: 'sum', fieldKey: 'amount', label: 'Total Salary' },
-              ],
-            },
+        content: createTableContent(
+          twentyUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'role', label: 'Role', type: 'text' },
+            statusField,
+            currencyField,
+            ratingField,
           ],
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'role', label: 'Role', type: 'text' },
+          {
+            layout: traditionalTableLayout,
+            groupings: [
               {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-              {
-                key: 'rating',
-                label: 'Rating',
-                type: 'number',
-                renderAs: 'rating',
-                renderAsOptions: { max: 5, color: '#f59e0b' },
+                fieldKey: 'department',
+                initiallyCollapsed: false,
               },
             ],
           },
-        },
+        ),
       },
     },
   },
-
-  // ── Phase 3 — Zones & Actions ─────────────────────────────────────────────
-
   {
     id: 'progressive-8-header-zone',
     title: 'Progressive 8 — Header Zone',
-    description: 'Adds zones.header with title: "Team Directory", subtitle: "All active employees", and icon: "users". The header zone provides context and branding. Rich fields (badges + currency) from Example 5 are retained.',
+    description:
+      'Adds a header zone with title, subtitle, and icon so the widget gains framing and context beyond the raw content area.',
     data: tenUsersData,
     config: {
       id: 'progressive-8',
@@ -294,46 +327,17 @@ export const progressiveExamples: Array<{
           subtitle: 'All active employees',
           icon: 'users',
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-            ],
-          },
-        },
+        content: createTableContent(tenUsersData, badgeCurrencyFields, {
+          layout: traditionalTableLayout,
+        }),
       },
     },
   },
-
   {
     id: 'progressive-9-zone-actions',
     title: 'Progressive 9 — Zone Actions',
-    description: 'Adds zones.header.actions with an "Add User" pinned primary action and an "Export" pinned secondary action. Each action uses onAction: (ctx: ActionContext) => fireDemoAction(...) — no onClick, no handler.',
+    description:
+      'Adds header zone actions using onAction(ActionContext). These actions operate on the whole dataset in scope rather than a single row.',
     data: tenUsersData,
     config: {
       id: 'progressive-9',
@@ -343,78 +347,21 @@ export const progressiveExamples: Array<{
           subtitle: 'All active employees',
           icon: 'users',
           actions: [
-            {
-              id: 'add-user',
-              label: 'Add User',
-              icon: 'add',
-              placement: 'pinned',
-              variant: 'primary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'add-user',
-                  actionLabel: 'Add User',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-            {
-              id: 'export',
-              label: 'Export',
-              icon: 'download',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'export',
-                  actionLabel: 'Export',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
+            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary'),
+            zoneAction('export', 'Export', 'download', 'pinned', 'secondary'),
           ],
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-            ],
-          },
-        },
+        content: createTableContent(tenUsersData, badgeCurrencyFields, {
+          layout: traditionalTableLayout,
+        }),
       },
     },
   },
-
   {
     id: 'progressive-10-item-actions',
     title: 'Progressive 10 — Per-Item Actions',
-    description: 'Adds zones.content.itemActions with three placements: "pinned" (Edit — always visible), "onHover" (View Profile — appears on hover), and "menu" (Archive — tucked in overflow menu). Each uses onAction with fireDemoAction.',
+    description:
+      'Adds per-row actions with three placements: pinned, onHover, and menu. The delete action is conditionally visible only for inactive users.',
     data: tenUsersData,
     config: {
       id: 'progressive-10',
@@ -423,99 +370,35 @@ export const progressiveExamples: Array<{
           title: 'Team Directory',
           subtitle: 'All active employees',
           icon: 'users',
-          actions: [
-            {
-              id: 'add-user',
-              label: 'Add User',
-              icon: 'add',
-              placement: 'pinned',
-              variant: 'primary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'add-user',
-                  actionLabel: 'Add User',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-          ],
+          actions: [zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary')],
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text' },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
+        content: createTableContent(
+          tenUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            { key: 'department', label: 'Department', type: 'text' },
+            statusField,
+          ],
+          {
+            layout: traditionalTableLayout,
+            itemActions: [
+              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
+              itemAction('view-profile', 'View Profile', 'view', 'onHover'),
+              itemAction('archive-user', 'Archive', 'archive', 'menu'),
+              itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger', (entity) => entity.status === 'inactive'),
             ],
           },
-          itemActions: [
-            {
-              id: 'edit-user',
-              label: 'Edit',
-              icon: 'edit',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'edit-user',
-                  actionLabel: 'Edit',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'view-profile',
-              label: 'View Profile',
-              icon: 'view',
-              placement: 'onHover',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'view-profile',
-                  actionLabel: 'View Profile',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'archive-user',
-              label: 'Archive',
-              icon: 'archive',
-              placement: 'menu',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'archive-user',
-                  actionLabel: 'Archive',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-          ],
-        },
+        ),
       },
     },
   },
-
   {
     id: 'progressive-11-footer-zone',
     title: 'Progressive 11 — Footer Zone',
-    description: 'Adds zones.footer with a subtitle showing record count context. The footer zone is a lightweight way to add metadata or disclaimers below the content area without cluttering the header.',
+    description:
+      'Adds a footer zone for lightweight metadata and keeps the item actions introduced in the previous step.',
     data: tenUsersData,
     config: {
       id: 'progressive-11',
@@ -524,90 +407,36 @@ export const progressiveExamples: Array<{
           title: 'Team Directory',
           subtitle: 'All active employees',
           icon: 'users',
-          actions: [
-            {
-              id: 'add-user',
-              label: 'Add User',
-              icon: 'add',
-              placement: 'pinned',
-              variant: 'primary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'add-user',
-                  actionLabel: 'Add User',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-          ],
+          actions: [zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary')],
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text' },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
+        content: createTableContent(
+          tenUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            { key: 'department', label: 'Department', type: 'text' },
+            statusField,
+          ],
+          {
+            layout: traditionalTableLayout,
+            itemActions: [
+              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
+              itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
             ],
           },
-          itemActions: [
-            {
-              id: 'edit-user',
-              label: 'Edit',
-              icon: 'edit',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'edit-user',
-                  actionLabel: 'Edit',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'delete-user',
-              label: 'Delete',
-              icon: 'delete',
-              placement: 'menu',
-              variant: 'danger',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'delete-user',
-                  actionLabel: 'Delete',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-          ],
-        },
+        ),
         footer: {
           subtitle: '10 employees · Last synced just now',
         },
       },
     },
   },
-
   {
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
-    description: 'Adds zones.content.interaction.onRowClick to fire fireDemoAction when the user clicks any row. This is distinct from per-item actions — it covers the full row area. Compatible with sortable columns and badge rendering.',
+    description:
+      'Adds row-level interaction through content.interaction.onRowClick. This is separate from item actions because the whole row becomes clickable.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -617,51 +446,39 @@ export const progressiveExamples: Array<{
           subtitle: 'Click any row to see the entity payload',
           icon: 'users',
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-            ],
+        content: createTableContent(
+          tenUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            { key: 'department', label: 'Department', type: 'text', sortable: true },
+            statusField,
+          ],
+          {
+            layout: traditionalTableLayout,
+            interaction: {
+              onRowClick: (item) =>
+                fireDemoAction({
+                  actionId: 'row-click',
+                  actionLabel: 'Row Click',
+                  source: 'onClick',
+                  entity: item as Record<string, unknown>,
+                }),
+            },
           },
-          interaction: {
-            onRowClick: (item: unknown) =>
-              fireDemoAction({
-                actionId: 'row-click',
-                actionLabel: 'Row Click',
-                source: 'onClick',
-                entity: item as Record<string, unknown>,
-              }),
-          },
-        },
+        ),
         footer: {
-          subtitle: 'Click any row · email column uses type="email" (plain text, participates in row-click)',
+          subtitle: 'Click any row to inspect the selected entity',
         },
       },
     },
   },
-
   {
     id: 'progressive-13-sorting-filtering',
     title: 'Progressive 13 — Sorting + Filtering',
-    description: 'Adds zones.content.sorting (initial sort: name asc) and zones.content.filtering (static filter: status = "active" only). Filtering runs before pagination; sorting runs within the filtered result set.',
+    description:
+      'Adds initial sorting and static filtering so the widget opens already focused on active users ordered by name.',
     data: twentyUsersData,
     config: {
       id: 'progressive-13',
@@ -671,55 +488,22 @@ export const progressiveExamples: Array<{
           subtitle: 'Static filter: status=active · sorted by name asc',
           icon: 'users',
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          filtering: [
-            { fieldKey: 'status', operator: 'eq', value: 'active' },
-          ],
-          sorting: [
-            { fieldKey: 'name', direction: 'asc' },
-          ],
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-            ],
-          },
-        },
+        content: createTableContent(twentyUsersData, badgeCurrencyFields, {
+          layout: traditionalTableLayout,
+          filtering: [{ fieldKey: 'status', operator: 'eq', value: 'active' }],
+          sorting: [{ fieldKey: 'name', direction: 'asc' }],
+        }),
         footer: {
-          subtitle: 'content.filtering pre-reduces the dataset · content.sorting sets the initial column order',
+          subtitle: 'Filtering runs before pagination and sorting shapes the initial order',
         },
       },
     },
   },
-
   {
     id: 'progressive-14-combined',
     title: 'Progressive 14 — Combined: Pagination + Search + Grouping + Actions',
-    description: 'Combines pagination (pageSize: 5), search (name/email/department), groupings by department, rich field rendering (badges + currency + rating), header zone with actions, and item actions — demonstrating feature composability.',
+    description:
+      'Combines search, pagination, grouping, header actions, item actions, currency, badges, and rating into a single composable table example.',
     data: twentyUsersData,
     config: {
       id: 'progressive-14',
@@ -729,138 +513,47 @@ export const progressiveExamples: Array<{
           subtitle: 'Grouped by department · search · 5 per page',
           icon: 'users',
           actions: [
-            {
-              id: 'add-user',
-              label: 'Add User',
-              icon: 'add',
-              placement: 'pinned',
-              variant: 'primary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'add-user',
-                  actionLabel: 'Add User',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-            {
-              id: 'export-csv',
-              label: 'Export CSV',
-              icon: 'download',
-              placement: 'menu',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'export-csv',
-                  actionLabel: 'Export CSV',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
+            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary'),
+            zoneAction('export-csv', 'Export CSV', 'download', 'menu'),
           ],
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          pagination: { pageSize: 5 },
-          search: {
-            enabled: true,
-            placeholder: 'Search users…',
-            fields: ['name', 'email', 'department'],
-          },
-          groupings: [
-            { fieldKey: 'department', initiallyCollapsed: false },
+        content: createTableContent(
+          twentyUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            statusField,
+            currencyField,
+            ratingField,
           ],
-          item: {
-            fields: [
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-              {
-                key: 'rating',
-                label: 'Rating',
-                type: 'number',
-                renderAs: 'rating',
-                renderAsOptions: { max: 5, color: '#f59e0b' },
-              },
+          {
+            layout: traditionalTableLayout,
+            pagination: { pageSize: 5 },
+            search: {
+              enabled: true,
+              placeholder: 'Search users…',
+              fields: ['name', 'email', 'department'],
+            },
+            groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
+            itemActions: [
+              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
+              itemAction('view-profile', 'View Profile', 'view', 'onHover'),
+              itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
             ],
           },
-          itemActions: [
-            {
-              id: 'edit-user',
-              label: 'Edit',
-              icon: 'edit',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'edit-user',
-                  actionLabel: 'Edit',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'view-profile',
-              label: 'View Profile',
-              icon: 'view',
-              placement: 'onHover',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'view-profile',
-                  actionLabel: 'View Profile',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'delete-user',
-              label: 'Delete',
-              icon: 'delete',
-              placement: 'menu',
-              variant: 'danger',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'delete-user',
-                  actionLabel: 'Delete',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-          ],
-        },
+        ),
         footer: {
-          subtitle: '20 employees total · grouped by department · search + pagination composable',
+          subtitle: '20 employees total · grouped by department · search + pagination are composable',
         },
       },
     },
   },
-
   {
     id: 'progressive-15-full-showcase',
     title: 'Progressive 15 — Full Feature Showcase',
-    description: 'Everything combined: header zone with Add/Export actions, footer zone, avatar (type: "image"), badges (colorMap), currency, progress bar, star rating, grouping by department, pagination (5 per page), search, sortable columns, and item actions (Edit pinned, View Profile on hover, Archive/Delete in menu).',
+    description:
+      'Combines header actions, footer metadata, avatars, badges, currency, progress, rating, grouping, pagination, search, sortable fields, and row actions into the most feature-rich typed example in the progression.',
     data: twentyUsersData,
     config: {
       id: 'progressive-15',
@@ -871,170 +564,42 @@ export const progressiveExamples: Array<{
           subtitle: 'Full-feature progressive example — all phases combined',
           icon: 'users',
           actions: [
-            {
-              id: 'add-user',
-              label: 'Add User',
-              icon: 'add',
-              placement: 'pinned',
-              variant: 'primary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'add-user',
-                  actionLabel: 'Add User',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-            {
-              id: 'export-csv',
-              label: 'Export CSV',
-              icon: 'download',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'export-csv',
-                  actionLabel: 'Export CSV',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
-            {
-              id: 'settings',
-              label: 'Settings',
-              icon: 'settings',
-              placement: 'menu',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'settings',
-                  actionLabel: 'Settings',
-                  source: 'onAction',
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
+            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary'),
+            zoneAction('export-csv', 'Export CSV', 'download', 'pinned', 'secondary'),
+            zoneAction('settings', 'Settings', 'settings', 'menu'),
           ],
         },
-        content: {
-          mode: 'table',
-          layout: { table: { type: 'traditional' } },
-          pagination: { pageSize: 5 },
-          search: {
-            enabled: true,
-            placeholder: 'Search users…',
-            fields: ['name', 'email', 'department'],
-          },
-          groupings: [
-            { fieldKey: 'department', initiallyCollapsed: false },
+        content: createTableContent(
+          twentyUsersData,
+          [
+            avatarField,
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            { key: 'department', label: 'Department', type: 'text', sortable: true },
+            { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
+            statusField,
+            currencyField,
+            progressField,
+            ratingField,
           ],
-          item: {
-            fields: [
-              {
-                key: 'src',
-                label: 'Avatar',
-                type: 'image',
-                imageOptions: { shape: 'circle', width: 36, height: 36 },
-              },
-              { key: 'name', label: 'Name', type: 'text', sortable: true },
-              { key: 'email', label: 'Email', type: 'email' },
-              { key: 'role', label: 'Role', type: 'text' },
-              { key: 'department', label: 'Department', type: 'text', sortable: true },
-              { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true },
-              {
-                key: 'status',
-                label: 'Status',
-                type: 'text',
-                renderAs: 'badge',
-                renderAsOptions: {
-                  colorMap: {
-                    active: 'success',
-                    pending: 'warning',
-                    inactive: 'danger',
-                  },
-                },
-              },
-              {
-                key: 'amount',
-                label: 'Salary',
-                type: 'number',
-                renderAs: 'currency',
-                renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-              },
-              {
-                key: 'progress',
-                label: 'Progress',
-                type: 'number',
-                renderAs: 'progress',
-                renderAsOptions: { color: '#4caf50', showPercentage: true },
-              },
-              {
-                key: 'rating',
-                label: 'Rating',
-                type: 'number',
-                renderAs: 'rating',
-                renderAsOptions: { max: 5, color: '#f59e0b' },
-              },
+          {
+            layout: traditionalTableLayout,
+            pagination: { pageSize: 5 },
+            search: {
+              enabled: true,
+              placeholder: 'Search users…',
+              fields: ['name', 'email', 'department'],
+            },
+            groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
+            itemActions: [
+              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
+              itemAction('view-profile', 'View Profile', 'view', 'onHover'),
+              itemAction('archive-user', 'Archive', 'archive', 'menu'),
+              itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
             ],
           },
-          itemActions: [
-            {
-              id: 'edit-user',
-              label: 'Edit',
-              icon: 'edit',
-              placement: 'pinned',
-              variant: 'secondary',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'edit-user',
-                  actionLabel: 'Edit',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'view-profile',
-              label: 'View Profile',
-              icon: 'view',
-              placement: 'onHover',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'view-profile',
-                  actionLabel: 'View Profile',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'archive-user',
-              label: 'Archive',
-              icon: 'archive',
-              placement: 'menu',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'archive-user',
-                  actionLabel: 'Archive',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-            {
-              id: 'delete-user',
-              label: 'Delete',
-              icon: 'delete',
-              placement: 'menu',
-              variant: 'danger',
-              onAction: (ctx: ActionContext) =>
-                fireDemoAction({
-                  actionId: 'delete-user',
-                  actionLabel: 'Delete',
-                  source: 'onAction',
-                  entity: ctx.entity as Record<string, unknown>,
-                }),
-            },
-          ],
-        },
+        ),
         footer: {
           subtitle: 'Progressive Example 15 of 15 · All features enabled',
         },
