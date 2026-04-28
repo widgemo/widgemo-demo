@@ -165,12 +165,6 @@ export const SimplifiedTest: React.FC = () => {
                 },
                 content: {
                   mode: 'table',
-                  data: [
-                    { id: 1, name: 'Task A', progress: 75 },
-                    { id: 2, name: 'Task B', progress: 45 },
-                    { id: 3, name: 'Task C', progress: 90 },
-                    { id: 4, name: 'Task D', progress: 25 }
-                  ],
                   layout: {},
                   item: {
                     fields: [
@@ -222,31 +216,6 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 content: {
                   mode: 'table',
-                  data: [
-                    {
-                      id: 1,
-                      name: 'Simple Object',
-                      jsonData: JSON.stringify({ name: "John", age: 30, active: true, score: 85.5 })
-                    },
-                    {
-                      id: 2,
-                      name: 'Nested Object',
-                      jsonData: JSON.stringify({
-                        user: { id: 123, profile: { theme: "dark", notifications: true } },
-                        settings: { autoSave: false, language: "en" }
-                      })
-                    },
-                    {
-                      id: 3,
-                      name: 'Array Data',
-                      jsonData: JSON.stringify({
-                        items: [
-                          { id: 1, name: "Item A", tags: ["red", "small"] },
-                          { id: 2, name: "Item B", tags: ["blue", "large"] }
-                        ]
-                      })
-                    }
-                  ],
                   layout: {},
                   item: {
                     fields: [

@@ -48,7 +48,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       enabled: true,
       zone: 'auto',
       overlay: {
-        excludeFields: ['zones.content.data', 'zones.content.status', 'zones.content.error']
+        excludeFields: ['zones.content.status', 'zones.content.error']
       }
     };
     return modifiedConfig;

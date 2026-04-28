@@ -133,9 +133,9 @@ const createTableContent = (
   } = {},
 ): ContentConfig<Entity> => {
   const { layout, item, ...rest } = overrides;
+  void data;
   return {
     mode: 'table',
-    data,
     layout: layout ?? {},
     item: createItem(fields, item),
     ...rest,
