@@ -6,6 +6,7 @@ import { AppNavbar, DevBanner } from './components/navigation';
 import { MainPage } from './components/MainPage';
 import { SandboxPage } from './components/SandboxPage';
 import { SimplifiedTest } from './components/SimplifiedTest';
+import { ProgressiveExamplesPage } from './components/ProgressiveExamplesPage';
 import { useTheme } from './hooks/useTheme';
 import { TimelineMode } from './components/custom-modes';
 import { registerProgressBarField, registerJsonField } from './components/custom-fields';
@@ -167,12 +168,16 @@ function AppContent() {
               element={<SimplifiedTest />}
             />
             <Route
+              path="/progressive-examples"
+              element={<ProgressiveExamplesPage />}
+            />
+            <Route
               path="*"
               element={
                 <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
                   <h1>Route Not Found</h1>
                   <p>Current path: {window.location.pathname}</p>
-                  <p>Available routes: /, /sandbox, /simplified-test</p>
+                  <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples</p>
                 </div>
               }
             />

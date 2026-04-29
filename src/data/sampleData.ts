@@ -53,8 +53,7 @@ export const defaultSandboxConfig: WidgemoConfig = {
           variant: 'danger',
           placement: 'menu'
         }
-      ],
-      data: []
+      ]
     },
   }
 };

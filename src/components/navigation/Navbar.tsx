@@ -17,6 +17,7 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
     { id: 'gallery', label: 'Gallery', path: '/' },
     { id: 'sandbox', label: 'Sandbox', path: '/sandbox' },
     { id: 'simplified-test', label: 'Simplified Test', path: '/simplified-test' },
+    { id: 'progressive-examples', label: 'Progressive Examples', path: '/progressive-examples' },
     { id: 'advanced', label: 'Advanced', path: '/' },
     { id: 'resources', label: 'Resources', path: '/' },
   ];
@@ -63,7 +64,11 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   as={Link as any}
                   to={section.path}
-                  active={location.pathname === section.path && (section.id === 'sandbox' ? isSandbox : !isSandbox)}
+                  active={
+                    section.path === '/'
+                      ? location.pathname === '/' && !isSandbox
+                      : location.pathname === section.path
+                  }
                   onClick={() => section.path === '/' && scrollToSection(section.id)}
                   className="mx-2"
                 >
