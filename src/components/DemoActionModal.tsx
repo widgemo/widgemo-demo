@@ -8,13 +8,13 @@ interface DemoActionModalProps {
 }
 
 /**
- * DemoActionModal — shows the ActionContext received by an action callback.
+ * DemoActionModal — shows the InteractionContext received by an action callback.
  *
- * Purpose: teach users what data is available inside onAction(ActionContext).
+ * Purpose: teach users what data is available inside onInteraction(InteractionContext).
  */
 export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClose }) => {
   if (!payload) return null;
-  const isActionContext = payload.source === 'onAction';
+  const isInteractionContext = payload.source === 'onInteraction';
 
   const renderEntityTable = (entity: Record<string, unknown>) => {
     const entries = Object.entries(entity);
@@ -84,7 +84,7 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
       <Modal.Header closeButton>
         <Modal.Title style={{ fontSize: '1rem' }}>
           <span className="me-2">⚡</span>
-          Action Triggered: <strong>{payload.actionLabel}</strong>
+          Interaction Triggered: <strong>{payload.actionLabel}</strong>
           <code className="ms-2 text-muted" style={{ fontSize: '0.75rem' }}>#{payload.actionId}</code>
         </Modal.Title>
       </Modal.Header>
@@ -93,8 +93,8 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
         {/* Source badge */}
         <div className="mb-3 d-flex align-items-center gap-2">
           <span className="text-muted" style={{ fontSize: '0.8125rem' }}>Callback type:</span>
-          {isActionContext ? (
-            <Badge bg="primary">onAction(ActionContext)</Badge>
+          {isInteractionContext ? (
+            <Badge bg="primary">onInteraction(InteractionContext)</Badge>
           ) : (
             <Badge bg="secondary">callback</Badge>
           )}
@@ -106,25 +106,25 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
           )}
         </div>
 
-        {/* onAction explanation */}
-        {isActionContext && (
+        {/* onInteraction explanation */}
+        {isInteractionContext && (
           <div
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-primary-bg-subtle, #cfe2ff)', fontSize: '0.8125rem', border: '1px solid var(--bs-primary-border-subtle, #9ec5fe)' }}
           >
-            <strong>onAction(ctx)</strong> receives the full <code>ActionContext</code>:{' '}
+            <strong>onInteraction(ctx)</strong> receives the full <code>InteractionContext</code>:{' '}
             <code>ctx.entity</code>, <code>ctx.data</code> (all records in scope), and <code>ctx.zone</code>.
             Use this for zone-level actions like Export, Refresh, or Batch operations.
           </div>
         )}
 
-        {/* Non-action-context explanation */}
-        {!isActionContext && (
+        {/* Non-interaction-context explanation */}
+        {!isInteractionContext && (
           <div
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-success-bg-subtle, #d1e7dd)', fontSize: '0.8125rem', border: '1px solid var(--bs-success-border-subtle, #a3cfbb)' }}
           >
-            This event did not come from <strong>onAction(ActionContext)</strong>.
+            This event did not come from <strong>onInteraction(InteractionContext)</strong>.
             Some demo interactions (such as retry callbacks) may only provide limited data.
           </div>
         )}
@@ -141,7 +141,7 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
         )}
 
         {/* No entity — zone action with no entity */}
-        {!payload.entity && isActionContext && (
+        {!payload.entity && isInteractionContext && (
           <div className="mb-3">
             <h6 className="mb-2" style={{ fontSize: '0.875rem' }}>
               <Badge bg="secondary" className="me-2">ctx.entity</Badge>

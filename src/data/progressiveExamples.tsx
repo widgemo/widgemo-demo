@@ -1,6 +1,6 @@
 import type {
   ActionConfig,
-  ActionContext,
+  InteractionContext,
   ContentConfig,
   Entity,
   FieldConfig,
@@ -155,11 +155,11 @@ const zoneAction = (
   icon,
   placement,
   ...(variant ? { variant } : {}),
-  onAction: (ctx: ActionContext) =>
+  onInteraction: (ctx: InteractionContext) =>
     fireDemoAction({
       actionId: id,
       actionLabel: label,
-      source: 'onAction',
+      source: 'onInteraction',
       data: ctx.data as Record<string, unknown>[],
       zone: ctx.zone,
     }),
@@ -179,11 +179,11 @@ const itemAction = (
   placement,
   ...(variant ? { variant } : {}),
   ...(visibleIf ? { visibleIf } : {}),
-  onAction: (ctx: ActionContext) =>
+  onInteraction: (ctx: InteractionContext) =>
     fireDemoAction({
       actionId: id,
       actionLabel: label,
-      source: 'onAction',
+      source: 'onInteraction',
       entity: ctx.entity as Record<string, unknown>,
     }),
 });
@@ -386,7 +386,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-9-zone-actions',
     title: 'Progressive 9 — Zone Actions',
     description:
-      'Adds header zone actions using onAction(ActionContext). These actions operate on the whole dataset in scope rather than a single row.',
+      'Adds header zone actions using onInteraction(InteractionContext). These actions operate on the whole dataset in scope rather than a single row.',
     data: tenUsersData,
     config: {
       id: 'progressive-9',
@@ -485,7 +485,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
     description:
-      'Adds row-level interaction through content.interaction.onRowClick. This is separate from item actions because the whole row becomes clickable.',
+      'Adds row-level interaction through content.interaction.onInteraction. It uses the same callback contract as item and zone actions, but with kind="row-click".',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -507,12 +507,14 @@ export const progressiveExamples: ProgressiveExample[] = [
           {
             table: traditionalTableConfig,
             interaction: {
-              onRowClick: (item) =>
+              onInteraction: (ctx: InteractionContext) =>
                 fireDemoAction({
                   actionId: 'row-click',
                   actionLabel: 'Row Click',
-                  source: 'onClick',
-                  entity: item as Record<string, unknown>,
+                  source: 'onInteraction',
+                  entity: ctx.entity as Record<string, unknown>,
+                  data: ctx.data as Record<string, unknown>[],
+                  zone: ctx.zone,
                 }),
             },
           },
@@ -741,7 +743,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-20-rich-cells-2col',
     title: 'Progressive 20 — Rich Cells: 2 columns',
     description:
-      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently.',
+      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-level interaction through content.interaction.onInteraction. It uses the same callback contract as item and zone actions, but with kind="row-click".',
     data: eightUsersData,
     config: {
       id: 'progressive-20',
@@ -753,6 +755,17 @@ export const progressiveExamples: ProgressiveExample[] = [
         },
         content: createTableContent(eightUsersData, richFields, {
           table: { type: 'rich-cells', columns: 2 },
+          interaction: {
+              onInteraction: (ctx: InteractionContext) =>
+                fireDemoAction({
+                  actionId: 'row-click',
+                  actionLabel: 'Row Click',
+                  source: 'onInteraction',
+                  entity: ctx.entity as Record<string, unknown>,
+                  data: ctx.data as Record<string, unknown>[],
+                  zone: ctx.zone,
+                }),
+            },
         }),
       },
     },
