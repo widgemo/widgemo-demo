@@ -5,6 +5,7 @@ import type {
   Entity,
   FieldConfig,
   ItemConfig,
+  ModeConfig,
   TableModeConfig,
   WidgemoConfig,
 } from '@widgemo/widgemo-core';
@@ -138,6 +139,24 @@ const createTableContent = (
   return {
     mode: 'table',
     ...(table ? { modeConfig: { table } } : {}),
+    item: createItem(fields, item),
+    ...rest,
+  };
+};
+
+const createGridContent = (
+  data: Entity[],
+  fields: FieldConfig[],
+  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item' | 'modeConfig'> & {
+    grid?: NonNullable<ModeConfig['grid']>;
+    item?: Partial<ItemConfig<Entity>>;
+  } = {},
+): ContentConfig<Entity> => {
+  const { grid, item, ...rest } = overrides;
+  void data;
+  return {
+    mode: 'grid',
+    ...(grid ? { modeConfig: { grid } } : {}),
     item: createItem(fields, item),
     ...rest,
   };
@@ -838,6 +857,258 @@ export const progressiveExamples: ProgressiveExample[] = [
         content: createTableContent(tenUsersData, richFields, {
           table: { type: 'rich-cells', columns: 2, striped: true, hover: false },
         }),
+      },
+    },
+  },
+  // ── modeConfig.grid progression ─────────────────────────────────────────
+  {
+    id: 'progressive-24-grid-basic',
+    title: 'Progressive 24 — Grid: Basic Cards',
+    description:
+      'Switches from table rows to grid cards using the same dataset. This is the baseline grid setup: simple cards, auto item layout, and no extra behavior.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-24',
+      zones: {
+        header: {
+          title: 'Team Grid',
+          subtitle: 'Same data, now rendered as cards',
+          icon: 'grid',
+        },
+        content: createGridContent(eightUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ]),
+      },
+    },
+  },
+  {
+    id: 'progressive-25-grid-layout-tuning',
+    title: 'Progressive 25 — Grid: Columns + Gap + Min Width',
+    description:
+      'Adds grid layout tuning via modeConfig.grid: maxColumns, minItemWidth, and gap. Cards become more responsive while preserving a predictable upper column count.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-25',
+      zones: {
+        header: {
+          title: 'Responsive Card Grid',
+          subtitle: 'modeConfig.grid = { maxColumns: 4, minItemWidth: "220px", gap: "1rem" }',
+          icon: 'grid',
+        },
+        content: createGridContent(tenUsersData, richFields, {
+          grid: {
+            maxColumns: 4,
+            minItemWidth: '220px',
+            gap: '1rem',
+          },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-26-grid-breakpoints',
+    title: 'Progressive 26 — Grid: Responsive Breakpoints + Search',
+    description:
+      'Introduces explicit breakpoints, search, and pagination in grid mode so card browsing remains usable as data grows.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-26',
+      zones: {
+        header: {
+          title: 'Directory Grid',
+          subtitle: 'Breakpoints + search + pagination',
+          icon: 'grid',
+        },
+        content: createGridContent(twentyUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'email', label: 'Email', type: 'email' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          grid: {
+            maxColumns: 4,
+            minItemWidth: '240px',
+            gap: '1rem',
+            breakpoints: {
+              mobile: '480px',
+              tablet: '768px',
+              desktop: '1200px',
+            },
+            justifyItems: 'stretch',
+            alignItems: 'start',
+          },
+          search: {
+            enabled: true,
+            placeholder: 'Search cards…',
+            fields: ['name', 'email', 'department'],
+          },
+          pagination: { pageSize: 8 },
+        }),
+        footer: {
+          subtitle: 'Search applies before pagination in grid mode as well',
+        },
+      },
+    },
+  },
+  {
+    id: 'progressive-27-grid-actions',
+    title: 'Progressive 27 — Grid: Zone Actions + Card Actions',
+    description:
+      'Adds header actions and per-card actions in grid mode. Add User uses local action.onAction; Edit card also uses local action.onAction while other actions can fall back to interactions.onEvent.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-27',
+      zones: {
+        header: {
+          title: 'Actionable Grid',
+          subtitle: 'Header and per-card actions',
+          icon: 'grid',
+          actions: [
+            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary', localActionHandler()),
+            zoneAction('export-grid', 'Export', 'download', 'menu'),
+          ],
+        },
+        content: createGridContent(tenUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          grid: {
+            maxColumns: 3,
+            minItemWidth: '240px',
+            gap: '1rem',
+          },
+          actions: [
+            itemAction('edit-card', 'Edit', 'edit', 'pinned', 'secondary', undefined, localActionHandler()),
+            itemAction('view-profile', 'View', 'view', 'onHover'),
+            itemAction('archive-card', 'Archive', 'archive', 'menu'),
+          ],
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-28-grid-card-click',
+    title: 'Progressive 28 — Grid: Card Click Gesture',
+    description:
+      'Adds a content gesture entry with type="row-click" for grid cards. Clicking a card emits kind="row-click" with local-first callback semantics; action-button clicks do not trigger the card gesture.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-28',
+      zones: {
+        header: {
+          title: 'Clickable Cards',
+          subtitle: 'Click a card body to inspect its entity payload',
+          icon: 'grid',
+        },
+        content: createGridContent(tenUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'email', label: 'Email', type: 'email' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          grid: {
+            maxColumns: 3,
+            minItemWidth: '240px',
+            gap: '1rem',
+          },
+          actions: [
+            itemAction('edit-card', 'Edit', 'edit', 'pinned', 'secondary'),
+            itemAction('delete-card', 'Delete', 'delete', 'menu', 'danger'),
+          ],
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'open-card',
+              interactionLabel: 'Open Card',
+              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+            },
+          ],
+        }),
+        footer: {
+          subtitle: 'Card body click triggers gesture; action buttons keep their own callbacks',
+        },
+      },
+    },
+  },
+  {
+    id: 'progressive-29-grid-full-showcase',
+    title: 'Progressive 29 — Grid: Full Showcase',
+    description:
+      'Combines responsive grid tuning, search, pagination, static filtering, sorting, zone actions, card actions, and card-click gestures into one advanced grid configuration.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-29',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Advanced Team Grid',
+          subtitle: 'Search + pagination + actions + gesture',
+          icon: 'grid',
+          actions: [
+            zoneAction('invite-user', 'Invite User', 'add', 'pinned', 'primary', localActionHandler()),
+            zoneAction('sync-grid', 'Sync', 'refresh', 'pinned', 'secondary'),
+            zoneAction('export-grid', 'Export CSV', 'download', 'menu'),
+          ],
+        },
+        content: createGridContent(twentyUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text', sortable: true },
+          { key: 'email', label: 'Email', type: 'email' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text', sortable: true },
+          statusField,
+          progressField,
+          ratingField,
+        ], {
+          grid: {
+            maxColumns: 4,
+            minItemWidth: '240px',
+            gap: '1rem',
+            autoFlow: 'row',
+            justifyItems: 'stretch',
+            alignItems: 'start',
+            breakpoints: {
+              mobile: '480px',
+              tablet: '768px',
+              desktop: '1280px',
+            },
+          },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+          pagination: { pageSize: 8 },
+          filtering: [{ fieldKey: 'status', operator: 'neq', value: 'inactive' }],
+          sorting: [{ fieldKey: 'name', direction: 'asc' }],
+          actions: [
+            itemAction('edit-card', 'Edit', 'edit', 'pinned', 'secondary', undefined, localActionHandler()),
+            itemAction('view-profile', 'View', 'view', 'onHover'),
+            itemAction('message-user', 'Message', 'message', 'menu'),
+            itemAction('archive-card', 'Archive', 'archive', 'menu'),
+          ],
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'open-card',
+              interactionLabel: 'Open Card',
+            },
+          ],
+        }),
+        footer: {
+          subtitle: '20 users · inactive filtered out · cards are searchable, pageable, clickable, and actionable',
+        },
       },
     },
   },
