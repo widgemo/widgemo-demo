@@ -1,7 +1,33 @@
 import React from 'react';
 import { teaserSampleData } from './sampleData';
 import type { Entity, InteractionContext } from '@widgemo/widgemo-core';
-import { fireDemoAction } from '../utils/demoActionBus';
+import { fireDemoAction, type DemoActionSource } from '../utils/demoActionBus';
+
+const emitDemoInteraction = (ctx: InteractionContext): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source: 'interactions.onEvent',
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+  });
+};
+
+const emitLocalDemoInteraction = (ctx: InteractionContext, source: DemoActionSource): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source,
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+  });
+};
+
+const localCallback = (source: DemoActionSource = 'action.onAction') => (ctx: InteractionContext): void => {
+  emitLocalDemoInteraction(ctx, source);
+};
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twoUsersData = teaserSampleData.slice(0, 2);
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
@@ -23,7 +49,7 @@ export const twelveUsersData = teaserSampleData.slice(0, 12);
 
 
 // Array of examples for dynamic rendering in SimplifiedTest.
-const widgemoExamples: Array<{
+const widgemoExamplesRaw: Array<{
   id: string;
   title: string;
   description: string;
@@ -138,7 +164,7 @@ const widgemoExamples: Array<{
   {
     id: 'actions-overflow-demo',
     title: 'Actions Overflow Demo',
-    description: 'Demonstrates responsive action overflow with tuck-to-menu functionality',
+    description: 'Demonstrates responsive action overflow with tuck-to-menu functionality. This example mixes local action.onAction callbacks with fallback interactions.onEvent handling.',
     data: twoUsersData,
     config: {
       collapse: { initialState: 'expanded' },
@@ -153,58 +179,51 @@ const widgemoExamples: Array<{
               icon: 'add',
               placement: 'pinned',
               variant: 'primary',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: localCallback()
             },
             {
               id: 'edit-user',
               label: 'Edit User',
               icon: 'edit',
               placement: 'pinned',
-              variant: 'secondary',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              variant: 'secondary'
             },
             {
               id: 'delete-user',
               label: 'Delete User',
               icon: 'delete',
               placement: 'pinned',
-              variant: 'danger',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete-user', actionLabel: 'Delete User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              variant: 'danger'
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
-              placement: 'onHover',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'onHover'
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'menu'
             },
             {
               id: 'share-user',
               label: 'Share User',
               icon: 'share',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share-user', actionLabel: 'Share User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'menu'
             },
             {
               id: 'export-user',
               label: 'Export User',
               icon: 'export',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-user', actionLabel: 'Export User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'menu'
             },
             {
               id: 'archive-user',
               label: 'Archive User',
               icon: 'archive',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'menu'
             }
           ],
           actionOverflow: {
@@ -224,43 +243,39 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-item',
               label: 'Edit',
               icon: 'edit',
               placement: 'pinned',
               variant: 'secondary',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-item', actionLabel: 'Edit', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              onAction: localCallback()
             },
             {
               id: 'delete-item',
               label: 'Delete',
               icon: 'delete',
               placement: 'onHover',
-              variant: 'danger',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete-item', actionLabel: 'Delete', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              variant: 'danger'
             },
             {
               id: 'archive-item',
               label: 'Archive',
               icon: 'archive',
-              placement: 'onHover',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-item', actionLabel: 'Archive', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'onHover'
             },
             {
               id: 'view-item',
               label: 'View Details',
               icon: 'view',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-item', actionLabel: 'View Details', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'menu'
             },
             {
               id: 'duplicate-item',
               label: 'Duplicate',
               icon: 'copy',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-item', actionLabel: 'Duplicate', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'menu'
             }
           ],
           actionOverflow: {
@@ -305,16 +320,14 @@ const widgemoExamples: Array<{
               label: 'Add User',
               icon: 'add',
               variant: 'primary',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             },
             {
               id: 'refresh',
               label: 'Refresh',
               icon: 'refresh',
               variant: 'secondary',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'refresh', actionLabel: 'Refresh', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             }
           ]
         },
@@ -392,15 +405,15 @@ const widgemoExamples: Array<{
 
   {
     id: 'row-click',
-    title: 'Row Click (onInteraction)',
-    description: 'Demonstrates interaction.onInteraction. Click any row — including the email cell — to fire the parent callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    title: 'Row Click (gestures[row-click].onTrigger)',
+    description: 'Demonstrates local content.gestures[{ type: "row-click" }].onTrigger. Click any row — including the email cell — to fire the local gesture callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
       config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-            subtitle: 'Click any cell (including the plain-text email) to fire onInteraction'
+            subtitle: 'Click any cell (including the plain-text email) to fire gestures[row-click].onTrigger'
         },
         content: {
           mode: 'table',
@@ -409,18 +422,21 @@ const widgemoExamples: Array<{
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // type: 'email' renders plain text — clicking it fires onInteraction like any other cell
+              // type: 'email' renders plain text — clicking it fires the row-click gesture like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-              onInteraction: (ctx: InteractionContext) => {
-                const row = ctx.entity as { name: string; email: string; department: string };
-                fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'onInteraction', entity: row });
-            }
-          }
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'row-click',
+              interactionLabel: 'Row Click',
+              onTrigger: localCallback('gestures[row-click].onTrigger'),
+            },
+          ]
         }
       }
     }
@@ -429,14 +445,14 @@ const widgemoExamples: Array<{
   {
     id: 'row-click-with-link',
     title: 'Row Click with Email Link (renderAs: link)',
-    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire onInteraction (stopPropagation). Clicking any other cell still fires the row handler.',
+    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire the row handler (stopPropagation). This variation keeps gesture metadata and lets interactions.onEvent handle fallback.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows + Email Link',
-          subtitle: 'Click a row to fire onInteraction · click the email to open mailto: (no row handler)'
+          subtitle: 'Click a row for row-click fallback · click the email to open mailto: (no row handler)'
         },
         content: {
           mode: 'table',
@@ -451,12 +467,14 @@ const widgemoExamples: Array<{
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-              onInteraction: (ctx: InteractionContext) => {
-                const row = ctx.entity as { name: string; department: string };
-                fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'onInteraction', entity: row });
-            }
-          }
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'row-click',
+              interactionLabel: 'Row Click',
+            },
+          ]
         }
       }
     }
@@ -870,41 +888,36 @@ const widgemoExamples: Array<{
               { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-user',
               label: 'Edit',
               icon: 'edit',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'pinned'
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
-              placement: 'onHover',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'onHover'
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
-              placement: 'onHover',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'onHover'
             },
             {
               id: 'duplicate-user',
               label: 'Duplicate',
               icon: 'duplicate',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-user', actionLabel: 'Duplicate', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'menu'
             },
             {
               id: 'archive-user',
               label: 'Archive',
               icon: 'archive',
-              placement: 'menu',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'menu'
             }
           ]
         }
@@ -938,20 +951,18 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit',
               label: 'Edit',
               icon: 'edit',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'pinned'
             },
             {
               id: 'delete',
               label: 'Delete',
               icon: 'delete',
-              placement: 'onHover',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete', actionLabel: 'Delete', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> })
+              placement: 'onHover'
             }
           ]
         }
@@ -978,8 +989,7 @@ const widgemoExamples: Array<{
               label: 'Add Member',
               icon: 'add',
               variant: 'primary',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-member', actionLabel: 'Add Member', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             }
           ]
         },
@@ -1017,22 +1027,19 @@ const widgemoExamples: Array<{
               label: 'Export CSV',
               icon: 'download',
               variant: 'secondary',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             },
             {
               id: 'export-pdf',
               label: 'Export PDF',
               icon: 'download',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             },
             {
               id: 'share',
               label: 'Share',
               icon: 'share',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             }
           ]
         },
@@ -1071,8 +1078,7 @@ const widgemoExamples: Array<{
               label: 'Resolve All',
               icon: 'check',
               variant: 'primary',
-              placement: 'pinned',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'resolve-all', actionLabel: 'Resolve All', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              placement: 'pinned'
             }
           ]
         },
@@ -1482,7 +1488,6 @@ const widgemoExamples: Array<{
               label: 'Export',
               icon: 'download',
               placement: 'pinned' as const,
-              onInteraction: (context: InteractionContext) => fireDemoAction({ actionId: 'export', actionLabel: 'Export', source: 'onInteraction', data: context.data as Record<string, unknown>[], zone: context.zone }),
             },
           ],
         },
@@ -1554,22 +1559,20 @@ const widgemoExamples: Array<{
           title: 'Zone Actions Demo',
           subtitle: 'placement: pinned / menu · handler(InteractionContext) · indicator="color-shift"',
           actions: [
-            { id: 'create-user', label: 'New User', icon: 'user', placement: 'pinned' as const, onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-user', actionLabel: 'New User', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
-            { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const, onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-team', actionLabel: 'New Team', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
-            { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const, onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-report', actionLabel: 'New Report', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'create-user', label: 'New User', icon: 'user', placement: 'pinned' as const },
+            { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const },
+            { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const },
             {
               id: 'export-all',
               label: 'Export All',
               icon: 'download',
               placement: 'pinned' as const,
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-all', actionLabel: 'Export All', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
             },
             {
               id: 'settings',
               label: 'Settings',
               icon: 'settings',
               placement: 'menu' as const,
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'settings', actionLabel: 'Settings', source: 'onInteraction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
             },
           ],
           actionOverflow: {
@@ -1588,16 +1591,15 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
-            { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view', actionLabel: 'View', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }) },
-            { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }) },
+          actions: [
+            { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const },
+            { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const },
             {
               id: 'pinned-delete',
               label: 'Delete',
               icon: 'delete',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'pinned-delete', actionLabel: 'Delete', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }),
             },
           ],
           actionOverflow: { maxInline: 2, menuLabel: 'More', indicator: 'none' as const },
@@ -1630,14 +1632,13 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             {
               id: 'deactivate',
               label: 'Deactivate',
               icon: 'close',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'deactivate', actionLabel: 'Deactivate', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }),
             },
             {
               id: 'activate',
@@ -1645,7 +1646,6 @@ const widgemoExamples: Array<{
               icon: 'refresh',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status !== 'active',
-              onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'activate', actionLabel: 'Activate', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }),
             },
           ],
           actionOverflow: { maxInline: 1, menuLabel: 'More', indicator: 'none' as const },
@@ -1738,7 +1738,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-link',
     title: 'renderAs: link — linkOptions',
-    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Shows unified renderAsOptions API alongside legacy linkOptions.',
+    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Demonstrates unified link rendering options.',
     data: [
       { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice', docUrl: 'https://github.com' },
       { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob',   docUrl: 'https://docs.example.com' },
@@ -2423,7 +2423,7 @@ const widgemoExamples: Array<{
   {
     id: 'content-groupings',
     title: 'ContentConfig.groupings',
-    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function. Different from legacy groupBy string.',
+    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function.',
     data: eightUsersData as Entity[],
     config: {
       id: 'content-groupings',
@@ -2730,14 +2730,12 @@ const widgemoExamples: Array<{
                     label: 'View',
                     icon: 'view',
                     placement: 'pinned' as const,
-                    onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }),
                   },
                   {
                     id: 'card-edit',
                     label: 'Edit',
                     icon: 'edit',
                     placement: 'menu' as const,
-                    onInteraction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'onInteraction', entity: ctx.entity as Record<string, unknown> }),
                   },
                 ],
               },
@@ -2798,4 +2796,16 @@ const widgemoExamples: Array<{
     },
   },
 ];
+
+const widgemoExamples = widgemoExamplesRaw.map((example) => ({
+  ...example,
+  config: {
+    ...example.config,
+    interactions: {
+      ...example.config?.interactions,
+      onEvent: emitDemoInteraction,
+    },
+  },
+}));
+
 export default widgemoExamples;

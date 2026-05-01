@@ -9,7 +9,7 @@ import type {
   WidgemoConfig,
 } from '@widgemo/widgemo-core';
 import { teaserSampleData } from './sampleData';
-import { fireDemoAction } from '../utils/demoActionBus';
+import { fireDemoAction, type DemoActionSource } from '../utils/demoActionBus';
 
 type ProgressiveExample = {
   id: string;
@@ -143,26 +143,47 @@ const createTableContent = (
   };
 };
 
+const emitDemoInteraction = (ctx: InteractionContext): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source: 'interactions.onEvent',
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+  });
+};
+
+const emitLocalInteraction = (ctx: InteractionContext, source: DemoActionSource): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source,
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+  });
+};
+
+const localActionHandler = (source: DemoActionSource = 'action.onAction') =>
+  (ctx: InteractionContext): void => {
+    emitLocalInteraction(ctx, source);
+  };
+
 const zoneAction = (
   id: string,
   label: string,
   icon: string,
   placement: ActionConfig<Entity>['placement'],
   variant?: string,
+  onAction?: (ctx: InteractionContext) => void,
 ): ActionConfig<Entity> => ({
   id,
   label,
   icon,
   placement,
   ...(variant ? { variant } : {}),
-  onInteraction: (ctx: InteractionContext) =>
-    fireDemoAction({
-      actionId: id,
-      actionLabel: label,
-      source: 'onInteraction',
-      data: ctx.data as Record<string, unknown>[],
-      zone: ctx.zone,
-    }),
+  ...(onAction ? { onAction } : {}),
 });
 
 const itemAction = (
@@ -172,6 +193,7 @@ const itemAction = (
   placement: ActionConfig<Entity>['placement'],
   variant?: string,
   visibleIf?: (entity: Entity) => boolean,
+  onAction?: (ctx: InteractionContext) => void,
 ): ActionConfig<Entity> => ({
   id,
   label,
@@ -179,13 +201,7 @@ const itemAction = (
   placement,
   ...(variant ? { variant } : {}),
   ...(visibleIf ? { visibleIf } : {}),
-  onInteraction: (ctx: InteractionContext) =>
-    fireDemoAction({
-      actionId: id,
-      actionLabel: label,
-      source: 'onInteraction',
-      entity: ctx.entity as Record<string, unknown>,
-    }),
+  ...(onAction ? { onAction } : {}),
 });
 
 export const progressiveExamples: ProgressiveExample[] = [
@@ -386,7 +402,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-9-zone-actions',
     title: 'Progressive 9 — Zone Actions',
     description:
-      'Adds header zone actions using onInteraction(InteractionContext). These actions operate on the whole dataset in scope rather than a single row.',
+        'Adds header zone actions. The Add User button uses a local action.onAction callback, while Export falls back to the global interactions.onEvent sink.',
     data: tenUsersData,
     config: {
       id: 'progressive-9',
@@ -396,7 +412,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           subtitle: 'All active employees',
           icon: 'users',
           actions: [
-            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary'),
+            zoneAction('add-user', 'Add User', 'add', 'pinned', 'primary', localActionHandler()),
             zoneAction('export', 'Export', 'download', 'pinned', 'secondary'),
           ],
         },
@@ -410,7 +426,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-10-item-actions',
     title: 'Progressive 10 — Per-Item Actions',
     description:
-      'Adds per-row actions with three placements: pinned, onHover, and menu. The delete action is conditionally visible only for inactive users.',
+      'Adds per-row actions with three placements: pinned, onHover, and menu. Edit uses local action.onAction while others can still use the fallback sink. The delete action remains conditionally visible only for inactive users.',
     data: tenUsersData,
     config: {
       id: 'progressive-10',
@@ -432,8 +448,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            itemActions: [
-              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
+            actions: [
+              itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary', undefined, localActionHandler()),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('archive-user', 'Archive', 'archive', 'menu'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger', (entity) => entity.status === 'inactive'),
@@ -469,7 +485,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
             ],
@@ -485,7 +501,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
     description:
-      'Adds row-level interaction through content.interaction.onInteraction. It uses the same callback contract as item and zone actions, but with kind="row-click".',
+      'Adds row-level gesture handling via content.gestures[{ type: "row-click" }].onTrigger with local-first callback semantics.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -506,17 +522,15 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            interaction: {
-              onInteraction: (ctx: InteractionContext) =>
-                fireDemoAction({
-                  actionId: 'row-click',
-                  actionLabel: 'Row Click',
-                  source: 'onInteraction',
-                  entity: ctx.entity as Record<string, unknown>,
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
-            },
+            gestures: [
+              {
+                type: 'row-click',
+                enabled: true,
+                interactionId: 'row-click',
+                interactionLabel: 'Row Click',
+                onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+              },
+            ],
           },
         ),
         footer: {
@@ -587,7 +601,7 @@ export const progressiveExamples: ProgressiveExample[] = [
               fields: ['name', 'email', 'department'],
             },
             groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
@@ -643,7 +657,7 @@ export const progressiveExamples: ProgressiveExample[] = [
               fields: ['name', 'email', 'department'],
             },
             groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('archive-user', 'Archive', 'archive', 'menu'),
@@ -743,7 +757,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-20-rich-cells-2col',
     title: 'Progressive 20 — Rich Cells: 2 columns',
     description:
-      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-level interaction through content.interaction.onInteraction. It uses the same callback contract as item and zone actions, but with kind="row-click".',
+      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-click gesture metadata under content.gestures with type="row-click" and uses global interactions.onEvent as fallback.',
     data: eightUsersData,
     config: {
       id: 'progressive-20',
@@ -755,17 +769,14 @@ export const progressiveExamples: ProgressiveExample[] = [
         },
         content: createTableContent(eightUsersData, richFields, {
           table: { type: 'rich-cells', columns: 2 },
-          interaction: {
-              onInteraction: (ctx: InteractionContext) =>
-                fireDemoAction({
-                  actionId: 'row-click',
-                  actionLabel: 'Row Click',
-                  source: 'onInteraction',
-                  entity: ctx.entity as Record<string, unknown>,
-                  data: ctx.data as Record<string, unknown>[],
-                  zone: ctx.zone,
-                }),
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'row-click',
+              interactionLabel: 'Row Click',
             },
+          ],
         }),
       },
     },
@@ -832,4 +843,15 @@ export const progressiveExamples: ProgressiveExample[] = [
   },
 ];
 
-export default progressiveExamples;
+export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
+  ...example,
+  config: {
+    ...example.config,
+    interactions: {
+      ...example.config.interactions,
+      onEvent: emitDemoInteraction,
+    },
+  },
+}));
+
+export default progressiveExamplesWithInteractionSink;
