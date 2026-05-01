@@ -7,7 +7,7 @@
  *          SimplifiedTest calls `setDemoActionListener(fn)` on mount.
  */
 
-export type DemoActionSource = 'onInteraction';
+export type DemoActionSource = 'interactions.onEvent';
 
 export interface DemoActionPayload {
   /** The action id from ActionConfig */
