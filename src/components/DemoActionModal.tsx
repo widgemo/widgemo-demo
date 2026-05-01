@@ -16,9 +16,45 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
   if (!payload) return null;
   const isInteractionContext = payload.source === 'interactions.onEvent';
 
-  const renderEntityTable = (entity: Record<string, unknown>) => {
+  const renderEntityTable = (entity: unknown) => {
+    // Defensive type checking — entity should be an object, not a string or array
+    if (typeof entity === 'string') {
+      try {
+        const parsed = JSON.parse(entity);
+        if (Array.isArray(parsed)) {
+          return (
+            <div className="alert alert-warning mb-0" style={{ fontSize: '0.8125rem' }}>
+              <strong>Type error:</strong> entity was passed as a stringified array instead of a single object.
+              This is likely a zone-level action that should have no entity.
+            </div>
+          );
+        }
+        entity = parsed;
+      } catch {
+        return (
+          <div className="alert alert-warning mb-0" style={{ fontSize: '0.8125rem' }}>
+            Entity was passed as a JSON string but could not be parsed.
+          </div>
+        );
+      }
+    }
+
+    if (Array.isArray(entity)) {
+      return (
+        <div className="alert alert-warning mb-0" style={{ fontSize: '0.8125rem' }}>
+          <strong>Type error:</strong> entity is an array ({entity.length} items).
+          This is likely a zone-level action that should have no entity.
+        </div>
+      );
+    }
+
+    if (typeof entity !== 'object' || entity === null) {
+      return <p className="text-muted fst-italic">Entity is not an object: {typeof entity}</p>;
+    }
+
     const entries = Object.entries(entity);
     if (entries.length === 0) return <p className="text-muted fst-italic">No entity data</p>;
+
     return (
       <Table size="sm" bordered className="mb-0" style={{ fontSize: '0.8125rem' }}>
         <thead>
