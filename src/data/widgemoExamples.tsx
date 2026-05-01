@@ -243,7 +243,7 @@ const widgemoExamplesRaw: Array<{
               { key: 'department', label: 'Department' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-item',
               label: 'Edit',
@@ -405,15 +405,15 @@ const widgemoExamplesRaw: Array<{
 
   {
     id: 'row-click',
-    title: 'Row Click (gestures.rowClick.onTrigger)',
-    description: 'Demonstrates local content.gestures.rowClick.onTrigger. Click any row — including the email cell — to fire the local gesture callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    title: 'Row Click (gestures[row-click].onTrigger)',
+    description: 'Demonstrates local content.gestures[{ type: "row-click" }].onTrigger. Click any row — including the email cell — to fire the local gesture callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
       config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-            subtitle: 'Click any cell (including the plain-text email) to fire gestures.rowClick.onTrigger'
+            subtitle: 'Click any cell (including the plain-text email) to fire gestures[row-click].onTrigger'
         },
         content: {
           mode: 'table',
@@ -428,14 +428,15 @@ const widgemoExamplesRaw: Array<{
               { key: 'role',       label: 'Role' },
             ]
           },
-          gestures: {
-            rowClick: {
+          gestures: [
+            {
+              type: 'row-click',
               enabled: true,
               interactionId: 'row-click',
               interactionLabel: 'Row Click',
-              onTrigger: localCallback('gestures.rowClick.onTrigger'),
-            }
-          }
+              onTrigger: localCallback('gestures[row-click].onTrigger'),
+            },
+          ]
         }
       }
     }
@@ -466,13 +467,14 @@ const widgemoExamplesRaw: Array<{
               { key: 'role',       label: 'Role' },
             ]
           },
-          gestures: {
-            rowClick: {
+          gestures: [
+            {
+              type: 'row-click',
               enabled: true,
               interactionId: 'row-click',
               interactionLabel: 'Row Click',
-            }
-          }
+            },
+          ]
         }
       }
     }
@@ -886,7 +888,7 @@ const widgemoExamplesRaw: Array<{
               { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-user',
               label: 'Edit',
@@ -949,7 +951,7 @@ const widgemoExamplesRaw: Array<{
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit',
               label: 'Edit',
@@ -1589,7 +1591,7 @@ const widgemoExamplesRaw: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const },
             { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const },
             {
@@ -1630,7 +1632,7 @@ const widgemoExamplesRaw: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             {
               id: 'deactivate',
               label: 'Deactivate',

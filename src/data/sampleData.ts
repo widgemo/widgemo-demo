@@ -38,7 +38,7 @@ export const defaultSandboxConfig: WidgemoConfig = {
           { key: 'status', label: 'Active' },
         ]
       },
-      itemActions: [
+      actions: [
         {
           id: 'edit',
           label: 'Edit',

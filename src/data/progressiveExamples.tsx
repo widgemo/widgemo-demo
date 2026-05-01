@@ -448,7 +448,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary', undefined, localActionHandler()),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('archive-user', 'Archive', 'archive', 'menu'),
@@ -485,7 +485,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
             ],
@@ -501,7 +501,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
     description:
-      'Adds row-level gesture handling via content.gestures.rowClick.onTrigger with local-first callback semantics.',
+      'Adds row-level gesture handling via content.gestures[{ type: "row-click" }].onTrigger with local-first callback semantics.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -522,14 +522,15 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            gestures: {
-              rowClick: {
+            gestures: [
+              {
+                type: 'row-click',
                 enabled: true,
                 interactionId: 'row-click',
                 interactionLabel: 'Row Click',
-                onTrigger: localActionHandler('gestures.rowClick.onTrigger'),
+                onTrigger: localActionHandler('gestures[row-click].onTrigger'),
               },
-            },
+            ],
           },
         ),
         footer: {
@@ -600,7 +601,7 @@ export const progressiveExamples: ProgressiveExample[] = [
               fields: ['name', 'email', 'department'],
             },
             groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('delete-user', 'Delete', 'delete', 'menu', 'danger'),
@@ -656,7 +657,7 @@ export const progressiveExamples: ProgressiveExample[] = [
               fields: ['name', 'email', 'department'],
             },
             groupings: [{ fieldKey: 'department', initiallyCollapsed: false }],
-            itemActions: [
+            actions: [
               itemAction('edit-user', 'Edit', 'edit', 'pinned', 'secondary'),
               itemAction('view-profile', 'View Profile', 'view', 'onHover'),
               itemAction('archive-user', 'Archive', 'archive', 'menu'),
@@ -756,7 +757,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-20-rich-cells-2col',
     title: 'Progressive 20 — Rich Cells: 2 columns',
     description:
-      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-click gesture metadata under content.gestures.rowClick and uses global interactions.onEvent as fallback.',
+      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-click gesture metadata under content.gestures with type="row-click" and uses global interactions.onEvent as fallback.',
     data: eightUsersData,
     config: {
       id: 'progressive-20',
@@ -768,13 +769,14 @@ export const progressiveExamples: ProgressiveExample[] = [
         },
         content: createTableContent(eightUsersData, richFields, {
           table: { type: 'rich-cells', columns: 2 },
-          gestures: {
-            rowClick: {
+          gestures: [
+            {
+              type: 'row-click',
               enabled: true,
               interactionId: 'row-click',
               interactionLabel: 'Row Click',
             },
-          },
+          ],
         }),
       },
     },
