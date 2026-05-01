@@ -10,11 +10,14 @@ interface DemoActionModalProps {
 /**
  * DemoActionModal — shows the InteractionContext received by an action callback.
  *
- * Purpose: teach users what data is available inside interactions.onEvent(InteractionContext).
+ * Purpose: teach users what data is available across action.onAction,
+ * gestures.rowClick.onTrigger, and interactions.onEvent(InteractionContext).
  */
 export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClose }) => {
   if (!payload) return null;
   const isInteractionContext = payload.source === 'interactions.onEvent';
+  const isLocalAction = payload.source === 'action.onAction';
+  const isGesture = payload.source === 'gestures.rowClick.onTrigger';
 
   const renderEntityTable = (entity: unknown) => {
     // Defensive type checking — entity should be an object, not a string or array
@@ -162,6 +165,10 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
           <span className="text-muted" style={{ fontSize: '0.8125rem' }}>Callback type:</span>
           {isInteractionContext ? (
             <Badge bg="primary">interactions.onEvent(InteractionContext)</Badge>
+          ) : isLocalAction ? (
+            <Badge bg="success">action.onAction(InteractionContext)</Badge>
+          ) : isGesture ? (
+            <Badge bg="info">gestures.rowClick.onTrigger(InteractionContext)</Badge>
           ) : (
             <Badge bg="secondary">callback</Badge>
           )}
@@ -191,8 +198,8 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-success-bg-subtle, #d1e7dd)', fontSize: '0.8125rem', border: '1px solid var(--bs-success-border-subtle, #a3cfbb)' }}
           >
-            This event did not come from <strong>interactions.onEvent(InteractionContext)</strong>.
-            Some demo interactions (such as retry callbacks) may only provide limited data.
+            This event came from a local callback (<strong>action.onAction</strong> or <strong>gestures.rowClick.onTrigger</strong>)
+            instead of the global <strong>interactions.onEvent</strong> fallback sink.
           </div>
         )}
 
