@@ -1112,6 +1112,154 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+  {
+    id: 'progressive-30-grid-custom-stylized-cards',
+    title: 'Progressive 30 — Grid: Fully Custom Stylized Cards',
+    description:
+      'Builds an advanced grid with custom card composition, zone actions, item actions, and card-click gestures. Each card is laid out in intentional lines: avatar+name, clickable email, role+department, status+rating, and labeled progress.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-30',
+      zones: {
+        header: {
+          title: 'Custom People Cards',
+          subtitle: 'Advanced grid with fully custom card layout',
+          icon: 'grid',
+          actions: [
+            zoneAction('invite-user', 'Invite User', 'add', 'pinned', 'primary', localActionHandler()),
+            zoneAction('sync-grid', 'Sync', 'refresh', 'pinned', 'secondary'),
+            zoneAction('export-grid', 'Export CSV', 'download', 'menu'),
+          ],
+        },
+        content: createGridContent(
+          twentyUsersData,
+          [
+            {
+              key: 'src',
+              label: 'Avatar',
+              type: 'image',
+              showLabel: false,
+              imageOptions: { circular: true, width: 44, height: 44, objectFit: 'cover' },
+            },
+            { key: 'name', label: 'Name', type: 'text', showLabel: false, wrap: true },
+            {
+              key: 'avatarSpacer',
+              label: '',
+              type: 'text',
+              showLabel: false,
+              formatter: () => '',
+              wrap: false,
+            },
+            {
+              key: 'email',
+              label: 'Email',
+              type: 'email',
+              showLabel: false,
+              renderAs: 'link',
+              wrap: false,
+            },
+            { key: 'role', label: 'Role', type: 'text', showLabel: true, wrap: true },
+            { key: 'department', label: 'Department', type: 'text', showLabel: true, wrap: true },
+            {
+              key: 'status',
+              label: 'Status',
+              type: 'text',
+              showLabel: false,
+              renderAs: 'badge',
+              renderAsOptions: { colorMap: statusColorMap },
+            },
+            {
+              key: 'rating',
+              label: 'Rating',
+              type: 'number',
+              showLabel: true,
+              renderAs: 'rating',
+              renderAsOptions: { max: 5, color: '#f59e0b' },
+            },
+            {
+              key: 'progress',
+              label: 'Progress',
+              type: 'number',
+              showLabel: true,
+              renderAs: 'progress',
+              renderAsOptions: { color: '#22c55e', showPercentage: true },
+            },
+          ],
+          {
+            grid: {
+              maxColumns: 3,
+              minItemWidth: '280px',
+              gap: '1rem',
+              justifyItems: 'stretch',
+              alignItems: 'start',
+            },
+            search: {
+              enabled: true,
+              placeholder: 'Search people…',
+              fields: ['name', 'email', 'role', 'department'],
+            },
+            pagination: { pageSize: 6 },
+            item: {
+              layout: {
+                type: 'sections',
+                sections: [
+                  {
+                    fields: ['src', 'name', 'avatarSpacer', 'email'],
+                    layout: {
+                      type: 'grid',
+                      grid: { columns: '44px minmax(0, 1fr)', gap: '0.35rem 0.75rem' },
+                    },
+                  },
+                  {
+                    fields: ['role', 'department'],
+                    layout: {
+                      type: 'grid',
+                      grid: { columns: '1fr 1fr', gap: '0.5rem' },
+                    },
+                  },
+                  {
+                    fields: ['status', 'rating'],
+                    layout: {
+                      type: 'grid',
+                      grid: { columns: 'auto minmax(0, 1fr)', gap: '0.5rem' },
+                    },
+                  },
+                  {
+                    fields: ['progress'],
+                    layout: { type: 'auto' },
+                  },
+                ],
+              },
+              style: {
+                border: '1px solid var(--widgemo-color-cardBorder, #dbe2ea)',
+                borderRadius: '14px',
+                background: 'var(--widgemo-color-cardBg, #ffffff)',
+                boxShadow: '0 10px 24px color-mix(in srgb, var(--widgemo-color-text, #0f172a) 12%, transparent)',
+                padding: '1rem',
+              },
+            },
+            actions: [
+              itemAction('open-profile', 'Open Profile', 'view', 'pinned', 'secondary', undefined, localActionHandler()),
+              itemAction('message-user', 'Message', 'message', 'onHover'),
+              itemAction('archive-card', 'Archive', 'archive', 'menu'),
+            ],
+            gestures: [
+              {
+                type: 'row-click',
+                enabled: true,
+                interactionId: 'open-card',
+                interactionLabel: 'Open Card',
+                onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+              },
+            ],
+          },
+        ),
+        footer: {
+          subtitle: 'Custom 5-line card composition with clickable email, local-first actions, and card-click gestures',
+        },
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
