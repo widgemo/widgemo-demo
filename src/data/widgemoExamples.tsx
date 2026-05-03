@@ -782,6 +782,14 @@ const widgemoExamplesRaw: Array<{
         },
         content: {
           mode: 'board',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' as const }
+          },
           modeConfig: {
             board: {
               columnField: 'status',
@@ -791,14 +799,6 @@ const widgemoExamplesRaw: Array<{
                 { id: 'inactive', label: 'Inactive', color: '#6c757d' }
               ],
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                  { key: 'department', label: 'Department' }
-                ],
-                layout: { type: 'auto' as const }
-              }
             }
           }
         }
@@ -1267,6 +1267,14 @@ const widgemoExamplesRaw: Array<{
           themeOverrides: {
             padding: '1rem'
           },
+          item: {
+            fields: [
+              { key: 'name',       label: 'Name',       type: 'text' as const },
+              { key: 'role',       label: 'Role' },
+              { key: 'department', label: 'Department' },
+            ],
+            layout: { type: 'auto' as const },
+          },
           modeConfig: {
             board: {
               columnField: 'status',
@@ -1276,14 +1284,6 @@ const widgemoExamplesRaw: Array<{
                 { id: 'inactive', label: 'Inactive', color: '#6c757d' },
               ],
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name',       label: 'Name',       type: 'text' as const },
-                  { key: 'role',       label: 'Role' },
-                  { key: 'department', label: 'Department' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
           },
         },
@@ -1305,6 +1305,13 @@ const widgemoExamplesRaw: Array<{
         },
         content: {
           mode: 'board',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' as const },
+          },
           modeConfig: {
             board: {
               columnField: 'status',
@@ -1318,13 +1325,6 @@ const widgemoExamplesRaw: Array<{
                 order: ['Engineering', 'Design', 'Business'],
               },
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
           },
         },
@@ -2743,14 +2743,14 @@ const widgemoExamplesRaw: Array<{
                 onDragStart: (item: Entity, fromColumn: string) => console.log('[onDragStart]', item.name, 'from', fromColumn),
                 onDrop: (item: Entity, fromColumn: string, toColumn: string) => console.log('[onDrop]', item.name, `${fromColumn} → ${toColumn}`),
               },
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role', renderAs: 'badge' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
