@@ -1306,13 +1306,6 @@ export const progressiveExamples: ProgressiveExample[] = [
               { id: 'pending', label: 'Pending', color: '#f59e0b' },
               { id: 'inactive', label: 'Inactive', color: '#6b7280' },
             ],
-            item: {
-              fields: [
-                { key: 'name', label: 'Name', type: 'text' },
-                { key: 'role', label: 'Role', type: 'text' },
-              ],
-              layout: { type: 'auto' },
-            },
           },
         }),
         footer: {
@@ -1339,7 +1332,6 @@ export const progressiveExamples: ProgressiveExample[] = [
         content: createBoardContent(twentyUsersData, [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'role', label: 'Role', type: 'text' },
-          { key: 'department', label: 'Department', type: 'text' },
         ], {
           board: {
             columnField: 'status',
@@ -1351,13 +1343,6 @@ export const progressiveExamples: ProgressiveExample[] = [
             swimlanes: {
               field: 'department',
               order: ['Engineering', 'Design', 'Business'],
-            },
-            item: {
-              fields: [
-                { key: 'name', label: 'Name', type: 'text' },
-                { key: 'role', label: 'Role', type: 'text' },
-              ],
-              layout: { type: 'auto' },
             },
           },
         }),
@@ -1390,8 +1375,6 @@ export const progressiveExamples: ProgressiveExample[] = [
         content: createBoardContent(twentyUsersData, [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'role', label: 'Role', type: 'text' },
-          { key: 'department', label: 'Department', type: 'text' },
-          { key: 'status', label: 'Status', type: 'text' },
         ], {
           board: {
             columnField: 'status',
@@ -1403,13 +1386,6 @@ export const progressiveExamples: ProgressiveExample[] = [
             swimlanes: {
               field: 'department',
               order: ['Engineering', 'Design', 'Business'],
-            },
-            item: {
-              fields: [
-                { key: 'name', label: 'Name', type: 'text' },
-                { key: 'role', label: 'Role', type: 'text' },
-              ],
-              layout: { type: 'auto' },
             },
           },
           actions: [
@@ -1456,8 +1432,6 @@ export const progressiveExamples: ProgressiveExample[] = [
         content: createBoardContent(twentyUsersData, [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
-          { key: 'department', label: 'Department', type: 'text' },
-          { key: 'status', label: 'Status', type: 'text' },
         ], {
           board: {
             columnField: 'status',
@@ -1499,13 +1473,6 @@ export const progressiveExamples: ProgressiveExample[] = [
                 console.log('[Progressive 34] Drag started:', item.name, 'from', fromColumn),
               onDrop: (item: Entity, fromColumn: string, toColumn: string) =>
                 console.log('[Progressive 34] Dropped:', item.name, `${fromColumn} → ${toColumn}`),
-            },
-            item: {
-              fields: [
-                { key: 'name', label: 'Name', type: 'text' },
-                { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
-              ],
-              layout: { type: 'auto' },
             },
           },
           actions: [
