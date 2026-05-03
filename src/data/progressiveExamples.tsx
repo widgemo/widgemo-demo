@@ -7,6 +7,7 @@ import type {
   ItemConfig,
   ModeConfig,
   TableModeConfig,
+  BoardModeConfig,
   WidgemoConfig,
 } from '@widgemo/widgemo-core';
 import { teaserSampleData } from './sampleData';
@@ -157,6 +158,24 @@ const createGridContent = (
   return {
     mode: 'grid',
     ...(grid ? { modeConfig: { grid } } : {}),
+    item: createItem(fields, item),
+    ...rest,
+  };
+};
+
+const createBoardContent = (
+  data: Entity[],
+  fields: FieldConfig[],
+  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item' | 'modeConfig'> & {
+    board?: BoardModeConfig;
+    item?: Partial<ItemConfig<Entity>>;
+  } = {},
+): ContentConfig<Entity> => {
+  const { board, item, ...rest } = overrides;
+  void data;
+  return {
+    mode: 'board',
+    ...(board ? { modeConfig: { board } } : {}),
     item: createItem(fields, item),
     ...rest,
   };
@@ -1256,6 +1275,256 @@ export const progressiveExamples: ProgressiveExample[] = [
         ),
         footer: {
           subtitle: 'Custom 5-line card composition with clickable email, local-first actions, and card-click gestures',
+        },
+      },
+    },
+  },
+
+  // ── BOARD PROGRESSIVE EXAMPLES (31-34) ──────────────────────────────────
+  {
+    id: 'progressive-31-board-basic',
+    title: 'Progressive 31 — Board: Basic Columns',
+    description:
+      'First board example: simplest configuration grouping items by status field. Three columns (Active, Pending, Inactive) with basic card rendering.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-31',
+      zones: {
+        header: {
+          title: 'Team Board',
+          subtitle: 'Basic board mode grouped by status',
+          icon: 'table',
+        },
+        content: createBoardContent(tenUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+        ], {
+          board: {
+            columnField: 'status',
+            columns: [
+              { id: 'active', label: 'Active', color: '#10b981' },
+              { id: 'pending', label: 'Pending', color: '#f59e0b' },
+              { id: 'inactive', label: 'Inactive', color: '#6b7280' },
+            ],
+            item: {
+              fields: [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+              ],
+              layout: { type: 'auto' },
+            },
+          },
+        }),
+        footer: {
+          subtitle: 'Status-based board with 3 columns and 2-field card display',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-32-board-swimlanes',
+    title: 'Progressive 32 — Board: Swimlanes (Rows)',
+    description:
+      'Adds swimlane rows grouped by department field. The board now shows a 2D grid: status columns crossed with department swimlane rows, each cell containing items matching both criteria.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-32',
+      zones: {
+        header: {
+          title: 'Team Board by Department',
+          subtitle: 'Status columns × department swimlanes',
+          icon: 'table',
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+        ], {
+          board: {
+            columnField: 'status',
+            columns: [
+              { id: 'active', label: 'Active', color: '#10b981' },
+              { id: 'pending', label: 'Pending', color: '#f59e0b' },
+              { id: 'inactive', label: 'Inactive', color: '#6b7280' },
+            ],
+            swimlanes: {
+              field: 'department',
+              order: ['Engineering', 'Design', 'Business'],
+            },
+            item: {
+              fields: [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+              ],
+              layout: { type: 'auto' },
+            },
+          },
+        }),
+        footer: {
+          subtitle: '2D board with status columns and department swimlane rows',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-33-board-with-actions',
+    title: 'Progressive 33 — Board: Card Actions',
+    description:
+      'Adds item actions (pinned and menu) to cards, and zone actions (Invite User, Sync, Export). Cards now display action buttons and support gestures.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-33',
+      zones: {
+        header: {
+          title: 'Team Board with Actions',
+          subtitle: 'Status columns × department swimlanes + card & zone actions',
+          icon: 'table',
+          actions: [
+            zoneAction('invite-user', 'Invite User', 'add', 'pinned', 'primary', localActionHandler()),
+            zoneAction('sync-board', 'Sync', 'refresh', 'pinned', 'secondary'),
+            zoneAction('export-board', 'Export CSV', 'download', 'menu'),
+          ],
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          { key: 'status', label: 'Status', type: 'text' },
+        ], {
+          board: {
+            columnField: 'status',
+            columns: [
+              { id: 'active', label: 'Active', color: '#10b981' },
+              { id: 'pending', label: 'Pending', color: '#f59e0b' },
+              { id: 'inactive', label: 'Inactive', color: '#6b7280' },
+            ],
+            swimlanes: {
+              field: 'department',
+              order: ['Engineering', 'Design', 'Business'],
+            },
+            item: {
+              fields: [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text' },
+              ],
+              layout: { type: 'auto' },
+            },
+          },
+          actions: [
+            itemAction('open-user', 'Open User', 'view', 'pinned', 'secondary', undefined, localActionHandler()),
+            itemAction('message-user', 'Message', 'message', 'onHover'),
+            itemAction('more-options', 'More', 'menu', 'menu'),
+          ],
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'card-click',
+              interactionLabel: 'Card Click',
+              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+            },
+          ],
+        }),
+        footer: {
+          subtitle: 'Board with zone actions, card actions, and row-click gestures',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-34-board-advanced',
+    title: 'Progressive 34 — Board: Advanced (Drag, Labels, Hooks)',
+    description:
+      'Final board example: enables drag-and-drop, custom swimlane labels, WIP limits on columns, and drag hooks (onDragStart/onDrop) for console logging. This showcases the full capability of board mode.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-34',
+      zones: {
+        header: {
+          title: 'Advanced Team Board',
+          subtitle: 'Drag-enabled board with swimlane labels, WIP limits, and drag hooks',
+          icon: 'table',
+          actions: [
+            zoneAction('invite-user', 'Invite User', 'add', 'pinned', 'primary', localActionHandler()),
+            zoneAction('sync-board', 'Sync', 'refresh', 'pinned', 'secondary'),
+            zoneAction('export-board', 'Export CSV', 'download', 'menu'),
+          ],
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
+          { key: 'department', label: 'Department', type: 'text' },
+          { key: 'status', label: 'Status', type: 'text' },
+        ], {
+          board: {
+            columnField: 'status',
+            columns: [
+              { id: 'active', label: '▶ Active', value: 'active', color: '#10b981', wipLimit: 8 },
+              { id: 'pending', label: '⏳ Pending', value: 'pending', color: '#f59e0b', wipLimit: 5 },
+              { id: 'inactive', label: '✓ Inactive', value: 'inactive', color: '#6b7280' },
+            ],
+            swimlanes: {
+              field: 'department',
+              order: ['Engineering', 'Design', 'Business'],
+              labels: {
+                Engineering: '🚀 R&D Engineering',
+                Design: '✏️ Product Design',
+                Business: '💼 Business Dev',
+              },
+              defaultLabel: '🏢 Other Teams',
+            },
+            dragEnabled: true,
+            actionsPosition: 'hover' as const,
+            actions: {
+              card: [
+                {
+                  id: 'card-view',
+                  label: 'View',
+                  icon: 'view',
+                  placement: 'pinned' as const,
+                },
+                {
+                  id: 'card-edit',
+                  label: 'Edit',
+                  icon: 'edit',
+                  placement: 'menu' as const,
+                },
+              ],
+            },
+            hooks: {
+              onDragStart: (item: Entity, fromColumn: string) =>
+                console.log('[Progressive 34] Drag started:', item.name, 'from', fromColumn),
+              onDrop: (item: Entity, fromColumn: string, toColumn: string) =>
+                console.log('[Progressive 34] Dropped:', item.name, `${fromColumn} → ${toColumn}`),
+            },
+            item: {
+              fields: [
+                { key: 'name', label: 'Name', type: 'text' },
+                { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
+              ],
+              layout: { type: 'auto' },
+            },
+          },
+          actions: [
+            itemAction('open-user', 'Open User', 'view', 'pinned', 'secondary', undefined, localActionHandler()),
+            itemAction('message-user', 'Message', 'message', 'onHover'),
+            itemAction('more-options', 'More', 'menu', 'menu'),
+          ],
+          gestures: [
+            {
+              type: 'row-click',
+              enabled: true,
+              interactionId: 'card-click',
+              interactionLabel: 'Card Click',
+              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+            },
+          ],
+        }),
+        footer: {
+          subtitle: 'Full board capabilities: drag-and-drop with hooks, custom swimlane labels with emojis, WIP limits on columns',
         },
       },
     },
