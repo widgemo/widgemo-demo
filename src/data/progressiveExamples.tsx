@@ -971,7 +971,7 @@ export const progressiveExamples: ProgressiveExample[] = [
   {
     id: 'progressive-23-carousel-autoplay',
     title: 'Progressive 23 — Carousel: Auto-Play',
-    description: 'Enables infinite looping with auto-play every 3 seconds.',
+    description: 'Enables infinite looping with auto-play every 3 seconds. No navigation controls for a passive, self-advancing carousel experience.',
     data: tenUsersData,
     config: {
       id: 'progressive-23',
@@ -981,7 +981,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           avatarField,
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'role', label: 'Role', type: 'text' },
-        ], { carousel: { showArrows: true, showIndicators: true, infinite: true, autoPlay: true, autoPlayInterval: 3000 } }),
+        ], { carousel: { showArrows: false, showIndicators: false, infinite: true, autoPlay: true, autoPlayInterval: 3000 } }),
       },
     },
   },
@@ -1001,7 +1001,17 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'role', label: 'Role', type: 'text' },
           statusField,
           ratingField,
-        ], { carousel: { itemWidth: 260, gap: 20, showArrows: true } }),
+        ], {
+          carousel: { itemWidth: 260, gap: 20, showArrows: true },
+          gestures: [
+            {
+              type: 'item-click',
+              enabled: true,
+              interactionId: 'carousel-card-click',
+              interactionLabel: 'Carousel Card Click',
+            },
+          ],
+        }),
       },
     },
   },
