@@ -1,6 +1,6 @@
 import React from 'react';
 import { teaserSampleData } from './sampleData';
-import type { Entity, ActionContext } from '@widgemo/widgemo-core';
+import type { Entity, InteractionContext } from '@widgemo/widgemo-core';
 import { fireDemoAction } from '../utils/demoActionBus';
 // Memoized to prevent recreation on renders, improving performance by avoiding unnecessary computations.
 export const twoUsersData = teaserSampleData.slice(0, 2);
@@ -153,7 +153,7 @@ const widgemoExamples: Array<{
               icon: 'add',
               placement: 'pinned',
               variant: 'primary',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'edit-user',
@@ -161,7 +161,7 @@ const widgemoExamples: Array<{
               icon: 'edit',
               placement: 'pinned',
               variant: 'secondary',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'delete-user',
@@ -169,42 +169,42 @@ const widgemoExamples: Array<{
               icon: 'delete',
               placement: 'pinned',
               variant: 'danger',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'delete-user', actionLabel: 'Delete User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete-user', actionLabel: 'Delete User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
               placement: 'onHover',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'share-user',
               label: 'Share User',
               icon: 'share',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'share-user', actionLabel: 'Share User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share-user', actionLabel: 'Share User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'export-user',
               label: 'Export User',
               icon: 'export',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'export-user', actionLabel: 'Export User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-user', actionLabel: 'Export User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'archive-user',
               label: 'Archive User',
               icon: 'archive',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             }
           ],
           actionOverflow: {
@@ -231,7 +231,7 @@ const widgemoExamples: Array<{
               icon: 'edit',
               placement: 'pinned',
               variant: 'secondary',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'edit-item', actionLabel: 'Edit', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-item', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'delete-item',
@@ -239,28 +239,28 @@ const widgemoExamples: Array<{
               icon: 'delete',
               placement: 'onHover',
               variant: 'danger',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'delete-item', actionLabel: 'Delete', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete-item', actionLabel: 'Delete', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'archive-item',
               label: 'Archive',
               icon: 'archive',
               placement: 'onHover',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'archive-item', actionLabel: 'Archive', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-item', actionLabel: 'Archive', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'view-item',
               label: 'View Details',
               icon: 'view',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'view-item', actionLabel: 'View Details', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-item', actionLabel: 'View Details', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'duplicate-item',
               label: 'Duplicate',
               icon: 'copy',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'duplicate-item', actionLabel: 'Duplicate', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-item', actionLabel: 'Duplicate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             }
           ],
           actionOverflow: {
@@ -306,7 +306,7 @@ const widgemoExamples: Array<{
               icon: 'add',
               variant: 'primary',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-user', actionLabel: 'Add User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'refresh',
@@ -314,7 +314,7 @@ const widgemoExamples: Array<{
               icon: 'refresh',
               variant: 'secondary',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'refresh', actionLabel: 'Refresh', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'refresh', actionLabel: 'Refresh', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             }
           ]
         },
@@ -418,7 +418,7 @@ const widgemoExamples: Array<{
           interaction: {
             onRowClick: (item: unknown) => {
               const row = item as { name: string; email: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'onClick', entity: row as unknown as Record<string, unknown> });
+              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
             }
           }
         }
@@ -454,7 +454,7 @@ const widgemoExamples: Array<{
           interaction: {
             onRowClick: (item: unknown) => {
               const row = item as { name: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'onClick', entity: row as unknown as Record<string, unknown> });
+              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
             }
           }
         }
@@ -876,35 +876,35 @@ const widgemoExamples: Array<{
               label: 'Edit',
               icon: 'edit',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit-user', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'view-profile',
               label: 'View Profile',
               icon: 'view',
               placement: 'onHover',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view-profile', actionLabel: 'View Profile', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'send-message',
               label: 'Send Message',
               icon: 'message',
               placement: 'onHover',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'duplicate-user',
               label: 'Duplicate',
               icon: 'duplicate',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'duplicate-user', actionLabel: 'Duplicate', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-user', actionLabel: 'Duplicate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'archive-user',
               label: 'Archive',
               icon: 'archive',
               placement: 'menu',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             }
           ]
         }
@@ -944,14 +944,14 @@ const widgemoExamples: Array<{
               label: 'Edit',
               icon: 'edit',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'delete',
               label: 'Delete',
               icon: 'delete',
               placement: 'onHover',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'delete', actionLabel: 'Delete', source: 'onAction', entity: ctx.entity as Record<string, unknown> })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'delete', actionLabel: 'Delete', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             }
           ]
         }
@@ -979,7 +979,7 @@ const widgemoExamples: Array<{
               icon: 'add',
               variant: 'primary',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'add-member', actionLabel: 'Add Member', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'add-member', actionLabel: 'Add Member', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             }
           ]
         },
@@ -1018,21 +1018,21 @@ const widgemoExamples: Array<{
               icon: 'download',
               variant: 'secondary',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'export-pdf',
               label: 'Export PDF',
               icon: 'download',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             },
             {
               id: 'share',
               label: 'Share',
               icon: 'share',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             }
           ]
         },
@@ -1072,7 +1072,7 @@ const widgemoExamples: Array<{
               icon: 'check',
               variant: 'primary',
               placement: 'pinned',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'resolve-all', actionLabel: 'Resolve All', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'resolve-all', actionLabel: 'Resolve All', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
             }
           ]
         },
@@ -1482,7 +1482,7 @@ const widgemoExamples: Array<{
               label: 'Export',
               icon: 'download',
               placement: 'pinned' as const,
-              onAction: (context: ActionContext) => fireDemoAction({ actionId: 'export', actionLabel: 'Export', source: 'onAction', data: context.data as Record<string, unknown>[], zone: context.zone }),
+              onAction: (context: InteractionContext) => fireDemoAction({ actionId: 'export', actionLabel: 'Export', source: 'action.onAction', data: context.data as Record<string, unknown>[], zone: context.zone }),
             },
           ],
         },
@@ -1554,22 +1554,22 @@ const widgemoExamples: Array<{
           title: 'Zone Actions Demo',
           subtitle: 'placement: pinned / menu · handler(ActionContext) · indicator="color-shift"',
           actions: [
-            { id: 'create-user', label: 'New User', icon: 'user', placement: 'pinned' as const, onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'create-user', actionLabel: 'New User', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
-            { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const, onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'create-team', actionLabel: 'New Team', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
-            { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const, onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'create-report', actionLabel: 'New Report', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'create-user', label: 'New User', icon: 'user', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-user', actionLabel: 'New User', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'create-team', label: 'New Team', icon: 'users', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-team', actionLabel: 'New Team', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'create-report', label: 'New Report', icon: 'chart', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'create-report', actionLabel: 'New Report', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
             {
               id: 'export-all',
               label: 'Export All',
               icon: 'download',
               placement: 'pinned' as const,
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'export-all', actionLabel: 'Export All', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-all', actionLabel: 'Export All', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
             },
             {
               id: 'settings',
               label: 'Settings',
               icon: 'settings',
               placement: 'menu' as const,
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'settings', actionLabel: 'Settings', source: 'onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'settings', actionLabel: 'Settings', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }),
             },
           ],
           actionOverflow: {
@@ -1589,15 +1589,15 @@ const widgemoExamples: Array<{
             layout: { type: 'auto' },
           },
           itemActions: [
-            { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'view', actionLabel: 'View', source: 'onAction', entity: ctx.entity as Record<string, unknown> }) },
-            { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'onAction', entity: ctx.entity as Record<string, unknown> }) },
+            { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
+            { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
             {
               id: 'pinned-delete',
               label: 'Delete',
               icon: 'delete',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'pinned-delete', actionLabel: 'Delete', source: 'onAction', entity: ctx.entity as Record<string, unknown> }),
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'pinned-delete', actionLabel: 'Delete', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
             },
           ],
           actionOverflow: { maxInline: 2, menuLabel: 'More', indicator: 'none' as const },
@@ -1637,7 +1637,7 @@ const widgemoExamples: Array<{
               icon: 'close',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status === 'active',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'deactivate', actionLabel: 'Deactivate', source: 'onAction', entity: ctx.entity as Record<string, unknown> }),
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'deactivate', actionLabel: 'Deactivate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
             },
             {
               id: 'activate',
@@ -1645,7 +1645,7 @@ const widgemoExamples: Array<{
               icon: 'refresh',
               placement: 'pinned' as const,
               visibleIf: (e: Entity) => e.status !== 'active',
-              onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'activate', actionLabel: 'Activate', source: 'onAction', entity: ctx.entity as Record<string, unknown> }),
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'activate', actionLabel: 'Activate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
             },
           ],
           actionOverflow: { maxInline: 1, menuLabel: 'More', indicator: 'none' as const },
@@ -2730,14 +2730,14 @@ const widgemoExamples: Array<{
                     label: 'View',
                     icon: 'view',
                     placement: 'pinned' as const,
-                    onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'onAction', entity: ctx.entity as Record<string, unknown> }),
+                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
                   },
                   {
                     id: 'card-edit',
                     label: 'Edit',
                     icon: 'edit',
                     placement: 'menu' as const,
-                    onAction: (ctx: ActionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'onAction', entity: ctx.entity as Record<string, unknown> }),
+                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
                   },
                 ],
               },
