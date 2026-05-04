@@ -75,9 +75,9 @@ export const widgemoConfigProperties: Array<{
   { category: 'TableConfig', property: 'compact', type: 'boolean', status: 'implemented', description: 'Compact table spacing', usage: 'Reduces padding.', example: 'true' },
 
   // BoardConfig properties
-  { category: 'BoardConfig', property: 'columns', type: 'Array<{ id: string; label?: string; color?: string }>', status: 'implemented', description: 'Board column definitions', usage: 'Defines kanban columns.', example: '[{ id: "todo", label: "To Do" }]' },
-  { category: 'BoardConfig', property: 'groupBy', type: 'string', status: 'not-implemented', description: 'Field to group items by', usage: 'Not implemented.', example: '"status"' },
-  { category: 'BoardConfig', property: 'draggable', type: 'boolean', status: 'partial', description: 'Enable drag and drop', usage: 'Basic drag logic exists.', example: 'true' },
+  { category: 'BoardConfig', property: 'columns', type: '{ field: string; items: Array<{ id: string; label: string; value?: string | number | boolean; color?: string }> }', status: 'implemented', description: 'Board column axis configuration', usage: 'Defines the field used for columns and the column items.', example: '{ field: "status", items: [{ id: "todo", label: "To Do" }] }' },
+  { category: 'BoardConfig', property: 'swimlanes', type: '{ field: string; items: Array<{ id: string; label: string; value?: string | number | boolean; color?: string }>; layout?: { type: "collapsible" | "matrix" } }', status: 'implemented', description: 'Board swimlane axis configuration', usage: 'Defines the field used for swimlanes and the swimlane items.', example: '{ field: "department", items: [{ id: "engineering", label: "Engineering", value: "Engineering" }] }' },
+  { category: 'BoardConfig', property: 'dragEnabled', type: 'boolean', status: 'implemented', description: 'Enable drag and drop', usage: 'Enables board drag and drop interactions.', example: 'true' },
 
   // EmptyStateConfig properties
   { category: 'EmptyStateConfig', property: 'message', type: 'string', status: 'implemented', description: 'Empty state message', usage: 'Displayed when no data.', example: '"No items found"' },
