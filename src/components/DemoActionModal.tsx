@@ -18,6 +18,7 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
   const isInteractionContext = payload.source === 'interactions.onEvent';
   const isLocalAction = payload.source === 'action.onAction';
   const isGesture = payload.source === 'gestures[item-click].onTrigger';
+    const isBoardHook = payload.source === 'board.hooks.onDragStart' || payload.source === 'board.hooks.onDrop';
 
   const renderEntityTable = (entity: unknown) => {
     // Defensive type checking — entity should be an object, not a string or array
@@ -169,6 +170,8 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
             <Badge bg="success">action.onAction(InteractionContext)</Badge>
           ) : isGesture ? (
             <Badge bg="info">gestures[item-click].onTrigger(InteractionContext)</Badge>
+          ) : isBoardHook ? (
+            <Badge bg="warning" text="dark">{payload.source}</Badge>
           ) : (
             <Badge bg="secondary">callback</Badge>
           )}
@@ -198,7 +201,7 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-success-bg-subtle, #d1e7dd)', fontSize: '0.8125rem', border: '1px solid var(--bs-success-border-subtle, #a3cfbb)' }}
           >
-            This event came from a local callback (<strong>action.onAction</strong> or <strong>gestures[item-click].onTrigger</strong>)
+            This event came from a local callback (<strong>action.onAction</strong>, <strong>gestures[item-click].onTrigger</strong>, or board drag hook callbacks)
             instead of the global <strong>interactions.onEvent</strong> fallback sink.
           </div>
         )}

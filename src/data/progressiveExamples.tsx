@@ -192,6 +192,22 @@ const emitDemoInteraction = (ctx: InteractionContext): void => {
   });
 };
 
+const emitBoardHookInteraction = (
+  source: DemoActionSource,
+  actionId: string,
+  actionLabel: string,
+  entity?: Entity,
+): void => {
+  fireDemoAction({
+    actionId,
+    actionLabel,
+    source,
+    ...(entity ? { entity: entity as Record<string, unknown> } : {}),
+    data: twentyUsersData as Record<string, unknown>[],
+    zone: 'content',
+  });
+};
+
 const emitLocalInteraction = (ctx: InteractionContext, source: DemoActionSource): void => {
   fireDemoAction({
     actionId: ctx.interactionId,
@@ -1414,14 +1430,14 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-34-board-advanced',
     title: 'Progressive 34 — Board: Advanced (Drag, Labels, Hooks)',
     description:
-      'Final board example: enables drag-and-drop, custom swimlane labels, WIP limits on columns, and drag hooks (onDragStart/onDrop) for console logging. This showcases the full capability of board mode.',
+      'Final board example: enables drag-and-drop, custom swimlane labels, WIP limits on columns, and visible drag hook callbacks (onDragStart/onDrop) shown in the demo interaction modal.',
     data: twentyUsersData,
     config: {
       id: 'progressive-34',
       zones: {
         header: {
           title: 'Advanced Team Board',
-          subtitle: 'Drag-enabled board with swimlane labels, WIP limits, and drag hooks',
+          subtitle: 'Drag-enabled board with swimlane labels, WIP limits, content actions, and drag hook callbacks',
           icon: 'table',
           actions: [
             zoneAction('invite-user', 'Invite User', 'add', 'pinned', 'primary', localActionHandler()),
@@ -1451,28 +1467,21 @@ export const progressiveExamples: ProgressiveExample[] = [
               defaultLabel: '🏢 Other Teams',
             },
             dragEnabled: true,
-            actionsPosition: 'hover' as const,
-            actions: {
-              card: [
-                {
-                  id: 'card-view',
-                  label: 'View',
-                  icon: 'view',
-                  placement: 'pinned' as const,
-                },
-                {
-                  id: 'card-edit',
-                  label: 'Edit',
-                  icon: 'edit',
-                  placement: 'menu' as const,
-                },
-              ],
-            },
             hooks: {
               onDragStart: (item: Entity, fromColumn: string) =>
-                console.log('[Progressive 34] Drag started:', item.name, 'from', fromColumn),
+                emitBoardHookInteraction(
+                  'board.hooks.onDragStart',
+                  'board-drag-start',
+                  `Drag started: ${String(item.name ?? item.id)} from ${fromColumn}`,
+                  item,
+                ),
               onDrop: (item: Entity, fromColumn: string, toColumn: string) =>
-                console.log('[Progressive 34] Dropped:', item.name, `${fromColumn} → ${toColumn}`),
+                emitBoardHookInteraction(
+                  'board.hooks.onDrop',
+                  'board-drop',
+                  `Dropped: ${String(item.name ?? item.id)} ${fromColumn} -> ${toColumn}`,
+                  item,
+                ),
             },
           },
           actions: [
@@ -1491,7 +1500,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
         }),
         footer: {
-          subtitle: 'Full board capabilities: drag-and-drop with hooks, custom swimlane labels with emojis, WIP limits on columns',
+          subtitle: 'Full board capabilities: drag-and-drop with visible hook callbacks, custom swimlane labels, content actions, and WIP limits',
         },
       },
     },
