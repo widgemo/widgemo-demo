@@ -404,16 +404,16 @@ const widgemoExamplesRaw: Array<{
   },
 
   {
-    id: 'row-click',
-    title: 'Row Click (gestures[row-click].onTrigger)',
-    description: 'Demonstrates local content.gestures[{ type: "row-click" }].onTrigger. Click any row — including the email cell — to fire the local gesture callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    id: 'item-click',
+    title: 'Item Click (gestures[item-click].onTrigger)',
+    description: 'Demonstrates local content.gestures[{ type: "item-click" }].onTrigger. Click any row — including the email cell — to fire the local gesture callback. The email column uses type: "email" which renders as plain text, so it participates in item-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
       config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-            subtitle: 'Click any cell (including the plain-text email) to fire gestures[row-click].onTrigger'
+            subtitle: 'Click any cell (including the plain-text email) to fire gestures[item-click].onTrigger'
         },
         content: {
           mode: 'table',
@@ -422,7 +422,7 @@ const widgemoExamplesRaw: Array<{
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // type: 'email' renders plain text — clicking it fires the row-click gesture like any other cell
+              // type: 'email' renders plain text — clicking it fires the item-click gesture like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
@@ -430,11 +430,11 @@ const widgemoExamplesRaw: Array<{
           },
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
-              interactionId: 'row-click',
-              interactionLabel: 'Row Click',
-              onTrigger: localCallback('gestures[row-click].onTrigger'),
+              interactionId: 'item-click',
+              interactionLabel: 'Item Click',
+              onTrigger: localCallback('gestures[item-click].onTrigger'),
             },
           ]
         }
@@ -443,16 +443,16 @@ const widgemoExamplesRaw: Array<{
   },
 
   {
-    id: 'row-click-with-link',
-    title: 'Row Click with Email Link (renderAs: link)',
-    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire the row handler (stopPropagation). This variation keeps gesture metadata and lets interactions.onEvent handle fallback.',
+    id: 'item-click-with-link',
+    title: 'Item Click with Email Link (renderAs: link)',
+    description: 'Like item-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire the row handler (stopPropagation). This variation keeps gesture metadata and lets interactions.onEvent handle fallback.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows + Email Link',
-          subtitle: 'Click a row for row-click fallback · click the email to open mailto: (no row handler)'
+          subtitle: 'Click a row for item-click fallback · click the email to open mailto: (no row handler)'
         },
         content: {
           mode: 'table',
@@ -461,7 +461,7 @@ const widgemoExamplesRaw: Array<{
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops row-click propagation
+              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops item-click propagation
               { key: 'email',      label: 'Email',      type: 'email', renderAs: 'link' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
@@ -469,10 +469,10 @@ const widgemoExamplesRaw: Array<{
           },
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
-              interactionId: 'row-click',
-              interactionLabel: 'Row Click',
+              interactionId: 'item-click',
+              interactionLabel: 'Item Click',
             },
           ]
         }

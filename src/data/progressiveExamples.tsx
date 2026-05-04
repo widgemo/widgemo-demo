@@ -536,10 +536,10 @@ export const progressiveExamples: ProgressiveExample[] = [
     },
   },
   {
-    id: 'progressive-12-row-click',
-    title: 'Progressive 12 — Row Click Interaction',
+    id: 'progressive-12-item-click',
+    title: 'Progressive 12 — Item Click Interaction',
     description:
-      'Adds row-level gesture handling via content.gestures[{ type: "row-click" }].onTrigger with local-first callback semantics.',
+      'Adds row-level gesture handling via content.gestures[{ type: "item-click" }].onTrigger with local-first callback semantics.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -562,11 +562,11 @@ export const progressiveExamples: ProgressiveExample[] = [
             table: traditionalTableConfig,
             gestures: [
               {
-                type: 'row-click',
+                type: 'item-click',
                 enabled: true,
-                interactionId: 'row-click',
-                interactionLabel: 'Row Click',
-                onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+                interactionId: 'item-click',
+                interactionLabel: 'Item Click',
+                onTrigger: localActionHandler('gestures[item-click].onTrigger'),
               },
             ],
           },
@@ -795,7 +795,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-20-rich-cells-2col',
     title: 'Progressive 20 — Rich Cells: 2 columns',
     description:
-      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds row-click gesture metadata under content.gestures with type="row-click" and uses global interactions.onEvent as fallback.',
+      'Sets modeConfig.table.columns = 2. The same card-based rendering is split into two side-by-side columns, halving the vertical space used. Field groupings via item.layout.sections can label each column independently. Adds item-click gesture metadata under content.gestures with type="item-click" and uses global interactions.onEvent as fallback.',
     data: eightUsersData,
     config: {
       id: 'progressive-20',
@@ -809,10 +809,10 @@ export const progressiveExamples: ProgressiveExample[] = [
           table: { type: 'rich-cells', columns: 2 },
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
-              interactionId: 'row-click',
-              interactionLabel: 'Row Click',
+              interactionId: 'item-click',
+              interactionLabel: 'Item Click',
             },
           ],
         }),
@@ -1017,7 +1017,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-28-grid-card-click',
     title: 'Progressive 28 — Grid: Card Click Gesture',
     description:
-      'Adds a content gesture entry with type="row-click" for grid cards. Clicking a card emits kind="row-click" with local-first callback semantics; action-button clicks do not trigger the card gesture.',
+      'Adds a content gesture entry with type="item-click" for grid cards. Clicking a card emits kind="item-click" with local-first callback semantics; action-button clicks do not trigger the card gesture.',
     data: tenUsersData,
     config: {
       id: 'progressive-28',
@@ -1045,11 +1045,11 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
               interactionId: 'open-card',
               interactionLabel: 'Open Card',
-              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+              onTrigger: localActionHandler('gestures[item-click].onTrigger'),
             },
           ],
         }),
@@ -1118,7 +1118,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
               interactionId: 'open-card',
               interactionLabel: 'Open Card',
@@ -1264,11 +1264,11 @@ export const progressiveExamples: ProgressiveExample[] = [
             ],
             gestures: [
               {
-                type: 'row-click',
+                type: 'item-click',
                 enabled: true,
                 interactionId: 'open-card',
                 interactionLabel: 'Open Card',
-                onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+                onTrigger: localActionHandler('gestures[item-click].onTrigger'),
               },
             ],
           },
@@ -1395,16 +1395,16 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
               interactionId: 'card-click',
               interactionLabel: 'Card Click',
-              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+              onTrigger: localActionHandler('gestures[item-click].onTrigger'),
             },
           ],
         }),
         footer: {
-          subtitle: 'Board with zone actions, card actions, and row-click gestures',
+          subtitle: 'Board with zone actions, card actions, and item-click gestures',
         },
       },
     },
@@ -1482,11 +1482,11 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           gestures: [
             {
-              type: 'row-click',
+              type: 'item-click',
               enabled: true,
               interactionId: 'card-click',
               interactionLabel: 'Card Click',
-              onTrigger: localActionHandler('gestures[row-click].onTrigger'),
+              onTrigger: localActionHandler('gestures[item-click].onTrigger'),
             },
           ],
         }),
