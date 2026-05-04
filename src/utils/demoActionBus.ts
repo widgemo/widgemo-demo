@@ -14,6 +14,12 @@ export type DemoActionSource =
   | 'gestures[item-drag-start].onTrigger'
   | 'gestures[item-drop].onTrigger';
 
+export interface DemoBoardLocation {
+  columnId: string;
+  swimlaneValue?: string;
+  index?: number;
+}
+
 export interface DemoActionPayload {
   /** The action id from ActionConfig */
   actionId: string;
@@ -27,6 +33,10 @@ export interface DemoActionPayload {
   data?: Record<string, unknown>[];
   /** The zone name where the action was triggered */
   zone?: string;
+  /** Optional source location for board drag interactions */
+  from?: DemoBoardLocation;
+  /** Optional destination location for board drag interactions */
+  to?: DemoBoardLocation;
 }
 
 type Listener = (payload: DemoActionPayload) => void;
