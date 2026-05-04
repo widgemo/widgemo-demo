@@ -7,7 +7,18 @@
  *          SimplifiedTest calls `setDemoActionListener(fn)` on mount.
  */
 
-export type DemoActionSource = 'onInteraction';
+export type DemoActionSource =
+  | 'interactions.onEvent'
+  | 'action.onAction'
+  | 'gestures[item-click].onTrigger'
+  | 'gestures[item-drag-start].onTrigger'
+  | 'gestures[item-drop].onTrigger';
+
+export interface DemoBoardLocation {
+  columnId: string;
+  swimlaneValue?: string;
+  index?: number;
+}
 
 export interface DemoActionPayload {
   /** The action id from ActionConfig */
@@ -22,6 +33,10 @@ export interface DemoActionPayload {
   data?: Record<string, unknown>[];
   /** The zone name where the action was triggered */
   zone?: string;
+  /** Optional source location for board drag interactions */
+  from?: DemoBoardLocation;
+  /** Optional destination location for board drag interactions */
+  to?: DemoBoardLocation;
 }
 
 type Listener = (payload: DemoActionPayload) => void;
