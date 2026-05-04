@@ -22,6 +22,28 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
     || payload.source === 'gestures[item-drag-start].onTrigger'
     || payload.source === 'gestures[item-drop].onTrigger';
 
+  const renderBoardLocation = (location: { columnId: string; swimlaneValue?: string; index?: number } | undefined) => {
+    if (!location) return <span className="text-muted fst-italic">Not provided</span>;
+    return (
+      <Table size="sm" bordered className="mb-0" style={{ fontSize: '0.8125rem' }}>
+        <tbody>
+          <tr>
+            <td style={{ width: '35%' }} className="text-muted">columnId</td>
+            <td>{location.columnId}</td>
+          </tr>
+          <tr>
+            <td className="text-muted">swimlaneValue</td>
+            <td>{location.swimlaneValue ?? '—'}</td>
+          </tr>
+          <tr>
+            <td className="text-muted">index</td>
+            <td>{location.index ?? '—'}</td>
+          </tr>
+        </tbody>
+      </Table>
+    );
+  };
+
   const renderEntityTable = (entity: unknown) => {
     // Defensive type checking — entity should be an object, not a string or array
     if (typeof entity === 'string') {
@@ -235,6 +257,26 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
               Full dataset in scope
             </h6>
             {renderDataSummary(payload.data)}
+          </div>
+        )}
+
+        {/* Board drag locations */}
+        {(payload.from || payload.to) && (
+          <div className="mt-3">
+            <h6 className="mb-2" style={{ fontSize: '0.875rem' }}>
+              <Badge bg="dark" className="me-2">ctx.from / ctx.to</Badge>
+              Board drag source and destination
+            </h6>
+
+            <div className="mb-2">
+              <div className="text-muted mb-1" style={{ fontSize: '0.75rem' }}>Source (from)</div>
+              {renderBoardLocation(payload.from)}
+            </div>
+
+            <div>
+              <div className="text-muted mb-1" style={{ fontSize: '0.75rem' }}>Destination (to)</div>
+              {renderBoardLocation(payload.to)}
+            </div>
           </div>
         )}
       </Modal.Body>

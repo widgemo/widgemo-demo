@@ -189,6 +189,8 @@ const emitDemoInteraction = (ctx: InteractionContext): void => {
     ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
     data: ctx.data as Record<string, unknown>[],
     zone: ctx.zone,
+    ...(ctx.from ? { from: ctx.from } : {}),
+    ...(ctx.to ? { to: ctx.to } : {}),
   });
 };
 
@@ -200,6 +202,8 @@ const emitLocalInteraction = (ctx: InteractionContext, source: DemoActionSource)
     ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
     data: ctx.data as Record<string, unknown>[],
     zone: ctx.zone,
+    ...(ctx.from ? { from: ctx.from } : {}),
+    ...(ctx.to ? { to: ctx.to } : {}),
   });
 };
 
