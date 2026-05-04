@@ -121,6 +121,36 @@ const richFields: FieldConfig[] = [
   ratingField,
 ];
 
+const customGridProfileFields: FieldConfig[] = [
+  {
+    key: 'src',
+    label: 'Avatar',
+    type: 'image',
+    showLabel: false,
+    imageOptions: { circular: true, width: 48, height: 48 },
+  },
+  { key: 'name', label: 'Name', type: 'text', showLabel: false, wrap: false },
+  {
+    key: 'email',
+    label: 'Email',
+    type: 'email',
+    showLabel: false,
+    renderAs: 'link',
+    wrap: false,
+  },
+  { key: 'department', label: 'Department', type: 'text', wrap: false },
+  currencyField,
+  {
+    ...progressField,
+    showLabel: false,
+  },
+  {
+    ...statusField,
+    showLabel: false,
+  },
+  ratingField,
+];
+
 const createItem = (fields: FieldConfig[], overrides: Partial<ItemConfig<Entity>> = {}): ItemConfig<Entity> => ({
   fields,
   layout: autoItemLayout,
@@ -855,6 +885,51 @@ export const progressiveExamples: ProgressiveExample[] = [
     },
   },
 
+  {
+    id: 'progressive-20a-grid-custom-card-layout',
+    title: 'Progressive 20a — Grid: Custom Card Layout',
+    description: 'Uses a precise CSS-grid card layout: avatar left, stacked name and clickable email, department and salary row, progress row, and status plus rating row. The full card is clickable.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-20a',
+      zones: {
+        header: {
+          title: 'Team Grid — Custom Profile Cards',
+          subtitle: 'Click a card for interaction events or click the email to open mail',
+          icon: 'grid',
+        },
+        content: createGridContent(tenUsersData, customGridProfileFields, {
+          grid: { minItemWidth: '300px', gap: '16px', maxColumns: 3 },
+          gestures: [
+            {
+              type: 'item-click',
+              enabled: true,
+              interactionId: 'profile-card-click',
+              interactionLabel: 'Profile Card Click',
+            },
+          ],
+          item: {
+            layout: {
+              type: 'grid',
+              grid: {
+                columns: '48px minmax(0, 1fr) auto',
+                gap: '0.5rem 0.75rem',
+                areas: [
+                  '"src name name"',
+                  '"src email email"',
+                  '"department department amount"',
+                  '"progress progress progress"',
+                  '"status rating rating"',
+                ],
+              },
+            },
+          },
+        }),
+        footer: { subtitle: 'Custom grid card layout with item-click and mailto links' },
+      },
+    },
+  },
+
   // ─── Carousel Mode ──────────────────────────────────────────────────────────
 
   {
@@ -896,7 +971,7 @@ export const progressiveExamples: ProgressiveExample[] = [
   {
     id: 'progressive-23-carousel-autoplay',
     title: 'Progressive 23 — Carousel: Auto-Play',
-    description: 'Enables infinite looping with auto-play every 3 seconds.',
+    description: 'Enables infinite looping with auto-play every 3 seconds. No navigation controls for a passive, self-advancing carousel experience.',
     data: tenUsersData,
     config: {
       id: 'progressive-23',
@@ -906,7 +981,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           avatarField,
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'role', label: 'Role', type: 'text' },
-        ], { carousel: { showArrows: true, showIndicators: true, infinite: true, autoPlay: true, autoPlayInterval: 3000 } }),
+        ], { carousel: { showArrows: false, showIndicators: false, infinite: true, autoPlay: true, autoPlayInterval: 3000 } }),
       },
     },
   },
@@ -926,7 +1001,17 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'role', label: 'Role', type: 'text' },
           statusField,
           ratingField,
-        ], { carousel: { itemWidth: 260, gap: 20, showArrows: true } }),
+        ], {
+          carousel: { itemWidth: 260, gap: 20, showArrows: true },
+          gestures: [
+            {
+              type: 'item-click',
+              enabled: true,
+              interactionId: 'carousel-card-click',
+              interactionLabel: 'Carousel Card Click',
+            },
+          ],
+        }),
       },
     },
   },
