@@ -11,8 +11,8 @@ export type DemoActionSource =
   | 'interactions.onEvent'
   | 'action.onAction'
   | 'gestures[item-click].onTrigger'
-  | 'board.hooks.onDragStart'
-  | 'board.hooks.onDrop';
+  | 'gestures[item-drag-start].onTrigger'
+  | 'gestures[item-drop].onTrigger';
 
 export interface DemoActionPayload {
   /** The action id from ActionConfig */
