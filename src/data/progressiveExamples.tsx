@@ -1649,6 +1649,63 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+
+  {
+    id: 'progressive-42-chart-grouped-bar',
+    title: 'Progressive 42 - Chart: Grouped Bar',
+    description: 'Plots revenue and cost side-by-side each month using multiple yAxis keys, demonstrating grouped bar chart layout.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-42',
+      zones: {
+        header: { title: 'Revenue vs Cost (Grouped Bars)', subtitle: 'Multiple yAxis series on a bar chart', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+          { key: 'cost', label: 'Cost', type: 'number' },
+        ], {
+          chart: {
+            type: 'bar',
+            xAxis: 'month',
+            yAxis: ['revenue', 'cost'],
+            height: 320,
+            showGrid: true,
+            showLabels: false,
+            legendAlign: 'center',
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-43-chart-horizontal-bar',
+    title: 'Progressive 43 - Chart: Horizontal Bar',
+    description: 'Rotates the bar chart 90° with orientation: horizontal to compare revenue per month with categories on the y-axis.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-43',
+      zones: {
+        header: { title: 'Monthly Revenue (Horizontal)', subtitle: 'Bar chart with horizontal orientation', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+          { key: 'cost', label: 'Cost', type: 'number' },
+        ], {
+          chart: {
+            type: 'bar',
+            orientation: 'horizontal',
+            xAxis: 'month',
+            yAxis: ['revenue', 'cost'],
+            height: 340,
+            showGrid: true,
+            showLabels: true,
+            legendAlign: 'center',
+          },
+        }),
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
