@@ -1,6 +1,10 @@
 import React from 'react';
 import { AppliedConfigViewer } from './AppliedConfigViewer';
-import type { ResolvedWidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from '@widgemo/widgemo-core';
+import type { WidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from '@widgemo/widgemo-core';
+
+type ResolvedConfigSnapshot = WidgemoProps & {
+  adapters?: WidgemoAdapters;
+};
 
 interface AppliedConfigProps {
   config: WidgemoConfig;
@@ -14,7 +18,7 @@ interface AppliedConfigProps {
   currentSandboxTheme?: WidgemoTheme | null;
   customLoading?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   customError?: React.ComponentType<{ error: string | Error; onRetry?: () => void; className?: string; style?: React.CSSProperties }>;
-  resolvedConfig?: ResolvedWidgemoProps | null;
+  resolvedConfig?: ResolvedConfigSnapshot | null;
 }
 
 export function AppliedConfig(props: AppliedConfigProps) {
