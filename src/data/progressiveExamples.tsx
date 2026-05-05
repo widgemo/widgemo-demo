@@ -1,6 +1,7 @@
 import type {
   ActionConfig,
   BoardModeConfig,
+  ChartModeConfig,
   ContentConfig,
   Entity,
   FieldConfig,
@@ -24,6 +25,14 @@ type ProgressiveExample = {
 const eightUsersData = teaserSampleData.slice(0, 8) as Entity[];
 const tenUsersData = teaserSampleData.slice(0, 10) as Entity[];
 const twentyUsersData = teaserSampleData.slice(0, 20) as Entity[];
+const monthlyKpiData: Entity[] = [
+  { month: 'Jan', revenue: 42, cost: 26, users: 120 },
+  { month: 'Feb', revenue: 47, cost: 28, users: 140 },
+  { month: 'Mar', revenue: 45, cost: 30, users: 136 },
+  { month: 'Apr', revenue: 54, cost: 32, users: 168 },
+  { month: 'May', revenue: 58, cost: 34, users: 182 },
+  { month: 'Jun', revenue: 63, cost: 36, users: 210 },
+];
 
 const autoItemLayout = { type: 'auto' as const };
 const traditionalTableConfig = { type: 'traditional' as const };
@@ -224,6 +233,24 @@ const createBoardContent = (
   return {
     mode: 'board',
     ...(board ? { modeConfig: { board } } : {}),
+    item: createItem(fields, item),
+    ...rest,
+  };
+};
+
+const createChartContent = (
+  data: Entity[],
+  fields: FieldConfig[],
+  overrides: Omit<Partial<ContentConfig<Entity>>, 'mode' | 'data' | 'layout' | 'item' | 'modeConfig'> & {
+    chart?: ChartModeConfig;
+    item?: Partial<ItemConfig<Entity>>;
+  } = {},
+): ContentConfig<Entity> => {
+  const { chart, item, ...rest } = overrides;
+  void data;
+  return {
+    mode: 'chart',
+    ...(chart ? { modeConfig: { chart } } : {}),
     item: createItem(fields, item),
     ...rest,
   };
@@ -1454,6 +1481,171 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
         }),
         footer: { subtitle: 'repeatingHeaders: false → single header row above all swimlanes' },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-36-chart-basic',
+    title: 'Progressive 36 - Chart: Basic Bar',
+    description: 'Introduces chart mode with a basic bar chart using month on the x-axis and revenue as a single y-axis series.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-36',
+      zones: {
+        header: { title: 'Monthly Revenue', subtitle: 'Basic chart mode setup', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+        ], {
+          chart: {
+            type: 'bar',
+            xAxis: 'month',
+            yAxis: 'revenue',
+            height: 320,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-37-chart-line-multiseries',
+    title: 'Progressive 37 - Chart: Multi-Series Line',
+    description: 'Switches to a line chart and plots revenue and cost together to compare trends over time.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-37',
+      zones: {
+        header: { title: 'Revenue vs Cost Trend', subtitle: 'Line chart with two series', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+          { key: 'cost', label: 'Cost', type: 'number' },
+        ], {
+          chart: {
+            type: 'line',
+            xAxis: 'month',
+            yAxis: ['revenue', 'cost'],
+            height: 320,
+            showGrid: true,
+            showLegend: true,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-38-chart-area-labels',
+    title: 'Progressive 38 - Chart: Area with Labels',
+    description: 'Uses an area chart and enables labels to make each monthly value readable directly on the chart.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-38',
+      zones: {
+        header: { title: 'Revenue Area', subtitle: 'Area chart with labels', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+        ], {
+          chart: {
+            type: 'area',
+            xAxis: 'month',
+            yAxis: 'revenue',
+            showLabels: true,
+            height: 320,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-39-chart-pie',
+    title: 'Progressive 39 - Chart: Pie',
+    description: 'Renders a pie chart to visualize how monthly users are distributed across the period.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-39',
+      zones: {
+        header: { title: 'User Distribution by Month', subtitle: 'Pie chart mode', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'users', label: 'Users', type: 'number' },
+        ], {
+          chart: {
+            type: 'pie',
+            xAxis: 'month',
+            yAxis: 'users',
+            showLabels: true,
+            height: 340,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-40-chart-custom-colors',
+    title: 'Progressive 40 - Chart: Custom Colors + No Grid',
+    description: 'Applies a custom palette and disables the grid to show chart styling controls with the same data.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-40',
+      zones: {
+        header: { title: 'Styled Revenue Bar', subtitle: 'Custom colors and presentation settings', icon: 'chart' },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+        ], {
+          chart: {
+            type: 'bar',
+            xAxis: 'month',
+            yAxis: 'revenue',
+            colors: ['#1d4ed8', '#047857', '#b45309', '#b91c1c', '#7c3aed', '#0f766e'],
+            showGrid: false,
+            showLegend: false,
+            height: 320,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-41-chart-click-gesture',
+    title: 'Progressive 41 - Chart: Item Click Gesture',
+    description: 'Adds item-click gesture wiring in chart mode so bars emit canonical interaction events.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-41',
+      zones: {
+        header: {
+          title: 'Interactive Revenue Chart',
+          subtitle: 'Click any bar to emit content item-click interaction',
+          icon: 'chart',
+        },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+        ], {
+          chart: {
+            type: 'bar',
+            xAxis: 'month',
+            yAxis: 'revenue',
+            height: 320,
+          },
+          gestures: [
+            {
+              type: 'item-click',
+              enabled: true,
+              interactionId: 'chart-item-click',
+              interactionLabel: 'Chart Item Click',
+            },
+          ],
+        }),
+        footer: { subtitle: 'Interaction payloads are routed to the demo action sink.' },
       },
     },
   },
