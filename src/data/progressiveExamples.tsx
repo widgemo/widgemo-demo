@@ -1708,6 +1708,128 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+  {
+    id: 'progressive-44-chart-custom-tooltip',
+    title: 'Progressive 44 - Chart: Custom Tooltip Renderer',
+    description:
+      'Demonstrates a fully custom tooltip render function that renders a rich card with revenue, cost, users, and computed margin.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-44',
+      zones: {
+        header: {
+          title: 'Revenue with Custom Tooltip',
+          subtitle: 'Hover a bar to see the custom-rendered tooltip card',
+          icon: 'chart',
+        },
+        content: createChartContent(
+          monthlyKpiData,
+          [
+            { key: 'month', label: 'Month', type: 'text' },
+            { key: 'revenue', label: 'Revenue', type: 'number' },
+            { key: 'cost', label: 'Cost', type: 'number' },
+            { key: 'users', label: 'Users', type: 'number' },
+          ],
+          {
+            chart: {
+              type: 'bar',
+              xAxis: 'month',
+              yAxis: ['revenue', 'cost'],
+              height: 320,
+              showGrid: true,
+              showLabels: false,
+              legendAlign: 'center',
+              tooltip: {
+                position: 'top-right',
+                render: (ctx) => {
+                  const entity = ctx.entity as {
+                    month?: string;
+                    revenue?: number;
+                    cost?: number;
+                    users?: number;
+                  };
+                  const margin =
+                    entity.revenue != null && entity.cost != null
+                      ? entity.revenue - entity.cost
+                      : null;
+                  const marginPct =
+                    margin != null && entity.cost
+                      ? ((margin / entity.cost) * 100).toFixed(1)
+                      : null;
+                  return (
+                    <div style={{ minWidth: '180px' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          marginBottom: '0.5rem',
+                          borderBottom: '1px solid var(--widgemo-color-border, #dee2e6)',
+                          paddingBottom: '0.4rem',
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: '50%',
+                            backgroundColor: ctx.color,
+                            display: 'inline-block',
+                            flexShrink: 0,
+                          }}
+                        />
+                        <strong style={{ fontSize: '13px' }}>{entity.month}</strong>
+                      </div>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'auto 1fr',
+                          gap: '2px 8px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        <span style={{ color: 'var(--widgemo-color-textMuted, #6c757d)' }}>Revenue</span>
+                        <span style={{ fontWeight: 600, textAlign: 'right' }}>
+                          ${entity.revenue ?? '–'}
+                        </span>
+                        <span style={{ color: 'var(--widgemo-color-textMuted, #6c757d)' }}>Cost</span>
+                        <span style={{ fontWeight: 600, textAlign: 'right' }}>
+                          ${entity.cost ?? '–'}
+                        </span>
+                        <span style={{ color: 'var(--widgemo-color-textMuted, #6c757d)' }}>Users</span>
+                        <span style={{ fontWeight: 600, textAlign: 'right' }}>
+                          {entity.users ?? '–'}
+                        </span>
+                        {margin !== null && (
+                          <>
+                            <span style={{ color: 'var(--widgemo-color-textMuted, #6c757d)' }}>
+                              Margin
+                            </span>
+                            <span
+                              style={{
+                                fontWeight: 600,
+                                textAlign: 'right',
+                                color:
+                                  margin >= 0
+                                    ? 'var(--widgemo-color-success, #28a745)'
+                                    : 'var(--widgemo-color-danger, #dc3545)',
+                              }}
+                            >
+                              ${margin} {marginPct ? `(${marginPct}%)` : ''}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                },
+              },
+            },
+          },
+        ),
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
