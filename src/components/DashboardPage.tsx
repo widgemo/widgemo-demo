@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Widgemo,
   type ActionConfig,
@@ -260,7 +260,16 @@ export const DashboardPage: React.FC = () => {
       .slice(0, 5);
   }, [portfolioRows]);
 
+  const lastPortfolioRowsRef = useRef<Entity[] | null>(null);
+
   useEffect(() => {
+    // Only validate focus when portfolioRows reference changes (not on every render)
+    if (lastPortfolioRowsRef.current === portfolioRows) {
+      return;
+    }
+
+    lastPortfolioRowsRef.current = portfolioRows;
+
     if (!focusedInitiative) {
       return;
     }
