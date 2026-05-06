@@ -897,7 +897,7 @@ export const DashboardPage: React.FC = () => {
         },
         content: createCarouselContent(highlightFields, {
           carousel: {
-            itemWidth: 320,
+            itemWidth: 270,
             itemHeight: 'auto',
             gap: 16,
             showIndicators: true,
