@@ -299,6 +299,7 @@ export const DashboardPage: React.FC = () => {
         label: 'Clear Focus',
         placement: 'pinned',
         variant: 'outline-secondary',
+        icon: 'view-slash',
         onAction: () => setFocusedInitiative(null),
       },
     ];
