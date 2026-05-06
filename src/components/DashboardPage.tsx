@@ -690,6 +690,9 @@ export const DashboardPage: React.FC = () => {
     () => ({
       id: 'dashboard-portfolio',
       containerShadow: 'none',
+      style: {
+        height: '100%',
+      },
       zones: {
         header: {
           title: 'Initiative health table',
@@ -708,6 +711,9 @@ export const DashboardPage: React.FC = () => {
             alternatingRows: true,
             rowSeparator: true,
             actionsColumn: true,
+          },
+          sizing: {
+            mode: 'fill',
           },
           sorting: [{ fieldKey: 'dueDate', direction: 'asc' }],
           search: { enabled: true, placeholder: 'Search initiative, owner, or milestone' },
@@ -1001,12 +1007,14 @@ export const DashboardPage: React.FC = () => {
             <Widgemo data={allocationData} config={injectDevMode(allocationConfig)} />
           </div>
 
-          <div className="col-12 col-xxl-8">
-            <Widgemo data={portfolioRows} config={injectDevMode(portfolioConfig)} />
+          <div className="col-12 col-xxl-8 d-flex">
+            <div className="w-100 h-100">
+              <Widgemo data={portfolioRows} config={injectDevMode(portfolioConfig)} />
+            </div>
           </div>
 
-          <div className="col-12 col-xxl-4">
-            <div className="d-grid gap-3">
+          <div className="col-12 col-xxl-4 d-flex">
+            <div className="d-flex flex-column gap-3 w-100 h-100">
               <Widgemo data={highlights} config={injectDevMode(highlightsConfig)} />
               <Widgemo data={riskPulseRows} config={injectDevMode(riskPulseConfig)} />
             </div>
