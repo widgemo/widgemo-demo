@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Widgemo,
   type ActionConfig,
@@ -259,26 +259,6 @@ export const DashboardPage: React.FC = () => {
       .sort((a, b) => String(a.dueDate).localeCompare(String(b.dueDate)))
       .slice(0, 5);
   }, [portfolioRows]);
-
-  const lastPortfolioRowsRef = useRef<Entity[] | null>(null);
-
-  useEffect(() => {
-    // Only validate focus when portfolioRows reference changes (not on every render)
-    if (lastPortfolioRowsRef.current === portfolioRows) {
-      return;
-    }
-
-    lastPortfolioRowsRef.current = portfolioRows;
-
-    if (!focusedInitiative) {
-      return;
-    }
-
-    const stillVisible = portfolioRows.some((row) => row.initiative === focusedInitiative);
-    if (!stillVisible) {
-      setFocusedInitiative(null);
-    }
-  }, [focusedInitiative, portfolioRows]);
 
   useEffect(() => {
     localStorage.setItem(BOARD_STATE_STORAGE_KEY, JSON.stringify(allBoardCards));
