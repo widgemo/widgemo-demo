@@ -717,7 +717,7 @@ export const DashboardPage: React.FC = () => {
           },
           sorting: [{ fieldKey: 'dueDate', direction: 'asc' }],
           search: { enabled: true, placeholder: 'Search initiative, owner, or milestone' },
-          pagination: { pageSize: 10 },
+          pagination: { pageSize: 15 },
           actions: [
             {
               id: 'focus-initiative',
