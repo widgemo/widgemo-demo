@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Widgemo,
   type ActionConfig,
@@ -480,7 +480,7 @@ export const DashboardPage: React.FC = () => {
   const focusSubtitle = focusedInitiative ? `Focused on ${focusedInitiative}` : 'No initiative focus applied';
   const pageSubtitle = `${dashboardTeamLabels[selectedTeam]} · ${dashboardPeriodLabels[selectedPeriod]}`;
 
-  const handleBoardDrop = (ctx: InteractionContext) => {
+  const handleBoardDrop = useCallback((ctx: InteractionContext) => {
     const movedId = String(ctx.entity?.id ?? '');
     const toColumnId = String(ctx.to?.columnId ?? '');
     const toIndex = ctx.to?.index;
@@ -531,7 +531,7 @@ export const DashboardPage: React.FC = () => {
       next.splice(insertAt, 0, updatedMoved);
       return next;
     });
-  };
+  }, [selectedTeam, focusedInitiative]);
 
   const summaryConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
@@ -590,7 +590,7 @@ export const DashboardPage: React.FC = () => {
           title: 'Throughput trend',
           subtitle: `Visible work completed versus committed scope · ${dashboardTeamLabels[selectedTeam]}`,
           actions: teamActions,
-          actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 3 }, menuLabel: 'Teams' },
+          actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 4 }, menuLabel: 'Teams' },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
@@ -722,7 +722,7 @@ export const DashboardPage: React.FC = () => {
           },
           sorting: [{ fieldKey: 'dueDate', direction: 'asc' }],
           search: { enabled: true, placeholder: 'Search initiative, owner, or milestone' },
-          pagination: { pageSize: 6 },
+          pagination: { pageSize: 10 },
           actions: [
             {
               id: 'focus-initiative',
@@ -838,7 +838,7 @@ export const DashboardPage: React.FC = () => {
         }),
       },
     }),
-    [boardFields, focusActions, focusSubtitle, selectedTeam],
+    [boardFields, focusActions, focusSubtitle, selectedTeam, handleBoardDrop],
   );
 
   const riskPulseConfig = useMemo<WidgemoConfig<Entity>>(
