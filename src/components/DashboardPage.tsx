@@ -961,7 +961,7 @@ export const DashboardPage: React.FC = () => {
                 A classic operations dashboard assembled entirely from Widgemo instances: KPIs, charts, table, board, and rotating leadership notes.
               </p>
               <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.92rem' }}>
-                Use widget actions to switch time range, isolate a team, and focus the page on a single initiative.
+                Use Widgemo actions to switch time range, isolate a team, and focus the page on a single initiative.
               </p>
             </div>
             <div
