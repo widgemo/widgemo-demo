@@ -1830,6 +1830,73 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+  {
+    id: 'progressive-45-chart-line-thick-with-points',
+    title: 'Progressive 45 - Chart: Thick Line + Points',
+    description:
+      'Demonstrates lineThickness and showDots together for a stronger trend line with visible point markers.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-45',
+      zones: {
+        header: {
+          title: 'Revenue Trend (Thick + Points)',
+          subtitle: 'lineThickness + showDots in line mode',
+          icon: 'chart',
+        },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+          { key: 'cost', label: 'Cost', type: 'number' },
+        ], {
+          chart: {
+            type: 'line',
+            xAxis: 'month',
+            yAxis: ['revenue', 'cost'],
+            height: 320,
+            showGrid: true,
+            showLegend: true,
+            lineThickness: 2,
+            showDots: true,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-46-chart-area-gradient-styles',
+    title: 'Progressive 46 - Chart: Area Gradient + Thick Line + Points',
+    description:
+      'Shows areaGradient enabled with a thicker line and point markers, combining all new line/area style controls.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-46',
+      zones: {
+        header: {
+          title: 'Area Trend Styling Controls',
+          subtitle: 'areaGradient + lineThickness + showDots in area mode',
+          icon: 'chart',
+        },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+        ], {
+          chart: {
+            type: 'area',
+            xAxis: 'month',
+            yAxis: 'revenue',
+            height: 320,
+            showGrid: true,
+            showLabels: false,
+            lineThickness: 10,
+            showDots: true,
+            areaGradient: false,
+          },
+        }),
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
