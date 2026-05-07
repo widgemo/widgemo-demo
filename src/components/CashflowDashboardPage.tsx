@@ -349,8 +349,6 @@ export const CashflowDashboardPage: React.FC = () => {
       },
     }),
     [
-      accountScopeLabels,
-      forecastHorizonLabels,
       horizonActions,
       kpiFields,
       kpiRows.length,
@@ -442,7 +440,7 @@ export const CashflowDashboardPage: React.FC = () => {
         },
       },
     }),
-    [forecastFields, forecastRows.length, horizonActions, riskPostureLabels, selectedHorizon, selectedPosture],
+    [forecastFields, forecastRows.length, horizonActions, selectedHorizon, selectedPosture],
   );
 
   const eventFields = useMemo<FieldConfig[]>(
@@ -500,7 +498,7 @@ export const CashflowDashboardPage: React.FC = () => {
         ),
       },
     }),
-    [eventFields, scopeActions, selectedHorizon, selectedScope],
+    [eventFields, scopeActions, selectedHorizon],
   );
 
   const transactionFields = useMemo<FieldConfig[]>(
@@ -589,14 +587,14 @@ export const CashflowDashboardPage: React.FC = () => {
               icon: 'finance-transfer',
               placement: 'pinned',
               variant: 'secondary',
-              onAction: (_ctx: InteractionContext) => showDemoNotice('Categorize transaction'),
+              onAction: () => showDemoNotice('Categorize transaction'),
             },
             {
               id: 'add-watchlist',
               label: 'Watch',
               icon: 'finance-alert',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => showDemoNotice('Add transaction to watch list'),
+              onAction: () => showDemoNotice('Add transaction to watch list'),
             },
           ],
           themeOverrides: {
@@ -685,7 +683,7 @@ export const CashflowDashboardPage: React.FC = () => {
               label: 'Resolve',
               icon: 'finance-reserve',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => showDemoNotice('Resolve alert'),
+              onAction: () => showDemoNotice('Resolve alert'),
             },
           ],
           themeOverrides: {
@@ -777,14 +775,14 @@ export const CashflowDashboardPage: React.FC = () => {
               label: 'Apply',
               icon: 'finance-transfer',
               placement: 'pinned',
-              onAction: (_ctx: InteractionContext) => showDemoNotice('Apply scenario'),
+              onAction: () => showDemoNotice('Apply scenario'),
             },
             {
               id: 'inspect-scenario',
               label: 'Inspect',
               icon: 'finance-forecast',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => showDemoNotice('Inspect scenario'),
+              onAction: () => showDemoNotice('Inspect scenario'),
             },
           ],
           themeOverrides: {
@@ -939,26 +937,20 @@ export const CashflowDashboardPage: React.FC = () => {
                 <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
               </div>
 
-              <div className="col-12 col-xxl-8 d-flex">
-                <div className="w-100 h-100">
+              <div className="col-12 col-xxl-8 d-flex flex-column gap-2">
+                <div className="w-100">
                   <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
                 </div>
-              </div>
-
-              <div className="col-12 col-xxl-4 d-flex">
-                <div className="w-100 h-100">
-                  <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
-                </div>
-              </div>
-
-              <div className="col-12 col-xl-8 d-flex">
-                <div className="w-100 h-100">
+                <div className="w-100">
                   <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
                 </div>
               </div>
 
-              <div className="col-12 col-xl-4 d-flex">
-                <div className="w-100 h-100">
+              <div className="col-12 col-xxl-4 d-flex flex-column gap-2">
+                <div className="w-100">
+                  <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
+                </div>
+                <div className="w-100">
                   <Widgemo data={scenarioRows} config={injectDevMode(scenarioConfig)} />
                 </div>
               </div>
