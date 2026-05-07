@@ -489,7 +489,7 @@ const widgemoExamples: Array<{
               { key: 'email', label: 'Email', type: 'email' },
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' },
               { key: 'progress', label: 'Progress', type: 'number', renderAs: 'progress', width: '120px' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD' } }
             ]
           }
         }
@@ -791,18 +791,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-traditional-table',
     title: 'Grouped Traditional Table',
-    description: 'Traditional table with data grouped by department. item.wrap: true enables natural line wrapping across all columns.',
+    description: 'Traditional table with data grouped by department via groupings[].fieldKey. item.wrap: true enables natural line wrapping across all columns.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Users by Department',
-          subtitle: 'Grouped traditional table — item.wrap: true'
+          subtitle: 'Grouped traditional table — groupings[].fieldKey · item.wrap: true'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             // item-level wrap: true — all fields in every cell wrap freely
             wrap: true,
@@ -821,18 +823,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-rich-cells-table',
     title: 'Grouped Rich Cells Table',
-    description: 'Rich cells table with data grouped by department and enhanced formatting',
+    description: 'Rich cells table with data grouped by department via groupings[].fieldKey and enhanced formatting.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Department Teams',
-          subtitle: 'Grouped rich table with enhanced content'
+          subtitle: 'Grouped rich table with enhanced content · groupings[].fieldKey'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '50px' },
@@ -1044,7 +1048,7 @@ const widgemoExamples: Array<{
               { key: 'name', label: 'Name' },
               { key: 'role', label: 'Role' },
               { key: 'department', label: 'Department' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD' } }
             ],
             layout: { type: 'auto' }
           }
@@ -1734,11 +1738,11 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: renderAs: link — all linkOptions ─────────────────────────────────
+  // ── NEW: renderAs: link — renderAsOptions ─────────────────────────────────
   {
     id: 'renderas-link',
-    title: 'renderAs: link — linkOptions',
-    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Shows unified renderAsOptions API alongside legacy linkOptions.',
+    title: 'renderAs: link — renderAsOptions',
+    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, and externalWarning.',
     data: [
       { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice', docUrl: 'https://github.com' },
       { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob',   docUrl: 'https://docs.example.com' },
@@ -1762,8 +1766,7 @@ const widgemoExamples: Array<{
                 text: (entity: Entity) => `@${entity.username}`,
                 newTab: true,
               }},
-              // Legacy linkOptions approach
-              { key: 'docUrl', label: 'External Warning', renderAs: 'link', linkOptions: { newTab: true, externalWarning: true } },
+              { key: 'docUrl', label: 'External Warning', renderAs: 'link', renderAsOptions: { newTab: true, externalWarning: true } },
             ],
             layout: { type: 'auto' },
           },
@@ -2690,17 +2693,17 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Board advanced (actions, actionsPosition, hooks, swimlane labels) ─
+  // ── NEW: Board advanced (actions, hooks, swimlane labels) ─────────────────
   {
     id: 'board-advanced',
     title: 'Board — card actions, hooks, swimlane labels',
-    description: 'BoardModeConfig: card actions array, actionsPosition="hover", hooks.onDragStart/onDrop (console logs), swimlanes.labels+defaultLabel, BoardColumnConfig.value (explicit match value differs from id).',
+    description: 'BoardModeConfig: card actions array, hooks.onDragStart/onDrop (console logs), swimlanes.labels+defaultLabel, and BoardColumnConfig.value for explicit match values.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'board-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Board Config', subtitle: 'card actions · actionsPosition=hover · hooks · swimlane labels+defaultLabel · column.value' },
+        header: { title: 'Advanced Board Config', subtitle: 'card actions · hooks · swimlane labels+defaultLabel · column.value' },
         content: {
           mode: 'board',
           modeConfig: {
@@ -2722,7 +2725,6 @@ const widgemoExamples: Array<{
                 defaultLabel: 'Other Teams',
               },
               dragEnabled: true,
-              actionsPosition: 'hover' as const,
               actions: {
                 card: [
                   {

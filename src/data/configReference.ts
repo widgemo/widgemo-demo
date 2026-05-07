@@ -13,34 +13,42 @@ export const widgemoConfigProperties: Array<{
   complexTypeSection?: string;
 }> = [
   // WidgemoConfig properties
-  { category: 'WidgemoConfig', property: 'id', type: 'string', status: 'implemented', description: 'Optional ID for debugging/configuration management', usage: 'Used for component identification but not extensively in logic.', example: '"my-widgemo"' },
-  { category: 'WidgemoConfig', property: 'title', type: 'string', status: 'implemented', description: 'Title displayed in the component header', usage: 'Rendered in WidgemoHeader.tsx.', example: '"User Management"' },
-  { category: 'WidgemoConfig', property: 'zones', type: 'ZoneConfig[]', status: 'implemented', description: 'Array of zone configurations defining the component layout and behavior', usage: 'Core to zones-based architecture; each zone defines a section of the component.', example: '[{ type: "data", mode: "table", fields: [...] }]', isComplexType: true, complexTypeSection: 'ZoneConfig' },
+  { category: 'WidgemoConfig', property: 'id', type: 'string', status: 'implemented', description: 'Optional ID for debugging/configuration management', usage: 'Used for component identification and diagnostics.', example: '"my-widgemo"' },
+  { category: 'WidgemoConfig', property: 'containerFrame', type: 'ContainerFrame', status: 'implemented', description: 'Outer shell styling controls for the widgemo container.', usage: 'Use this for shell-level borders, padding, and shadow rather than zone internals.', example: '{ shadow: true }' },
+  { category: 'WidgemoConfig', property: 'zones', type: '{ header?: ZoneConfig; content: ContentConfig; footer?: ZoneConfig }', status: 'implemented', description: 'Object containing header, content, and footer zones.', usage: 'This is the main configuration entrypoint for composing the component.', example: '{ header: { title: "Users" }, content: { mode: "table", item: { fields: [...] } } }', isComplexType: true, complexTypeSection: 'ContentConfig' },
   { category: 'WidgemoConfig', property: 'theme', type: 'WidgemoTheme', status: 'implemented', description: 'Theme configuration for colors, fonts, and styling', usage: 'Applied throughout the component for consistent theming.', example: '{ colors: { primary: "#007bff" }, fonts: { body: "Arial" } }', isComplexType: true, complexTypeSection: 'WidgemoTheme' },
-  { category: 'WidgemoConfig', property: 'actions', type: 'ActionsConfig', status: 'partial', description: 'Action configuration system', usage: 'New action system with definitions and placements; replaces legacy boolean actions.', example: '{ definitions: [{ id: "add" }], header: { always: ["refresh"] } }', isComplexType: true, complexTypeSection: 'ActionsConfig' },
-  { category: 'WidgemoConfig', property: 'data', type: 'DataConfig', status: 'implemented', description: 'Data source and management configuration', usage: 'Defines how data is fetched, transformed, and managed.', example: '{ source: { type: "api", url: "/api/users" }, transform: {...} }', isComplexType: true, complexTypeSection: 'DataConfig' },
-  { category: 'WidgemoConfig', property: 'pagination', type: '{ enabled?: boolean; defaultPageSize?: number; pageSizeOptions?: number[] }', status: 'implemented', description: 'Pagination config', usage: 'Handled with PaginationControls.tsx.', example: '{ enabled: true, defaultPageSize: 10 }', isComplexType: true, complexTypeSection: 'PaginationConfig' },
-  { category: 'WidgemoConfig', property: 'sorting', type: "{ enabled?: boolean; defaultSort?: { field: string; direction: 'asc' | 'desc' } }", status: 'partial', description: 'Sorting config', usage: 'Default sort applied; UI toggles incomplete.', example: "{ enabled: true, defaultSort: { field: 'name', direction: 'asc' } }", isComplexType: true, complexTypeSection: 'SortingConfig' },
-  { category: 'WidgemoConfig', property: 'filtering', type: '{ enabled?: boolean; filters?: Array<{...}> }', status: 'not-implemented', description: 'Filtering config', usage: 'Not implemented: Property defined but no filtering UI.', example: '{ enabled: true }', isComplexType: true, complexTypeSection: 'FilteringConfig' },
-  { category: 'WidgemoConfig', property: 'emptyState', type: '{ message?: string; icon?: React.ComponentType; action?: {...} }', status: 'implemented', description: 'Empty state config', usage: 'Custom empty component in Widgemo.tsx.', example: '{ message: "No data", action: { label: "Add", onClick: () => {} } }', isComplexType: true, complexTypeSection: 'EmptyStateConfig' },
-  { category: 'WidgemoConfig', property: 'i18n', type: '{ locale?: string; messages?: Record<string, string> }', status: 'not-implemented', description: 'Internationalization', usage: 'Not implemented: Property exists but no localization logic.', example: '{ locale: "en", messages: { add: "Add Item" } }' },
+  { category: 'WidgemoConfig', property: 'collapse', type: '{ initialState: "expanded" | "collapsed" | "fixed"; button?: boolean }', status: 'implemented', description: 'Controls the root widgemo collapse state.', usage: 'Use this to start the whole component expanded, collapsed, or fixed open.', example: '{ initialState: "expanded" }' },
+  { category: 'WidgemoConfig', property: 'style', type: 'React.CSSProperties', status: 'implemented', description: 'Inline styles applied to the outer widgemo container.', usage: 'Use for one-off shell styling overrides.', example: '{ borderRadius: "12px" }' },
+  { category: 'WidgemoConfig', property: 'devMode', type: 'boolean | DevModeConfig', status: 'implemented', description: 'Developer tooling and inspector configuration.', usage: 'Enable or customize dev overlays and inspector behavior.', example: 'true' },
+  { category: 'WidgemoConfig', property: 'interactions', type: '{ onEvent?: InteractionEventHandler }', status: 'implemented', description: 'Global interaction sink for actions and gestures.', usage: 'Use this when you want a single callback for all widgemo interactions.', example: '{ onEvent: (context) => console.log(context) }' },
+  { category: 'WidgemoConfig', property: 'preRender', type: '() => void', status: 'implemented', description: 'Hook invoked before the component renders.', usage: 'Useful for setup or instrumentation in advanced integrations.', example: '() => console.log("pre-render")' },
 
   // ZoneConfig properties
-  { category: 'ZoneConfig', property: 'type', type: "'data' | 'header' | 'footer' | 'sidebar'", status: 'implemented', description: 'Zone type defining its purpose and layout', usage: 'Controls zone behavior and rendering.', example: "'data'" },
-  { category: 'ZoneConfig', property: 'id', type: 'string', status: 'implemented', description: 'Unique identifier for the zone', usage: 'Used for zone management and theming.', example: '"main-data-zone"' },
-  { category: 'ZoneConfig', property: 'title', type: 'string', status: 'implemented', description: 'Zone title for display', usage: 'Shown in zone headers.', example: '"User Data"' },
-  { category: 'ZoneConfig', property: 'mode', type: "'table' | 'grid' | 'board' | 'chart'", status: 'implemented', description: 'Display mode for the zone', usage: 'Controls how data is rendered in this zone.', example: "'table'" },
-  { category: 'ZoneConfig', property: 'fields', type: 'FieldConfig[]', status: 'implemented', description: 'Field definitions for this zone', usage: 'Defines which fields to display and how.', example: "[{ name: 'name', label: 'Name', type: 'text' }]", isComplexType: true, complexTypeSection: 'FieldConfig' },
-  { category: 'ZoneConfig', property: 'grid', type: 'GridConfig', status: 'implemented', description: 'Grid-specific configuration', usage: 'Controls grid layout and behavior.', example: '{ minItemWidth: "200px" }', isComplexType: true, complexTypeSection: 'GridConfig' },
-  { category: 'ZoneConfig', property: 'table', type: 'TableConfig', status: 'implemented', description: 'Table-specific configuration', usage: 'Controls table appearance and behavior.', example: '{ showBorders: true }', isComplexType: true, complexTypeSection: 'TableConfig' },
-  { category: 'ZoneConfig', property: 'board', type: 'BoardConfig', status: 'implemented', description: 'Board/kanban-specific configuration', usage: 'Controls kanban board layout.', example: '{ columns: [{ id: "todo" }] }', isComplexType: true, complexTypeSection: 'BoardConfig' },
-  { category: 'ZoneConfig', property: 'chart', type: 'ChartConfig', status: 'partial', description: 'Chart-specific configuration', usage: 'Controls chart rendering.', example: '{ type: "bar", xAxis: "name" }', isComplexType: true, complexTypeSection: 'ChartConfig' },
-  { category: 'ZoneConfig', property: 'collapsible', type: 'boolean', status: 'implemented', description: 'Whether the zone can be collapsed', usage: 'Allows users to hide/show the zone.', example: 'true' },
-  { category: 'ZoneConfig', property: 'defaultCollapsed', type: 'boolean', status: 'implemented', description: 'Whether the zone starts collapsed', usage: 'Sets initial collapse state.', example: 'false' },
-  { category: 'ZoneConfig', property: 'icon', type: 'string | IconConfig', status: 'implemented', description: 'Icon for the zone', usage: 'Displayed in zone headers.', example: '"table"' },
-  { category: 'ZoneConfig', property: 'subtitle', type: 'string | SubtitleRenderer', status: 'implemented', description: 'Zone subtitle or renderer function', usage: 'Additional zone description.', example: '"Current users"' },
-  { category: 'ZoneConfig', property: 'actions', type: 'ZoneActionsConfig', status: 'partial', description: 'Zone-specific actions', usage: 'Actions available in this zone.', example: '{ header: ["refresh"] }', isComplexType: true, complexTypeSection: 'ZoneActionsConfig' },
-  { category: 'ZoneConfig', property: 'theme', type: 'ZoneTheme', status: 'implemented', description: 'Zone-specific theming', usage: 'Overrides global theme for this zone.', example: '{ backgroundColor: "#f0f0f0" }', isComplexType: true, complexTypeSection: 'ZoneTheme' },
+  { category: 'ZoneConfig', property: 'enabled', type: 'boolean', status: 'implemented', description: 'Whether the zone is rendered.', usage: 'Use this to disable a header or footer zone without removing its configuration.', example: 'true' },
+  { category: 'ZoneConfig', property: 'layout', type: 'ZoneLayout', status: 'implemented', description: 'Layout options for title, subtitle, icon, and action composition.', usage: 'Controls header/footer presentation such as title alignment or actions below the title.', example: '{ titlePosition: "center", actionsPosition: "below" }' },
+  { category: 'ZoneConfig', property: 'title', type: 'string | ((data) => string) | React.ReactNode', status: 'implemented', description: 'Zone title for display.', usage: 'Shown in zone headers and footers.', example: '"User Data"' },
+  { category: 'ZoneConfig', property: 'subtitle', type: 'string | ((data, id) => string) | React.ReactNode', status: 'implemented', description: 'Zone subtitle or renderer function.', usage: 'Use for supporting context under the title.', example: '"Current users"' },
+  { category: 'ZoneConfig', property: 'icon', type: 'string | IconConfig', status: 'implemented', description: 'Icon for the zone.', usage: 'Displayed next to the title in header/footer zones.', example: '"table"' },
+  { category: 'ZoneConfig', property: 'actions', type: 'ActionConfig[]', status: 'implemented', description: 'Canonical zone-level actions.', usage: 'Use arrays of action configs instead of legacy action maps.', example: '[{ id: "refresh", label: "Refresh", placement: "pinned" }]' },
+  { category: 'ZoneConfig', property: 'actionOverflow', type: '{ maxInline?: number | { mobile: number; tablet: number; desktop: number }; menuLabel?: string; menuTooltip?: string; indicator?: "pulse" | "scale" | "color-shift" | "none" }', status: 'implemented', description: 'Overflow behavior for zone actions.', usage: 'Controls when zone actions tuck into a menu.', example: '{ maxInline: 2, menuLabel: "More" }' },
+  { category: 'ZoneConfig', property: 'collapse', type: '{ initialState: "expanded" | "collapsed" | "fixed"; button?: boolean }', status: 'implemented', description: 'Per-zone collapse behavior.', usage: 'Use on header or footer zones when the zone itself should be collapsible.', example: '{ initialState: "expanded" }' },
+  { category: 'ZoneConfig', property: 'className', type: 'string', status: 'implemented', description: 'Custom CSS class for the zone wrapper.', usage: 'Use for app-level styling hooks.', example: '"text-center"' },
+  { category: 'ZoneConfig', property: 'themeOverrides', type: 'ZoneTheme', status: 'implemented', description: 'Per-zone theme overrides.', usage: 'Override typography, colors, spacing, and borders for a specific zone.', example: '{ backgroundColor: "#f0f0f0" }', isComplexType: true, complexTypeSection: 'ZoneTheme' },
+  { category: 'ZoneConfig', property: 'style', type: 'React.CSSProperties', status: 'implemented', description: 'Inline styles for the zone wrapper.', usage: 'Use for one-off CSS overrides on the rendered zone element.', example: '{ padding: "1rem" }' },
+
+  // ContentConfig properties
+  { category: 'ContentConfig', property: 'mode', type: '"table" | "grid" | "board" | "carousel" | "chart" | string', status: 'implemented', description: 'Display mode for the content zone.', usage: 'This chooses the renderer used for the content area.', example: '"table"' },
+  { category: 'ContentConfig', property: 'item', type: 'ItemConfig', status: 'implemented', description: 'Item rendering configuration.', usage: 'Defines the fields and layout used to render each entity.', example: '{ fields: [{ key: "name", label: "Name" }], layout: { type: "auto" } }', isComplexType: true, complexTypeSection: 'FieldConfig' },
+  { category: 'ContentConfig', property: 'modeConfig', type: 'ModeConfig', status: 'implemented', description: 'Mode-specific configuration for table, grid, board, carousel, or chart.', usage: 'Use this to pass renderer-specific options without mixing them into the base content config.', example: '{ table: { type: "traditional" } }' },
+  { category: 'ContentConfig', property: 'actions', type: 'ActionConfig[]', status: 'implemented', description: 'Per-item action definitions.', usage: 'These are rendered within content items and rows.', example: '[{ id: "edit", label: "Edit", placement: "menu" }]' },
+  { category: 'ContentConfig', property: 'actionOverflow', type: '{ maxInline?: number | { mobile: number; tablet: number; desktop: number }; menuLabel?: string; menuTooltip?: string; indicator?: "pulse" | "scale" | "color-shift" | "none" }', status: 'implemented', description: 'Overflow rules for content item actions.', usage: 'Controls when per-item actions collapse into a menu.', example: '{ maxInline: 2, indicator: "none" }' },
+  { category: 'ContentConfig', property: 'groupings', type: 'GroupingConfig[]', status: 'implemented', description: 'Grouping rules for organizing content data.', usage: 'Use this instead of legacy groupBy to group items by one or more fields.', example: '[{ fieldKey: "department" }]', isComplexType: true, complexTypeSection: 'GroupingConfig' },
+  { category: 'ContentConfig', property: 'sorting', type: 'SortConfig[]', status: 'implemented', description: 'Sorting rules for content data.', usage: 'Applies initial sort order and mode-aware sorting behavior.', example: '[{ fieldKey: "name", direction: "asc" }]', isComplexType: true, complexTypeSection: 'SortingConfig' },
+  { category: 'ContentConfig', property: 'filtering', type: 'StaticFilterRule[]', status: 'implemented', description: 'Static filter rules for content data.', usage: 'Filters entities before rendering.', example: '[{ fieldKey: "status", operator: "eq", value: "active" }]', isComplexType: true, complexTypeSection: 'FilteringConfig' },
+  { category: 'ContentConfig', property: 'search', type: '{ enabled?: boolean; placeholder?: string; fields?: string[]; debounceMs?: number; onSearch?: (query: string) => void }', status: 'implemented', description: 'Search bar configuration.', usage: 'Adds client-side or callback-driven search behavior to the content zone.', example: '{ enabled: true, placeholder: "Search users..." }' },
+  { category: 'ContentConfig', property: 'pagination', type: '{ pageSize: number; initialPage?: number; onPageChange?: (page: number) => void }', status: 'implemented', description: 'Pagination settings for content data.', usage: 'Slices visible data into pages after filtering and sorting.', example: '{ pageSize: 10 }', isComplexType: true, complexTypeSection: 'PaginationConfig' },
+  { category: 'ContentConfig', property: 'responsive', type: '{ breakpoints: Record<string, { mode?: string; modeConfig?: Partial<ModeConfig> }> }', status: 'implemented', description: 'Responsive mode and config overrides.', usage: 'Switch modes or override mode settings at named breakpoints.', example: '{ breakpoints: { mobile: { mode: "carousel" } } }' },
+  { category: 'ContentConfig', property: 'status', type: '"idle" | "loading" | "success" | "error"', status: 'implemented', description: 'Render status for loading and error states.', usage: 'Use this with loadingState or errorState to render non-success states.', example: '"loading"' },
 
   // TableStylingConfig properties
   { category: 'TableStylingConfig', property: 'showBorder', type: 'boolean', status: 'implemented', description: 'Show table border', usage: 'Adds border around table.', example: 'true' },
@@ -50,19 +58,6 @@ export const widgemoConfigProperties: Array<{
   { category: 'TableStylingConfig', property: 'cellBorder', type: 'boolean', status: 'implemented', description: 'Show borders between cells', usage: 'Adds borders between table cells.', example: 'true' },
   { category: 'TableStylingConfig', property: 'headerBorder', type: 'boolean', status: 'implemented', description: 'Show border under header row', usage: 'Adds border below table header.', example: 'true' },
   { category: 'TableStylingConfig', property: 'backgroundColor', type: 'string', status: 'implemented', description: 'Table background color', usage: 'Sets table background.', example: "'#ffffff'" },
-
-  // DataConfig properties
-  { category: 'DataConfig', property: 'source', type: 'DataSourceConfig', status: 'implemented', description: 'Data source configuration', usage: 'Defines how data is fetched and managed.', example: '{ type: "api", url: "/api/users" }', isComplexType: true, complexTypeSection: 'DataSourceConfig' },
-  { category: 'DataConfig', property: 'transform', type: 'DataTransformConfig', status: 'partial', description: 'Data transformation configuration', usage: 'Transforms data after fetching.', example: '{ mapFields: {...} }', isComplexType: true, complexTypeSection: 'DataTransformConfig' },
-  { category: 'DataConfig', property: 'cache', type: 'CacheConfig', status: 'not-implemented', description: 'Data caching configuration', usage: 'Not implemented.', example: '{ enabled: true, ttl: 300 }', isComplexType: true, complexTypeSection: 'CacheConfig' },
-
-  // DataSourceConfig properties
-  { category: 'DataSourceConfig', property: 'type', type: "'static' | 'api' | 'graphql' | 'custom'", status: 'implemented', description: 'Data source type', usage: 'Determines fetching method.', example: "'api'" },
-  { category: 'DataSourceConfig', property: 'url', type: 'string', status: 'implemented', description: 'API endpoint URL', usage: 'For API data sources.', example: '"/api/users"' },
-  { category: 'DataSourceConfig', property: 'method', type: "'GET' | 'POST'", status: 'implemented', description: 'HTTP method', usage: 'Request method for API calls.', example: "'GET'" },
-  { category: 'DataSourceConfig', property: 'headers', type: 'Record<string, string>', status: 'implemented', description: 'HTTP headers', usage: 'Additional request headers.', example: '{ "Authorization": "Bearer token" }' },
-  { category: 'DataSourceConfig', property: 'params', type: 'Record<string, any>', status: 'implemented', description: 'Query parameters', usage: 'URL query parameters.', example: '{ "limit": 10 }' },
-  { category: 'DataSourceConfig', property: 'data', type: 'any[]', status: 'implemented', description: 'Static data array', usage: 'For static data sources.', example: '[{ id: 1, name: "John" }]' },
 
   // GridConfig properties
   { category: 'GridConfig', property: 'minItemWidth', type: 'string', status: 'implemented', description: 'Minimum width for grid items', usage: 'Creates responsive grid with auto-fit.', example: '"200px"' },
@@ -101,8 +96,7 @@ export const widgemoConfigProperties: Array<{
   // ChartConfig properties
   { category: 'ChartConfig', property: 'type', type: "'bar' | 'line' | 'pie' | 'area' | 'scatter'", status: 'implemented', description: 'Chart type', usage: 'Basic chart types supported.', example: "'bar'" },
   { category: 'ChartConfig', property: 'xAxis', type: 'string', status: 'implemented', description: 'X-axis field name', usage: 'Field for chart x-axis.', example: "'name'" },
-  { category: 'ChartConfig', property: 'yAxis', type: 'string | string[]', status: 'implemented', description: 'Y-axis field name(s)', usage: 'Field(s) for chart y-axis.', example: "'value'" },
-  { category: 'ChartConfig', property: 'groupBy', type: 'string', status: 'not-implemented', description: 'Field to group data by', usage: 'Not implemented.', example: "'category'" },
+  { category: 'ChartConfig', property: 'yAxis', type: 'string | string[]', status: 'implemented', description: 'Field(s) used for chart series values.', usage: 'Point each series at one or more numeric fields.', example: "'value'" },
   { category: 'ChartConfig', property: 'settings', type: 'Record<string, any>', status: 'partial', description: 'Additional chart settings', usage: 'Passed to Recharts components.', example: '{ showLegend: true }' },
 
   // PaginationConfig properties
@@ -119,7 +113,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'FilteringConfig', property: 'filters', type: 'Array<{ field: string; type: "text" | "select" | "date" | "number" | "boolean"; options?: Array<{ value: string | number | boolean; label: string }> }>', status: 'not-implemented', description: 'Filter definitions', usage: 'Not implemented.', example: '[{ field: "status", type: "select", options: [{ value: "active", label: "Active" }] }]' },
 
   // FieldConfig properties
-  { category: 'FieldConfig', property: 'name', type: 'string', status: 'implemented', description: 'Unique field name', usage: 'Used in rendering and data mapping.', example: '"id"' },
+  { category: 'FieldConfig', property: 'key', type: 'string', status: 'implemented', description: 'Unique field key', usage: 'Used in rendering and data mapping.', example: '"id"' },
   { category: 'FieldConfig', property: 'label', type: 'string', status: 'implemented', description: 'Human-readable label', usage: 'Displayed in headers/labels.', example: '"ID"' },
   { category: 'FieldConfig', property: 'type', type: "'text' | 'number' | 'date' | 'boolean' | 'select' | 'relation' | 'textarea' | 'email' | 'url'", status: 'partial', description: 'Data type', usage: "Basic types rendered; 'relation', 'textarea' not fully.", example: "'text'" },
   { category: 'FieldConfig', property: 'options', type: 'Array<{ value: string | number | boolean; label: string }>', status: 'implemented', description: 'Options for select/relation', usage: 'For select fields.', example: '[{ value: "active", label: "Active" }]' },
@@ -135,13 +129,13 @@ export const widgemoConfigProperties: Array<{
   { category: 'FieldConfig', property: 'width', type: 'number | string', status: 'not-implemented', description: 'Width in table', usage: 'Not implemented in table view.', example: '100' },
   { category: 'FieldConfig', property: 'align', type: "'left' | 'center' | 'right'", status: 'implemented', description: 'Text alignment', usage: 'Applied in table cells.', example: "'center'" },
   { category: 'FieldConfig', property: 'showLabel', type: 'boolean', status: 'implemented', description: 'Show label in cards', usage: 'For card views.', example: 'true' },
-  { category: 'FieldConfig', property: 'linkOptions', type: 'Object', status: 'implemented', description: 'Link rendering options', usage: 'Used when renderAs is "link".', example: '{ newTab: true, externalWarning: true }', isComplexType: true, complexTypeSection: 'LinkOptions' },
+  { category: 'FieldConfig', property: 'renderAsOptions', type: 'Object', status: 'implemented', description: 'Renderer-specific options for renderAs modes such as link, currency, badge, progress, and rating.', usage: 'Used with renderAs to customize formatting and interactive behavior.', example: '{ newTab: true, externalWarning: true }', isComplexType: true, complexTypeSection: 'RenderAsOptions' },
 
-  // LinkOptions properties
-  { category: 'LinkOptions', property: 'text', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom link text', usage: 'If not provided, uses field value.', example: '"Click here"' },
-  { category: 'LinkOptions', property: 'newTab', type: 'boolean', status: 'implemented', description: 'Open in new tab', usage: 'Adds target="_blank" and rel attributes.', example: 'true' },
-  { category: 'LinkOptions', property: 'externalWarning', type: 'boolean', status: 'implemented', description: 'Show external link warning', usage: 'Adds visual indicator for external links.', example: 'true' },
-  { category: 'LinkOptions', property: 'url', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom URL', usage: 'If different from field value.', example: '"https://example.com"' },
+  // RenderAsOptions properties
+  { category: 'RenderAsOptions', property: 'text', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom link text when renderAs is "link".', usage: 'If not provided, uses the field value.', example: '"Click here"' },
+  { category: 'RenderAsOptions', property: 'newTab', type: 'boolean', status: 'implemented', description: 'Open link renderers in a new tab.', usage: 'Adds target="_blank" and rel attributes.', example: 'true' },
+  { category: 'RenderAsOptions', property: 'externalWarning', type: 'boolean', status: 'implemented', description: 'Show an external-link indicator for link renderers.', usage: 'Useful when links navigate away from the current app.', example: 'true' },
+  { category: 'RenderAsOptions', property: 'url', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom URL when renderAs is "link".', usage: 'Use this when the link target differs from the field value.', example: '"https://example.com"' },
 
   // MediaFieldConfig properties (for mediaConfig.fields array)
   { category: 'MediaFieldConfig', property: 'field', type: 'string', status: 'implemented', description: 'Field name/path to extract media source', usage: 'Dot notation path to media field in data items.', example: '"src"' },
@@ -158,7 +152,6 @@ export const widgemoConfigProperties: Array<{
 
   // WidgemoProps properties
   { category: 'WidgemoProps', property: 'config', type: 'WidgemoConfig', status: 'implemented', description: 'Configuration object', usage: 'Core to component behavior.', example: '{ title: "Data", mode: "table" }' },
-  { category: 'WidgemoProps', property: 'adapters', type: 'WidgemoAdapters', status: 'implemented', description: 'Data operation adapters', usage: 'Used for fetch/create/update/delete operations.', example: '{ fetchData: async () => ({ data: [] }) }' },
   { category: 'WidgemoProps', property: 'overrides', type: 'Partial<WidgemoConfig>', status: 'implemented', description: 'Runtime configuration overrides', usage: 'Merged with config in Widgemo.tsx.', example: '{ title: "Override Title" }' },
   { category: 'WidgemoProps', property: 'className', type: 'string', status: 'implemented', description: 'Additional CSS class', usage: 'Applied to root element.', example: '"my-custom-class"' },
   { category: 'WidgemoProps', property: 'style', type: 'React.CSSProperties', status: 'implemented', description: 'Custom styling', usage: 'Applied to root element.', example: '{ backgroundColor: "red" }' },
@@ -177,16 +170,6 @@ export const widgemoConfigProperties: Array<{
   { category: 'WidgemoProps', property: 'overrideBackground', type: 'string', status: 'implemented', description: 'Manual background override', usage: 'Highest priority.', example: '"#f0f0f0"' },
   { category: 'WidgemoProps', property: 'showConfigDetails', type: 'boolean', status: 'implemented', description: 'Show config details button', usage: 'Adds button in header.', example: 'true' },
   { category: 'WidgemoProps', property: 'mediaConfig', type: '{...}', status: 'implemented', description: 'Media configuration', usage: 'Passed to views for media handling.', example: '{ fields: [{ field: "image" }] }' },
-
-  // WidgemoAdapters properties
-  { category: 'WidgemoAdapters', property: 'fetchData', type: 'Function', status: 'implemented', description: 'Fetch data with params', usage: 'Core data fetching functionality.', example: 'async (params) => ({ data: [], total: 0 })' },
-  { category: 'WidgemoAdapters', property: 'createRecord', type: 'Function', status: 'implemented', description: 'Create record', usage: 'Used in add modal.', example: 'async (record) => ({ id: 1, ...record })' },
-  { category: 'WidgemoAdapters', property: 'updateRecord', type: 'Function', status: 'implemented', description: 'Update record', usage: 'Used in edit modal.', example: 'async (id, record) => record' },
-  { category: 'WidgemoAdapters', property: 'deleteRecord', type: 'Function', status: 'implemented', description: 'Delete record', usage: 'Used in delete action.', example: 'async (id) => {}' },
-  { category: 'WidgemoAdapters', property: 'fetchConfig', type: 'Function', status: 'not-implemented', description: 'Fetch dynamic config', usage: 'Not implemented: Property exists but not used.', example: 'async (configId) => ({})' },
-  { category: 'WidgemoAdapters', property: 'getAuthToken', type: 'Function', status: 'not-implemented', description: 'Auth token provider', usage: 'Not implemented: Property exists but no auth logic.', example: 'async () => "token"' },
-  { category: 'WidgemoAdapters', property: 'onError', type: 'Function', status: 'implemented', description: 'Error handler', usage: 'Called on errors.', example: '(error) => console.error(error)' },
-  { category: 'WidgemoAdapters', property: 'onSuccess', type: 'Function', status: 'implemented', description: 'Success handler', usage: 'Called on successes.', example: '(message, data) => console.log(message)' },
 ];
 
 export const fieldTypes = [
@@ -214,99 +197,101 @@ export const viewModes = [
 
 export const presetConfigs = {
   minimal: {
-    title: 'Minimal',
-    mode: 'table' as const,
-    dataSource: { type: 'static' as const },
-    fields: [
-      { name: 'name', label: 'Name', type: 'text' as const },
-      { name: 'value', label: 'Value', type: 'number' as const },
-    ],
-    header: { onMenu: ['refresh'] },
-    styling: { compact: true },
+    id: 'preset-minimal',
+    collapse: { initialState: 'expanded' as const },
+    zones: {
+      header: {
+        title: 'Minimal',
+        subtitle: 'Smallest current table preset',
+      },
+      content: {
+        mode: 'table' as const,
+        modeConfig: { table: { type: 'traditional' as const } },
+        item: {
+          layout: { type: 'auto' as const },
+          fields: [
+            { key: 'name', label: 'Name', type: 'text' as const },
+            { key: 'value', label: 'Value', type: 'number' as const },
+          ],
+        },
+      },
+    },
   },
   standard: {
-    title: 'Standard',
-    mode: 'table' as const,
-    dataSource: { type: 'static' as const },
-    fields: [
-      { name: 'id', label: 'ID', type: 'number' as const },
-      { name: 'name', label: 'Name', type: 'text' as const },
-      { name: 'status', label: 'Active', type: 'boolean' as const },
-    ],
-    actions: {
-      definitions: [
-        { id: 'refresh' },
-        { id: 'add' },
-        {
-          id: 'edit',
-          label: 'Edit',
-          icon: 'edit',
-          variant: 'secondary',
-          iconOnly: true,
-          onTrigger: () => {} // Demo action
-        },
-        {
-          id: 'delete',
-          label: 'Delete',
-          icon: 'trash',
-          variant: 'danger',
-          iconOnly: true,
-          onTrigger: () => {} // Demo action
-        }
-      ],
+    id: 'preset-standard',
+    collapse: { initialState: 'expanded' as const },
+    zones: {
       header: {
-        always: ['refresh'],
-        onMenu: ['add']
+        title: 'Standard',
+        subtitle: 'Basic table preset with header actions',
+        actions: [
+          { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' as const },
+          { id: 'add', label: 'Add', icon: 'add', placement: 'menu' as const },
+        ],
       },
-      item: {
-        onMenu: ['edit', 'delete']
-      }
+      content: {
+        mode: 'table' as const,
+        modeConfig: { table: { type: 'traditional' as const, hover: true } },
+        item: {
+          layout: { type: 'auto' as const },
+          fields: [
+            { key: 'id', label: 'ID', type: 'number' as const },
+            { key: 'name', label: 'Name', type: 'text' as const },
+            { key: 'status', label: 'Active', type: 'boolean' as const },
+          ],
+        },
+        actions: [
+          { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const },
+          { id: 'delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, variant: 'danger' as const },
+        ],
+      },
     },
-    styling: { shadow: true },
+    containerFrame: { shadow: true },
   },
   advanced: {
-    title: 'Advanced',
-    mode: 'table' as const,
-    dataSource: { type: 'static' as const },
-    fields: [
-      { name: 'id', label: 'ID', type: 'number' as const, sortable: true },
-      { name: 'name', label: 'Name', type: 'text' as const, filterable: true },
-      { name: 'category', label: 'Category', type: 'select' as const, options: [], filterable: true },
-      { name: 'status', label: 'Active', type: 'boolean' as const, filterable: true },
-      { name: 'createdAt', label: 'Created', type: 'date' as const, sortable: true },
-    ],
-    actions: {
-      definitions: [
-        { id: 'refresh' },
-        { id: 'viewToggle' },
-        { id: 'columnSelector' },
-        { id: 'add' },
-        {
-          id: 'edit',
-          label: 'Edit',
-          icon: 'edit',
-          variant: 'secondary',
-          iconOnly: true,
-          onTrigger: () => {} // Demo action
-        },
-        {
-          id: 'delete',
-          label: 'Delete',
-          icon: 'trash',
-          variant: 'danger',
-          iconOnly: true,
-          onTrigger: () => {} // Demo action
-        }
-      ],
+    id: 'preset-advanced',
+    collapse: { initialState: 'expanded' as const },
+    zones: {
       header: {
-        always: ['refresh'],
-        discoverable: ['viewToggle'],
-        onMenu: ['columnSelector', 'add']
+        title: 'Advanced',
+        subtitle: 'Search, pagination, sorting, and action overflow',
+        actions: [
+          { id: 'refresh', label: 'Refresh', icon: 'refresh', placement: 'pinned' as const },
+          { id: 'view-toggle', label: 'View Toggle', icon: 'view', placement: 'onHover' as const },
+          { id: 'column-selector', label: 'Columns', icon: 'table', placement: 'menu' as const },
+          { id: 'add', label: 'Add', icon: 'add', placement: 'menu' as const },
+        ],
+        actionOverflow: { maxInline: 2, menuLabel: 'More' },
       },
-      item: {
-        onMenu: ['edit', 'delete']
-      }
+      content: {
+        mode: 'table' as const,
+        modeConfig: {
+          table: {
+            type: 'traditional' as const,
+            striped: true,
+            hover: true,
+            showHeader: true,
+          },
+        },
+        search: { enabled: true, placeholder: 'Search records...' },
+        pagination: { pageSize: 10 },
+        sorting: [{ fieldKey: 'createdAt', direction: 'desc' as const }],
+        item: {
+          layout: { type: 'auto' as const },
+          fields: [
+            { key: 'id', label: 'ID', type: 'number' as const, sortable: true },
+            { key: 'name', label: 'Name', type: 'text' as const, filterable: true },
+            { key: 'category', label: 'Category', type: 'select' as const, options: [], filterable: true },
+            { key: 'status', label: 'Active', type: 'boolean' as const, filterable: true },
+            { key: 'createdAt', label: 'Created', type: 'date' as const, sortable: true },
+          ],
+        },
+        actions: [
+          { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const },
+          { id: 'delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, variant: 'danger' as const },
+        ],
+      },
     },
-    styling: { shadow: true },
+    containerFrame: { shadow: true },
   },
 };
