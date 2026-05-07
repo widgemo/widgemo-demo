@@ -669,7 +669,6 @@ export const getAccountsSummaryRows = (accountScope: AccountScope): Entity[] => 
       ...item,
       total: item.section === 'Assets' ? assets : liabilities,
       percent,
-      sharePercent: percent,
     };
   });
 };

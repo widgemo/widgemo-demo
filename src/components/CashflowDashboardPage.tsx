@@ -161,6 +161,7 @@ const dashboardNavItems: Array<{ key: DashboardNavKey; label: string; icon: stri
 export const CashflowDashboardPage: React.FC = () => {
   const { currentTheme } = useTheme();
   const [activeNav, setActiveNav] = useState<DashboardNavKey>('command');
+  const [summaryMetric, setSummaryMetric] = useState<'totals' | 'percent'>('totals');
   const [selectedScope, setSelectedScope] = useState<AccountScope>('all');
   const [selectedHorizon, setSelectedHorizon] = useState<ForecastHorizon>('30d');
   const [selectedPosture, setSelectedPosture] = useState<RiskPosture>('expected');
@@ -887,37 +888,67 @@ export const CashflowDashboardPage: React.FC = () => {
   );
 
   const summaryFields = useMemo<FieldConfig[]>(
-    () => [
-      { key: 'category', label: 'Category', type: 'text', width: '155px' },
-      {
-        key: 'amount',
-        label: 'Total',
-        type: 'number',
-        width: '128px',
-        renderAs: 'currency',
-        renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-      },
-      {
-        key: 'percent',
-        label: 'Share',
-        type: 'number',
-        width: '78px',
-        formatter: (value: unknown) => `${Number(value ?? 0).toFixed(1)}%`,
-      },
-      {
-        key: 'sharePercent',
-        label: 'Bar',
-        type: 'number',
-        width: '140px',
-        renderAs: 'customProgress',
-        renderAsOptions: {
-          showPercentage: false,
-          height: '6px',
-          color: 'var(--cashflow-accent)',
+    () => {
+      const baseField: FieldConfig = { key: 'category', label: 'Category', type: 'text', width: '172px' };
+
+      if (summaryMetric === 'totals') {
+        return [
+          baseField,
+          {
+            key: 'amount',
+            label: 'Total',
+            type: 'number',
+            width: '138px',
+            renderAs: 'currency',
+            renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
+          },
+        ];
+      }
+
+      return [
+        baseField,
+        {
+          key: 'percent',
+          label: 'Share',
+          type: 'number',
+          width: '100px',
+          formatter: (value: unknown) => `${Number(value ?? 0).toFixed(1)}%`,
         },
+      ];
+    },
+    [summaryMetric],
+  );
+
+  const summaryActions = useMemo<ActionConfig<Entity>[]>(
+    () => [
+      {
+        id: 'summary-totals',
+        label: 'Totals',
+        icon: 'finance-sum',
+        placement: 'pinned',
+        variant: summaryMetric === 'totals' ? 'primary' : 'secondary',
+        onAction: () => setSummaryMetric('totals'),
+      },
+      {
+        id: 'summary-percent',
+        label: 'Percent',
+        icon: 'finance-percent',
+        placement: 'pinned',
+        variant: summaryMetric === 'percent' ? 'primary' : 'secondary',
+        onAction: () => setSummaryMetric('percent'),
       },
     ],
-    [],
+    [summaryMetric],
+  );
+
+  const summaryGroupTotals = useMemo(
+    () => accountsSummaryRows.reduce<Record<string, number>>((acc, row) => {
+      const section = String(row.section ?? 'Other');
+      const next = acc[section] ?? 0;
+      acc[section] = next + Number(row.amount ?? 0);
+      return acc;
+    }, {}),
+    [accountsSummaryRows],
   );
 
   const accountsNetWorthConfig = useMemo<WidgemoConfig<Entity>>(
@@ -1045,7 +1076,9 @@ export const CashflowDashboardPage: React.FC = () => {
       zones: {
         header: {
           title: 'Summary',
-          subtitle: 'Totals and share of portfolio',
+          subtitle: summaryMetric === 'totals' ? 'Totals by category' : 'Share of section by category',
+          actions: summaryActions,
+          actionOverflow: { maxInline: { mobile: 2, tablet: 2, desktop: 2 }, menuLabel: 'View' },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
@@ -1058,11 +1091,21 @@ export const CashflowDashboardPage: React.FC = () => {
             type: 'traditional',
             hover: true,
             striped: false,
-            showHeader: true,
+            showHeader: false,
             rowSeparator: true,
             actionsColumn: false,
           },
-          groupings: [{ fieldKey: 'section', initiallyCollapsed: false }],
+          groupings: [
+            {
+              fieldKey: 'section',
+              initiallyCollapsed: false,
+              renderer: (groupValue: unknown, count: number) => {
+                const section = String(groupValue ?? 'Other');
+                const amountTotal = summaryGroupTotals[section] ?? 0;
+                return `${section} (${count}) · $${Math.round(amountTotal).toLocaleString()}`;
+              },
+            },
+          ],
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
@@ -1072,7 +1115,7 @@ export const CashflowDashboardPage: React.FC = () => {
         }),
       },
     }),
-    [summaryFields],
+    [summaryFields, summaryGroupTotals, summaryActions, summaryMetric],
   );
 
   const isAccountsView = activeNav === 'accounts';

@@ -47,6 +47,8 @@ const financeIconPathMap: Record<string, string> = {
   'finance-reserve': 'M3.1 6.1l6.4-3.2 6.4 3.2v1.8H3.1V6.1zm1.3 3.1h1.8v4.8H4.4V9.2zm3.8 0H10v4.8H8.2V9.2zm3.8 0h1.8v4.8H12V9.2zM2.8 15.1h13.4v1.8H2.8v-1.8z',
   'finance-income': 'M3.2 15.6V3.8H5v11.8H3.2zm3.2 0V8.6h1.8v7H6.4zm3.2 0V6.2h1.8v9.4H9.6zm3.2 0V9.8h1.8v5.8h-1.8z',
   'finance-autopay': 'M9.6 2.8a6.9 6.9 0 016.7 5.3h1.7l-2.4 2.4-2.4-2.4h1.4a5.1 5.1 0 10-.9 4.2l1.4.9A6.9 6.9 0 119.6 2.8zm-.9 3.3h1.8v3.2l2.5 1.5-.9 1.5-3.4-2V6.1z',
+  'finance-sum': 'M4.1 4h11.8v1.8H7.3l4.1 4.2-4.1 4.2h8.6V16H4.1v-1.7l4.8-4.3-4.8-4.3V4z',
+  'finance-percent': 'M6.3 5.2a1.6 1.6 0 110 3.2 1.6 1.6 0 010-3.2zm7.4 6.4a1.6 1.6 0 110 3.2 1.6 1.6 0 010-3.2zM6.2 14.8l7.6-9.6 1.4 1.1-7.6 9.6-1.4-1.1z',
 };
 
 const registerFinanceIcons = () => {
