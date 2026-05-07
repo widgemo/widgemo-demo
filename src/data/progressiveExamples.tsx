@@ -1499,9 +1499,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'revenue', label: 'Revenue', type: 'number' },
         ], {
           chart: {
-            type: 'bar',
             xAxis: 'month',
-            yAxis: 'revenue',
+            series: [{ type: 'bar', key: 'revenue' }],
             height: 320,
           },
         }),
@@ -1524,9 +1523,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'cost', label: 'Cost', type: 'number' },
         ], {
           chart: {
-            type: 'line',
             xAxis: 'month',
-            yAxis: ['revenue', 'cost'],
+            series: [{ type: 'line', key: 'revenue' }, { type: 'line', key: 'cost' }],
             height: 320,
             showGrid: true,
             showLegend: true,
@@ -1550,9 +1548,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'revenue', label: 'Revenue', type: 'number' },
         ], {
           chart: {
-            type: 'area',
             xAxis: 'month',
-            yAxis: 'revenue',
+            series: [{ type: 'area', key: 'revenue' }],
             showLabels: true,
             height: 320,
           },
@@ -1575,9 +1572,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'users', label: 'Users', type: 'number' },
         ], {
           chart: {
-            type: 'pie',
             xAxis: 'month',
-            yAxis: 'users',
+            series: [{ type: 'pie', key: 'users' }],
             showLabels: true,
             height: 340,
           },
@@ -1600,9 +1596,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'revenue', label: 'Revenue', type: 'number' },
         ], {
           chart: {
-            type: 'bar',
             xAxis: 'month',
-            yAxis: 'revenue',
+            series: [{ type: 'bar', key: 'revenue' }],
             colors: ['#1d4ed8', '#047857', '#b45309', '#b91c1c', '#7c3aed', '#0f766e'],
             showGrid: false,
             showLegend: false,
@@ -1631,9 +1626,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'revenue', label: 'Revenue', type: 'number' },
         ], {
           chart: {
-            type: 'bar',
             xAxis: 'month',
-            yAxis: 'revenue',
+            series: [{ type: 'bar', key: 'revenue' }],
             height: 320,
           },
           gestures: [
@@ -1665,9 +1659,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'cost', label: 'Cost', type: 'number' },
         ], {
           chart: {
-            type: 'bar',
             xAxis: 'month',
-            yAxis: ['revenue', 'cost'],
+            series: [{ type: 'bar', key: 'revenue' }, { type: 'bar', key: 'cost' }],
             height: 320,
             showGrid: true,
             showLabels: false,
@@ -1694,10 +1687,9 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'cost', label: 'Cost', type: 'number' },
         ], {
           chart: {
-            type: 'bar',
             orientation: 'horizontal',
             xAxis: 'month',
-            yAxis: ['revenue', 'cost'],
+            series: [{ type: 'bar', key: 'revenue' }, { type: 'bar', key: 'cost' }],
             height: 340,
             showGrid: true,
             showLabels: true,
@@ -1732,9 +1724,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             chart: {
-              type: 'bar',
               xAxis: 'month',
-              yAxis: ['revenue', 'cost'],
+              series: [{ type: 'bar', key: 'revenue' }, { type: 'bar', key: 'cost' }],
               height: 320,
               showGrid: true,
               showLabels: false,
@@ -1850,9 +1841,8 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'cost', label: 'Cost', type: 'number' },
         ], {
           chart: {
-            type: 'line',
             xAxis: 'month',
-            yAxis: ['revenue', 'cost'],
+            series: [{ type: 'line', key: 'revenue' }, { type: 'line', key: 'cost' }],
             height: 320,
             showGrid: true,
             showLegend: true,
@@ -1883,15 +1873,50 @@ export const progressiveExamples: ProgressiveExample[] = [
           { key: 'revenue', label: 'Revenue', type: 'number' },
         ], {
           chart: {
-            type: 'area',
             xAxis: 'month',
-            yAxis: 'revenue',
+            series: [{ type: 'area', key: 'revenue' }],
             height: 320,
             showGrid: true,
             showLabels: false,
             lineThickness: 10,
             showDots: true,
             areaGradient: false,
+          },
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-47-chart-mixed-bar-line-overlay',
+    title: 'Progressive 47 - Chart: Mixed Series Overlay (Bar + Line)',
+    description:
+      'Demonstrates mixed cartesian series by overlaying a line on top of bars in a single chart using the new series model.',
+    data: monthlyKpiData,
+    config: {
+      id: 'progressive-47',
+      zones: {
+        header: {
+          title: 'Revenue Bars + Cost Line',
+          subtitle: 'Mixed series overlay in one chart',
+          icon: 'chart',
+        },
+        content: createChartContent(monthlyKpiData, [
+          { key: 'month', label: 'Month', type: 'text' },
+          { key: 'revenue', label: 'Revenue', type: 'number' },
+          { key: 'cost', label: 'Cost', type: 'number' },
+        ], {
+          chart: {
+            xAxis: 'month',
+            series: [
+              { type: 'bar', key: 'revenue', label: 'Revenue' },
+              { type: 'line', key: 'cost', label: 'Cost', showDots: true, lineThickness: 3.5 },
+            ],
+            height: 320,
+            showGrid: true,
+            showLabels: false,
+            showLegend: true,
+            legendAlign: 'center',
+            colors: ['#3157d5', '#b42318'],
           },
         }),
       },

@@ -590,25 +590,79 @@ export const DashboardPage: React.FC = () => {
         },
         content: createChartContent(throughputFields, {
           chart: {
-            type: 'bar',
             xAxis: 'label',
-            yAxis: ['completed', 'planned'],
+            series: [
+              {
+                type: 'bar',
+                key: 'completed',
+                label: 'Completed',
+                color: '#5f4b8b',
+              },
+              {
+                type: 'area',
+                key: 'spillover',
+                label: 'Spillover',
+                color: '#5f86a0',
+                areaGradient: true,
+              },
+              {
+                type: 'line',
+                key: 'planned',
+                label: 'Planned',
+                color: '#c27a52',
+                showDots: true,
+                lineThickness: 4.5,
+              },
+            ],
             height: 320,
-            colors: ['#3157d5', '#9cb7ff'],
             showGrid: true,
             showLabels: false,
-            legendAlign: 'left',
+            legendAlign: 'center',
             tooltip: {
               position: 'top-right',
               render: (ctx: ChartTooltipContext) => {
                 const entity = ctx.entity as ThroughputPoint;
                 const variance = entity.completed - entity.planned;
                 const utilization = entity.planned === 0 ? 0 : Math.round((entity.completed / entity.planned) * 100);
+                const hoveredSeriesLabel =
+                  ctx.seriesKey === 'completed'
+                    ? 'Completed'
+                    : ctx.seriesKey === 'planned'
+                      ? 'Planned'
+                      : ctx.seriesKey === 'spillover'
+                        ? 'Spillover'
+                        : ctx.seriesKey;
                 return (
-                  <div style={{ minWidth: '210px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                  <div style={{ minWidth: '228px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
                       <strong>{entity.label}</strong>
                       <span style={{ color: 'var(--widgemo-color-textMuted, #64748b)', fontSize: '12px' }}>{entity.team}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.55rem' }}>
+                      <span
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: '999px',
+                          backgroundColor: ctx.color,
+                          display: 'inline-block',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                          color: ctx.color,
+                        }}
+                      >
+                        {hoveredSeriesLabel}
+                      </span>
+                      <span style={{ marginLeft: 'auto', fontWeight: 700, color: 'var(--widgemo-color-text, #334155)' }}>
+                        {ctx.value}
+                      </span>
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--widgemo-color-text, #475569)', marginBottom: '0.45rem' }}>{entity.focus}</div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 10px', fontSize: '12px' }}>
@@ -666,9 +720,8 @@ export const DashboardPage: React.FC = () => {
         },
         content: createChartContent(allocationFields, {
           chart: {
-            type: 'donut',
             xAxis: 'workstream',
-            yAxis: 'count',
+            series: [{ type: 'donut', key: 'count' }],
             height: 320,
             showLegend: true,
             legendAlign: 'center',
