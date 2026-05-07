@@ -1,2 +1,7 @@
 export { registerProgressBarField, type ProgressBarRenderAsOptions } from './ProgressBarField';
 export { registerJsonField, type JsonRenderAsOptions } from './JsonField';
+export { registerCashDeltaField, type CashDeltaRenderAsOptions } from './CashDeltaField';
+export { registerCashPillField, type CashPillRenderAsOptions } from './CashPillField';
+export { registerAccountHealthField, type AccountHealthRenderAsOptions } from './AccountHealthField';
+export { registerForecastConfidenceField, type ForecastConfidenceRenderAsOptions } from './ForecastConfidenceField';
+export { registerTransactionMetaField, type TransactionMetaRenderAsOptions } from './TransactionMetaField';
