@@ -151,25 +151,13 @@ export const widgemoConfigProperties: Array<{
   { category: 'MediaFieldConfig', property: 'position', type: "'start' | 'end'", status: 'implemented', description: 'Position column at start or end', usage: 'Places media column at the beginning or end of the table. Overrides afterField.', example: '"start"' },
 
   // WidgemoProps properties
-  { category: 'WidgemoProps', property: 'config', type: 'WidgemoConfig', status: 'implemented', description: 'Configuration object', usage: 'Core to component behavior.', example: '{ title: "Data", mode: "table" }' },
-  { category: 'WidgemoProps', property: 'overrides', type: 'Partial<WidgemoConfig>', status: 'implemented', description: 'Runtime configuration overrides', usage: 'Merged with config in Widgemo.tsx.', example: '{ title: "Override Title" }' },
-  { category: 'WidgemoProps', property: 'className', type: 'string', status: 'implemented', description: 'Additional CSS class', usage: 'Applied to root element.', example: '"my-custom-class"' },
-  { category: 'WidgemoProps', property: 'style', type: 'React.CSSProperties', status: 'implemented', description: 'Custom styling', usage: 'Applied to root element.', example: '{ backgroundColor: "red" }' },
-  { category: 'WidgemoProps', property: 'loading', type: 'boolean', status: 'implemented', description: 'External loading state', usage: 'Overrides internal loading.', example: 'true' },
-  { category: 'WidgemoProps', property: 'error', type: 'string | Error', status: 'implemented', description: 'External error state', usage: 'Overrides internal error.', example: '"Network error"' },
-  { category: 'WidgemoProps', property: 'onReady', type: '() => void', status: 'implemented', description: 'Ready callback', usage: 'Called after initial data fetch.', example: '() => console.log("Ready")' },
-  { category: 'WidgemoProps', property: 'onDataChange', type: '(data: any[]) => void', status: 'implemented', description: 'Data change callback', usage: 'Triggered on data updates.', example: '(data) => console.log(data)' },
-  { category: 'WidgemoProps', property: 'onRecordSelect', type: '(record: any) => void', status: 'not-implemented', description: 'Record select callback', usage: 'Not implemented: Property exists but no selection logic.', example: '(record) => console.log(record)' },
-  { category: 'WidgemoProps', property: 'onCustomAction', type: '(action: string, record?: any) => void', status: 'partial', description: 'Custom action callback', usage: 'Partially implemented: For actions, but not fully wired.', example: '(action, record) => console.log(action)' },
-  { category: 'WidgemoProps', property: 'customLoading', type: 'React.ComponentType<{...}>', status: 'implemented', description: 'Custom loading component', usage: 'Used in Widgemo.tsx.', example: 'MyLoadingComponent' },
-  { category: 'WidgemoProps', property: 'customError', type: 'React.ComponentType<{...}>', status: 'implemented', description: 'Custom error component', usage: 'Used with retry logic.', example: 'MyErrorComponent' },
-  { category: 'WidgemoProps', property: 'customEmpty', type: 'React.ComponentType<{...}>', status: 'implemented', description: 'Custom empty component', usage: 'Used for empty states.', example: 'MyEmptyComponent' },
-  { category: 'WidgemoProps', property: 'baseColor', type: 'string', status: 'implemented', description: 'Base color for contrast', usage: 'Used in background calculation.', example: '"#ffffff"' },
-  { category: 'WidgemoProps', property: 'autoContrast', type: 'boolean', status: 'implemented', description: 'Enable contrast adjustment', usage: 'Defaults to true.', example: 'true' },
-  { category: 'WidgemoProps', property: 'contrastAmount', type: 'number', status: 'implemented', description: 'Contrast amount', usage: 'Used in background calculation.', example: '0.05' },
-  { category: 'WidgemoProps', property: 'overrideBackground', type: 'string', status: 'implemented', description: 'Manual background override', usage: 'Highest priority.', example: '"#f0f0f0"' },
-  { category: 'WidgemoProps', property: 'showConfigDetails', type: 'boolean', status: 'implemented', description: 'Show config details button', usage: 'Adds button in header.', example: 'true' },
-  { category: 'WidgemoProps', property: 'mediaConfig', type: '{...}', status: 'implemented', description: 'Media configuration', usage: 'Passed to views for media handling.', example: '{ fields: [{ field: "image" }] }' },
+  { category: 'WidgemoProps', property: 'data', type: 'T[]', status: 'implemented', description: 'Array of data entities to display', usage: 'The data to be rendered by the component.', example: '[{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]' },
+  { category: 'WidgemoProps', property: 'config', type: 'WidgemoConfig<T>', status: 'implemented', description: 'Configuration object', usage: 'Core to component behavior and rendering options.', example: '{ zones: { content: { mode: "table", item: { fields: [...] } } } }' },
+  { category: 'WidgemoProps', property: 'className', type: 'string', status: 'implemented', description: 'Additional CSS class', usage: 'Applied to root element for styling integration.', example: '"my-widgemo-wrapper"' },
+  { category: 'WidgemoProps', property: 'id', type: 'string', status: 'implemented', description: 'Unique identifier for the component', usage: 'Used for debugging and component identification.', example: '"data-table-1"' },
+  { category: 'WidgemoProps', property: 'loading', type: 'boolean', status: 'implemented', description: 'External loading state', usage: 'Shows loading UI when true.', example: 'true' },
+  { category: 'WidgemoProps', property: 'error', type: 'any', status: 'implemented', description: 'External error state', usage: 'Shows error UI when set. Pass an error object or message.', example: '{ message: "Failed to load data" }' },
+  { category: 'WidgemoProps', property: 'onRetry', type: '() => void', status: 'implemented', description: 'Retry callback when error state is active', usage: 'Called when user clicks the retry button in error UI.', example: '() => refetchData()' },
 ];
 
 export const fieldTypes = [

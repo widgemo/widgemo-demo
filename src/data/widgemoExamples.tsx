@@ -1003,60 +1003,6 @@ const widgemoExamples: Array<{
     }
   },
   {
-    id: 'zone-layout-actions-below',
-    title: 'Zone Layout: Actions Below + Right-Aligned Title',
-    description: 'Combines two layout options: header.layout.actionsPosition = "below" places actions in a dedicated row beneath the title bar; header.layout.titlePosition = "right" right-aligns the title and subtitle block.',
-    data: threeUsersData,
-    config: {
-      collapse: { initialState: 'expanded' },
-      zones: {
-        header: {
-          title: 'Reports Dashboard',
-          subtitle: 'Monthly summary',
-          icon: { name: 'chart', size: 22, color: '#059669' },
-          layout: { actionsPosition: 'below', titlePosition: 'right' },
-          actions: [
-            {
-              id: 'export-csv',
-              label: 'Export CSV',
-              icon: 'download',
-              variant: 'secondary',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'export-pdf',
-              label: 'Export PDF',
-              icon: 'download',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'share',
-              label: 'Share',
-              icon: 'share',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            }
-          ]
-        },
-        content: {
-          mode: 'table',
-          modeConfig: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name' },
-              { key: 'role', label: 'Role' },
-              { key: 'department', label: 'Department' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD' } }
-            ],
-            layout: { type: 'auto' }
-          }
-        }
-      }
-    }
-  },
-  {
     id: 'zone-layout-vertical',
     title: 'Zone Layout: Vertical Orientation + Centered Footer',
     description: 'header.layout.orientation = "vertical" stacks all zone sections top-to-bottom. The footer uses layout.titlePosition = "center" to center its label — demonstrating that layout options apply to both header and footer zones independently.',
