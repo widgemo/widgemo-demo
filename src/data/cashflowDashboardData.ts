@@ -659,12 +659,17 @@ export const getAccountsSummaryRows = (accountScope: AccountScope): Entity[] => 
     { category: 'Credit Cards', amount: Number(creditCards.toFixed(2)), section: 'Liabilities' },
   ];
 
-  return categories.map((item, index) => ({
-    id: `accounts-summary-${index}`,
-    ...item,
-    total: item.section === 'Assets' ? assets : liabilities,
-    percent: item.section === 'Assets'
+  return categories.map((item, index) => {
+    const percent = item.section === 'Assets'
       ? Number(((item.amount / assets) * 100).toFixed(1))
-      : Number(((item.amount / liabilities) * 100).toFixed(1)),
-  }));
+      : Number(((item.amount / liabilities) * 100).toFixed(1));
+
+    return {
+      id: `accounts-summary-${index}`,
+      ...item,
+      total: item.section === 'Assets' ? assets : liabilities,
+      percent,
+      sharePercent: percent,
+    };
+  });
 };

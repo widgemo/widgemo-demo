@@ -19,7 +19,7 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
     { id: 'simplified-test', label: 'Simplified Test', path: '/simplified-test' },
     { id: 'progressive-examples', label: 'Progressive Examples', path: '/progressive-examples' },
     { id: 'dashboard', label: 'Dashboard Showcase', path: '/dashboard' },
-    { id: 'cashflow-dashboard', label: 'Cashflow Dashboard', path: '/cashflow-dashboard' },
+    { id: 'cashflow-dashboard', label: 'Cashflow App', path: '/cashflow-dashboard' },
     { id: 'advanced', label: 'Advanced', path: '/' },
     { id: 'resources', label: 'Resources', path: '/' },
   ];

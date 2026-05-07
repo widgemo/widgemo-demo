@@ -31,6 +31,7 @@ import {
   type ForecastHorizon,
   type RiskPosture,
 } from '../data/cashflowDashboardData';
+import { useTheme } from '../hooks/useTheme';
 
 const autoItemLayout = { type: 'auto' as const };
 
@@ -158,6 +159,7 @@ const dashboardNavItems: Array<{ key: DashboardNavKey; label: string; icon: stri
 ];
 
 export const CashflowDashboardPage: React.FC = () => {
+  const { currentTheme } = useTheme();
   const [activeNav, setActiveNav] = useState<DashboardNavKey>('command');
   const [selectedScope, setSelectedScope] = useState<AccountScope>('all');
   const [selectedHorizon, setSelectedHorizon] = useState<ForecastHorizon>('30d');
@@ -897,10 +899,22 @@ export const CashflowDashboardPage: React.FC = () => {
       },
       {
         key: 'percent',
-        label: 'Percent',
+        label: 'Share',
         type: 'number',
-        width: '92px',
+        width: '78px',
         formatter: (value: unknown) => `${Number(value ?? 0).toFixed(1)}%`,
+      },
+      {
+        key: 'sharePercent',
+        label: 'Bar',
+        type: 'number',
+        width: '140px',
+        renderAs: 'customProgress',
+        renderAsOptions: {
+          showPercentage: false,
+          height: '6px',
+          color: 'var(--cashflow-accent)',
+        },
       },
     ],
     [],
@@ -952,6 +966,7 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'accounts-credit-cards',
       containerFrame: { shadow: 'none', borderRadius: 0 },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Credit Cards',
@@ -989,6 +1004,7 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'accounts-cash',
       containerFrame: { shadow: 'none', borderRadius: 0 },
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Cash',
@@ -1040,7 +1056,7 @@ export const CashflowDashboardPage: React.FC = () => {
         content: createTableContent(summaryFields, {
           table: {
             type: 'traditional',
-            hover: false,
+            hover: true,
             striped: false,
             showHeader: true,
             rowSeparator: true,
@@ -1061,14 +1077,26 @@ export const CashflowDashboardPage: React.FC = () => {
 
   const isAccountsView = activeNav === 'accounts';
   const cashflowAppThemeStyle = useMemo(
-    () => ({
-      '--app-bg-primary': '#10151d',
-      '--app-bg-secondary': '#1a1f2a',
-      '--app-text-primary': '#e4ebf5',
-      '--app-text-muted': '#8f9bb0',
-      '--app-border': '#2a3342',
-    } as React.CSSProperties),
-    [],
+    () => (currentTheme === 'dark'
+      ? {
+          '--app-bg-primary': '#10151d',
+          '--app-bg-secondary': '#1a1f2a',
+          '--app-text-primary': '#e4ebf5',
+          '--app-text-muted': '#8f9bb0',
+          '--app-border': '#2a3342',
+          '--cashflow-accent': '#4d79d9',
+          '--cashflow-accent-bg': 'rgba(77, 121, 217, 0.18)',
+        }
+      : {
+          '--app-bg-primary': '#f2f5fb',
+          '--app-bg-secondary': '#ffffff',
+          '--app-text-primary': '#1f2a3d',
+          '--app-text-muted': '#66758f',
+          '--app-border': '#d7deeb',
+          '--cashflow-accent': '#315fbf',
+          '--cashflow-accent-bg': 'rgba(49, 95, 191, 0.12)',
+        }) as React.CSSProperties,
+    [currentTheme],
   );
 
   return (
@@ -1116,8 +1144,8 @@ export const CashflowDashboardPage: React.FC = () => {
                     }}
                     style={{
                       borderRadius: '2px',
-                      border: `1px solid ${isActive ? '#5f4b8b' : 'var(--app-border)'}`,
-                      backgroundColor: isActive ? 'rgba(95, 75, 139, 0.14)' : 'var(--app-bg-primary)',
+                      border: `1px solid ${isActive ? 'var(--cashflow-accent)' : 'var(--app-border)'}`,
+                      backgroundColor: isActive ? 'var(--cashflow-accent-bg)' : 'var(--app-bg-primary)',
                       color: 'var(--app-text-primary)',
                       fontWeight: isActive ? 700 : 500,
                       padding: '0.4rem 0.5rem',
