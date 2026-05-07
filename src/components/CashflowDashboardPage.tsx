@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Widgemo,
   type ActionConfig,
@@ -144,12 +144,37 @@ const accountScopeOptions: AccountScope[] = ['all', 'personal', 'business', 'joi
 const horizonOptions: ForecastHorizon[] = ['7d', '30d', '90d'];
 const postureOptions: RiskPosture[] = ['conservative', 'expected', 'aggressive'];
 
+type DashboardNavKey = 'command' | 'accounts' | 'approvals' | 'autopilot' | 'settings';
+
+const dashboardNavItems: Array<{ key: DashboardNavKey; label: string; icon: string; implemented: boolean }> = [
+  { key: 'command', label: 'Command Center', icon: 'finance-forecast', implemented: true },
+  { key: 'accounts', label: 'Accounts', icon: 'finance-wallet', implemented: false },
+  { key: 'approvals', label: 'Approvals', icon: 'finance-transfer', implemented: false },
+  { key: 'autopilot', label: 'Autopilot Rules', icon: 'finance-autopay', implemented: false },
+  { key: 'settings', label: 'Settings', icon: 'finance-reserve', implemented: false },
+];
+
 export const CashflowDashboardPage: React.FC = () => {
+  const [activeNav, setActiveNav] = useState<DashboardNavKey>('command');
   const [selectedScope, setSelectedScope] = useState<AccountScope>('all');
   const [selectedHorizon, setSelectedHorizon] = useState<ForecastHorizon>('30d');
   const [selectedPosture, setSelectedPosture] = useState<RiskPosture>('expected');
   const [focusedAlertId, setFocusedAlertId] = useState<string | null>(null);
   const [showInspector, setShowInspector] = useState(true);
+  const [demoNotice, setDemoNotice] = useState<string | null>(null);
+
+  const showDemoNotice = useCallback((actionLabel: string) => {
+    setDemoNotice(`${actionLabel} is part of this demo/showcase and is not fully implemented yet.`);
+  }, []);
+
+  useEffect(() => {
+    if (!demoNotice) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setDemoNotice(null), 3600);
+    return () => window.clearTimeout(timeoutId);
+  }, [demoNotice]);
 
   const kpiRows = useMemo(
     () => getCashflowKpis(selectedScope, selectedHorizon, selectedPosture),
@@ -289,8 +314,9 @@ export const CashflowDashboardPage: React.FC = () => {
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '1px 1px 0 0',
+            iconSize: 24,
           },
         },
         content: createGridContent(kpiFields, {
@@ -299,7 +325,7 @@ export const CashflowDashboardPage: React.FC = () => {
             cardOptions: {
               border: true,
               borderColor: 'var(--app-border)',
-              borderRadius: '14px',
+              borderRadius: '2px',
               backgroundColor: 'var(--app-bg-primary)',
               boxShadow: '0 8px 20px rgba(15, 23, 42, 0.06)',
             },
@@ -312,13 +338,28 @@ export const CashflowDashboardPage: React.FC = () => {
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.8rem 1rem 1rem',
-            borderRadius: '0 0 18px 18px',
+            padding: '0.62rem 0.85rem 0.75rem',
+            borderRadius: '0 0 1px 1px',
           },
         }),
+        footer: {
+          subtitle: `${kpiRows.length} KPI records · Scope ${accountScopeLabels[selectedScope]} · Horizon ${forecastHorizonLabels[selectedHorizon]}`,
+          style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+        },
       },
     }),
-    [horizonActions, kpiFields, postureActions, scopeActions, selectedHorizon, selectedPosture, selectedScope],
+    [
+      accountScopeLabels,
+      forecastHorizonLabels,
+      horizonActions,
+      kpiFields,
+      kpiRows.length,
+      postureActions,
+      scopeActions,
+      selectedHorizon,
+      selectedPosture,
+      selectedScope,
+    ],
   );
 
   const forecastFields = useMemo<FieldConfig[]>(
@@ -336,18 +377,19 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'cashflow-forecast-widget',
       containerShadow: 'none',
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Multi-Account Forecast',
-          subtitle: 'Projected cash position with reserve floor and confidence context',
           icon: 'finance-forecast',
           actions: horizonActions,
           actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 3 }, menuLabel: 'Horizon' },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '3px 3px 0 0',
+            iconSize: 24,
           },
         },
         content: createChartContent(forecastFields, {
@@ -390,13 +432,17 @@ export const CashflowDashboardPage: React.FC = () => {
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.8rem 1rem 1rem',
-            borderRadius: '0 0 18px 18px',
+            padding: '0.28rem 0.75rem 0.6rem',
+            borderRadius: '0 0 3px 3px',
           },
         }),
+        footer: {
+          subtitle: `${forecastRows.length} forecast points · ${selectedHorizon.toUpperCase()} timeline · ${riskPostureLabels[selectedPosture]} posture`,
+          style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+        },
       },
     }),
-    [forecastFields, horizonActions],
+    [forecastFields, forecastRows.length, horizonActions, riskPostureLabels, selectedHorizon, selectedPosture],
   );
 
   const eventFields = useMemo<FieldConfig[]>(
@@ -416,16 +462,16 @@ export const CashflowDashboardPage: React.FC = () => {
       containerShadow: 'none',
       zones: {
         header: {
-          title: 'Upcoming Cash Events',
-          subtitle: 'Recurring flows, large movements, and payment checkpoints',
+          title: 'Upcoming Events',
           icon: 'finance-transfer',
           actions: scopeActions,
           actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 3 }, menuLabel: 'Accounts' },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '3px 3px 0 0',
+            iconSize: 24,
           },
         },
         content: createCustomModeContent(
@@ -447,14 +493,14 @@ export const CashflowDashboardPage: React.FC = () => {
             themeOverrides: {
               backgroundColor: 'var(--app-bg-secondary)',
               borderColor: 'var(--app-border)',
-              padding: '0.8rem 1rem 1rem',
-              borderRadius: '0 0 18px 18px',
+              padding: '0.38rem 0.45rem 0.35rem',
+              borderRadius: '0 0 3px 3px',
             },
           },
         ),
       },
     }),
-    [eventFields, scopeActions, selectedHorizon],
+    [eventFields, scopeActions, selectedHorizon, selectedScope],
   );
 
   const transactionFields = useMemo<FieldConfig[]>(
@@ -511,18 +557,19 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'cashflow-transactions-widget',
       containerShadow: 'none',
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Transactions Intelligence',
-          subtitle: 'Rich-cell transaction stream with anomaly and recurrence context',
           icon: 'finance-income',
           actions: postureActions,
           actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 3 }, menuLabel: 'Risk Posture' },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '3px 3px 0 0',
+            iconSize: 24,
           },
         },
         content: createTableContent(transactionFields, {
@@ -542,26 +589,30 @@ export const CashflowDashboardPage: React.FC = () => {
               icon: 'finance-transfer',
               placement: 'pinned',
               variant: 'secondary',
-              onAction: (_ctx: InteractionContext) => {},
+              onAction: (_ctx: InteractionContext) => showDemoNotice('Categorize transaction'),
             },
             {
               id: 'add-watchlist',
               label: 'Watch',
               icon: 'finance-alert',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => {},
+              onAction: (_ctx: InteractionContext) => showDemoNotice('Add transaction to watch list'),
             },
           ],
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.8rem 1rem 1rem',
-            borderRadius: '0 0 18px 18px',
+            padding: '0.62rem 0.85rem 0.75rem',
+            borderRadius: '0 0 3px 3px',
           },
         }),
+        footer: {
+          subtitle: `${transactionRows.length} transactions · sorted by newest first · searchable across merchant/category/tag`,
+          style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+        },
       },
     }),
-    [postureActions, transactionFields],
+    [postureActions, showDemoNotice, transactionFields, transactionRows.length],
   );
 
   const alertFields = useMemo<FieldConfig[]>(
@@ -591,6 +642,7 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'cashflow-alerts-board-widget',
       containerShadow: 'none',
+      collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Alerts Triage',
@@ -599,8 +651,9 @@ export const CashflowDashboardPage: React.FC = () => {
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '3px 3px 0 0',
+            iconSize: 24,
           },
         },
         content: createBoardContent(alertFields, {
@@ -632,19 +685,23 @@ export const CashflowDashboardPage: React.FC = () => {
               label: 'Resolve',
               icon: 'finance-reserve',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => {},
+              onAction: (_ctx: InteractionContext) => showDemoNotice('Resolve alert'),
             },
           ],
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.8rem 1rem 1rem',
-            borderRadius: '0 0 18px 18px',
+            padding: '0.62rem 0.85rem 0.75rem',
+            borderRadius: '0 0 3px 3px',
           },
         }),
+        footer: {
+          subtitle: `${alertRows.length} alerts · ${alertRows.filter((row) => row.lane === 'Critical').length} critical · ${alertRows.filter((row) => row.lane === 'Watch').length} watch`,
+          style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+        },
       },
     }),
-    [alertFields],
+    [alertFields, alertRows, showDemoNotice],
   );
 
   const scenarioFields = useMemo<FieldConfig[]>(
@@ -682,6 +739,7 @@ export const CashflowDashboardPage: React.FC = () => {
     () => ({
       id: 'cashflow-scenarios-widget',
       containerShadow: 'none',
+      collapse: { initialState: 'collapsed' },
       zones: {
         header: {
           title: 'Scenario Playbook',
@@ -692,8 +750,9 @@ export const CashflowDashboardPage: React.FC = () => {
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.9rem 1rem 0.7rem',
-            borderRadius: '18px 18px 0 0',
+            padding: '0.7rem 0.85rem 0.55rem',
+            borderRadius: '3px 3px 0 0',
+            iconSize: 24,
           },
         },
         content: createCarouselContent(scenarioFields, {
@@ -706,8 +765,8 @@ export const CashflowDashboardPage: React.FC = () => {
             cardOptions: {
               border: true,
               borderColor: 'var(--app-border)',
-              borderRadius: '14px',
-              padding: '1rem',
+              borderRadius: '2px',
+              padding: '0.75rem',
               backgroundColor: 'var(--app-bg-primary)',
               boxShadow: '0 10px 24px rgba(15, 23, 42, 0.08)',
             },
@@ -718,101 +777,197 @@ export const CashflowDashboardPage: React.FC = () => {
               label: 'Apply',
               icon: 'finance-transfer',
               placement: 'pinned',
-              onAction: (_ctx: InteractionContext) => {},
+              onAction: (_ctx: InteractionContext) => showDemoNotice('Apply scenario'),
             },
             {
               id: 'inspect-scenario',
               label: 'Inspect',
               icon: 'finance-forecast',
               placement: 'menu',
-              onAction: (_ctx: InteractionContext) => {},
+              onAction: (_ctx: InteractionContext) => showDemoNotice('Inspect scenario'),
             },
           ],
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.8rem 1rem 1rem',
-            borderRadius: '0 0 18px 18px',
+            padding: '0.62rem 0.85rem 0.75rem',
+            borderRadius: '0 0 3px 3px',
           },
         }),
+        footer: {
+          subtitle: `${scenarioRows.length} scenarios · avg confidence ${Math.round(
+            scenarioRows.reduce((sum, row) => sum + (Number(row.confidence) || 0), 0) / Math.max(scenarioRows.length, 1),
+          )}% · ${focusedAlertId ? 'filtered by focused alert context' : 'global recommendations'}`,
+          style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+        },
       },
     }),
-    [focusedAlertId, scenarioFields, scopeActions],
+    [focusedAlertId, scenarioFields, scenarioRows, scopeActions, showDemoNotice],
   );
 
   return (
     <div
       style={{
         minHeight: '100vh',
-        padding: '1.5rem',
+        padding: '0.65rem 0.8rem',
         background: 'linear-gradient(180deg, var(--app-bg-primary) 0%, var(--app-bg-secondary) 100%)',
       }}
     >
-      <div className="container-fluid" style={{ maxWidth: '1620px' }}>
-        <div style={{ marginBottom: '1.2rem' }}>
-          <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
-            <div>
-              <h1 style={{ fontSize: '1.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>Cash Flow Command Center</h1>
-              <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', maxWidth: '980px' }}>
-                Registry showcase dashboard built almost entirely from Widgemo tiles: custom renderers, custom icons,
-                custom mode, rich table cells, and mixed-series forecasting.
-              </p>
-              <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.92rem' }}>
-                Current context: {accountScopeLabels[selectedScope]} · {forecastHorizonLabels[selectedHorizon]} · {riskPostureLabels[selectedPosture]}
-              </p>
-            </div>
+      <div className="container-fluid" style={{ maxWidth: '1700px' }}>
+        <div className="row g-2">
+          <aside className="col-12 col-lg-3 col-xl-2">
             <div
-              className="p-3 rounded"
-              style={{ minWidth: '270px', backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}
+              style={{
+                position: 'sticky',
+                top: '76px',
+                border: '1px solid var(--app-border)',
+                backgroundColor: 'var(--app-bg-secondary)',
+                borderRadius: '3px',
+                padding: '0.5rem',
+                display: 'grid',
+                gap: '0.5rem',
+              }}
             >
-              <div className="form-check mb-0">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="cashflow-dashboard-inspector-toggle"
-                  checked={showInspector}
-                  onChange={(e) => setShowInspector(e.target.checked)}
-                />
-                <label className="form-check-label" htmlFor="cashflow-dashboard-inspector-toggle">
-                  <strong>Show Widgemo Inspector</strong>
-                </label>
+              <div style={{ padding: '0.35rem 0.35rem 0.55rem' }}>
+                <div style={{ fontSize: '0.72rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--app-text-muted)' }}>
+                  Cashflow App
+                </div>
+                <strong style={{ fontSize: '0.98rem' }}>Navigation</strong>
+              </div>
+              {dashboardNavItems.map((item) => {
+                const isActive = item.key === activeNav;
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    className="btn btn-sm text-start"
+                    onClick={() => {
+                      setActiveNav(item.key);
+                      if (!item.implemented) {
+                        showDemoNotice(`${item.label} section`);
+                      }
+                    }}
+                    style={{
+                      borderRadius: '2px',
+                      border: `1px solid ${isActive ? '#5f4b8b' : 'var(--app-border)'}`,
+                      backgroundColor: isActive ? 'rgba(95, 75, 139, 0.14)' : 'var(--app-bg-primary)',
+                      color: 'var(--app-text-primary)',
+                      fontWeight: isActive ? 700 : 500,
+                      padding: '0.4rem 0.5rem',
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+
+              <div style={{ marginTop: '0.3rem', borderTop: '1px solid var(--app-border)', paddingTop: '0.55rem' }}>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary btn-sm w-100"
+                  onClick={() => showDemoNotice('Run cashflow autopilot')}
+                >
+                  Run Autopilot
+                </button>
               </div>
             </div>
-          </div>
-        </div>
+          </aside>
 
-        <div className="row g-3">
-          <div className="col-12">
-            <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
-          </div>
-
-          <div className="col-12 col-xxl-8 d-flex">
-            <div className="w-100 h-100">
-              <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
+          <main className="col-12 col-lg-9 col-xl-10">
+            <div style={{ marginBottom: '0.55rem' }}>
+              <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div>
+                  <h1 style={{ fontSize: '1.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>Cash Flow Command Center</h1>
+                  <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', maxWidth: '980px' }}>
+                    Registry showcase dashboard built almost entirely from Widgemo tiles with mixed styles: minimal and rich headers,
+                    footer zones, collapsed sections, borderless modules, and custom renderers/modes.
+                  </p>
+                  <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.92rem' }}>
+                    Current context: {accountScopeLabels[selectedScope]} · {forecastHorizonLabels[selectedHorizon]} · {riskPostureLabels[selectedPosture]}
+                  </p>
+                </div>
+                <div className="d-flex flex-column gap-2" style={{ minWidth: '280px' }}>
+                  <div className="p-2 rounded d-flex gap-2" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => showDemoNotice('Export dashboard bundle')}
+                    >
+                      Export
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => showDemoNotice('Share dashboard snapshot')}
+                    >
+                      Share
+                    </button>
+                  </div>
+                  <div
+                    className="p-3 rounded"
+                    style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}
+                  >
+                    <div className="form-check mb-0">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="cashflow-dashboard-inspector-toggle"
+                        checked={showInspector}
+                        onChange={(e) => setShowInspector(e.target.checked)}
+                      />
+                      <label className="form-check-label" htmlFor="cashflow-dashboard-inspector-toggle">
+                        <strong>Show Widgemo Inspector</strong>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="col-12 col-xxl-4 d-flex">
-            <div className="w-100 h-100">
-              <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
+            {demoNotice && (
+              <div
+                className="alert alert-warning py-2 px-3"
+                role="status"
+                style={{ borderRadius: '2px', border: '1px solid rgba(192, 86, 33, 0.4)', marginBottom: '0.5rem' }}
+              >
+                {demoNotice}
+              </div>
+            )}
+
+            <div className="row g-2">
+              <div className="col-12">
+                <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
+              </div>
+
+              <div className="col-12 col-xxl-8 d-flex">
+                <div className="w-100 h-100">
+                  <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
+                </div>
+              </div>
+
+              <div className="col-12 col-xxl-4 d-flex">
+                <div className="w-100 h-100">
+                  <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
+                </div>
+              </div>
+
+              <div className="col-12 col-xl-8 d-flex">
+                <div className="w-100 h-100">
+                  <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
+                </div>
+              </div>
+
+              <div className="col-12 col-xl-4 d-flex">
+                <div className="w-100 h-100">
+                  <Widgemo data={scenarioRows} config={injectDevMode(scenarioConfig)} />
+                </div>
+              </div>
+
+              <div className="col-12">
+                <Widgemo data={alertRows} config={injectDevMode(boardConfig)} />
+              </div>
             </div>
-          </div>
-
-          <div className="col-12 col-xl-8 d-flex">
-            <div className="w-100 h-100">
-              <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
-            </div>
-          </div>
-
-          <div className="col-12 col-xl-4 d-flex">
-            <div className="w-100 h-100">
-              <Widgemo data={scenarioRows} config={injectDevMode(scenarioConfig)} />
-            </div>
-          </div>
-
-          <div className="col-12">
-            <Widgemo data={alertRows} config={injectDevMode(boardConfig)} />
-          </div>
+          </main>
         </div>
       </div>
     </div>
