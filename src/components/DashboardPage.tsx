@@ -526,7 +526,7 @@ export const DashboardPage: React.FC = () => {
   const summaryConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-summary',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Program snapshot',
@@ -574,7 +574,7 @@ export const DashboardPage: React.FC = () => {
   const throughputConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-throughput',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Throughput trend',
@@ -706,7 +706,7 @@ export const DashboardPage: React.FC = () => {
   const allocationConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-allocation',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Capacity allocation',
@@ -743,7 +743,7 @@ export const DashboardPage: React.FC = () => {
   const portfolioConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-portfolio',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       style: {
         height: '100%',
       },
@@ -823,7 +823,7 @@ export const DashboardPage: React.FC = () => {
   const boardConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-board',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Execution lanes',
@@ -893,7 +893,7 @@ export const DashboardPage: React.FC = () => {
   const riskPulseConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-risk-pulse',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Risk pulse',
@@ -940,7 +940,7 @@ export const DashboardPage: React.FC = () => {
   const highlightsConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'dashboard-highlights',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       zones: {
         header: {
           title: 'Executive brief',
