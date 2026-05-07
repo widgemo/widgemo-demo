@@ -94,7 +94,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -278,7 +278,7 @@ const widgemoExamples: Array<{
     description: 'Grid mode with a centered header (header.layout.titlePosition = "center"). Title and subtitle stack below each other and are horizontally centered in the header bar.',
     data: teaserSampleData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -357,7 +357,7 @@ const widgemoExamples: Array<{
     description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -532,7 +532,7 @@ const widgemoExamples: Array<{
     description: 'Grid/card layout with normal item card styling, while omitting only the outer Widgemo container chrome.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -566,10 +566,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-table',
     title: 'Container Trim None (Table)',
-    description: 'Uses config.containerTrim = "none" to remove outer shell trim while keeping normal table and item rendering.',
+    description: 'Uses config.containerFrame.border = "none" to remove outer shell trim while keeping normal table and item rendering.',
     data: fourUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -589,7 +589,7 @@ const widgemoExamples: Array<{
           }
         },
         footer: {
-          subtitle: 'containerTrim none keeps content rendering but removes shell trim'
+          subtitle: 'containerFrame.border none keeps content rendering but removes shell trim'
         }
       }
     }
@@ -598,10 +598,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-grid-basic',
     title: 'Container Trim None (Grid)',
-    description: 'Grid mode with containerTrim set to none; content cards render normally without outer Widgemo shell trim.',
+    description: 'Grid mode with containerFrame.border set to none; content cards render normally without outer Widgemo shell trim.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -635,10 +635,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-list',
     title: 'Container Trim None (List)',
-    description: 'List mode with containerTrim none for embedding in parent cards or custom page sections.',
+    description: 'List mode with containerFrame.border none for embedding in parent cards or custom page sections.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -665,7 +665,7 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-timeline',
     title: 'Container Trim None (Timeline)',
-    description: 'Timeline mode with containerTrim none; timeline visuals render without the outer Widgemo shell.',
+    description: 'Timeline mode with containerFrame.border none; timeline visuals render without the outer Widgemo shell.',
     data: [
       {
         id: 1,
@@ -690,7 +690,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -714,10 +714,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-carousel',
     title: 'Container Trim None (Carousel)',
-    description: 'Carousel mode with containerTrim none for seamless embedding in custom layouts.',
+    description: 'Carousel mode with containerFrame.border none for seamless embedding in custom layouts.',
     data: tenUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -752,10 +752,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-board',
     title: 'Container Trim None (Board)',
-    description: 'Board mode with containerTrim none while keeping normal column and card rendering.',
+    description: 'Board mode with containerFrame.border none while keeping normal column and card rendering.',
     data: twentyUsersData as Entity[],
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -918,7 +918,7 @@ const widgemoExamples: Array<{
     description: 'Minimal list layout with essential information and actions',
     data: sixUsersData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -1248,7 +1248,7 @@ const widgemoExamples: Array<{
     description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',
     data: twentyUsersData as Entity[],
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -2199,7 +2199,7 @@ const widgemoExamples: Array<{
     data: tenUsersData as Entity[],
     config: {
       id: 'carousel-full',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Carousel Mode Full Config', subtitle: 'itemWidth · itemHeight · gap · indicators · arrows · infinite · autoPlay · dragThreshold' },

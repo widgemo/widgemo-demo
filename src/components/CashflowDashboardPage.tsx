@@ -303,7 +303,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const summaryConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-liquidity-snapshot',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       zones: {
         header: {
           title: 'Liquidity Snapshot',
@@ -376,7 +376,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const forecastConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-forecast-widget',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -459,7 +459,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const eventsConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-events-timeline-widget',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       zones: {
         header: {
           title: 'Upcoming Events',
@@ -556,7 +556,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const transactionConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-transactions-widget',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -641,7 +641,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const boardConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-alerts-board-widget',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -738,7 +738,7 @@ export const CashflowDashboardPage: React.FC = () => {
   const scenarioConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
       id: 'cashflow-scenarios-widget',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
       collapse: { initialState: 'collapsed' },
       zones: {
         header: {
