@@ -36,6 +36,19 @@ type AccountRecord = {
   confidence: number;
 };
 
+type AccountsPageRecord = {
+  id: string;
+  scope: Exclude<AccountScope, 'all'>;
+  group: 'Credit Cards' | 'Cash';
+  accountName: string;
+  accountType: string;
+  owner: string;
+  shared: boolean;
+  balance: number;
+  monthChangePct: number;
+  updatedAgo: string;
+};
+
 const BASE_ACCOUNTS: AccountRecord[] = [
   {
     id: 'acc-main-checking',
@@ -84,6 +97,165 @@ const BASE_ACCOUNTS: AccountRecord[] = [
     reserveTarget: 7000,
     dailyBurn: 140,
     confidence: 82,
+  },
+];
+
+const BASE_ACCOUNTS_PAGE_ROWS: AccountsPageRecord[] = [
+  {
+    id: 'card-customized-2469',
+    scope: 'personal',
+    group: 'Credit Cards',
+    accountName: 'Customized Cash Rewards Visa (...2469)',
+    accountType: 'Credit Card',
+    owner: 'Shared',
+    shared: true,
+    balance: 3749.31,
+    monthChangePct: 1.8,
+    updatedAgo: '11 hours ago',
+  },
+  {
+    id: 'card-unlimited-2752',
+    scope: 'personal',
+    group: 'Credit Cards',
+    accountName: 'Unlimited Cash Rewards Visa (...2752)',
+    accountType: 'Credit Card',
+    owner: 'Shared',
+    shared: true,
+    balance: 5140.39,
+    monthChangePct: 2.5,
+    updatedAgo: '11 hours ago',
+  },
+  {
+    id: 'card-customized-1776',
+    scope: 'business',
+    group: 'Credit Cards',
+    accountName: 'Customized Cash Rewards Visa (...1776)',
+    accountType: 'Credit Card',
+    owner: 'Standard',
+    shared: false,
+    balance: 0,
+    monthChangePct: -0.4,
+    updatedAgo: '7 months ago',
+  },
+  {
+    id: 'card-amazon-2665',
+    scope: 'personal',
+    group: 'Credit Cards',
+    accountName: 'Amazon Store Card (...2665)',
+    accountType: 'Credit Card',
+    owner: 'Shared',
+    shared: true,
+    balance: 465.86,
+    monthChangePct: 0.9,
+    updatedAgo: '1 hour ago',
+  },
+  {
+    id: 'card-paypal-4502',
+    scope: 'business',
+    group: 'Credit Cards',
+    accountName: 'PayPal Credit (...4502)',
+    accountType: 'Credit Card',
+    owner: 'Shared',
+    shared: true,
+    balance: 0,
+    monthChangePct: -1.2,
+    updatedAgo: '7 months ago',
+  },
+  {
+    id: 'card-discover-0239',
+    scope: 'joint',
+    group: 'Credit Cards',
+    accountName: 'Discover It Card (...0239)',
+    accountType: 'Credit Card',
+    owner: 'Household',
+    shared: true,
+    balance: 98.56,
+    monthChangePct: 0.3,
+    updatedAgo: '2 hours ago',
+  },
+  {
+    id: 'cash-checking-7467',
+    scope: 'personal',
+    group: 'Cash',
+    accountName: 'Regular Checking (...7467)',
+    accountType: 'Checking',
+    owner: 'Mark',
+    shared: false,
+    balance: 5825.02,
+    monthChangePct: 1.5,
+    updatedAgo: '11 hours ago',
+  },
+  {
+    id: 'cash-advantage-4737',
+    scope: 'personal',
+    group: 'Cash',
+    accountName: 'Emergency Fund - Advantage Savings (...4737)',
+    accountType: 'Savings',
+    owner: 'Shared',
+    shared: true,
+    balance: 17166.07,
+    monthChangePct: 2.1,
+    updatedAgo: '11 hours ago',
+  },
+  {
+    id: 'cash-advantage-4488',
+    scope: 'business',
+    group: 'Cash',
+    accountName: 'Advantage Savings (...4488)',
+    accountType: 'Savings',
+    owner: 'Mark',
+    shared: false,
+    balance: 1000.67,
+    monthChangePct: 0.5,
+    updatedAgo: '11 hours ago',
+  },
+  {
+    id: 'cash-paypal-0',
+    scope: 'business',
+    group: 'Cash',
+    accountName: 'PayPal',
+    accountType: 'Checking',
+    owner: 'Shared',
+    shared: true,
+    balance: 0,
+    monthChangePct: -1.1,
+    updatedAgo: '7 months ago',
+  },
+  {
+    id: 'cash-dani-savings',
+    scope: 'joint',
+    group: 'Cash',
+    accountName: 'Dani Savings (...000)',
+    accountType: 'Savings',
+    owner: 'dandelioncharma',
+    shared: false,
+    balance: 1065.72,
+    monthChangePct: 0.8,
+    updatedAgo: '2 hours ago',
+  },
+  {
+    id: 'cash-dani-checking',
+    scope: 'joint',
+    group: 'Cash',
+    accountName: 'Dani Checking (...0088)',
+    accountType: 'Checking',
+    owner: 'dandelioncharma',
+    shared: false,
+    balance: 2488.14,
+    monthChangePct: 0.6,
+    updatedAgo: '2 hours ago',
+  },
+  {
+    id: 'cash-everyday-checking',
+    scope: 'joint',
+    group: 'Cash',
+    accountName: 'EVERYDAY CHECKING (...8768)',
+    accountType: 'Checking',
+    owner: 'Mark',
+    shared: false,
+    balance: 400,
+    monthChangePct: -0.2,
+    updatedAgo: '2 hours ago',
   },
 ];
 
@@ -422,5 +594,77 @@ export const getScenarios = (
     id: `${scenario.id}-${index}`,
     impactAmount: Math.round(scenario.impactAmount * horizonBoost * postureBoost),
     confidence: Math.max(52, Math.min(98, scenario.confidence + (horizon === '7d' ? 4 : 0))),
+  }));
+};
+
+export const getAccountsPageRows = (accountScope: AccountScope): Entity[] => {
+  if (accountScope === 'all') {
+    return BASE_ACCOUNTS_PAGE_ROWS.map((row, index) => ({ ...row, id: `${row.id}-${index}` }));
+  }
+
+  return BASE_ACCOUNTS_PAGE_ROWS
+    .filter((row) => row.scope === accountScope)
+    .map((row, index) => ({ ...row, id: `${row.id}-${index}` }));
+};
+
+export const getAccountsNetWorthTrend = (
+  accountScope: AccountScope,
+  horizon: ForecastHorizon,
+): Entity[] => {
+  const points = getForecastPoints(accountScope, horizon, 'expected');
+  const pointCount = Math.max(points.length, 1);
+
+  return points.map((point, index) => {
+    const checking = Number(point.checkingProjected ?? 0);
+    const savings = Number(point.savingsProjected ?? 0);
+    const investments = 192739.6 + index * 120;
+    const vehicles = 67870.77;
+    const netWorth = checking + savings + investments + vehicles;
+    const prior = index === 0
+      ? netWorth - 1688.27
+      : Number(points[index - 1].checkingProjected ?? 0)
+        + Number(points[index - 1].savingsProjected ?? 0)
+        + (192739.6 + (index - 1) * 120)
+        + vehicles;
+    const deltaPct = prior === 0 ? 0 : ((netWorth - prior) / prior) * 100;
+
+    return {
+      id: `accounts-networth-${index}`,
+      label: point.label,
+      netWorth: Math.round(netWorth),
+      deltaPct: Number(deltaPct.toFixed(2)),
+      sequence: index + 1,
+      totalPoints: pointCount,
+    };
+  });
+};
+
+export const getAccountsSummaryRows = (accountScope: AccountScope): Entity[] => {
+  const rows = getAccountsPageRows(accountScope);
+  const cash = rows
+    .filter((row) => String(row.group) === 'Cash')
+    .reduce((sum, row) => sum + Number(row.balance ?? 0), 0);
+  const creditCards = rows
+    .filter((row) => String(row.group) === 'Credit Cards')
+    .reduce((sum, row) => sum + Number(row.balance ?? 0), 0);
+
+  const assets = 1009155.99;
+  const liabilities = 403149.88;
+  const categories = [
+    { category: 'Real Estate', amount: 720600, section: 'Assets' },
+    { category: 'Investments', amount: 192739.6, section: 'Assets' },
+    { category: 'Vehicles', amount: 67870.77, section: 'Assets' },
+    { category: 'Cash', amount: Number(cash.toFixed(2)), section: 'Assets' },
+    { category: 'Loans', amount: 393695.76, section: 'Liabilities' },
+    { category: 'Credit Cards', amount: Number(creditCards.toFixed(2)), section: 'Liabilities' },
+  ];
+
+  return categories.map((item, index) => ({
+    id: `accounts-summary-${index}`,
+    ...item,
+    total: item.section === 'Assets' ? assets : liabilities,
+    percent: item.section === 'Assets'
+      ? Number(((item.amount / assets) * 100).toFixed(1))
+      : Number(((item.amount / liabilities) * 100).toFixed(1)),
   }));
 };
