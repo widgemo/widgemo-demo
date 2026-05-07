@@ -19,6 +19,9 @@ import {
   registerAccountHealthField,
   registerForecastConfidenceField,
   registerTransactionMetaField,
+  registerAccountMetaField,
+  registerAccountTrendSparkField,
+  registerAccountBalanceField,
 } from './components/custom-fields';
 import './App.css';
 
@@ -30,6 +33,9 @@ widgemoRegistry.registerWidgemoRenderAs(registerCashPillField());
 widgemoRegistry.registerWidgemoRenderAs(registerAccountHealthField());
 widgemoRegistry.registerWidgemoRenderAs(registerForecastConfidenceField());
 widgemoRegistry.registerWidgemoRenderAs(registerTransactionMetaField());
+widgemoRegistry.registerWidgemoRenderAs(registerAccountMetaField());
+widgemoRegistry.registerWidgemoRenderAs(registerAccountTrendSparkField());
+widgemoRegistry.registerWidgemoRenderAs(registerAccountBalanceField());
 
 let registryInitialized = false;
 

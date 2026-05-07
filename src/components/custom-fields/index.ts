@@ -5,3 +5,6 @@ export { registerCashPillField, type CashPillRenderAsOptions } from './CashPillF
 export { registerAccountHealthField, type AccountHealthRenderAsOptions } from './AccountHealthField';
 export { registerForecastConfidenceField, type ForecastConfidenceRenderAsOptions } from './ForecastConfidenceField';
 export { registerTransactionMetaField, type TransactionMetaRenderAsOptions } from './TransactionMetaField';
+export { registerAccountMetaField, type AccountMetaRenderAsOptions } from './AccountMetaField';
+export { registerAccountTrendSparkField } from './AccountTrendSparkField';
+export { registerAccountBalanceField } from './AccountBalanceField';

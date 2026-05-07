@@ -18,6 +18,9 @@ import {
   accountScopeLabels,
   forecastHorizonLabels,
   riskPostureLabels,
+  getAccountsNetWorthTrend,
+  getAccountsPageRows,
+  getAccountsSummaryRows,
   getAlerts,
   getCashEvents,
   getCashflowKpis,
@@ -148,7 +151,7 @@ type DashboardNavKey = 'command' | 'accounts' | 'approvals' | 'autopilot' | 'set
 
 const dashboardNavItems: Array<{ key: DashboardNavKey; label: string; icon: string; implemented: boolean }> = [
   { key: 'command', label: 'Command Center', icon: 'finance-forecast', implemented: true },
-  { key: 'accounts', label: 'Accounts', icon: 'finance-wallet', implemented: false },
+  { key: 'accounts', label: 'Accounts', icon: 'finance-wallet', implemented: true },
   { key: 'approvals', label: 'Approvals', icon: 'finance-transfer', implemented: false },
   { key: 'autopilot', label: 'Autopilot Rules', icon: 'finance-autopay', implemented: false },
   { key: 'settings', label: 'Settings', icon: 'finance-reserve', implemented: false },
@@ -803,9 +806,275 @@ export const CashflowDashboardPage: React.FC = () => {
     [focusedAlertId, scenarioFields, scenarioRows, scopeActions, showDemoNotice],
   );
 
+  const accountsRows = useMemo(
+    () => getAccountsPageRows(selectedScope),
+    [selectedScope],
+  );
+
+  const accountsNetWorthRows = useMemo(
+    () => getAccountsNetWorthTrend(selectedScope, selectedHorizon),
+    [selectedScope, selectedHorizon],
+  );
+
+  const accountsSummaryRows = useMemo(
+    () => getAccountsSummaryRows(selectedScope),
+    [selectedScope],
+  );
+
+  const creditCardRows = useMemo(
+    () => accountsRows.filter((row) => String(row.group) === 'Credit Cards'),
+    [accountsRows],
+  );
+
+  const cashRows = useMemo(
+    () => accountsRows.filter((row) => String(row.group) === 'Cash'),
+    [accountsRows],
+  );
+
+  const accountsNetWorthStats = useMemo(() => {
+    const first = Number(accountsNetWorthRows[0]?.netWorth ?? 0);
+    const last = Number(accountsNetWorthRows[accountsNetWorthRows.length - 1]?.netWorth ?? 0);
+    const change = last - first;
+    const percent = first === 0 ? 0 : (change / first) * 100;
+
+    return {
+      total: last,
+      change,
+      percent,
+    };
+  }, [accountsNetWorthRows]);
+
+  const accountsNetWorthFields = useMemo<FieldConfig[]>(
+    () => [
+      { key: 'label', label: 'Date', type: 'text' },
+      { key: 'netWorth', label: 'Net Worth', type: 'number' },
+    ],
+    [],
+  );
+
+  const accountListFields = useMemo<FieldConfig[]>(
+    () => [
+      {
+        key: 'accountName',
+        label: 'Account',
+        showLabel: false,
+        type: 'text',
+        width: '370px',
+        wrap: false,
+        renderAs: 'accountMeta',
+        renderAsOptions: { showOwner: true },
+      },
+      {
+        key: 'monthChangePct',
+        label: 'Trend',
+        showLabel: false,
+        type: 'number',
+        width: '138px',
+        renderAs: 'accountTrendSpark',
+      },
+      {
+        key: 'balance',
+        label: 'Balance',
+        showLabel: false,
+        type: 'number',
+        width: '140px',
+        renderAs: 'accountBalance',
+      },
+    ],
+    [],
+  );
+
+  const summaryFields = useMemo<FieldConfig[]>(
+    () => [
+      { key: 'category', label: 'Category', type: 'text', width: '155px' },
+      {
+        key: 'amount',
+        label: 'Total',
+        type: 'number',
+        width: '128px',
+        renderAs: 'currency',
+        renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
+      },
+      {
+        key: 'percent',
+        label: 'Percent',
+        type: 'number',
+        width: '92px',
+        formatter: (value: unknown) => `${Number(value ?? 0).toFixed(1)}%`,
+      },
+    ],
+    [],
+  );
+
+  const accountsNetWorthConfig = useMemo<WidgemoConfig<Entity>>(
+    () => ({
+      id: 'accounts-net-worth-performance',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
+      zones: {
+        header: {
+          title: 'Net Worth',
+          subtitle: `$${Math.round(accountsNetWorthStats.total).toLocaleString()}  ${accountsNetWorthStats.change >= 0 ? '↑' : '↓'} ${Math.abs(accountsNetWorthStats.change).toLocaleString()} (${accountsNetWorthStats.percent >= 0 ? '+' : ''}${accountsNetWorthStats.percent.toFixed(1)}%) · ${forecastHorizonLabels[selectedHorizon]} change`,
+          actions: horizonActions,
+          actionOverflow: { maxInline: { mobile: 1, tablet: 2, desktop: 3 }, menuLabel: 'Range' },
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.75rem 0.85rem 0.55rem',
+            borderRadius: '2px 2px 0 0',
+          },
+        },
+        content: createChartContent(accountsNetWorthFields, {
+          chart: {
+            xAxis: 'label',
+            series: [
+              { type: 'area', key: 'netWorth', label: 'Net Worth', color: '#21c8ff', areaGradient: true },
+              { type: 'line', key: 'netWorth', label: 'Net Worth (line)', color: '#20e0ff', showDots: false, lineThickness: 2.8 },
+            ],
+            height: 255,
+            showGrid: true,
+            showLegend: false,
+            legendAlign: 'right',
+            tooltip: { position: 'top-right' },
+          },
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.15rem 0.65rem 0.65rem',
+            borderRadius: '0 0 2px 2px',
+          },
+        }),
+      },
+    }),
+    [accountsNetWorthFields, accountsNetWorthStats.change, accountsNetWorthStats.percent, accountsNetWorthStats.total, horizonActions, selectedHorizon],
+  );
+
+  const creditCardsConfig = useMemo<WidgemoConfig<Entity>>(
+    () => ({
+      id: 'accounts-credit-cards',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
+      zones: {
+        header: {
+          title: 'Credit Cards',
+          subtitle: `${creditCardRows.length} accounts`,
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.6rem 0.75rem 0.45rem',
+            borderRadius: '2px 2px 0 0',
+          },
+        },
+        content: createTableContent(accountListFields, {
+          table: {
+            type: 'rich-cells',
+            columns: 3,
+            hover: true,
+            striped: false,
+            showHeader: false,
+            rowSeparator: true,
+            actionsColumn: false,
+          },
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.15rem 0.55rem 0.55rem',
+            borderRadius: '0 0 2px 2px',
+          },
+        }),
+      },
+    }),
+    [accountListFields, creditCardRows.length],
+  );
+
+  const cashAccountsConfig = useMemo<WidgemoConfig<Entity>>(
+    () => ({
+      id: 'accounts-cash',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
+      zones: {
+        header: {
+          title: 'Cash',
+          subtitle: `${cashRows.length} accounts`,
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.6rem 0.75rem 0.45rem',
+            borderRadius: '2px 2px 0 0',
+          },
+        },
+        content: createTableContent(accountListFields, {
+          table: {
+            type: 'rich-cells',
+            columns: 3,
+            hover: true,
+            striped: false,
+            showHeader: false,
+            rowSeparator: true,
+            actionsColumn: false,
+          },
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.15rem 0.55rem 0.55rem',
+            borderRadius: '0 0 2px 2px',
+          },
+        }),
+      },
+    }),
+    [accountListFields, cashRows.length],
+  );
+
+  const accountsSummaryConfig = useMemo<WidgemoConfig<Entity>>(
+    () => ({
+      id: 'accounts-summary',
+      containerFrame: { shadow: 'none', borderRadius: 0 },
+      zones: {
+        header: {
+          title: 'Summary',
+          subtitle: 'Totals and share of portfolio',
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.6rem 0.75rem 0.45rem',
+            borderRadius: '2px 2px 0 0',
+          },
+        },
+        content: createTableContent(summaryFields, {
+          table: {
+            type: 'traditional',
+            hover: false,
+            striped: false,
+            showHeader: true,
+            rowSeparator: true,
+            actionsColumn: false,
+          },
+          groupings: [{ fieldKey: 'section', initiallyCollapsed: false }],
+          themeOverrides: {
+            backgroundColor: 'var(--app-bg-secondary)',
+            borderColor: 'var(--app-border)',
+            padding: '0.35rem 0.55rem 0.55rem',
+            borderRadius: '0 0 2px 2px',
+          },
+        }),
+      },
+    }),
+    [summaryFields],
+  );
+
+  const isAccountsView = activeNav === 'accounts';
+  const cashflowAppThemeStyle = useMemo(
+    () => ({
+      '--app-bg-primary': '#10151d',
+      '--app-bg-secondary': '#1a1f2a',
+      '--app-text-primary': '#e4ebf5',
+      '--app-text-muted': '#8f9bb0',
+      '--app-border': '#2a3342',
+    } as React.CSSProperties),
+    [],
+  );
+
   return (
     <div
       style={{
+        ...cashflowAppThemeStyle,
         minHeight: '100vh',
         padding: '0.65rem 0.8rem',
         background: 'linear-gradient(180deg, var(--app-bg-primary) 0%, var(--app-bg-secondary) 100%)',
@@ -872,93 +1141,147 @@ export const CashflowDashboardPage: React.FC = () => {
           </aside>
 
           <main className="col-12 col-lg-9 col-xl-10">
-            <div style={{ marginBottom: '0.55rem' }}>
-              <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
-                <div>
-                  <h1 style={{ fontSize: '1.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>Cash Flow Command Center</h1>
-                  <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', maxWidth: '980px' }}>
-                    Registry showcase dashboard built almost entirely from Widgemo tiles with mixed styles: minimal and rich headers,
-                    footer zones, collapsed sections, borderless modules, and custom renderers/modes.
-                  </p>
-                  <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.92rem' }}>
-                    Current context: {accountScopeLabels[selectedScope]} · {forecastHorizonLabels[selectedHorizon]} · {riskPostureLabels[selectedPosture]}
-                  </p>
-                </div>
-                <div className="d-flex flex-column gap-2" style={{ minWidth: '280px' }}>
-                  <div className="p-2 rounded d-flex gap-2" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => showDemoNotice('Export dashboard bundle')}
-                    >
-                      Export
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => showDemoNotice('Share dashboard snapshot')}
-                    >
-                      Share
-                    </button>
-                  </div>
-                  <div
-                    className="p-3 rounded"
-                    style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}
-                  >
-                    <div className="form-check mb-0">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="cashflow-dashboard-inspector-toggle"
-                        checked={showInspector}
-                        onChange={(e) => setShowInspector(e.target.checked)}
-                      />
-                      <label className="form-check-label" htmlFor="cashflow-dashboard-inspector-toggle">
-                        <strong>Show Widgemo Inspector</strong>
-                      </label>
+            {isAccountsView ? (
+              <>
+                <div style={{ marginBottom: '0.55rem' }}>
+                  <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                    <div>
+                      <h1 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '0.2rem' }}>Accounts</h1>
+                      <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.9rem' }}>
+                        {accountScopeLabels[selectedScope]} view · {forecastHorizonLabels[selectedHorizon]} performance window
+                      </p>
+                    </div>
+                    <div className="d-flex flex-wrap gap-2" style={{ minWidth: '320px', justifyContent: 'flex-end' }}>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" style={{ borderRadius: '2px', borderColor: 'var(--app-border)', color: 'var(--app-text-muted)' }} onClick={() => showDemoNotice('Filters panel')}>Filters</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" style={{ borderRadius: '2px', borderColor: 'var(--app-border)', color: 'var(--app-text-muted)' }} onClick={() => showDemoNotice('Edit owners')}>Edit owners</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" style={{ borderRadius: '2px', borderColor: 'var(--app-border)', color: 'var(--app-text-muted)' }} onClick={() => showDemoNotice('Refresh all accounts')}>Refresh all</button>
+                      <button type="button" className="btn btn-sm" style={{ borderRadius: '2px', backgroundColor: '#f5742f', color: '#fff', border: '1px solid #f5742f' }} onClick={() => showDemoNotice('Add account flow')}>+ Add account</button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {demoNotice && (
-              <div
-                className="alert alert-warning py-2 px-3"
-                role="status"
-                style={{ borderRadius: '2px', border: '1px solid rgba(192, 86, 33, 0.4)', marginBottom: '0.5rem' }}
-              >
-                {demoNotice}
-              </div>
+                {demoNotice && (
+                  <div
+                    className="alert alert-warning py-2 px-3"
+                    role="status"
+                    style={{ borderRadius: '2px', border: '1px solid rgba(192, 86, 33, 0.4)', marginBottom: '0.5rem' }}
+                  >
+                    {demoNotice}
+                  </div>
+                )}
+
+                <div className="row g-2">
+                  <div className="col-12">
+                    <Widgemo data={accountsNetWorthRows} config={injectDevMode(accountsNetWorthConfig)} />
+                  </div>
+
+                  <div className="col-12 col-xl-8 d-flex flex-column gap-2">
+                    <div className="w-100">
+                      <Widgemo data={creditCardRows} config={injectDevMode(creditCardsConfig)} />
+                    </div>
+                    <div className="w-100">
+                      <Widgemo data={cashRows} config={injectDevMode(cashAccountsConfig)} />
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-xl-4 d-flex">
+                    <div className="w-100 h-100">
+                      <Widgemo data={accountsSummaryRows} config={injectDevMode(accountsSummaryConfig)} />
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ marginBottom: '0.55rem' }}>
+                  <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                    <div>
+                      <h1 style={{ fontSize: '1.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>Cash Flow Command Center</h1>
+                      <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', maxWidth: '980px' }}>
+                        Registry showcase dashboard built almost entirely from Widgemo tiles with mixed styles: minimal and rich headers,
+                        footer zones, collapsed sections, borderless modules, and custom renderers/modes.
+                      </p>
+                      <p style={{ marginBottom: 0, color: 'var(--app-text-muted)', fontSize: '0.92rem' }}>
+                        Current context: {accountScopeLabels[selectedScope]} · {forecastHorizonLabels[selectedHorizon]} · {riskPostureLabels[selectedPosture]}
+                      </p>
+                    </div>
+                    <div className="d-flex flex-column gap-2" style={{ minWidth: '280px' }}>
+                      <div className="p-2 rounded d-flex gap-2" style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-secondary"
+                          onClick={() => showDemoNotice('Export dashboard bundle')}
+                        >
+                          Export
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-secondary"
+                          onClick={() => showDemoNotice('Share dashboard snapshot')}
+                        >
+                          Share
+                        </button>
+                      </div>
+                      <div
+                        className="p-3 rounded"
+                        style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}
+                      >
+                        <div className="form-check mb-0">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="cashflow-dashboard-inspector-toggle"
+                            checked={showInspector}
+                            onChange={(e) => setShowInspector(e.target.checked)}
+                          />
+                          <label className="form-check-label" htmlFor="cashflow-dashboard-inspector-toggle">
+                            <strong>Show Widgemo Inspector</strong>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {demoNotice && (
+                  <div
+                    className="alert alert-warning py-2 px-3"
+                    role="status"
+                    style={{ borderRadius: '2px', border: '1px solid rgba(192, 86, 33, 0.4)', marginBottom: '0.5rem' }}
+                  >
+                    {demoNotice}
+                  </div>
+                )}
+
+                <div className="row g-2">
+                  <div className="col-12">
+                    <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
+                  </div>
+
+                  <div className="col-12 col-xxl-8 d-flex flex-column gap-2">
+                    <div className="w-100">
+                      <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
+                    </div>
+                    <div className="w-100">
+                      <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
+                    </div>
+                  </div>
+
+                  <div className="col-12 col-xxl-4 d-flex flex-column gap-2">
+                    <div className="w-100">
+                      <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
+                    </div>
+                    <div className="w-100">
+                      <Widgemo data={scenarioRows} config={injectDevMode(scenarioConfig)} />
+                    </div>
+                  </div>
+
+                  <div className="col-12">
+                    <Widgemo data={alertRows} config={injectDevMode(boardConfig)} />
+                  </div>
+                </div>
+              </>
             )}
-
-            <div className="row g-2">
-              <div className="col-12">
-                <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
-              </div>
-
-              <div className="col-12 col-xxl-8 d-flex flex-column gap-2">
-                <div className="w-100">
-                  <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
-                </div>
-                <div className="w-100">
-                  <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
-                </div>
-              </div>
-
-              <div className="col-12 col-xxl-4 d-flex flex-column gap-2">
-                <div className="w-100">
-                  <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
-                </div>
-                <div className="w-100">
-                  <Widgemo data={scenarioRows} config={injectDevMode(scenarioConfig)} />
-                </div>
-              </div>
-
-              <div className="col-12">
-                <Widgemo data={alertRows} config={injectDevMode(boardConfig)} />
-              </div>
-            </div>
           </main>
         </div>
       </div>
