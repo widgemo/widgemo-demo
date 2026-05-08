@@ -183,7 +183,7 @@ export const SimplifiedTest: React.FC = () => {
         {/* JSON Field Type Test */}
         <div className="col-12 mb-3">
           <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>JSON Field Type Test</h2>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing custom JSON field type with collapsible sections and color coding</p>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing core JSON preview renderer with collapsible sections and color coding</p>
           <Widgemo
             data={[
               {
@@ -220,13 +220,13 @@ export const SimplifiedTest: React.FC = () => {
                   item: {
                     fields: [
                       { key: 'name', label: 'Data Type' },
-                      { key: 'jsonData', label: 'JSON Data', renderAs: 'jsonView', renderAsOptions: { collapsed: true, maxDepth: 3 } }
+                      { key: 'jsonData', label: 'JSON Data', renderAs: 'jsonPreview', renderAsOptions: { defaultCollapsed: true, maxDepth: 3 } }
                     ],
                     layout: { type: 'auto' }
                   }
                 },
                 footer: {
-                  subtitle: 'Custom JSON tree renderer via widgemoRegistry.registerWidgemoRenderAs — collapsible nodes, color-coded values'
+                  subtitle: 'Core JSON preview renderer — collapsible nodes, color-coded values'
                 }
               }
             }}
