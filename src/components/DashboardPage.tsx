@@ -764,7 +764,6 @@ export const DashboardPage: React.FC = () => {
             hover: true,
             alternatingRows: true,
             rowSeparator: true,
-            actionsColumn: true,
           },
           sizing: {
             mode: 'fill',

@@ -1017,7 +1017,6 @@ export const CashflowDashboardPage: React.FC = () => {
             striped: false,
             showHeader: false,
             rowSeparator: true,
-            actionsColumn: false,
           },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
@@ -1055,7 +1054,6 @@ export const CashflowDashboardPage: React.FC = () => {
             striped: false,
             showHeader: false,
             rowSeparator: true,
-            actionsColumn: false,
           },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
@@ -1093,7 +1091,6 @@ export const CashflowDashboardPage: React.FC = () => {
             striped: false,
             showHeader: false,
             rowSeparator: true,
-            actionsColumn: false,
           },
           groupings: [
             {
