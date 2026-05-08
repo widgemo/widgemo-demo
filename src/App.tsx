@@ -8,14 +8,8 @@ import { useTheme } from './hooks/useTheme';
 import { TimelineMode, CashflowTimelineMode } from './components/custom-modes';
 import {
   registerProgressBarField,
-  registerJsonField,
-  registerCashDeltaField,
-  registerCashPillField,
-  registerAccountHealthField,
-  registerForecastConfidenceField,
   registerTransactionMetaField,
   registerAccountMetaField,
-  registerAccountTrendSparkField,
   registerAccountBalanceField,
 } from './components/custom-fields';
 import './App.css';
@@ -28,14 +22,8 @@ const CashflowDashboardPage = lazy(() => import('./components/CashflowDashboardP
 
 // Register custom renderAs renderers once at module level
 widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
-widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
-widgemoRegistry.registerWidgemoRenderAs(registerCashDeltaField());
-widgemoRegistry.registerWidgemoRenderAs(registerCashPillField());
-widgemoRegistry.registerWidgemoRenderAs(registerAccountHealthField());
-widgemoRegistry.registerWidgemoRenderAs(registerForecastConfidenceField());
 widgemoRegistry.registerWidgemoRenderAs(registerTransactionMetaField());
 widgemoRegistry.registerWidgemoRenderAs(registerAccountMetaField());
-widgemoRegistry.registerWidgemoRenderAs(registerAccountTrendSparkField());
 widgemoRegistry.registerWidgemoRenderAs(registerAccountBalanceField());
 
 let registryInitialized = false;
