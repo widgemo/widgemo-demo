@@ -611,7 +611,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
     description:
-      'Adds row-level interaction through content.interaction.onRowClick. This is separate from item actions because the whole row becomes clickable.',
+      'Adds row-level click via gestures[item-click] routed to interactions.onEvent. This is separate from item actions because the whole row becomes clickable.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',

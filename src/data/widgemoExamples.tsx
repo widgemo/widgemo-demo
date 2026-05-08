@@ -405,35 +405,32 @@ const widgemoExamples: Array<{
 
   {
     id: 'row-click',
-    title: 'Row Click (onRowClick)',
-    description: 'Demonstrates interaction.onRowClick. Click any row — including the email cell — to fire the parent callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    title: 'Row Click (item-click gesture)',
+    description: 'Demonstrates gestures[item-click]. Click any row — including the email cell — to fire interactions.onEvent. The email column uses type: "email" which renders as plain text so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-          subtitle: 'Click any cell (including the plain-text email) to fire onRowClick'
+          subtitle: 'Click any cell (including the plain-text email) to fire interactions.onEvent via item-click gesture'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // type: 'email' renders plain text — clicking it fires onRowClick like any other cell
+              // type: 'email' renders plain text — clicking it fires interactions.onEvent like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; email: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
@@ -442,34 +439,31 @@ const widgemoExamples: Array<{
   {
     id: 'row-click-with-link',
     title: 'Row Click with Email Link (renderAs: link)',
-    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire onRowClick (stopPropagation). Clicking any other cell still fires the row handler.',
+    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire item-click (stopPropagation). Clicking any other cell still fires interactions.onEvent via the item-click gesture.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows + Email Link',
-          subtitle: 'Click a row to fire onRowClick · click the email to open mailto: (no row handler)'
+          subtitle: 'Click a row to fire interactions.onEvent · click the email to open mailto: (gesture skipped)'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops row-click propagation
+              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops item-click propagation
               { key: 'email',      label: 'Email',      type: 'email', renderAs: 'link' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
