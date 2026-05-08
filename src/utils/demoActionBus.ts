@@ -9,10 +9,7 @@
 
 export type DemoActionSource =
   | 'interactions.onEvent'
-  | 'action.onAction'
-  | 'gestures[item-click].onTrigger'
-  | 'gestures[item-drag-start].onTrigger'
-  | 'gestures[item-drop].onTrigger';
+  | 'action.onAction';
 
 export interface DemoBoardLocation {
   columnId: string;

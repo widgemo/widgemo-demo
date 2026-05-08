@@ -1,14 +1,11 @@
 import React from 'react';
 import { AppliedConfigViewer } from './AppliedConfigViewer';
-import type { WidgemoProps, WidgemoConfig, WidgemoAdapters, WidgemoTheme } from '@widgemo/widgemo-core';
+import type { WidgemoProps, WidgemoConfig, WidgemoTheme } from '@widgemo/widgemo-core';
 
-type ResolvedConfigSnapshot = WidgemoProps & {
-  adapters?: WidgemoAdapters;
-};
+type ResolvedConfigSnapshot = WidgemoProps;
 
 interface AppliedConfigProps {
   config: WidgemoConfig;
-  adapters: WidgemoAdapters;
   showConfigDetails?: boolean;
   overrides?: Partial<WidgemoConfig>;
   className?: string;
@@ -28,12 +25,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
   if (resolvedConfig) {
     resolvedProps = {
       ...resolvedConfig,
-      adapters: {
-        fetchData: '[Function: fetchData]',
-        createRecord: '[Function: createRecord]',
-        updateRecord: '[Function: updateRecord]',
-        deleteRecord: '[Function: deleteRecord]',
-      },
       ...(showConfigDetails && { showConfigDetails }),
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
@@ -59,12 +50,6 @@ export function AppliedConfig(props: AppliedConfigProps) {
           themeOverrides: (config as any).styling.themeOverrides
         } : undefined
       },
-      adapters: {
-        fetchData: '[Function: fetchData]',
-        createRecord: '[Function: createRecord]',
-        updateRecord: '[Function: updateRecord]',
-        deleteRecord: '[Function: deleteRecord]',
-      },
       showConfigDetails,
       ...(overrides && Object.keys(overrides).length > 0 && { overrides }),
       ...(className && { className }),
@@ -79,7 +64,7 @@ export function AppliedConfig(props: AppliedConfigProps) {
   return (
     <AppliedConfigViewer
       resolvedProps={resolvedProps}
-      note={resolvedConfig ? "This shows the actual resolved configuration from Widgemo's onResolvedProps callback (excludes data for privacy). Data adapters are shown as function references for brevity." : "This shows the effective, resolved configuration after defaults + overrides + auto-generation. Data adapters are shown as function references for brevity."}
+      note={resolvedConfig ? "This shows the actual resolved configuration from Widgemo's onResolvedProps callback (excludes data for privacy)." : "This shows the effective, resolved configuration after defaults + overrides + auto-generation."}
     />
   );
 };

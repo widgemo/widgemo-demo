@@ -611,7 +611,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     id: 'progressive-12-row-click',
     title: 'Progressive 12 — Row Click Interaction',
     description:
-      'Adds row-level interaction through content.interaction.onRowClick. This is separate from item actions because the whole row becomes clickable.',
+      'Adds row-level click via gestures[item-click] routed to interactions.onEvent. This is separate from item actions because the whole row becomes clickable.',
     data: tenUsersData,
     config: {
       id: 'progressive-12',
@@ -1493,7 +1493,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-36',
       zones: {
-        header: { title: 'Monthly Revenue', subtitle: 'Basic chart mode setup', icon: 'chart' },
+        header: { title: 'Monthly Revenue', subtitle: 'Basic chart mode setup', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1516,7 +1516,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-37',
       zones: {
-        header: { title: 'Revenue vs Cost Trend', subtitle: 'Line chart with two series', icon: 'chart' },
+        header: { title: 'Revenue vs Cost Trend', subtitle: 'Line chart with two series', icon: 'chart-line' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1542,7 +1542,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-38',
       zones: {
-        header: { title: 'Revenue Area', subtitle: 'Area chart with labels', icon: 'chart' },
+        header: { title: 'Revenue Area', subtitle: 'Area chart with labels', icon: 'chart-line' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1566,7 +1566,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-39',
       zones: {
-        header: { title: 'User Distribution by Month', subtitle: 'Pie chart mode', icon: 'chart' },
+        header: { title: 'User Distribution by Month', subtitle: 'Pie chart mode', icon: 'chart-pie' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'users', label: 'Users', type: 'number' },
@@ -1590,7 +1590,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-40',
       zones: {
-        header: { title: 'Styled Revenue Bar', subtitle: 'Custom colors and presentation settings', icon: 'chart' },
+        header: { title: 'Styled Revenue Bar', subtitle: 'Custom colors and presentation settings', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1619,7 +1619,7 @@ export const progressiveExamples: ProgressiveExample[] = [
         header: {
           title: 'Interactive Revenue Chart',
           subtitle: 'Click any bar to emit content item-click interaction',
-          icon: 'chart',
+          icon: 'chart-bar',
         },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
@@ -1652,7 +1652,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-42',
       zones: {
-        header: { title: 'Revenue vs Cost (Grouped Bars)', subtitle: 'Multiple yAxis series on a bar chart', icon: 'chart' },
+        header: { title: 'Revenue vs Cost (Grouped Bars)', subtitle: 'Multiple yAxis series on a bar chart', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1680,7 +1680,7 @@ export const progressiveExamples: ProgressiveExample[] = [
     config: {
       id: 'progressive-43',
       zones: {
-        header: { title: 'Monthly Revenue (Horizontal)', subtitle: 'Bar chart with horizontal orientation', icon: 'chart' },
+        header: { title: 'Monthly Revenue (Horizontal)', subtitle: 'Bar chart with horizontal orientation', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
           { key: 'revenue', label: 'Revenue', type: 'number' },
@@ -1712,7 +1712,7 @@ export const progressiveExamples: ProgressiveExample[] = [
         header: {
           title: 'Revenue with Custom Tooltip',
           subtitle: 'Hover a bar to see the custom-rendered tooltip card',
-          icon: 'chart',
+          icon: 'chart-bar',
         },
         content: createChartContent(
           monthlyKpiData,
@@ -1833,7 +1833,7 @@ export const progressiveExamples: ProgressiveExample[] = [
         header: {
           title: 'Revenue Trend (Thick + Points)',
           subtitle: 'lineThickness + showDots in line mode',
-          icon: 'chart',
+          icon: 'chart-line',
         },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
@@ -1866,7 +1866,7 @@ export const progressiveExamples: ProgressiveExample[] = [
         header: {
           title: 'Area Trend Styling Controls',
           subtitle: 'areaGradient + lineThickness + showDots in area mode',
-          icon: 'chart',
+          icon: 'chart-line',
         },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },
@@ -1898,7 +1898,7 @@ export const progressiveExamples: ProgressiveExample[] = [
         header: {
           title: 'Revenue Bars + Cost Line',
           subtitle: 'Mixed series overlay in one chart',
-          icon: 'chart',
+          icon: 'chart-bar',
         },
         content: createChartContent(monthlyKpiData, [
           { key: 'month', label: 'Month', type: 'text' },

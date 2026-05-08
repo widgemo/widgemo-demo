@@ -21,6 +21,19 @@ export const twentyUsersData = teaserSampleData.slice(0, 20);
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 
+const emitDemoInteraction = (ctx: InteractionContext): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source: 'interactions.onEvent',
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+    ...(ctx.from ? { from: ctx.from } : {}),
+    ...(ctx.to ? { to: ctx.to } : {}),
+  });
+};
+
 
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples: Array<{
@@ -392,35 +405,32 @@ const widgemoExamples: Array<{
 
   {
     id: 'row-click',
-    title: 'Row Click (onRowClick)',
-    description: 'Demonstrates interaction.onRowClick. Click any row — including the email cell — to fire the parent callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    title: 'Row Click (item-click gesture)',
+    description: 'Demonstrates gestures[item-click]. Click any row — including the email cell — to fire interactions.onEvent. The email column uses type: "email" which renders as plain text so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-          subtitle: 'Click any cell (including the plain-text email) to fire onRowClick'
+          subtitle: 'Click any cell (including the plain-text email) to fire interactions.onEvent via item-click gesture'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // type: 'email' renders plain text — clicking it fires onRowClick like any other cell
+              // type: 'email' renders plain text — clicking it fires interactions.onEvent like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; email: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
@@ -429,34 +439,31 @@ const widgemoExamples: Array<{
   {
     id: 'row-click-with-link',
     title: 'Row Click with Email Link (renderAs: link)',
-    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire onRowClick (stopPropagation). Clicking any other cell still fires the row handler.',
+    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire item-click (stopPropagation). Clicking any other cell still fires interactions.onEvent via the item-click gesture.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows + Email Link',
-          subtitle: 'Click a row to fire onRowClick · click the email to open mailto: (no row handler)'
+          subtitle: 'Click a row to fire interactions.onEvent · click the email to open mailto: (gesture skipped)'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops row-click propagation
+              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops item-click propagation
               { key: 'email',      label: 'Email',      type: 'email', renderAs: 'link' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
@@ -489,7 +496,7 @@ const widgemoExamples: Array<{
               { key: 'email', label: 'Email', type: 'email' },
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' },
               { key: 'progress', label: 'Progress', type: 'number', renderAs: 'progress', width: '120px' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD' } }
             ]
           }
         }
@@ -766,22 +773,32 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active', label: 'Active', color: '#28a745' },
-                { id: 'pending', label: 'Pending', color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' }
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                  { key: 'department', label: 'Department' }
-                ],
-                layout: { type: 'auto' as const }
-              }
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active', label: 'Active', color: '#28a745' },
+                  { id: 'pending', label: 'Pending', color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' }
+                ]
+              },
+              dragEnabled: true
             }
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' as const }
           }
         }
       }
@@ -791,18 +808,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-traditional-table',
     title: 'Grouped Traditional Table',
-    description: 'Traditional table with data grouped by department. item.wrap: true enables natural line wrapping across all columns.',
+    description: 'Traditional table with data grouped by department via groupings[].fieldKey. item.wrap: true enables natural line wrapping across all columns.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Users by Department',
-          subtitle: 'Grouped traditional table — item.wrap: true'
+          subtitle: 'Grouped traditional table — groupings[].fieldKey · item.wrap: true'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             // item-level wrap: true — all fields in every cell wrap freely
             wrap: true,
@@ -821,18 +840,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-rich-cells-table',
     title: 'Grouped Rich Cells Table',
-    description: 'Rich cells table with data grouped by department and enhanced formatting',
+    description: 'Rich cells table with data grouped by department via groupings[].fieldKey and enhanced formatting.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Department Teams',
-          subtitle: 'Grouped rich table with enhanced content'
+          subtitle: 'Grouped rich table with enhanced content · groupings[].fieldKey'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '50px' },
@@ -991,60 +1012,6 @@ const widgemoExamples: Array<{
               { key: 'role', label: 'Role', renderAs: 'badge' },
               { key: 'department', label: 'Department' },
               { key: 'status', label: 'Status', renderAs: 'badge' }
-            ],
-            layout: { type: 'auto' }
-          }
-        }
-      }
-    }
-  },
-  {
-    id: 'zone-layout-actions-below',
-    title: 'Zone Layout: Actions Below + Right-Aligned Title',
-    description: 'Combines two layout options: header.layout.actionsPosition = "below" places actions in a dedicated row beneath the title bar; header.layout.titlePosition = "right" right-aligns the title and subtitle block.',
-    data: threeUsersData,
-    config: {
-      collapse: { initialState: 'expanded' },
-      zones: {
-        header: {
-          title: 'Reports Dashboard',
-          subtitle: 'Monthly summary',
-          icon: { name: 'chart', size: 22, color: '#059669' },
-          layout: { actionsPosition: 'below', titlePosition: 'right' },
-          actions: [
-            {
-              id: 'export-csv',
-              label: 'Export CSV',
-              icon: 'download',
-              variant: 'secondary',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'export-pdf',
-              label: 'Export PDF',
-              icon: 'download',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'share',
-              label: 'Share',
-              icon: 'share',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            }
-          ]
-        },
-        content: {
-          mode: 'table',
-          modeConfig: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name' },
-              { key: 'role', label: 'Role' },
-              { key: 'department', label: 'Department' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
             ],
             layout: { type: 'auto' }
           }
@@ -1263,22 +1230,32 @@ const widgemoExamples: Array<{
           },
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name',       label: 'Name',       type: 'text' as const },
-                  { key: 'role',       label: 'Role' },
-                  { key: 'department', label: 'Department' },
-                ],
-                layout: { type: 'auto' as const },
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
               },
+              dragEnabled: true,
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name',       label: 'Name',       type: 'text' as const },
+              { key: 'role',       label: 'Role' },
+              { key: 'department', label: 'Department' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -1301,25 +1278,39 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745' },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745' },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
+                items: [
+                  { id: 'eng',  label: 'Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Design',      value: 'Design' },
+                  { id: 'bus',  label: 'Business',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -1734,11 +1725,11 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: renderAs: link — all linkOptions ─────────────────────────────────
+  // ── NEW: renderAs: link — renderAsOptions ─────────────────────────────────
   {
     id: 'renderas-link',
-    title: 'renderAs: link — linkOptions',
-    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Shows unified renderAsOptions API alongside legacy linkOptions.',
+    title: 'renderAs: link — renderAsOptions',
+    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, and externalWarning.',
     data: [
       { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice', docUrl: 'https://github.com' },
       { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob',   docUrl: 'https://docs.example.com' },
@@ -1762,8 +1753,7 @@ const widgemoExamples: Array<{
                 text: (entity: Entity) => `@${entity.username}`,
                 newTab: true,
               }},
-              // Legacy linkOptions approach
-              { key: 'docUrl', label: 'External Warning', renderAs: 'link', linkOptions: { newTab: true, externalWarning: true } },
+              { key: 'docUrl', label: 'External Warning', renderAs: 'link', renderAsOptions: { newTab: true, externalWarning: true } },
             ],
             layout: { type: 'auto' },
           },
@@ -2690,69 +2680,70 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Board advanced (actions, actionsPosition, hooks, swimlane labels) ─
+  // ── NEW: Board advanced (actions, hooks, swimlane labels) ─────────────────
   {
     id: 'board-advanced',
-    title: 'Board — card actions, hooks, swimlane labels',
-    description: 'BoardModeConfig: card actions array, actionsPosition="hover", hooks.onDragStart/onDrop (console logs), swimlanes.labels+defaultLabel, BoardColumnConfig.value (explicit match value differs from id).',
+    title: 'Board — card actions, swimlane items',
+    description: 'BoardModeConfig with columns and swimlanes using items arrays. ContentConfig.actions for card actions. dragEnabled for drag-and-drop.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'board-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Board Config', subtitle: 'card actions · actionsPosition=hover · hooks · swimlane labels+defaultLabel · column.value' },
+        header: { title: 'Advanced Board Config', subtitle: 'columns · swimlanes with items · card actions · dragEnabled' },
         content: {
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
-                { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
-                { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
+                  { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
+                  { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
-                labels: {
-                  Engineering: 'R&D Engineering',
-                  Design:      'Product Design',
-                  Business:    'Business Dev',
-                },
-                defaultLabel: 'Other Teams',
+                items: [
+                  { id: 'eng',  label: 'R&D Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Product Design',  value: 'Design' },
+                  { id: 'bus',  label: 'Business Dev',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              actionsPosition: 'hover' as const,
-              actions: {
-                card: [
-                  {
-                    id: 'card-view',
-                    label: 'View',
-                    icon: 'view',
-                    placement: 'pinned' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                  {
-                    id: 'card-edit',
-                    label: 'Edit',
-                    icon: 'edit',
-                    placement: 'menu' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                ],
-              },
-              hooks: {
-                onDragStart: (item: Entity, fromColumn: string) => console.log('[onDragStart]', item.name, 'from', fromColumn),
-                onDrop: (item: Entity, fromColumn: string, toColumn: string) => console.log('[onDrop]', item.name, `${fromColumn} → ${toColumn}`),
-              },
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role', renderAs: 'badge' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          actions: [
+            {
+              id: 'card-view',
+              label: 'View',
+              icon: 'view',
+              placement: 'pinned' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+            {
+              id: 'card-edit',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'menu' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -2798,4 +2789,16 @@ const widgemoExamples: Array<{
     },
   },
 ];
-export default widgemoExamples;
+
+const widgemoExamplesWithInteractionSink = widgemoExamples.map((example) => ({
+  ...example,
+  config: {
+    ...example.config,
+    interactions: {
+      ...(example.config?.interactions ?? {}),
+      onEvent: emitDemoInteraction,
+    },
+  },
+}));
+
+export default widgemoExamplesWithInteractionSink;

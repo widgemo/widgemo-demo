@@ -3,6 +3,27 @@ import { Button, Modal } from 'react-bootstrap';
 import { FaBook } from 'react-icons/fa';
 import { widgemoConfigProperties, presetConfigs } from '../../data/configReference';
 
+const getReferenceAccent = (sectionName: string) => {
+  if (sectionName === 'WidgemoConfig') {
+    return {
+      textClass: 'text-primary',
+      borderClass: 'border-primary',
+    };
+  }
+
+  if (sectionName === 'WidgemoProps') {
+    return {
+      textClass: 'text-success',
+      borderClass: 'border-success',
+    };
+  }
+
+  return {
+    textClass: 'text-info',
+    borderClass: 'border-info',
+  };
+};
+
 interface ConfigurationReferenceModalProps {
   /** Whether the modal is open */
   isOpen: boolean;
@@ -61,6 +82,8 @@ export const ConfigurationReferenceModal: React.FC<ConfigurationReferenceModalPr
     setCurrentReferenceSection('WidgemoConfig');
     setReferenceBreadcrumb(['WidgemoConfig']);
   }, [onClose]);
+
+  const { textClass, borderClass } = getReferenceAccent(currentReferenceSection);
 
   return (
     <Modal show={isOpen} onHide={handleClose} size="xl" centered>
@@ -154,12 +177,7 @@ export const ConfigurationReferenceModal: React.FC<ConfigurationReferenceModalPr
                 <>
                   {/* Section Header */}
                   <div className="mb-4">
-                    <h4 className={`${
-                      currentReferenceSection === 'WidgemoConfig' ? 'text-primary' :
-                      currentReferenceSection === 'WidgemoProps' ? 'text-success' :
-                      currentReferenceSection === 'WidgemoAdapters' ? 'text-warning' :
-                      'text-info'
-                    }`}>
+                    <h4 className={textClass}>
                       {currentReferenceSection}
                       <span className="badge bg-light text-dark ms-2">{currentSectionProps.length} properties</span>
                     </h4>
@@ -170,21 +188,11 @@ export const ConfigurationReferenceModal: React.FC<ConfigurationReferenceModalPr
                     <div
                       key={index}
                       id={`property-${currentReferenceSection}-${prop.property}`}
-                      className={`mb-3 p-3 border-start border-3 ${
-                        currentReferenceSection === 'WidgemoConfig' ? 'border-primary' :
-                        currentReferenceSection === 'WidgemoProps' ? 'border-success' :
-                        currentReferenceSection === 'WidgemoAdapters' ? 'border-warning' :
-                        'border-info'
-                      }`}
+                      className={`mb-3 p-3 border-start border-3 ${borderClass}`}
                       style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
                     >
                       <div className="d-flex align-items-center mb-2">
-                        <code className={`fw-bold me-2 ${
-                          currentReferenceSection === 'WidgemoConfig' ? 'text-primary' :
-                          currentReferenceSection === 'WidgemoProps' ? 'text-success' :
-                          currentReferenceSection === 'WidgemoAdapters' ? 'text-warning' :
-                          'text-info'
-                        }`} style={{ fontSize: '1.1rem' }}>
+                        <code className={`fw-bold me-2 ${textClass}`} style={{ fontSize: '1.1rem' }}>
                           {prop.property}
                         </code>
                         <span
@@ -320,14 +328,20 @@ export const ConfigurationReferenceModal: React.FC<ConfigurationReferenceModalPr
                       <div className="mb-4">
                         <h6 className="text-success">Preset Configurations</h6>
                         <small className="text-muted mb-3 d-block">Ready-to-use configuration templates</small>
-                        {Object.entries(presetConfigs).map(([key, config]) => (
-                          <div key={key} className="mb-3 p-2 border-start border-success">
-                            <code className="text-success fw-bold">{key}</code>
-                            <span className="badge bg-secondary ms-2">{config.title}</span>
-                            <br />
-                            <small className="text-muted">{config.mode} mode with {config.fields.length} fields</small>
-                          </div>
-                        ))}
+                        {Object.entries(presetConfigs).map(([key, config]) => {
+                          const presetTitle = config.zones.header?.title ?? key;
+                          const presetMode = config.zones.content.mode;
+                          const presetFieldCount = config.zones.content.item.fields.length;
+
+                          return (
+                            <div key={key} className="mb-3 p-2 border-start border-success">
+                              <code className="text-success fw-bold">{key}</code>
+                              <span className="badge bg-secondary ms-2">{presetTitle}</span>
+                              <br />
+                              <small className="text-muted">{presetMode} mode with {presetFieldCount} fields</small>
+                            </div>
+                          );
+                        })}
                       </div>
                     </>
                   )}

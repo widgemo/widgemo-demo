@@ -1,14 +1,9 @@
-import { useState } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider, widgemoRegistry } from '@widgemo/widgemo-core';
 import { AppNavbar, DevBanner } from './components/navigation';
 import { MainPage } from './components/MainPage';
-import { SandboxPage } from './components/SandboxPage';
-import { SimplifiedTest } from './components/SimplifiedTest';
-import { ProgressiveExamplesPage } from './components/ProgressiveExamplesPage';
-import { DashboardPage } from './components/DashboardPage';
-import { CashflowDashboardPage } from './components/CashflowDashboardPage';
 import { useTheme } from './hooks/useTheme';
 import { TimelineMode, CashflowTimelineMode } from './components/custom-modes';
 import {
@@ -25,6 +20,12 @@ import {
 } from './components/custom-fields';
 import './App.css';
 
+const SandboxPage = lazy(() => import('./components/SandboxPage').then((module) => ({ default: module.SandboxPage })));
+const SimplifiedTest = lazy(() => import('./components/SimplifiedTest').then((module) => ({ default: module.SimplifiedTest })));
+const ProgressiveExamplesPage = lazy(() => import('./components/ProgressiveExamplesPage').then((module) => ({ default: module.ProgressiveExamplesPage })));
+const DashboardPage = lazy(() => import('./components/DashboardPage').then((module) => ({ default: module.DashboardPage })));
+const CashflowDashboardPage = lazy(() => import('./components/CashflowDashboardPage').then((module) => ({ default: module.CashflowDashboardPage })));
+
 // Register custom renderAs renderers once at module level
 widgemoRegistry.registerWidgemoRenderAs(registerProgressBarField());
 widgemoRegistry.registerWidgemoRenderAs(registerJsonField());
@@ -38,6 +39,15 @@ widgemoRegistry.registerWidgemoRenderAs(registerAccountTrendSparkField());
 widgemoRegistry.registerWidgemoRenderAs(registerAccountBalanceField());
 
 let registryInitialized = false;
+
+const RouteFallback = () => (
+  <div
+    className="d-flex align-items-center justify-content-center"
+    style={{ minHeight: '40vh', color: 'var(--app-text-muted)' }}
+  >
+    Loading page...
+  </div>
+);
 
 const financeIconPathMap: Record<string, string> = {
   'finance-wallet': 'M3 6.8c0-1.1.9-2 2-2h11c1.1 0 2 .9 2 2v8.4c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6.8zm2 .2v8h11V7H5zm8.2 2.1a1.8 1.8 0 110 3.6 1.8 1.8 0 010-3.6z',
@@ -236,42 +246,44 @@ function AppContent() {
         <AppNavbar topOffset={navOffset} />
 
         <div style={{ marginTop: `${56 + navOffset}px` }}>
-          <Routes>
-            <Route
-              path="/"
-              element={<MainPage />}
-            />
-            <Route
-              path="/sandbox"
-              element={<SandboxPage />}
-            />
-            <Route
-              path="/simplified-test"
-              element={<SimplifiedTest />}
-            />
-            <Route
-              path="/progressive-examples"
-              element={<ProgressiveExamplesPage />}
-            />
-            <Route
-              path="/dashboard"
-              element={<DashboardPage />}
-            />
-            <Route
-              path="/cashflow-dashboard"
-              element={<CashflowDashboardPage />}
-            />
-            <Route
-              path="*"
-              element={
-                <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
-                  <h1>Route Not Found</h1>
-                  <p>Current path: {window.location.pathname}</p>
-                  <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples, /dashboard, /cashflow-dashboard</p>
-                </div>
-              }
-            />
-          </Routes>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route
+                path="/"
+                element={<MainPage />}
+              />
+              <Route
+                path="/sandbox"
+                element={<SandboxPage />}
+              />
+              <Route
+                path="/simplified-test"
+                element={<SimplifiedTest />}
+              />
+              <Route
+                path="/progressive-examples"
+                element={<ProgressiveExamplesPage />}
+              />
+              <Route
+                path="/dashboard"
+                element={<DashboardPage />}
+              />
+              <Route
+                path="/cashflow-dashboard"
+                element={<CashflowDashboardPage />}
+              />
+              <Route
+                path="*"
+                element={
+                  <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
+                    <h1>Route Not Found</h1>
+                    <p>Current path: {window.location.pathname}</p>
+                    <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples, /dashboard, /cashflow-dashboard</p>
+                  </div>
+                }
+              />
+            </Routes>
+          </Suspense>
         </div>
       </div>
     </WidgemoThemeProvider>

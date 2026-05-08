@@ -1099,6 +1099,7 @@ export const CashflowDashboardPage: React.FC = () => {
             {
               fieldKey: 'section',
               initiallyCollapsed: false,
+              collapsible: false,
               renderer: (groupValue: unknown, count: number) => {
                 const section = String(groupValue ?? 'Other');
                 const amountTotal = summaryGroupTotals[section] ?? 0;

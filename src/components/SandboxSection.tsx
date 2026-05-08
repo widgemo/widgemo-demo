@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Card } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import { FaCopy } from 'react-icons/fa';
-import type { WidgemoAdapters, WidgemoConfig } from '@widgemo/widgemo-core';
+import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
@@ -269,17 +269,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     link.click();
     URL.revokeObjectURL(url);
   }, [configJson]);
-
-  // Dynamic adapters that use custom data
-  const dynamicAdapters: WidgemoAdapters = {
-    fetchData: async () => ({
-      data: customData,
-      total: customData.length,
-    }),
-    createRecord: async (record: Record<string, unknown>) => ({ ...record, id: Date.now() }),
-    updateRecord: async (_id: unknown, record: Record<string, unknown>) => record,
-    deleteRecord: async () => { },
-  };
 
   const applyConfig = () => {
     try {
@@ -766,7 +755,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                   <div className="flex-grow-1 overflow-auto p-2">
                     <AppliedConfig
                       config={config}
-                      adapters={dynamicAdapters}
                       showConfigDetails={showConfigDetails}
                       loading={loading}
                       error={error}
