@@ -17,6 +17,7 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
   if (!payload) return null;
   const isInteractionContext = payload.source === 'interactions.onEvent';
   const isLocalAction = payload.source === 'action.onAction';
+  const isBoardDrop = payload.source === 'gestures[item-drop].onTrigger' && !!(payload.from || payload.to);
   const isGesture =
     payload.source === 'gestures[item-click].onTrigger'
     || payload.source === 'gestures[item-drag-start].onTrigger'
@@ -225,6 +226,15 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
           >
             This event came from a local callback (<strong>action.onAction</strong> or a <strong>gestures[...].onTrigger</strong> callback)
             instead of the global <strong>interactions.onEvent</strong> fallback sink.
+          </div>
+        )}
+
+        {isBoardDrop && (
+          <div
+            className="mb-3 p-2 rounded"
+            style={{ backgroundColor: 'var(--bs-info-bg-subtle, #cff4fc)', fontSize: '0.8125rem', border: '1px solid var(--bs-info-border-subtle, #9eeaf9)' }}
+          >
+            <strong>Board Drop captured.</strong> This modal opens when the card is dropped, not when dragging starts.
           </div>
         )}
 

@@ -21,6 +21,19 @@ export const twentyUsersData = teaserSampleData.slice(0, 20);
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 
+const emitDemoInteraction = (ctx: InteractionContext): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source: 'interactions.onEvent',
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+    ...(ctx.from ? { from: ctx.from } : {}),
+    ...(ctx.to ? { to: ctx.to } : {}),
+  });
+};
+
 
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples: Array<{
@@ -766,22 +779,32 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active', label: 'Active', color: '#28a745' },
-                { id: 'pending', label: 'Pending', color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' }
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                  { key: 'department', label: 'Department' }
-                ],
-                layout: { type: 'auto' as const }
-              }
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active', label: 'Active', color: '#28a745' },
+                  { id: 'pending', label: 'Pending', color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' }
+                ]
+              },
+              dragEnabled: true
             }
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' as const }
           }
         }
       }
@@ -1213,22 +1236,32 @@ const widgemoExamples: Array<{
           },
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name',       label: 'Name',       type: 'text' as const },
-                  { key: 'role',       label: 'Role' },
-                  { key: 'department', label: 'Department' },
-                ],
-                layout: { type: 'auto' as const },
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
               },
+              dragEnabled: true,
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name',       label: 'Name',       type: 'text' as const },
+              { key: 'role',       label: 'Role' },
+              { key: 'department', label: 'Department' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -1251,25 +1284,39 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745' },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745' },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
+                items: [
+                  { id: 'eng',  label: 'Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Design',      value: 'Design' },
+                  { id: 'bus',  label: 'Business',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -2642,65 +2689,67 @@ const widgemoExamples: Array<{
   // ── NEW: Board advanced (actions, hooks, swimlane labels) ─────────────────
   {
     id: 'board-advanced',
-    title: 'Board — card actions, hooks, swimlane labels',
-    description: 'BoardModeConfig: card actions array, hooks.onDragStart/onDrop (console logs), swimlanes.labels+defaultLabel, and BoardColumnConfig.value for explicit match values.',
+    title: 'Board — card actions, swimlane items',
+    description: 'BoardModeConfig with columns and swimlanes using items arrays. ContentConfig.actions for card actions. dragEnabled for drag-and-drop.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'board-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Board Config', subtitle: 'card actions · hooks · swimlane labels+defaultLabel · column.value' },
+        header: { title: 'Advanced Board Config', subtitle: 'columns · swimlanes with items · card actions · dragEnabled' },
         content: {
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
-                { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
-                { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
+                  { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
+                  { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
-                labels: {
-                  Engineering: 'R&D Engineering',
-                  Design:      'Product Design',
-                  Business:    'Business Dev',
-                },
-                defaultLabel: 'Other Teams',
+                items: [
+                  { id: 'eng',  label: 'R&D Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Product Design',  value: 'Design' },
+                  { id: 'bus',  label: 'Business Dev',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              actions: {
-                card: [
-                  {
-                    id: 'card-view',
-                    label: 'View',
-                    icon: 'view',
-                    placement: 'pinned' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                  {
-                    id: 'card-edit',
-                    label: 'Edit',
-                    icon: 'edit',
-                    placement: 'menu' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                ],
-              },
-              hooks: {
-                onDragStart: (item: Entity, fromColumn: string) => console.log('[onDragStart]', item.name, 'from', fromColumn),
-                onDrop: (item: Entity, fromColumn: string, toColumn: string) => console.log('[onDrop]', item.name, `${fromColumn} → ${toColumn}`),
-              },
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role', renderAs: 'badge' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          actions: [
+            {
+              id: 'card-view',
+              label: 'View',
+              icon: 'view',
+              placement: 'pinned' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+            {
+              id: 'card-edit',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'menu' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -2746,4 +2795,16 @@ const widgemoExamples: Array<{
     },
   },
 ];
-export default widgemoExamples;
+
+const widgemoExamplesWithInteractionSink = widgemoExamples.map((example) => ({
+  ...example,
+  config: {
+    ...example.config,
+    interactions: {
+      ...(example.config?.interactions ?? {}),
+      onEvent: emitDemoInteraction,
+    },
+  },
+}));
+
+export default widgemoExamplesWithInteractionSink;
