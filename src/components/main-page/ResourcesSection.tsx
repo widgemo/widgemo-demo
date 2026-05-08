@@ -20,7 +20,9 @@ export const ResourcesSection: React.FC = () => (
               <FaBook className="mb-2 text-warning" size={28} />
               <h5 style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Docs</h5>
               <p style={{ fontSize: '0.875rem' }}>Comprehensive documentation and API reference</p>
-              <Button variant="outline-light" size="sm">Coming Soon</Button>
+              <Button variant="outline-light" size="sm" href="https://docs.widgemo.com/core" target="_blank" rel="noopener noreferrer">
+                View Docs →
+              </Button>
             </Card.Body>
           </Card>
         </Col>
@@ -30,7 +32,9 @@ export const ResourcesSection: React.FC = () => (
               <FaGithub className="mb-2 text-warning" size={28} />
               <h5 style={{ fontSize: '0.9375rem', fontWeight: 600 }}>GitHub</h5>
               <p style={{ fontSize: '0.875rem' }}>Source code, issues, and contributions</p>
-              <Button variant="outline-light" size="sm">View Repository</Button>
+              <Button variant="outline-light" size="sm" href="https://github.com/widgemo/widgemo-core" target="_blank" rel="noopener noreferrer">
+                View Repository →
+              </Button>
             </Card.Body>
           </Card>
         </Col>
