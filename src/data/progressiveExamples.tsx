@@ -11,6 +11,7 @@ import type {
   TableModeConfig,
   WidgemoConfig,
 } from '@widgemo/widgemo-core';
+import type { CSSProperties } from 'react';
 import { teaserSampleData } from './sampleData';
 import { fireDemoAction } from '../utils/demoActionBus';
 
@@ -2276,6 +2277,210 @@ export const progressiveExamples: ProgressiveExample[] = [
             colors: ['#3157d5', '#b42318'],
           },
         }),
+      },
+    },
+  },
+
+  // ─── Theme Validation ───────────────────────────────────────────────────────
+
+  {
+    id: 'progressive-48-theme-provider-light-validation',
+    title: 'Progressive 48 - Theme Validation Pair: Provider Light',
+    description:
+      'Provider-driven full-surface validation (light side of the pair). Uses the same config/data as Progressive 50; only the provider theme differs.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-48',
+      zones: {
+        header: {
+          title: 'Provider Theme Surface Validation',
+          subtitle: 'Light provider preset (same config as Progressive 50)',
+          icon: 'settings',
+          actions: [
+            zoneAction('provider-theme-validate', 'Provider Theme Check', 'check', 'pinned', 'primary'),
+          ],
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: full light surfaces (container, table, and action controls) from provider theme="light".',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-49-theme-token-object-override',
+    title: 'Progressive 49 - Theme: Token Override Object Path',
+    description:
+      'Validates token override behavior through config object style variables. The header action button uses default tokenized theme vars, then picks up these explicit overrides.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-49',
+      style: ({
+        '--widgemo-color-primary': '#7c3aed',
+        '--widgemo-color-text': '#ffffff',
+        '--widgemo-borderRadius': '12px',
+      } as unknown as CSSProperties),
+      zones: {
+        header: {
+          title: 'Token Override Path',
+          subtitle: 'Primary button color and radius come from overridden CSS vars',
+          icon: 'settings',
+          actions: [
+            zoneAction('theme-check-action', 'Tokenized Action', 'check', 'pinned', 'primary'),
+          ],
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: pinned action button appears purple with rounded corners from CSS token overrides.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-50-theme-provider-dark-validation',
+    title: 'Progressive 50 - Theme Validation Pair: Provider Dark',
+    description:
+      'Provider-driven full-surface validation (dark side of the pair). Uses the same config/data as Progressive 48; only the provider theme differs.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-50',
+      zones: {
+        header: {
+          title: 'Provider Theme Surface Validation',
+          subtitle: 'Dark provider preset (same config as Progressive 48)',
+          icon: 'settings',
+          actions: [
+            zoneAction('provider-theme-validate', 'Provider Theme Check', 'check', 'pinned', 'primary'),
+          ],
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: full dark surfaces (container, table, and action controls) from provider theme="dark".',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-51-theme-css-var-fallback-and-override',
+    title: 'Progressive 51 - Theme: CSS Variable Fallback and Override',
+    description:
+      'Validates fallback and override paths in one snapshot: header uses an undefined variable and falls back, while footer uses a defined variable and resolves to the override value.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-51',
+      style: ({
+        '--widgemo-color-demo-override': '#dcfce7',
+        '--widgemo-color-demo-override-text': '#166534',
+      } as unknown as CSSProperties),
+      zones: {
+        header: {
+          title: 'CSS Variable Fallback Path',
+          subtitle: 'Uses undefined var() token with fallback',
+          icon: 'settings',
+          themeOverrides: {
+            backgroundColor: 'var(--widgemo-color-demo-missing, #fee2e2)',
+            titleColor: 'var(--widgemo-color-demo-missing-text, #991b1b)',
+            subtitleColor: 'var(--widgemo-color-demo-missing-subtitle, #b91c1c)',
+          },
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: header shows red fallback; footer tint resolves from --widgemo-color-demo-override.',
+          themeOverrides: {
+            backgroundColor: 'var(--widgemo-color-demo-override, #dbeafe)',
+            subtitleColor: 'var(--widgemo-color-demo-override-text, #1e3a8a)',
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-52-theme-auto-snapshot-behavior',
+    title: 'Progressive 52 - Theme: Auto Mode Snapshot Behavior',
+    description:
+      'Documents current auto mode behavior as a snapshot: auto resolves from matchMedia at render time and does not live-subscribe to OS theme changes.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-52',
+      zones: {
+        header: {
+          title: 'Auto Mode Snapshot Check',
+          subtitle: 'Render-time snapshot, not live OS-reactive',
+          icon: 'settings',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: with provider theme="auto", OS theme changes do not update this widget until remount/reload.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-53-theme-config-baseline-advanced',
+    title: 'Progressive 53 - Theme: Config Theme Baseline (Advanced)',
+    description:
+      'Advanced/non-primary behavior: config.theme selects registry zone/action baselines. It is not the primary full-surface dark/light path; provider theme presets are the primary mechanism.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-53',
+      theme: 'dark',
+      zones: {
+        header: {
+          title: 'Config Theme Baseline (Advanced)',
+          subtitle: 'config.theme="dark" baseline for zone/action layers',
+          icon: 'settings',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: registry baseline applies to zone/action layers. Full-surface dark/light differences are validated in Progressive 48/50 provider pair.',
+        },
       },
     },
   },

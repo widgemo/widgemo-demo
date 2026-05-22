@@ -7,6 +7,11 @@ import { setDemoActionListener } from '../utils/demoActionBus';
 import type { DemoActionPayload } from '../utils/demoActionBus';
 import { DemoActionModal } from './DemoActionModal';
 
+const forcedProviderThemeByExampleId: Record<string, 'light' | 'dark'> = {
+  'progressive-48-theme-provider-light-validation': 'light',
+  'progressive-50-theme-provider-dark-validation': 'dark',
+};
+
 function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
   if (!config) return config;
 
@@ -59,16 +64,6 @@ export const ProgressiveExamplesPage: React.FC = () => {
     }
   };
 
-  const [useWidgemoCoreDefaultTheming, setUseWidgemoCoreDefaultThemingState] = useState(() => {
-    const saved = localStorage.getItem('widgemo-progressive-default-theming-toggle');
-    return saved === 'true';
-  });
-
-  const setUseWidgemoCoreDefaultTheming = (value: boolean) => {
-    setUseWidgemoCoreDefaultThemingState(value);
-    localStorage.setItem('widgemo-progressive-default-theming-toggle', value.toString());
-  };
-
   const examplesWithDevMode = useMemo(() => {
     if (!isDevEnvironment) {
       return progressiveExamples;
@@ -97,24 +92,6 @@ export const ProgressiveExamplesPage: React.FC = () => {
         Each item adds a few settings so you can observe how configuration evolves the same data through richer behaviors and modes.
       </p>
 
-      <div
-        className="mb-4 p-3 rounded"
-        style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}
-      >
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="widgemo-progressive-default-theming-toggle"
-            checked={useWidgemoCoreDefaultTheming}
-            onChange={(e) => setUseWidgemoCoreDefaultTheming(e.target.checked)}
-          />
-          <label className="form-check-label" htmlFor="widgemo-progressive-default-theming-toggle">
-            <strong>Use widgemo-core default theming</strong>
-          </label>
-        </div>
-      </div>
-
       {isDevEnvironment && (
         <div
           className="mb-4 p-3 rounded"
@@ -142,13 +119,9 @@ export const ProgressiveExamplesPage: React.FC = () => {
             <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>
               {example.description}
             </p>
-            {useWidgemoCoreDefaultTheming ? (
-              <WidgemoThemeProvider theme={currentTheme}>
-                <Widgemo data={example.data} config={example.config} className="my-custom-widgemo" />
-              </WidgemoThemeProvider>
-            ) : (
+            <WidgemoThemeProvider theme={forcedProviderThemeByExampleId[example.id] ?? currentTheme}>
               <Widgemo data={example.data} config={example.config} className="my-custom-widgemo" />
-            )}
+            </WidgemoThemeProvider>
           </div>
         ))}
       </div>

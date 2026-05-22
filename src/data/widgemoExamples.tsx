@@ -2143,13 +2143,13 @@ const widgemoExamples: Array<{
   {
     id: 'grid-modeconfig-full',
     title: 'Grid ModeConfig — all options',
-    description: 'ModeConfig.grid: gap, minItemWidth, maxColumns, autoFlow, justifyItems, alignItems. Breakpoints (mobile/tablet/desktop) for responsive column sizing.',
+    description: 'ModeConfig.grid: gap, minItemWidth, maxColumns, autoFlow, justifyItems, and alignItems. Responsive switching belongs in content.responsive.breakpoints.',
     data: twelveUsersData as Entity[],
     config: {
       id: 'grid-modeconfig-full',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Grid Mode Full Config', subtitle: 'gap · minItemWidth · maxColumns · autoFlow · justifyItems · alignItems · breakpoints' },
+        header: { title: 'Grid Mode Full Config', subtitle: 'gap · minItemWidth · maxColumns · autoFlow · justifyItems · alignItems' },
         content: {
           mode: 'grid',
           modeConfig: {
@@ -2160,11 +2160,6 @@ const widgemoExamples: Array<{
               autoFlow: 'row' as const,
               justifyItems: 'stretch' as const,
               alignItems: 'start' as const,
-              breakpoints: {
-                mobile: '480px',
-                tablet: '768px',
-                desktop: '1200px',
-              },
             },
           },
           item: {

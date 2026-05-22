@@ -220,7 +220,7 @@ function AppContent() {
   */
   
   return (
-    <WidgemoThemeProvider theme={currentTheme}>
+    <>
       <DevBanner
         visible={bannerVisible}
         onDismiss={() => setBannerVisible(false)}
@@ -238,15 +238,15 @@ function AppContent() {
             <Routes>
               <Route
                 path="/"
-                element={<MainPage />}
+                element={<WidgemoThemeProvider theme={currentTheme}><MainPage /></WidgemoThemeProvider>}
               />
               <Route
                 path="/sandbox"
-                element={<SandboxPage />}
+                element={<WidgemoThemeProvider theme={currentTheme}><SandboxPage /></WidgemoThemeProvider>}
               />
               <Route
                 path="/simplified-test"
-                element={<SimplifiedTest />}
+                element={<WidgemoThemeProvider theme={currentTheme}><SimplifiedTest /></WidgemoThemeProvider>}
               />
               <Route
                 path="/progressive-examples"
@@ -254,27 +254,29 @@ function AppContent() {
               />
               <Route
                 path="/dashboard"
-                element={<DashboardPage />}
+                element={<WidgemoThemeProvider theme={currentTheme}><DashboardPage /></WidgemoThemeProvider>}
               />
               <Route
                 path="/cashflow-dashboard"
-                element={<CashflowDashboardPage />}
+                element={<WidgemoThemeProvider theme={currentTheme}><CashflowDashboardPage /></WidgemoThemeProvider>}
               />
               <Route
                 path="*"
                 element={
-                  <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
-                    <h1>Route Not Found</h1>
-                    <p>Current path: {window.location.pathname}</p>
-                    <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples, /dashboard, /cashflow-dashboard</p>
-                  </div>
+                  <WidgemoThemeProvider theme={currentTheme}>
+                    <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
+                      <h1>Route Not Found</h1>
+                      <p>Current path: {window.location.pathname}</p>
+                      <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples, /dashboard, /cashflow-dashboard</p>
+                    </div>
+                  </WidgemoThemeProvider>
                 }
               />
             </Routes>
           </Suspense>
         </div>
       </div>
-    </WidgemoThemeProvider>
+    </>
   );
 }
 
