@@ -1631,6 +1631,126 @@ export const progressiveExamples: ProgressiveExample[] = [
     },
   },
 
+  // ─── Board Mode: Column Config ─────────────────────────────────────────────
+
+  {
+    id: 'progressive-35a-board-column-value-mapping',
+    title: 'Progressive 35A — Board: Column Value Mapping',
+    description: 'Shows that columns.items[].id does not have to match the data field value. Use value to explicitly declare what field value routes items into this column. Here id is a slug ("eng-active") and value is the real field string ("active").',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-35a',
+      zones: {
+        header: {
+          title: 'Board — Explicit Value Mapping',
+          subtitle: 'id ≠ value: slug ids route by value string',
+          icon: 'table',
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'col-active',   label: 'Active',   value: 'active',   color: '#10b981' },
+                { id: 'col-pending',  label: 'Pending',  value: 'pending',  color: '#f59e0b' },
+                { id: 'col-inactive', label: 'Inactive', value: 'inactive', color: '#6b7280' },
+              ],
+            },
+          },
+        }),
+        footer: { subtitle: 'id="col-active" routes items where status === "active"' },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-35b-board-column-width-wip',
+    title: 'Progressive 35B — Board: Column Width + WIP Limits',
+    description: 'Sets visibly different widths per column and adds wipLimit to Active and Pending so the header highlights when the count exceeds the limit.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-35b',
+      zones: {
+        header: {
+          title: 'Board — Column Width & WIP Limits',
+          subtitle: 'Active: 340px/limit 5 · Pending: 260px/limit 3 · Inactive: 200px',
+          icon: 'table',
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
+          statusField,
+        ], {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'active',   label: 'Active',   color: '#10b981', width: '340px', wipLimit: 5 },
+                { id: 'pending',  label: 'Pending',  color: '#f59e0b', width: '260px', wipLimit: 3 },
+                { id: 'inactive', label: 'Inactive', color: '#6b7280', width: '200px' },
+              ],
+            },
+          },
+        }),
+        footer: { subtitle: 'Column widths differ visually · WIP limit exceeded columns are highlighted' },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-35c-board-column-filter',
+    title: 'Progressive 35C — Board: Filter-Based Column Routing (Advanced)',
+    description: 'Uses items[].filter for custom routing logic. Note: filter is a function and cannot be expressed as plain JSON — it requires code-level config. Here "High Performers" catches progress >= 70 regardless of status, "Needs Attention" catches progress < 40, and "Mid Range" catches everything else.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-35c',
+      zones: {
+        header: {
+          title: 'Board — Filter-Based Routing',
+          subtitle: 'items[].filter: function-based routing, not JSON config',
+          icon: 'table',
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          progressField,
+          statusField,
+        ], {
+          board: {
+            columns: {
+              field: 'progress',
+              items: [
+                {
+                  id: 'high',
+                  label: 'High Performers',
+                  color: '#10b981',
+                  filter: (entity: Entity) => typeof entity.progress === 'number' && entity.progress >= 70,
+                },
+                {
+                  id: 'mid',
+                  label: 'Mid Range',
+                  color: '#3b82f6',
+                  filter: (entity: Entity) => typeof entity.progress === 'number' && entity.progress >= 40 && entity.progress < 70,
+                },
+                {
+                  id: 'low',
+                  label: 'Needs Attention',
+                  color: '#ef4444',
+                  filter: (entity: Entity) => typeof entity.progress === 'number' && entity.progress < 40,
+                },
+              ],
+            },
+          },
+        }),
+        footer: { subtitle: 'filter fn overrides field-value matching — code config only' },
+      },
+    },
+  },
+
   {
     id: 'progressive-36-chart-basic',
     title: 'Progressive 36 - Chart: Basic Bar',
