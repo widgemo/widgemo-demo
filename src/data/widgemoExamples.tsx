@@ -2413,7 +2413,7 @@ const widgemoExamples: Array<{
   {
     id: 'content-groupings',
     title: 'ContentConfig.groupings',
-    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function. Different from legacy groupBy string.',
+    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function.',
     data: eightUsersData as Entity[],
     config: {
       id: 'content-groupings',
