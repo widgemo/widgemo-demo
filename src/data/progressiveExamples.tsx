@@ -1094,6 +1094,72 @@ export const progressiveExamples: ProgressiveExample[] = [
   },
 
   {
+    id: 'progressive-23a-carousel-revolving-true',
+    title: 'Progressive 23A — Carousel: Infinite + Revolving (Continuous Wrap)',
+    description: 'Comparison baseline with infinite=true and revolving=true. Continuous wrap keeps forward momentum across the loop boundary.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-23a',
+      zones: {
+        header: {
+          title: 'Carousel Looping — Continuous Wrap',
+          subtitle: 'infinite=true · revolving=true',
+          icon: 'carousel',
+        },
+        content: createCarouselContent(tenUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          carousel: {
+            itemWidth: 260,
+            gap: 16,
+            showArrows: true,
+            showIndicators: true,
+            infinite: true,
+            revolving: true,
+            autoPlay: false,
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-23b-carousel-revolving-false',
+    title: 'Progressive 23B — Carousel: Infinite + Rewinding Loop',
+    description: 'Same config as 23A except revolving=false. This produces a rewind-style loop at the boundary.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-23b',
+      zones: {
+        header: {
+          title: 'Carousel Looping — Rewind Style',
+          subtitle: 'infinite=true · revolving=false',
+          icon: 'carousel',
+        },
+        content: createCarouselContent(tenUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          carousel: {
+            itemWidth: 260,
+            gap: 16,
+            showArrows: true,
+            showIndicators: true,
+            infinite: true,
+            revolving: false,
+            autoPlay: false,
+          },
+        }),
+      },
+    },
+  },
+
+  {
     id: 'progressive-24-carousel-dimensions',
     title: 'Progressive 24 — Carousel: Custom Dimensions',
     description: 'Sets explicit item width and gap for a tighter or wider card presentation.',
