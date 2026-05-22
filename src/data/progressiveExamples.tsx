@@ -1752,6 +1752,56 @@ export const progressiveExamples: ProgressiveExample[] = [
   },
 
   {
+    id: 'progressive-35d-board-swimlane-value-and-filter',
+    title: 'Progressive 35D — Board: Swimlane Value + Filter Routing',
+    description: 'Demonstrates mixed swimlane routing in one board: Engineering and Design lanes route by explicit value mapping, while a third lane uses a filter predicate to capture all remaining departments. This keeps lane assignment deterministic and easy to verify.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-35d',
+      zones: {
+        header: {
+          title: 'Board — Swimlane Value + Filter Routing',
+          subtitle: 'Engineering/Design use value · Others use filter predicate',
+          icon: 'table',
+        },
+        content: createBoardContent(twentyUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text', renderAs: 'badge' },
+        ], {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'active', label: 'Active', value: 'active', color: '#10b981' },
+                { id: 'pending', label: 'Pending', value: 'pending', color: '#f59e0b' },
+                { id: 'inactive', label: 'Inactive', value: 'inactive', color: '#6b7280' },
+              ],
+            },
+            swimlanes: {
+              field: 'department',
+              items: [
+                { id: 'lane-eng', label: 'Engineering (value)', value: 'Engineering' },
+                { id: 'lane-design', label: 'Design (value)', value: 'Design' },
+                {
+                  id: 'lane-other',
+                  label: 'Other Departments (filter)',
+                  filter: (entity: Entity) => {
+                    const department = entity.department;
+                    return typeof department === 'string' && department !== 'Engineering' && department !== 'Design';
+                  },
+                },
+              ],
+              layout: { type: 'matrix' },
+            },
+          },
+        }),
+        footer: { subtitle: 'Value-mapped lanes: Engineering/Design · Filter lane: all remaining departments' },
+      },
+    },
+  },
+
+  {
     id: 'progressive-36-chart-basic',
     title: 'Progressive 36 - Chart: Basic Bar',
     description: 'Introduces chart mode with a basic bar chart using month on the x-axis and revenue as a single y-axis series.',
