@@ -821,6 +821,86 @@ export const progressiveExamples: ProgressiveExample[] = [
   },
 
   {
+    id: 'progressive-17a-grid-alignment',
+    title: 'Progressive 17A — Grid: Advanced Alignment (Optional)',
+    description: 'Low-level CSS Grid controls (autoFlow, justifyItems, alignItems). Usually not needed for first-release demos, but available for advanced fine-tuning.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-17a',
+      zones: {
+        header: {
+          title: 'User Grid — Advanced Alignment',
+          subtitle: 'Optional advanced controls: autoFlow=row · justifyItems=stretch · alignItems=stretch',
+          icon: 'grid',
+        },
+        content: createGridContent(tenUsersData, [
+          avatarField,
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          grid: {
+            minItemWidth: '220px',
+            gap: '14px',
+            maxColumns: 3,
+            autoFlow: 'row',
+            justifyItems: 'stretch',
+            alignItems: 'stretch',
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-17b-responsive-breakpoints',
+    title: 'Progressive 17B — Responsive: Breakpoint Mode Switch',
+    description: 'Demonstrates content.responsive.breakpoints switching between carousel (mobile), grid (tablet), and table (desktop).',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-17b',
+      zones: {
+        header: {
+          title: 'Responsive Mode Switching',
+          subtitle: 'Resize viewport: mobile=carousel · tablet=grid · desktop=table',
+          icon: 'responsive',
+        },
+        content: createTableContent(tenUsersData, [
+          { key: 'name', label: 'Name', type: 'text', sortable: true },
+          { key: 'role', label: 'Role', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          responsive: {
+            breakpoints: {
+              mobile: {
+                mode: 'carousel',
+                modeConfig: {
+                  carousel: { showArrows: true, showIndicators: true, autoPlay: false },
+                },
+              },
+              tablet: {
+                mode: 'grid',
+                modeConfig: {
+                  grid: { minItemWidth: '220px', gap: '12px' },
+                },
+              },
+              desktop: {
+                mode: 'table',
+                modeConfig: {
+                  table: traditionalTableConfig,
+                },
+              },
+            },
+          },
+        }),
+      },
+    },
+  },
+
+  {
     id: 'progressive-18-grid-rich-fields',
     title: 'Progressive 18 — Grid: Rich Fields',
     description: 'Grid cards with rich field types: avatar image, status badge, progress bar, and star rating.',
