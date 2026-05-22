@@ -901,6 +901,47 @@ export const progressiveExamples: ProgressiveExample[] = [
   },
 
   {
+    id: 'progressive-17c-responsive-docs-parity',
+    title: 'Progressive 17C — Responsive: Docs Parity (Desktop/Tablet/Mobile)',
+    description: 'Mirrors the docs Responsive Mode Switching snippet: base desktop mode is table, tablet override switches to grid, and mobile override switches to carousel.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-17c',
+      zones: {
+        header: {
+          title: 'Responsive Mode Switching (Docs Parity)',
+          subtitle: 'desktop >= 1024: table · tablet 768-1023: grid · mobile < 768: carousel',
+          icon: 'responsive',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+          responsive: {
+            breakpoints: {
+              tablet: {
+                mode: 'grid',
+              },
+              mobile: {
+                mode: 'carousel',
+              },
+            },
+          },
+        },
+        footer: {
+          subtitle: 'Resize test: <768 mobile=carousel, 768-1023 tablet=grid, >=1024 desktop=table (base mode)',
+        },
+      },
+    },
+  },
+
+  {
     id: 'progressive-18-grid-rich-fields',
     title: 'Progressive 18 — Grid: Rich Fields',
     description: 'Grid cards with rich field types: avatar image, status badge, progress bar, and star rating.',
