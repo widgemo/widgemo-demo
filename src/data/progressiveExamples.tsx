@@ -2317,9 +2317,9 @@ export const progressiveExamples: ProgressiveExample[] = [
 
   {
     id: 'progressive-49-theme-token-object-override',
-    title: 'Progressive 49 - Theme: Token Override Object Path',
+    title: 'Progressive 49 - Theme: Action Tokens (Button + Menu)',
     description:
-      'Validates token override behavior through config object style variables. The header action button uses default tokenized theme vars, then picks up these explicit overrides.',
+      'Validates CSS-variable-driven action theming for both button and menu surfaces. ActionTheme remains typed API, but runtime visuals here are intentionally demonstrated through token variables.',
     data: eightUsersData,
     config: {
       id: 'progressive-49',
@@ -2327,14 +2327,24 @@ export const progressiveExamples: ProgressiveExample[] = [
         '--widgemo-color-primary': '#7c3aed',
         '--widgemo-color-text': '#ffffff',
         '--widgemo-borderRadius': '12px',
+        '--widgemo-color-actionButtonBg': '#7c3aed',
+        '--widgemo-color-actionButtonColor': '#ffffff',
+        '--widgemo-color-actionButtonBorder': '#6d28d9',
+        '--widgemo-color-actionButtonHoverBg': '#6d28d9',
+        '--widgemo-color-actionButtonHoverBorder': '#5b21b6',
+        '--widgemo-color-actionMenuBg': '#faf5ff',
+        '--widgemo-color-actionMenuColor': '#4c1d95',
+        '--widgemo-color-actionMenuItemHoverBg': '#ede9fe',
+        '--widgemo-color-actionMenuItemHoverColor': '#312e81',
       } as unknown as CSSProperties),
       zones: {
         header: {
           title: 'Token Override Path',
-          subtitle: 'Primary button color and radius come from overridden CSS vars',
+          subtitle: 'Open the header menu to validate actionMenu tokens',
           icon: 'settings',
           actions: [
             zoneAction('theme-check-action', 'Tokenized Action', 'check', 'pinned', 'primary'),
+            zoneAction('theme-check-menu', 'More Actions', 'menu', 'menu'),
           ],
         },
         content: createTableContent(eightUsersData, [
@@ -2346,7 +2356,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           pagination: { pageSize: 4 },
         }),
         footer: {
-          subtitle: 'Expected: pinned action button appears purple with rounded corners from CSS token overrides.',
+          subtitle: 'Expected: pinned action button and menu surfaces both follow the configured action CSS variables.',
         },
       },
     },
@@ -2428,16 +2438,16 @@ export const progressiveExamples: ProgressiveExample[] = [
 
   {
     id: 'progressive-52-theme-auto-snapshot-behavior',
-    title: 'Progressive 52 - Theme: Auto Mode Snapshot Behavior',
+    title: 'Progressive 52 - Theme Validation: Provider Auto Snapshot',
     description:
-      'Documents current auto mode behavior as a snapshot: auto resolves from matchMedia at render time and does not live-subscribe to OS theme changes.',
+      'Runnable provider auto-mode case. theme="auto" resolves from current OS/browser preference at mount time, then stays fixed until remount/reload.',
     data: eightUsersData,
     config: {
       id: 'progressive-52',
       zones: {
         header: {
-          title: 'Auto Mode Snapshot Check',
-          subtitle: 'Render-time snapshot, not live OS-reactive',
+          title: 'Provider Auto Snapshot Check',
+          subtitle: 'Auto resolves on mount; does not live-update while mounted',
           icon: 'settings',
         },
         content: createTableContent(eightUsersData, [
@@ -2449,7 +2459,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           pagination: { pageSize: 4 },
         }),
         footer: {
-          subtitle: 'Expected: with provider theme="auto", OS theme changes do not update this widget until remount/reload.',
+          subtitle: 'Test: change OS/browser color scheme while this page is open (no live change). Then refresh/remount to observe updated auto snapshot.',
         },
       },
     },
@@ -2480,6 +2490,97 @@ export const progressiveExamples: ProgressiveExample[] = [
         }),
         footer: {
           subtitle: 'Expected: registry baseline applies to zone/action layers. Full-surface dark/light differences are validated in Progressive 48/50 provider pair.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-54-theme-hook-with-provider',
+    title: 'Progressive 54 - Theme Hook: With Provider',
+    description:
+      'Hook validation (provider path). The page-level hook probe should report non-empty theme keys and resolved color tokens when this example is wrapped by WidgemoThemeProvider.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-54',
+      zones: {
+        header: {
+          title: 'Hook Probe — Provider Path',
+          subtitle: 'Probe should show resolved colors/spacing key counts > 0',
+          icon: 'settings',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: hook probe indicates provider-resolved theme object (not empty).',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-55-theme-hook-without-provider',
+    title: 'Progressive 55 - Theme Hook: Without Provider',
+    description:
+      'Hook validation (no-provider path). This example intentionally renders without WidgemoThemeProvider so the hook probe can demonstrate empty-object behavior.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-55',
+      zones: {
+        header: {
+          title: 'Hook Probe — No Provider Path',
+          subtitle: 'Probe should show 0 keys / empty-object shape',
+          icon: 'settings',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: hook probe shows empty theme object when no provider wrapper is present.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-56-theme-registry-named-config',
+    title: 'Progressive 56 - Theme Registry: Named config.theme',
+    description:
+      'Registry validation using registerTheme + getTheme. This example applies a named config.theme and should visibly differ from default zone/action baselines.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-56',
+      theme: 'demo-registry-contrast',
+      zones: {
+        header: {
+          title: 'Named Registry Theme',
+          subtitle: 'config.theme="demo-registry-contrast" (registered in App startup)',
+          icon: 'settings',
+          actions: [
+            zoneAction('registry-theme-check', 'Registry Theme Check', 'check', 'pinned', 'primary'),
+          ],
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: visible registry theme baseline from named config.theme, independent of provider pair forcing in 48/50.',
         },
       },
     },

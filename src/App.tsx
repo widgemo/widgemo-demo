@@ -1,7 +1,7 @@
 import { Suspense, lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { WidgemoThemeProvider, widgemoRegistry } from '@widgemo/widgemo-core';
+import { WidgemoThemeProvider, widgemoRegistry, registerTheme, getTheme } from '@widgemo/widgemo-core';
 import { AppNavbar, DevBanner } from './components/navigation';
 import { MainPage } from './components/MainPage';
 import { useTheme } from './hooks/useTheme';
@@ -27,6 +27,45 @@ widgemoRegistry.registerWidgemoRenderAs(registerAccountMetaField());
 widgemoRegistry.registerWidgemoRenderAs(registerAccountBalanceField());
 
 let registryInitialized = false;
+
+const demoRegistryContrastTheme = {
+  colors: {
+    background: '#fff7ed',
+    surfaceBg: '#ffedd5',
+    text: '#7c2d12',
+    textMuted: '#9a3412',
+    border: '#fdba74',
+    cardBg: '#fff7ed',
+    cardBorder: '#fdba74',
+    tableBg: '#fff7ed',
+    tableHeaderBg: '#ffedd5',
+    actionButtonBg: '#ea580c',
+    actionButtonColor: '#ffffff',
+    actionButtonBorder: '#c2410c',
+    actionMenuBg: '#fff7ed',
+    actionMenuColor: '#7c2d12',
+    actionMenuItemHoverBg: '#ffedd5',
+    actionMenuItemHoverColor: '#7c2d12',
+    titleText: '#7c2d12',
+    subtitleText: '#9a3412',
+  },
+  spacing: {
+    borderRadius: '8px',
+  },
+  zone: {
+    backgroundColor: '#ffedd5',
+    borderColor: '#fdba74',
+    titleColor: '#7c2d12',
+    subtitleColor: '#9a3412',
+  },
+  action: {
+    buttonBg: '#ea580c',
+    buttonColor: '#ffffff',
+    buttonBorder: '#c2410c',
+    menuBg: '#fff7ed',
+    menuBorder: '1px solid #fdba74',
+  },
+} as const;
 
 const RouteFallback = () => (
   <div
@@ -103,6 +142,9 @@ const ensureRegistryExtensions = () => {
       highlightWindowDays: 7,
     },
   });
+
+  registerTheme('demo-registry-contrast', demoRegistryContrastTheme);
+  void getTheme('demo-registry-contrast');
 
   registerFinanceIcons();
   registryInitialized = true;
