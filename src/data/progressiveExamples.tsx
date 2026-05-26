@@ -35,6 +35,13 @@ const monthlyKpiData: Entity[] = [
   { month: 'Jun', revenue: 63, cost: 36, users: 210 },
 ];
 
+const lifecycleBoardData: Entity[] = [
+  { id: 1, name: 'Hook Task A', status: 'todo', department: 'Engineering' },
+  { id: 2, name: 'Hook Task B', status: 'todo', department: 'Design' },
+  { id: 3, name: 'Hook Task C', status: 'done', department: 'Business' },
+  { id: 4, name: 'Hook Task D', status: 'done', department: 'Engineering' },
+];
+
 const autoItemLayout = { type: 'auto' as const };
 const traditionalTableConfig = { type: 'traditional' as const };
 const statusColorMap = {
@@ -2581,6 +2588,229 @@ export const progressiveExamples: ProgressiveExample[] = [
         }),
         footer: {
           subtitle: 'Expected: visible registry theme baseline from named config.theme, independent of provider pair forcing in 48/50.',
+        },
+      },
+    },
+  },
+
+  // ─── Lifecycle Hook Validation ─────────────────────────────────────────────
+
+  {
+    id: 'progressive-57-lifecycle-prerender-probe',
+    title: 'Progressive 57 - Lifecycle: preRender Probe',
+    description:
+      'Validates preRender contract with local proof controls. Use Mount/Refresh on this card and confirm preRender status flips to Hook fired with a payload summary.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-57',
+      zones: {
+        header: {
+          title: 'preRender Validation',
+          subtitle: 'Use local Mount/Refresh and confirm preRender status on this card.',
+          icon: 'settings',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          pagination: { pageSize: 4 },
+        }),
+        footer: {
+          subtitle: 'Expected: preRender fires and payload summary shows passthrough behavior.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-58-lifecycle-postrender-wrapper',
+    title: 'Progressive 58 - Lifecycle: postRender Wrapper',
+    description:
+      'Validates postRender element override path with local wrapper controls. Toggle wrapper/default path and verify status + wrapper proof on this card.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-58',
+      zones: {
+        header: {
+          title: 'postRender Validation',
+          subtitle: 'Toggle local wrapper path to compare default passthrough vs wrapped render.',
+          icon: 'settings',
+        },
+        content: createGridContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          grid: { minItemWidth: '240px', gap: '12px' },
+        }),
+        footer: {
+          subtitle: 'Expected: postRender status and payload update, plus visible wrapper when custom path is active.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-59-lifecycle-onitemclick-carousel',
+    title: 'Progressive 59 - Lifecycle: onItemClick (Carousel)',
+    description:
+      'Validates onItemClick metadata for carousel interactions with local controls. Arm capture here, then click indicator + card and compare source fields.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-59',
+      zones: {
+        header: {
+          title: 'onItemClick Carousel Validation',
+          subtitle: 'Arm capture on this card, then click indicator and card to compare source metadata.',
+          icon: 'carousel',
+        },
+        content: createCarouselContent(tenUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          carousel: { showIndicators: true, showArrows: true, infinite: false, itemWidth: 260 },
+        }),
+        footer: {
+          subtitle: 'Expected: local payload summary includes mode=carousel and source=indicator/card.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-60-lifecycle-onitemclick-board',
+    title: 'Progressive 60 - Lifecycle: onItemClick (Board)',
+    description:
+      'Validates onItemClick metadata for board cards with local controls. Arm capture then click a board card to inspect board context payload.',
+    data: lifecycleBoardData,
+    config: {
+      id: 'progressive-60',
+      zones: {
+        header: {
+          title: 'onItemClick Board Validation',
+          subtitle: 'Arm local capture and click a board card to inspect mode/column metadata.',
+          icon: 'table',
+        },
+        content: createBoardContent(lifecycleBoardData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+        ], {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'todo', label: 'To Do', value: 'todo', color: '#f59e0b' },
+                { id: 'done', label: 'Done', value: 'done', color: '#10b981' },
+              ],
+            },
+          },
+        }),
+        footer: {
+          subtitle: 'Expected: local payload summary includes mode=board and columnId.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-61-lifecycle-onmodechange-responsive',
+    title: 'Progressive 61 - Lifecycle: onModeChange (Responsive Fallback)',
+    description:
+      'Validates onModeChange emission on resolved mode transitions with local width controls. Use Desktop/Mobile buttons on this card to trigger deterministic changes.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-61',
+      zones: {
+        header: {
+          title: 'onModeChange Validation',
+          subtitle: 'Use local Desktop/Mobile width buttons to trigger effective mode transitions.',
+          icon: 'responsive',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'department', label: 'Department' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+          responsive: {
+            breakpoints: {
+              mobile: { mode: 'table' },
+            },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: onModeChange updates local status and shows previousMode/nextMode in payload summary.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-62-lifecycle-ondragdrop-board',
+    title: 'Progressive 62 - Lifecycle: onDragDrop (Board)',
+    description:
+      'Validates onDragDrop payload fields with local drag controls. Arm capture, drag card across columns, and inspect from/to summary on this card.',
+    data: lifecycleBoardData,
+    config: {
+      id: 'progressive-62',
+      zones: {
+        header: {
+          title: 'onDragDrop Validation',
+          subtitle: 'Arm local drag capture, then drag cards between To Do and Done columns.',
+          icon: 'table',
+        },
+        content: createBoardContent(lifecycleBoardData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+        ], {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'todo', label: 'To Do', value: 'todo', color: '#f59e0b' },
+                { id: 'done', label: 'Done', value: 'done', color: '#10b981' },
+              ],
+            },
+            dragEnabled: true,
+          },
+        }),
+        footer: {
+          subtitle: 'Expected: local payload summary includes from/to and location indexes.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'progressive-63-lifecycle-reregister-last-write-wins',
+    title: 'Progressive 63 - Lifecycle: Hook Re-registration (Last Write Wins)',
+    description:
+      'Validates custom hook re-registration with local controls. Register Default vs Custom on this card, then click indicator/card to verify last-write-wins payload behavior.',
+    data: tenUsersData,
+    config: {
+      id: 'progressive-63',
+      zones: {
+        header: {
+          title: 'Hook Re-registration Validation',
+          subtitle: 'Use local Register Default/Custom controls and verify custom payload marker.',
+          icon: 'settings',
+        },
+        content: createCarouselContent(tenUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'role', label: 'Role', type: 'text' },
+          statusField,
+        ], {
+          carousel: { showIndicators: true, showArrows: true, infinite: false, itemWidth: 260 },
+        }),
+        footer: {
+          subtitle: 'Expected: local payload summary shows customHook=true only when custom registration is active.',
         },
       },
     },
