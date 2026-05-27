@@ -61,7 +61,7 @@ This checklist tests the light/dark theming functionality in the widgemo-demo Re
 - [ ] Table headers (`thead`)
 - [ ] Table body (`tbody`)
 - [ ] Row hover effects
-- [ ] Striped rows (`table-striped`)
+- [ ] Alternating rows (`table-striped`)
 
 #### Navbar
 - [ ] Navbar background and text
