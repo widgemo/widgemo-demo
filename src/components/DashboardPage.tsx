@@ -762,7 +762,7 @@ export const DashboardPage: React.FC = () => {
           table: {
             type: 'traditional',
             hover: true,
-            alternatingRows: true,
+            alternatingRows: false,
             rowSeparator: true,
           },
           sizing: {
@@ -908,7 +908,7 @@ export const DashboardPage: React.FC = () => {
           table: {
             type: 'traditional',
             hover: true,
-            alternatingRows: true,
+            alternatingRows: false,
             rowSeparator: true,
           },
           actions: [
