@@ -1649,7 +1649,7 @@ const widgemoExamples: Array<{
   {
     id: 'table-layout-options',
     title: 'Table layout.table & item.fields',
-    description: 'layout.table: striped, showHeader. item.fields (FieldConfig) is the unified config for all modes — use key/label, align, width, sortable on fields directly.',
+    description: 'layout.table: alternatingRows, showHeader. item.fields (FieldConfig) is the unified config for all modes — use key/label, align, width, sortable on fields directly.',
     data: sixUsersData as Entity[],
     config: {
       id: 'table-layout-options',
@@ -1657,7 +1657,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Table Layout Options',
-          subtitle: 'striped=true · item.fields with align, width, sortable',
+          subtitle: 'alternatingRows=true · item.fields with align, width, sortable',
           icon: { name: 'table', size: 22, color: '#0d6efd' },
         },
         content: {
@@ -1665,7 +1665,7 @@ const widgemoExamples: Array<{
           layout: {
             table: {
               type: 'traditional',
-              striped: true,
+              alternatingRows: true,
               showHeader: true,
             },
           },

@@ -435,6 +435,116 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+
+  {
+    id: 'progressive-4c-table-alternating-default-omitted',
+    title: 'Progressive 4C — Table Row Striping: alternatingRows Omitted (Default)',
+    description:
+      'Validates default striping behavior with alternatingRows omitted. Core default should render alternating row backgrounds in traditional table mode.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4c',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          table: { type: 'traditional' },
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-4d-table-alternating-true',
+    title: 'Progressive 4D — Table Row Striping: alternatingRows=true',
+    description:
+      'Explicitly enables alternating row backgrounds using alternatingRows=true to match canonical core striping behavior.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4d',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          table: { type: 'traditional', alternatingRows: true },
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-4e-table-alternating-false-conditional-bg',
+    title: 'Progressive 4E — Table Row Striping: alternatingRows=false + conditionalBackgroundColor',
+    description:
+      'Disables alternating rows while applying conditionalBackgroundColor to status-specific rows. This demonstrates custom row backgrounds without zebra striping.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4e',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          table: {
+            type: 'traditional',
+            alternatingRows: false,
+            conditionalBackgroundColor: (entity: Entity) => {
+              const status = String(entity.status ?? '').toLowerCase();
+              if (status === 'inactive') return '#fef2f2';
+              if (status === 'pending') return '#fffbeb';
+              return undefined;
+            },
+          },
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+        }),
+      },
+    },
+  },
+
+  {
+    id: 'progressive-4f-table-alternating-false-no-conditional-bg',
+    title: 'Progressive 4F — Table Row Striping: alternatingRows=false (No conditionalBackgroundColor)',
+    description:
+      'Disables alternating row backgrounds with no conditional overrides. Rows should use a uniform background.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-4f',
+      zones: {
+        content: createTableContent(twentyUsersData, namedFields.map((field) => ({
+          ...field,
+          sortable: field.key === 'name' || field.key === 'department' || field.key === 'lastLogin',
+        })), {
+          table: { type: 'traditional', alternatingRows: false },
+          pagination: { pageSize: 5 },
+          search: {
+            enabled: true,
+            placeholder: 'Search users…',
+            fields: ['name', 'email', 'department'],
+          },
+        }),
+      },
+    },
+  },
+
   {
     id: 'progressive-5-badges-currency',
     title: 'Progressive 5 — Badges + Currency',

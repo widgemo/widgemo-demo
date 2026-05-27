@@ -66,7 +66,7 @@ export const widgemoConfigProperties: Array<{
 
   // TableConfig properties
   { category: 'TableConfig', property: 'showBorders', type: 'boolean', status: 'implemented', description: 'Show table borders', usage: 'Adds borders to table.', example: 'true' },
-  { category: 'TableConfig', property: 'striped', type: 'boolean', status: 'implemented', description: 'Striped table rows', usage: 'Alternating row colors.', example: 'true' },
+  { category: 'TableConfig', property: 'alternatingRows', type: 'boolean', status: 'implemented', description: 'Alternating row backgrounds', usage: 'Toggle alternating row colors.', example: 'true' },
   { category: 'TableConfig', property: 'compact', type: 'boolean', status: 'implemented', description: 'Compact table spacing', usage: 'Reduces padding.', example: 'true' },
 
   // BoardConfig properties
@@ -257,7 +257,7 @@ export const presetConfigs = {
         modeConfig: {
           table: {
             type: 'traditional' as const,
-            striped: true,
+            alternatingRows: true,
             hover: true,
             showHeader: true,
           },
