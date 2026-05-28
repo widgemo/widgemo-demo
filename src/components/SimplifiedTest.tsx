@@ -91,6 +91,7 @@ export const SimplifiedTest: React.FC = () => {
     }));
   }, [includeWidgemoInspector, isDevEnvironment]);
 
+
   return (
     <div className="container" style={{
       minHeight: '100vh',

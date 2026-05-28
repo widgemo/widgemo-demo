@@ -1322,6 +1322,21 @@ export const CashflowDashboardPage: React.FC = () => {
                   </div>
                 )}
 
+                <div
+                  className="p-3 mb-2"
+                  style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)', borderRadius: '2px' }}
+                >
+                  <h2 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.25rem' }}>Registry in Action</h2>
+                  <p style={{ marginBottom: '0.35rem', color: 'var(--app-text-muted)', fontSize: '0.88rem' }}>
+                    This dashboard highlights real extension points in production-like flows, not synthetic tests.
+                  </p>
+                  <ul style={{ marginBottom: 0, paddingLeft: '1.1rem', color: 'var(--app-text-muted)', fontSize: '0.84rem' }}>
+                    <li>Custom icons power finance navigation and action glyphs (finance-* icon set).</li>
+                    <li>Custom renderAs formatters drive rich account and transaction presentation.</li>
+                    <li>Custom mode renders the cashflow timeline for event sequencing.</li>
+                  </ul>
+                </div>
+
                 <div className="row g-2">
                   <div className="col-12">
                     <Widgemo data={kpiRows} config={injectDevMode(summaryConfig)} />
@@ -1332,12 +1347,18 @@ export const CashflowDashboardPage: React.FC = () => {
                       <Widgemo data={forecastRows} config={injectDevMode(forecastConfig)} />
                     </div>
                     <div className="w-100">
+                      <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', fontSize: '0.8rem' }}>
+                        Registry note: this table uses custom renderAs entries like transactionMeta and amountPill for compact, domain-aware transaction context.
+                      </p>
                       <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
                     </div>
                   </div>
 
                   <div className="col-12 col-xxl-4 d-flex flex-column gap-2">
                     <div className="w-100">
+                      <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', fontSize: '0.8rem' }}>
+                        Registry note: this Events widget runs on the custom cashflow-timeline mode registered by the app.
+                      </p>
                       <Widgemo data={eventsRows} config={injectDevMode(eventsConfig)} />
                     </div>
                     <div className="w-100">

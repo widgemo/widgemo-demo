@@ -131,7 +131,7 @@ This checklist tests the light/dark theming functionality in the widgemo-demo Re
 - [ ] Smooth theme changes
 - [ ] No layout shifts
 
-### 8. Retry Path Validation
+### 7. Retry Path Validation
 Use these locations to validate retry behavior end-to-end in the demo:
 
 - [ ] Sandbox top-level retry path in `src/components/sandbox/PreviewPanel.tsx`.
@@ -139,7 +139,17 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Config-driven retry path in `src/data/progressiveExamples.tsx` (`progressive-63a-config-driven-retry-error-state`).
 	Open "Progressive 63A - Config-Driven Retry (errorState)", click "Retry Fetch", and confirm the demo action modal appears.
 
-### 7. System Preference Change Detection (Optional)
+### 8. Registry In Action Validation
+- [ ] Open the Cashflow dashboard page (`src/components/CashflowDashboardPage.tsx`) and confirm the "Registry in Action" callout is visible near the top of Command Center.
+	Expected: callout references custom icons, custom renderAs formatting, and custom mode usage.
+- [ ] In the Transactions Intelligence area, confirm the in-context note is visible and the table shows rich transaction formatting.
+	Expected: custom renderAs behavior is user-observable (transaction metadata, compact value/status styling).
+- [ ] In the Events area, confirm the in-context note is visible above the timeline widget.
+	Expected: custom `cashflow-timeline` mode is clearly identified as the rendering path.
+- [ ] Open Simplified Test (`src/components/SimplifiedTest.tsx`) and confirm there is no prominent synthetic registry PASS/FAIL table in the main demo flow.
+	Expected: primary showcase experience remains product-focused rather than test-harness focused.
+
+### 9. System Preference Change Detection (Optional)
 **If implemented:**
 - [ ] Change OS theme preference while app is open
 - [ ] Check if app detects and adapts to system change
