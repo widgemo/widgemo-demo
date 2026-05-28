@@ -2925,6 +2925,52 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+
+  {
+    id: 'progressive-63a-config-driven-retry-error-state',
+    title: 'Progressive 63A - Config-Driven Retry (errorState)',
+    description:
+      'Demonstrates config-driven retry behavior in content.errorState. This uses status="error", a message function, and a retry callback wired to the demo action sink.',
+    data: eightUsersData,
+    config: {
+      id: 'progressive-63a',
+      zones: {
+        header: {
+          title: 'Config-Driven Retry Validation',
+          subtitle: 'status="error" + errorState.message fn + retry callback (demo action modal)',
+          icon: 'warning',
+        },
+        content: createTableContent(eightUsersData, [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'department', label: 'Department', type: 'text' },
+          statusField,
+        ], {
+          table: traditionalTableConfig,
+          status: 'error' as const,
+          error: { message: 'Failed to load grouped records from the API.' },
+          errorState: {
+            enabled: true,
+            message: (err: unknown) => `Retry path demo: ${(err as Error)?.message ?? 'Unknown fetch error'}`,
+            retry: {
+              label: 'Retry Fetch',
+              onRetry: () =>
+                fireDemoAction({
+                  actionId: 'config-retry-fetch',
+                  actionLabel: 'Retry Fetch',
+                  source: 'action.onAction',
+                  zone: 'content',
+                  data: eightUsersData as Record<string, unknown>[],
+                }),
+            },
+            severity: 'warning' as const,
+          },
+        }),
+        footer: {
+          subtitle: 'Expected: clicking Retry Fetch opens the demo action modal, confirming the callback fired.',
+        },
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
