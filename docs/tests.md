@@ -139,7 +139,17 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Config-driven retry path in `src/data/progressiveExamples.tsx` (`progressive-63a-config-driven-retry-error-state`).
 	Open "Progressive 63A - Config-Driven Retry (errorState)", click "Retry Fetch", and confirm the demo action modal appears.
 
-### 8. Registry In Action Validation
+### 8. Loading and Error Runtime Validation
+- [ ] Open the state examples in `src/data/widgemoExamples.tsx` and compare the two built-in loading indicators.
+	Expected: `content-loading-state-skeleton` renders skeleton placeholders, while `content-loading-state-spinner` renders a spinner indicator (not the same visual treatment).
+- [ ] Validate loading renderer override behavior using `content-loading-state-renderer-override`.
+	Expected: custom loading UI renders the "Custom Loading Renderer" block, confirming `loadingState.renderer` overrides built-in indicator rendering.
+- [ ] Compare warning vs error severity using `content-error-state` and `content-error-state-severity-error`.
+	Expected: `severity: "warning"` and `severity: "error"` present distinct visual tones in runtime UI.
+- [ ] Confirm retry path remains obvious in the warning example.
+	Expected: `content-error-state` shows a visible "Try Again" action, and triggering it emits the demo action event.
+
+### 9. Registry In Action Validation
 - [ ] Open the Cashflow dashboard page (`src/components/CashflowDashboardPage.tsx`) and confirm the "Registry in Action" callout is visible near the top of Command Center.
 	Expected: callout references custom icons, custom renderAs formatting, and custom mode usage.
 - [ ] In the Transactions Intelligence area, confirm the in-context note is visible and the table shows rich transaction formatting.
@@ -149,7 +159,7 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Open Simplified Test (`src/components/SimplifiedTest.tsx`) and confirm there is no prominent synthetic registry PASS/FAIL table in the main demo flow.
 	Expected: primary showcase experience remains product-focused rather than test-harness focused.
 
-### 9. ContainerFrame In Context Validation
+### 10. ContainerFrame In Context Validation
 - [ ] Open the Progressive Examples page and find the "ContainerFrame In Context" showcase group near the top of the examples area.
 	Expected: seven product-like examples are visible with one-line captions under each widget.
 - [ ] Confirm border/shadow differences are visually obvious between the borderless inline shell, rounded forecast shell, and square settlement shell.
@@ -167,7 +177,7 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Scrollable planning shell must expose a scrollable region while clipped planning shell must not.
 	Expected: both cards use the same shell size and content, but only the scrollable variant allows access to hidden rows/columns.
 
-### 10. System Preference Change Detection (Optional)
+### 11. System Preference Change Detection (Optional)
 **If implemented:**
 - [ ] Change OS theme preference while app is open
 - [ ] Check if app detects and adapts to system change
