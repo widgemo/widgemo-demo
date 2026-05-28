@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Widgemo, WidgemoThemeProvider, useWidgemoTheme, widgemoRegistry } from '@widgemo/widgemo-core';
-import type { WidgemoConfig } from '@widgemo/widgemo-core';
+import type { Entity, WidgemoConfig } from '@widgemo/widgemo-core';
 import progressiveExamples from '../data/progressiveExamples';
 import { useTheme } from '../hooks/useTheme';
 import { setDemoActionListener } from '../utils/demoActionBus';
@@ -133,6 +133,252 @@ function injectDevMode(config: WidgemoConfig, enabled: boolean): WidgemoConfig {
     devMode: enabled,
   };
 }
+
+type ContainerFrameShowcaseCard = {
+  id: string;
+  title: string;
+  caption: string;
+  data: Entity[];
+  config: WidgemoConfig<Entity>;
+  shellStyle?: React.CSSProperties;
+};
+
+const containerFrameTableRows: Entity[] = [
+  { id: 'ops-1', flow: 'Payroll approvals', owner: 'Finance Ops', status: 'Ready', amount: 84000 },
+  { id: 'ops-2', flow: 'Vendor settlement', owner: 'Treasury', status: 'Watch', amount: 126500 },
+  { id: 'ops-3', flow: 'Renewal reserve release', owner: 'Revenue Ops', status: 'Ready', amount: 212000 },
+];
+
+const containerFrameGridRows: Entity[] = [
+  {
+    id: 'event-1',
+    title: 'Release reserve batch',
+    owner: 'Treasury',
+    eta: '08:30',
+    summary: 'Release reserve batch for renewal payouts and partner disbursements in the morning window.',
+  },
+  {
+    id: 'event-2',
+    title: 'Freeze low-confidence transfers',
+    owner: 'Risk',
+    eta: '10:15',
+    summary: 'Freeze low-confidence transfers until the daily fraud review clears the queue for posting.',
+  },
+];
+
+const containerFrameOverflowRows: Entity[] = [
+  {
+    id: 'plan-1',
+    stream: 'North America payroll cutover',
+    owner: 'Finance Systems Program Office',
+    window: 'Mon 08:00-11:30 UTC',
+    note: 'Coordinate payroll release, treasury funding, and partner confirmation across three approval queues before settlement.',
+  },
+  {
+    id: 'plan-2',
+    stream: 'Marketplace reserve unwind',
+    owner: 'Treasury Controls',
+    window: 'Mon 13:00-16:00 UTC',
+    note: 'Review reserve exceptions, release approved balance tranches, and confirm downstream payout routing with operations.',
+  },
+  {
+    id: 'plan-3',
+    stream: 'Enterprise renewal reserve release',
+    owner: 'Revenue Operations',
+    window: 'Tue 09:00-12:00 UTC',
+    note: 'Finalize renewal schedules and release batched disbursements once the customer health hold list is cleared.',
+  },
+  {
+    id: 'plan-4',
+    stream: 'Credit exposure review lane',
+    owner: 'Risk Strategy Council',
+    window: 'Tue 14:00-17:30 UTC',
+    note: 'Walk the low-confidence queue, annotate exceptions, and route escalations to manual review with cash-impact notes.',
+  },
+  {
+    id: 'plan-5',
+    stream: 'Partner payout readiness',
+    owner: 'Partner Success Operations',
+    window: 'Wed 07:30-10:30 UTC',
+    note: 'Confirm remittance files, reconcile bank acknowledgements, and hold the final release until all ledger checks pass.',
+  },
+  {
+    id: 'plan-6',
+    stream: 'Liquidity exception cleanup',
+    owner: 'Cash Management Office',
+    window: 'Wed 15:00-18:00 UTC',
+    note: 'Resolve stale exceptions, update fallback funding plans, and document approval ownership for the next operating window.',
+  },
+];
+
+const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
+  {
+    id: 'container-frame-borderless-inline',
+    title: 'Embedded approvals strip',
+    caption: 'Border off + shadow off removes outer shell chrome so the queue can sit inline inside a parent surface.',
+    data: containerFrameTableRows,
+    config: {
+      id: 'container-frame-borderless-inline',
+      containerFrame: { border: 'none', shadow: 'none' },
+      zones: {
+        header: { title: 'Embedded Approvals', subtitle: 'Inline approvals queue', icon: 'table' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: true } },
+          item: {
+            fields: [
+              { key: 'flow', label: 'Flow', type: 'text' },
+              { key: 'owner', label: 'Owner', type: 'text' },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'amountPill', renderAsOptions: { density: 'compact' } },
+              { key: 'amount', label: 'Amount', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true } },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-rounded-shadow',
+    title: 'Rounded forecast shell',
+    caption: 'Border on + shadow on + rounded radius gives a softer card treatment for executive-facing summaries.',
+    data: containerFrameGridRows,
+    config: {
+      id: 'container-frame-rounded-shadow',
+      containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded' },
+      zones: {
+        header: { title: 'Forecast Commitments', subtitle: 'Executive summary card', icon: 'chart-bar' },
+        content: {
+          mode: 'grid',
+          modeConfig: { grid: { minItemWidth: '220px', gap: '12px', maxColumns: 2 } },
+          item: {
+            fields: [
+              { key: 'title', label: 'Title', type: 'text' },
+              { key: 'owner', label: 'Owner', type: 'text' },
+              { key: 'eta', label: 'ETA', type: 'text' },
+              { key: 'summary', label: 'Summary', type: 'text' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-square-shell',
+    title: 'Square settlement shell',
+    caption: 'Square radius + shadow off keeps edges crisp for denser operational tables and admin layouts.',
+    data: containerFrameTableRows,
+    config: {
+      id: 'container-frame-square-shell',
+      containerFrame: { border: 'on', shadow: 'none', borderRadius: 'square' },
+      zones: {
+        header: { title: 'Settlement Handoff', subtitle: 'Operations board handoff', icon: 'settings' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: false } },
+          item: {
+            fields: [
+              { key: 'flow', label: 'Flow', type: 'text' },
+              { key: 'owner', label: 'Owner', type: 'text' },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-accented-shell',
+    title: 'Accent review shell',
+    caption: 'Explicit radius plus borderColor and borderWidth creates a branded frame without changing inner widget structure.',
+    data: containerFrameTableRows,
+    config: {
+      id: 'container-frame-accented-shell',
+      containerFrame: {
+        border: 'on',
+        shadow: 'on',
+        borderRadius: '18px',
+        borderColor: '#0d6efd',
+        borderWidth: '2px',
+      },
+      zones: {
+        header: { title: 'Exception Review', subtitle: 'Branded shell for escalation context', icon: 'warning' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: true } },
+          item: {
+            fields: [
+              { key: 'flow', label: 'Flow', type: 'text' },
+              { key: 'owner', label: 'Owner', type: 'text' },
+              { key: 'amount', label: 'Amount', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true } },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-overflow-hidden',
+    title: 'Clipped planning shell',
+    caption: 'Expected difference: this fixed-size shell cuts off the table at the edge, so extra rows and wide columns are not reachable.',
+    data: containerFrameOverflowRows,
+    shellStyle: { width: '320px', maxWidth: '100%' },
+    config: {
+      id: 'container-frame-overflow-hidden',
+      containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded', overflow: 'hidden' },
+      style: { height: '250px' },
+      zones: {
+        header: { title: 'Planning Window', subtitle: 'Narrow shell with clipped overflow', icon: 'calendar' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: true } },
+          style: { minWidth: '940px' },
+          item: {
+            fields: [
+              { key: 'stream', label: 'Planning stream', type: 'text', width: '260px' },
+              { key: 'owner', label: 'Owner', type: 'text', width: '220px' },
+              { key: 'window', label: 'Window', type: 'text', width: '180px' },
+              { key: 'note', label: 'Operating note', type: 'text', width: '520px' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-overflow-auto',
+    title: 'Scrollable planning shell',
+    caption: 'Expected difference: this same fixed-size shell exposes a scrollable region so the extra rows and wide columns stay accessible.',
+    data: containerFrameOverflowRows,
+    shellStyle: { width: '320px', maxWidth: '100%' },
+    config: {
+      id: 'container-frame-overflow-auto',
+      containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded', overflow: 'auto' },
+      style: { height: '250px' },
+      zones: {
+        header: { title: 'Planning Window', subtitle: 'Narrow shell with scrollable overflow', icon: 'calendar' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: true } },
+          style: { minWidth: '940px' },
+          item: {
+            fields: [
+              { key: 'stream', label: 'Planning stream', type: 'text', width: '260px' },
+              { key: 'owner', label: 'Owner', type: 'text', width: '220px' },
+              { key: 'window', label: 'Window', type: 'text', width: '180px' },
+              { key: 'note', label: 'Operating note', type: 'text', width: '520px' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+];
 
 export const ProgressiveExamplesPage: React.FC = () => {
   const [actionPayload, setActionPayload] = useState<DemoActionPayload | null>(null);
@@ -790,6 +1036,34 @@ export const ProgressiveExamplesPage: React.FC = () => {
       )}
 
       <div className="row">
+        <div className="col-12 mb-4">
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>ContainerFrame In Context</h2>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.75rem' }}>
+            Practical shell treatments showing how containerFrame changes border, shadow, radius, accenting, and overflow behavior in real widget contexts.
+          </p>
+          <div className="row g-3">
+            {containerFrameShowcaseCards.map((card) => (
+              <div key={card.id} className="col-12 col-xl-6">
+                <div className="h-100">
+                  <h3 style={{ fontSize: '0.98rem', fontWeight: 600, marginBottom: '0.35rem' }}>{card.title}</h3>
+                  <div style={card.shellStyle}>
+                    <WidgemoThemeProvider theme={currentTheme}>
+                      <Widgemo
+                        data={card.data}
+                        config={injectDevMode(card.config, includeWidgemoInspector)}
+                        className="my-custom-widgemo"
+                      />
+                    </WidgemoThemeProvider>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--app-text-muted)', marginTop: '0.45rem', marginBottom: 0 }}>
+                    {card.caption}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {examplesWithDevMode.map((example) => {
           const configId = example.config?.id;
           return (

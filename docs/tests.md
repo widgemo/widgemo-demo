@@ -149,7 +149,19 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Open Simplified Test (`src/components/SimplifiedTest.tsx`) and confirm there is no prominent synthetic registry PASS/FAIL table in the main demo flow.
 	Expected: primary showcase experience remains product-focused rather than test-harness focused.
 
-### 9. System Preference Change Detection (Optional)
+### 9. ContainerFrame In Context Validation
+- [ ] Open the Progressive Examples page and find the "ContainerFrame In Context" showcase group near the top of the examples area.
+	Expected: six product-like examples are visible with one-line captions under each widget.
+- [ ] Confirm border/shadow differences are visually obvious between the borderless inline shell, rounded forecast shell, and square settlement shell.
+	Expected: at least one example has no outer shell, one has rounded shadowed chrome, and one has square/no-shadow framing.
+- [ ] Confirm the accent review shell shows explicit frame styling.
+	Expected: border color, border width, and a custom radius are all visible together on the outer shell.
+- [ ] Confirm the two planning shells demonstrate overflow behavior.
+	Expected: the clipped variant hides the wide content at the frame edge, while the scrollable variant exposes scrollbars in the narrow shell.
+- [ ] Scrollable planning shell must expose a scrollable region while clipped planning shell must not.
+	Expected: both cards use the same shell size and content, but only the scrollable variant allows access to hidden rows/columns.
+
+### 10. System Preference Change Detection (Optional)
 **If implemented:**
 - [ ] Change OS theme preference while app is open
 - [ ] Check if app detects and adapts to system change
