@@ -2407,7 +2407,7 @@ const widgemoExamples: Array<{
   {
     id: 'content-loading-state-renderer-override',
     title: 'Content: loadingState renderer override',
-    description: 'Demonstrates loadingState.renderer taking precedence over built-in indicators while still receiving message/indicator/data props.',
+    description: 'Demonstrates loadingState.renderer taking precedence even when indicator="spinner" is configured, while still receiving message/data props.',
     data: fourUsersData as Entity[],
     config: {
       id: 'content-loading-state-renderer-override',
@@ -2419,7 +2419,7 @@ const widgemoExamples: Array<{
           status: 'loading' as const,
           loadingState: {
             enabled: true,
-            indicator: 'custom' as const,
+            indicator: 'spinner' as const,
             message: () => 'Loading records through custom renderer…',
             renderer: ({ message, data }: { message?: string; data?: Entity[] }) => (
               <div
@@ -2433,6 +2433,7 @@ const widgemoExamples: Array<{
               >
                 <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem' }}>Custom Loading Renderer</div>
                 <div style={{ fontSize: '0.82rem', marginBottom: '0.35rem' }}>{message ?? 'Loading…'}</div>
+                <div style={{ fontSize: '0.76rem', opacity: 0.8, marginBottom: '0.35rem' }}>Configured indicator: spinner (renderer override is active)</div>
                 <div style={{ fontSize: '0.76rem', opacity: 0.8 }}>Rows in current payload: {data?.length ?? 0}</div>
               </div>
             ),
