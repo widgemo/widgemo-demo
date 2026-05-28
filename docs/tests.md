@@ -140,14 +140,18 @@ Use these locations to validate retry behavior end-to-end in the demo:
 	Open "Progressive 63A - Config-Driven Retry (errorState)", click "Retry Fetch", and confirm the demo action modal appears.
 
 ### 8. Loading and Error Runtime Validation
-- [ ] Open the state examples in `src/data/widgemoExamples.tsx` and compare the two built-in loading indicators.
-	Expected: `content-loading-state-skeleton` renders skeleton placeholders, while `content-loading-state-spinner` renders a spinner indicator (not the same visual treatment).
+- [ ] Open the loading skeleton state examples in `src/data/widgemoExamples.tsx` and confirm all four variants render distinct placeholder layouts.
+	Expected: `content-loading-state-skeleton-text-bars`, `content-loading-state-skeleton-table-cells`, `content-loading-state-skeleton-cards-grid`, and `content-loading-state-skeleton-pie-chart` each show their corresponding built-in skeleton visual treatment.
+- [ ] Validate skeleton animation behavior in runtime.
+	Expected: the cards-grid example (`content-loading-state-skeleton-cards-grid`) uses visible `animation: "morph"`; the other skeleton examples use shimmer/default animation behavior.
 - [ ] Validate loading renderer override behavior using `content-loading-state-renderer-override`.
 	Expected: custom loading UI renders the "Custom Loading Renderer" block, confirming `loadingState.renderer` overrides built-in indicator rendering.
-- [ ] Compare warning vs error severity using `content-error-state` and `content-error-state-severity-error`.
-	Expected: `severity: "warning"` and `severity: "error"` present distinct visual tones in runtime UI.
-- [ ] Confirm retry path remains obvious in the warning example.
-	Expected: `content-error-state` shows a visible "Try Again" action, and triggering it emits the demo action event.
+- [ ] Validate spinner animation using `content-loading-state-spinner`.
+	Expected: spinner is visibly rotating (not static) while loading message is shown.
+- [ ] Compare info vs warning vs error severity using `content-error-state-severity-info`, `content-error-state`, and `content-error-state-severity-error`.
+	Expected: `severity: "info"`, `severity: "warning"`, and `severity: "error"` present clearly distinct visual tones in runtime UI.
+- [ ] Confirm retry layout remains obvious and aligned in warning/error examples.
+	Expected: both `content-error-state` and `content-error-state-severity-error` show retry buttons centered and visually separated below the message, and triggering each retry emits the demo action event.
 
 ### 9. Registry In Action Validation
 - [ ] Open the Cashflow dashboard page (`src/components/CashflowDashboardPage.tsx`) and confirm the "Registry in Action" callout is visible near the top of Command Center.

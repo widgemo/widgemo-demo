@@ -2345,22 +2345,128 @@ const widgemoExamples: Array<{
 
   // ── NEW: Content loadingState ────────────────────────────────────────────
   {
-    id: 'content-loading-state-skeleton',
-    title: 'Content: loadingState (skeleton)',
-    description: 'Demonstrates built-in loading indicator="skeleton" with status="loading" and a message function.',
+    id: 'content-loading-state-skeleton-text-bars',
+    title: 'Content: loadingState skeleton (text-bars)',
+    description: 'Demonstrates skeleton variant="text-bars" with shimmer animation for baseline text placeholder loading UI.',
     data: fourUsersData as Entity[],
     config: {
-      id: 'content-loading-state-skeleton',
+      id: 'content-loading-state-skeleton-text-bars',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Loading State — Skeleton', subtitle: 'status="loading" · indicator="skeleton" · message fn' },
+        header: { title: 'Loading State — Skeleton Text Bars', subtitle: 'status="loading" · indicator="skeleton" · variant="text-bars" · animation="shimmer"' },
         content: {
           mode: 'table',
           status: 'loading' as const,
           loadingState: {
             enabled: true,
             indicator: 'skeleton' as const,
-            message: () => 'Loading records with skeleton placeholders…',
+            skeleton: {
+              variant: 'text-bars' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading records with text-bar placeholders…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-table-cells',
+    title: 'Content: loadingState skeleton (table-cells)',
+    description: 'Demonstrates skeleton variant="table-cells" to mimic tabular loading placeholders before rows resolve.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-table-cells',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Table Cells', subtitle: 'status="loading" · indicator="skeleton" · variant="table-cells"' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'table-cells' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading tabular cells…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-cards-grid',
+    title: 'Content: loadingState skeleton (cards-grid, morph)',
+    description: 'Demonstrates skeleton variant="cards-grid" with animation="morph" so animation behavior is explicit in runtime.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-cards-grid',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Cards Grid', subtitle: 'status="loading" · indicator="skeleton" · variant="cards-grid" · animation="morph"' },
+        content: {
+          mode: 'grid',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'cards-grid' as const,
+              animation: 'morph' as const,
+            },
+            message: () => 'Loading card placeholders with morph animation…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-pie-chart',
+    title: 'Content: loadingState skeleton (pie-chart)',
+    description: 'Demonstrates skeleton variant="pie-chart" for chart-like loading presentation with legend placeholders.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-pie-chart',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Pie Chart', subtitle: 'status="loading" · indicator="skeleton" · variant="pie-chart"' },
+        content: {
+          mode: 'chart',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'pie-chart' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading chart placeholders…',
           },
           item: {
             fields: [
@@ -2377,20 +2483,20 @@ const widgemoExamples: Array<{
   {
     id: 'content-loading-state-spinner',
     title: 'Content: loadingState (spinner)',
-    description: 'Demonstrates built-in loading indicator="spinner" with the same status contract so the visual difference is easy to compare against skeleton.',
+    description: 'Demonstrates built-in loading indicator="spinner" with animated rotation so it is visually distinct from skeleton placeholders.',
     data: fourUsersData as Entity[],
     config: {
       id: 'content-loading-state-spinner',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Loading State — Spinner', subtitle: 'status="loading" · indicator="spinner" · message fn' },
+        header: { title: 'Loading State — Spinner', subtitle: 'status="loading" · indicator="spinner" · animated spin' },
         content: {
           mode: 'table',
           status: 'loading' as const,
           loadingState: {
             enabled: true,
             indicator: 'spinner' as const,
-            message: () => 'Loading records with spinner indicator…',
+            message: () => 'Loading records with animated spinner…',
           },
           item: {
             fields: [
@@ -2454,13 +2560,13 @@ const widgemoExamples: Array<{
   {
     id: 'content-error-state',
     title: 'Content: errorState warning + retry',
-    description: 'Demonstrates status="error" with errorState severity="warning" and a visible retry callback path.',
+    description: 'Demonstrates status="error" with severity="warning" and a centered retry action visually separated below the message.',
     data: [] as Entity[],
     config: {
       id: 'content-error-state',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Error State — Warning + Retry', subtitle: 'status="error" · errorState message fn · retry · severity="warning"' },
+        header: { title: 'Error State — Warning + Retry', subtitle: 'status="error" · severity="warning" · centered retry below message' },
         content: {
           mode: 'table',
           status: 'error' as const,
@@ -2487,30 +2593,30 @@ const widgemoExamples: Array<{
           },
         },
         footer: {
-          subtitle: 'Expected: warning tone + Try Again action fires demo action event.',
+          subtitle: 'Expected: warning tone + centered retry button under message with visible spacing.',
         },
       },
     },
   },
 
   {
-    id: 'content-error-state-severity-error',
-    title: 'Content: errorState severity=error',
-    description: 'Demonstrates severity="error" styling without retry so users can compare warning vs error runtime presentation.',
+    id: 'content-error-state-severity-info',
+    title: 'Content: errorState severity=info',
+    description: 'Demonstrates severity="info" runtime tone so users can compare info, warning, and error presentations.',
     data: [] as Entity[],
     config: {
-      id: 'content-error-state-severity-error',
+      id: 'content-error-state-severity-info',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Error State — Severity Error', subtitle: 'status="error" · severity="error" · no retry' },
+        header: { title: 'Error State — Severity Info', subtitle: 'status="error" · severity="info" · informational tone' },
         content: {
           mode: 'table',
           status: 'error' as const,
-          error: { message: 'Batch processing failed after multiple retries' },
+          error: { message: 'Background sync is delayed; latest snapshot is still usable.' },
           errorState: {
             enabled: true,
-            message: (err: unknown) => `Error severity demo: ${(err as Error)?.message ?? 'Unknown failure'}`,
-            severity: 'error' as const,
+            message: (err: unknown) => `Info severity demo: ${(err as Error)?.message ?? 'Informational state'}`,
+            severity: 'info' as const,
             retry: false,
           },
           item: {
@@ -2519,7 +2625,49 @@ const widgemoExamples: Array<{
           },
         },
         footer: {
-          subtitle: 'Expected: stronger error tone and no retry button.',
+          subtitle: 'Expected: softer informational tone than warning/error states.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-error-state-severity-error',
+    title: 'Content: errorState severity=error',
+    description: 'Demonstrates severity="error" styling with a centered retry action to compare against warning and info severities.',
+    data: [] as Entity[],
+    config: {
+      id: 'content-error-state-severity-error',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Error State — Severity Error', subtitle: 'status="error" · severity="error" · centered retry below message' },
+        content: {
+          mode: 'table',
+          status: 'error' as const,
+          error: { message: 'Batch processing failed after multiple retries' },
+          errorState: {
+            enabled: true,
+            message: (err: unknown) => `Error severity demo: ${(err as Error)?.message ?? 'Unknown failure'}`,
+            severity: 'error' as const,
+            retry: {
+              label: 'Retry Batch',
+              onRetry: () =>
+                fireDemoAction({
+                  actionId: 'content-error-severity-error-retry',
+                  actionLabel: 'Retry Batch',
+                  source: 'action.onAction',
+                  zone: 'content',
+                  data: [] as Record<string, unknown>[],
+                }),
+            },
+          },
+          item: {
+            fields: [{ key: 'name', label: 'Name' }],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: strongest error tone + centered retry button under message with visible spacing.',
         },
       },
     },
