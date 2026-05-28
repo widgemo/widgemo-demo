@@ -151,11 +151,17 @@ Use these locations to validate retry behavior end-to-end in the demo:
 
 ### 9. ContainerFrame In Context Validation
 - [ ] Open the Progressive Examples page and find the "ContainerFrame In Context" showcase group near the top of the examples area.
-	Expected: six product-like examples are visible with one-line captions under each widget.
+	Expected: seven product-like examples are visible with one-line captions under each widget.
 - [ ] Confirm border/shadow differences are visually obvious between the borderless inline shell, rounded forecast shell, and square settlement shell.
 	Expected: at least one example has no outer shell, one has rounded shadowed chrome, and one has square/no-shadow framing.
 - [ ] Confirm the accent review shell shows explicit frame styling.
 	Expected: border color, border width, and a custom radius are all visible together on the outer shell.
+- [ ] Confirm the **borderless** example ("Embedded approvals strip") still has a visible background surface behind the table.
+	Expected: the card background is present; only the border line and shadow are absent. The widget still reads as a card-like block.
+- [ ] Confirm the **shellless** example ("Shellless queue") has no background surface and blends into the dashed host wrapper.
+	Expected: the widget background is transparent; the table and header float directly on the host surface with no surrounding card chrome. The dashed host border must be visible through/around the widget, not behind a white card.
+- [ ] Toggle between light and dark mode while both examples are visible.
+	Expected: shellless adapts to the host surface in both modes (transparent, no card shape); borderless retains a distinct background in both modes.
 - [ ] Confirm the two planning shells demonstrate overflow behavior.
 	Expected: the clipped variant hides the wide content at the frame edge, while the scrollable variant exposes scrollbars in the narrow shell.
 - [ ] Scrollable planning shell must expose a scrollable region while clipped planning shell must not.

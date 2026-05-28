@@ -141,6 +141,8 @@ type ContainerFrameShowcaseCard = {
   data: Entity[];
   config: WidgemoConfig<Entity>;
   shellStyle?: React.CSSProperties;
+  /** Optional outer host wrapper style — use to show a tinted surface behind shellless examples */
+  hostStyle?: React.CSSProperties;
 };
 
 const containerFrameTableRows: Entity[] = [
@@ -222,6 +224,34 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
       containerFrame: { border: 'none', shadow: 'none' },
       zones: {
         header: { title: 'Embedded Approvals', subtitle: 'Inline approvals queue', icon: 'table' },
+        content: {
+          mode: 'table',
+          modeConfig: { table: { type: 'traditional', alternatingRows: true } },
+          item: {
+            fields: [
+              { key: 'flow', label: 'Flow', type: 'text' },
+              { key: 'owner', label: 'Owner', type: 'text' },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'amountPill', renderAsOptions: { density: 'compact' } },
+              { key: 'amount', label: 'Amount', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true } },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 'container-frame-shellless',
+    title: 'Shellless queue (shell: none)',
+    caption:
+      "Shell none removes the entire outer surface — background, border, and shadow all disappear. The widget floats inside whatever surface hosts it. Compare to the borderless strip above: that one still has its own background and reads like a card; this one genuinely blends into the parent.",
+    data: containerFrameTableRows,
+    hostStyle: { background: 'var(--app-bg-secondary)', border: '1px dashed var(--app-border)', borderRadius: '6px', padding: '1rem' },
+    config: {
+      id: 'container-frame-shellless',
+      containerFrame: { shell: 'none' },
+      zones: {
+        header: { title: 'Embedded Approvals', subtitle: 'Shellless — no outer surface', icon: 'table' },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional', alternatingRows: true } },
@@ -1046,14 +1076,16 @@ export const ProgressiveExamplesPage: React.FC = () => {
               <div key={card.id} className="col-12 col-xl-6">
                 <div className="h-100">
                   <h3 style={{ fontSize: '0.98rem', fontWeight: 600, marginBottom: '0.35rem' }}>{card.title}</h3>
-                  <div style={card.shellStyle}>
-                    <WidgemoThemeProvider theme={currentTheme}>
-                      <Widgemo
-                        data={card.data}
-                        config={injectDevMode(card.config, includeWidgemoInspector)}
-                        className="my-custom-widgemo"
-                      />
-                    </WidgemoThemeProvider>
+                  <div style={card.hostStyle}>
+                    <div style={card.shellStyle}>
+                      <WidgemoThemeProvider theme={currentTheme}>
+                        <Widgemo
+                          data={card.data}
+                          config={injectDevMode(card.config, includeWidgemoInspector)}
+                          className="my-custom-widgemo"
+                        />
+                      </WidgemoThemeProvider>
+                    </div>
                   </div>
                   <p style={{ fontSize: '0.78rem', color: 'var(--app-text-muted)', marginTop: '0.45rem', marginBottom: 0 }}>
                     {card.caption}
