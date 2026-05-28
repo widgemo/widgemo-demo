@@ -285,6 +285,94 @@ const widgemoExamples: Array<{
     }
   },
 
+  // ── Action Overflow: indicator variants ──────────────────────────────────
+  {
+    id: 'action-overflow-indicator-pulse',
+    title: 'Action Overflow — indicator: pulse',
+    description: 'maxInline: 2 forces overflow on desktop. When overflow count increases the ⋯ button plays a scale + blue ripple animation (indicator: "pulse", the default).',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: pulse',
+          subtitle: 'Overflow button pulses with a blue ripple when items tuck in',
+          actions: [
+            { id: 'p-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'pulse' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
+  {
+    id: 'action-overflow-indicator-scale',
+    title: 'Action Overflow — indicator: scale',
+    description: 'Same layout as the pulse example but uses indicator: "scale" — a clean scale-only pop with no color change.',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: scale',
+          subtitle: 'Overflow button pops with a scale-only animation — no ripple, no color',
+          actions: [
+            { id: 's-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'scale' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
+  {
+    id: 'action-overflow-indicator-color-shift',
+    title: 'Action Overflow — indicator: color-shift',
+    description: 'indicator: "color-shift" flashes the overflow button background and border to the primary color — no movement. Useful when motion-reduction is preferred.',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: color-shift',
+          subtitle: 'Overflow button flashes its border and background tint — no scale movement',
+          actions: [
+            { id: 'c-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'color-shift' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
   {
     id: 'grid-mode',
     title: 'Grid Mode',
