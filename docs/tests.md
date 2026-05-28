@@ -131,6 +131,14 @@ This checklist tests the light/dark theming functionality in the widgemo-demo Re
 - [ ] Smooth theme changes
 - [ ] No layout shifts
 
+### 8. Retry Path Validation
+Use these locations to validate retry behavior end-to-end in the demo:
+
+- [ ] Sandbox top-level retry path in `src/components/sandbox/PreviewPanel.tsx`.
+	Trigger an error state in the preview, click retry, and confirm loading/error reset behavior.
+- [ ] Config-driven retry path in `src/data/progressiveExamples.tsx` (`progressive-63a-config-driven-retry-error-state`).
+	Open "Progressive 63A - Config-Driven Retry (errorState)", click "Retry Fetch", and confirm the demo action modal appears.
+
 ### 7. System Preference Change Detection (Optional)
 **If implemented:**
 - [ ] Change OS theme preference while app is open
