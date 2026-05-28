@@ -2345,22 +2345,97 @@ const widgemoExamples: Array<{
 
   // ── NEW: Content loadingState ────────────────────────────────────────────
   {
-    id: 'content-loading-state',
-    title: 'Content: loadingState',
-    description: 'ContentConfig.status="loading" with loadingState: indicator="skeleton", message as function, enabled=true.',
+    id: 'content-loading-state-skeleton',
+    title: 'Content: loadingState (skeleton)',
+    description: 'Demonstrates built-in loading indicator="skeleton" with status="loading" and a message function.',
     data: fourUsersData as Entity[],
     config: {
-      id: 'content-loading-state',
+      id: 'content-loading-state-skeleton',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Loading State', subtitle: 'status="loading" · indicator="skeleton" · message fn' },
+        header: { title: 'Loading State — Skeleton', subtitle: 'status="loading" · indicator="skeleton" · message fn' },
         content: {
           mode: 'table',
           status: 'loading' as const,
           loadingState: {
             enabled: true,
             indicator: 'skeleton' as const,
-            message: () => `Loading records…`,
+            message: () => 'Loading records with skeleton placeholders…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-spinner',
+    title: 'Content: loadingState (spinner)',
+    description: 'Demonstrates built-in loading indicator="spinner" with the same status contract so the visual difference is easy to compare against skeleton.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-spinner',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Spinner', subtitle: 'status="loading" · indicator="spinner" · message fn' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'spinner' as const,
+            message: () => 'Loading records with spinner indicator…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-renderer-override',
+    title: 'Content: loadingState renderer override',
+    description: 'Demonstrates loadingState.renderer taking precedence over built-in indicators while still receiving message/indicator/data props.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-renderer-override',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Custom Renderer', subtitle: 'status="loading" · loadingState.renderer override' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'custom' as const,
+            message: () => 'Loading records through custom renderer…',
+            renderer: ({ message, data }: { message?: string; data?: Entity[] }) => (
+              <div
+                style={{
+                  border: '1px dashed var(--widgemo-color-border, #dee2e6)',
+                  borderRadius: '8px',
+                  padding: '12px 14px',
+                  background: 'var(--widgemo-color-surfaceBg, #f8f9fa)',
+                  color: 'var(--widgemo-color-text, #212529)',
+                }}
+              >
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem' }}>Custom Loading Renderer</div>
+                <div style={{ fontSize: '0.82rem', marginBottom: '0.35rem' }}>{message ?? 'Loading…'}</div>
+                <div style={{ fontSize: '0.76rem', opacity: 0.8 }}>Rows in current payload: {data?.length ?? 0}</div>
+              </div>
+            ),
           },
           item: {
             fields: [
@@ -2377,14 +2452,14 @@ const widgemoExamples: Array<{
   // ── NEW: Content errorState ──────────────────────────────────────────────
   {
     id: 'content-error-state',
-    title: 'Content: errorState with retry',
-    description: 'ContentConfig.status="error" with errorState: message fn, retry button (label + onRetry callback), severity="warning".',
+    title: 'Content: errorState warning + retry',
+    description: 'Demonstrates status="error" with errorState severity="warning" and a visible retry callback path.',
     data: [] as Entity[],
     config: {
       id: 'content-error-state',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Error State', subtitle: 'status="error" · errorState message fn · retry · severity="warning"' },
+        header: { title: 'Error State — Warning + Retry', subtitle: 'status="error" · errorState message fn · retry · severity="warning"' },
         content: {
           mode: 'table',
           status: 'error' as const,
@@ -2392,13 +2467,58 @@ const widgemoExamples: Array<{
           errorState: {
             enabled: true,
             message: (err: unknown) => `Error: ${(err as Error)?.message ?? 'Something went wrong'}`,
-            retry: { label: 'Try Again', onRetry: () => alert('Retry triggered!') },
+            retry: {
+              label: 'Try Again',
+              onRetry: () =>
+                fireDemoAction({
+                  actionId: 'content-error-retry',
+                  actionLabel: 'Try Again',
+                  source: 'action.onAction',
+                  zone: 'content',
+                  data: [] as Record<string, unknown>[],
+                }),
+            },
             severity: 'warning' as const,
           },
           item: {
             fields: [{ key: 'name', label: 'Name' }],
             layout: { type: 'auto' },
           },
+        },
+        footer: {
+          subtitle: 'Expected: warning tone + Try Again action fires demo action event.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-error-state-severity-error',
+    title: 'Content: errorState severity=error',
+    description: 'Demonstrates severity="error" styling without retry so users can compare warning vs error runtime presentation.',
+    data: [] as Entity[],
+    config: {
+      id: 'content-error-state-severity-error',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Error State — Severity Error', subtitle: 'status="error" · severity="error" · no retry' },
+        content: {
+          mode: 'table',
+          status: 'error' as const,
+          error: { message: 'Batch processing failed after multiple retries' },
+          errorState: {
+            enabled: true,
+            message: (err: unknown) => `Error severity demo: ${(err as Error)?.message ?? 'Unknown failure'}`,
+            severity: 'error' as const,
+            retry: false,
+          },
+          item: {
+            fields: [{ key: 'name', label: 'Name' }],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: stronger error tone and no retry button.',
         },
       },
     },
