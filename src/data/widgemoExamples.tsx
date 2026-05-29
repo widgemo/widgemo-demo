@@ -1913,10 +1913,10 @@ const widgemoExamples: Array<{
     title: 'renderAs: badge — icons, style, size',
     description: 'Badge colorMap with icon+iconPosition: "left", "right", "only". Badge style "inline" vs "badge". Badge size "sm", "md", "lg". Dynamic colorMap via function.',
     data: [
-      { id: 1, name: 'Alice', priority: 'high',   status: 'active',   tier: 'gold'   },
-      { id: 2, name: 'Bob',   priority: 'medium', status: 'pending',  tier: 'silver' },
-      { id: 3, name: 'Carol', priority: 'low',    status: 'inactive', tier: 'bronze' },
-      { id: 4, name: 'David', priority: 'high',   status: 'active',   tier: 'gold'   },
+      { id: 1, name: 'Alice', priority: 'high',   status: 'active',   tier: 'gold',   segment: 'engineering' },
+      { id: 2, name: 'Bob',   priority: 'medium', status: 'pending',  tier: 'silver', segment: 'operations' },
+      { id: 3, name: 'Carol', priority: 'low',    status: 'inactive', tier: 'bronze', segment: 'support' },
+      { id: 4, name: 'David', priority: 'high',   status: 'active',   tier: 'gold',   segment: 'platform' },
     ] as Entity[],
     config: {
       id: 'renderas-badge-advanced',
@@ -1945,6 +1945,17 @@ const widgemoExamples: Array<{
                   inactive: { background: '#6c757d', text: '#fff', icon: 'close', iconPosition: 'only' },
                 },
                 size: 'lg',
+              }},
+              // className adds an app-specific CSS hook to the rendered badge
+              { key: 'segment', label: 'Segment (className hook)', renderAs: 'badge', renderAsOptions: {
+                colorMap: {
+                  engineering: { background: '#0d6efd', text: '#fff' },
+                  operations:   { background: '#6f42c1', text: '#fff' },
+                  support:      { background: '#198754', text: '#fff' },
+                  platform:     { background: '#20c997', text: '#053c33' },
+                },
+                className: 'demo-badge-emphasis',
+                size: 'md',
               }},
               // style inline + icon right, size md
               { key: 'tier', label: 'Tier (inline, icon right)', renderAs: 'badge', renderAsOptions: {
