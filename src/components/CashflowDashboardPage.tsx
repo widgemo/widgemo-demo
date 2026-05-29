@@ -298,8 +298,8 @@ export const CashflowDashboardPage: React.FC = () => {
         key: 'status',
         label: 'Status',
         type: 'text',
-        renderAs: 'amountPill',
-        renderAsOptions: { density: 'compact' },
+        renderAs: 'badge',
+        renderAsOptions: { style: 'badge', size: 'sm' },
         showLabel: false,
       },
     ],
@@ -523,8 +523,8 @@ export const CashflowDashboardPage: React.FC = () => {
         key: 'flowType',
         label: 'Flow',
         type: 'text',
-        renderAs: 'amountPill',
-        renderAsOptions: { density: 'compact' },
+        renderAs: 'badge',
+        renderAsOptions: { style: 'badge', size: 'sm' },
         width: '100px',
       },
       {
@@ -548,8 +548,8 @@ export const CashflowDashboardPage: React.FC = () => {
         key: 'recurrence',
         label: 'Recurrence',
         type: 'text',
-        renderAs: 'amountPill',
-        renderAsOptions: { density: 'compact' },
+        renderAs: 'badge',
+        renderAsOptions: { style: 'badge', size: 'sm' },
         width: '110px',
       },
       { key: 'tags', label: 'Tags', type: 'text', width: '190px', wrap: true },
@@ -626,8 +626,8 @@ export const CashflowDashboardPage: React.FC = () => {
         key: 'severity',
         label: 'Severity',
         type: 'text',
-        renderAs: 'amountPill',
-        renderAsOptions: { density: 'compact' },
+        renderAs: 'badge',
+        renderAsOptions: { style: 'badge', size: 'sm' },
       },
       { key: 'accountName', label: 'Account', type: 'text' },
       {
@@ -724,8 +724,8 @@ export const CashflowDashboardPage: React.FC = () => {
         key: 'status',
         label: 'Status',
         type: 'text',
-        renderAs: 'amountPill',
-        renderAsOptions: { density: 'compact' },
+        renderAs: 'badge',
+        renderAsOptions: { style: 'badge', size: 'sm' },
         showLabel: false,
       },
       {
@@ -1348,7 +1348,7 @@ export const CashflowDashboardPage: React.FC = () => {
                     </div>
                     <div className="w-100">
                       <p style={{ marginBottom: '0.25rem', color: 'var(--app-text-muted)', fontSize: '0.8rem' }}>
-                        Registry note: this table uses custom renderAs entries like transactionMeta and amountPill for compact, domain-aware transaction context.
+                        Registry note: this table uses custom renderAs entries like transactionMeta and badge for compact, domain-aware transaction context.
                       </p>
                       <Widgemo data={transactionRows} config={injectDevMode(transactionConfig)} />
                     </div>

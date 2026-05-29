@@ -231,7 +231,7 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
             fields: [
               { key: 'flow', label: 'Flow', type: 'text' },
               { key: 'owner', label: 'Owner', type: 'text' },
-              { key: 'status', label: 'Status', type: 'text', renderAs: 'amountPill', renderAsOptions: { density: 'compact' } },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge', renderAsOptions: { style: 'badge', size: 'sm' } },
               { key: 'amount', label: 'Amount', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true } },
             ],
             layout: { type: 'auto' },
@@ -259,7 +259,7 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
             fields: [
               { key: 'flow', label: 'Flow', type: 'text' },
               { key: 'owner', label: 'Owner', type: 'text' },
-              { key: 'status', label: 'Status', type: 'text', renderAs: 'amountPill', renderAsOptions: { density: 'compact' } },
+              { key: 'status', label: 'Status', type: 'text', renderAs: 'badge', renderAsOptions: { style: 'badge', size: 'sm' } },
               { key: 'amount', label: 'Amount', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true } },
             ],
             layout: { type: 'auto' },
