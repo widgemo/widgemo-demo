@@ -1773,11 +1773,11 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Field Types: boolean, swatch, formatter, condition, visible, span ─
+  // ── NEW: Field Types: boolean, swatch, formatter, condition, visible ─
   {
     id: 'field-boolean-swatch',
-    title: 'Field: boolean, swatch, formatter, condition, visible, span',
-    description: 'type="boolean" with booleanTrueLabel/booleanFalseLabel. type="swatch" renders a color dot. formatter transforms raw values. condition hides fields per-entity. visible=false removes entirely. span for multi-column stretch.',
+    title: 'Field: boolean, swatch, formatter, condition, visible',
+    description: 'type="boolean" with booleanTrueLabel/booleanFalseLabel. type="swatch" renders a color dot. formatter transforms raw values. condition hides fields per-entity. visible=false removes entirely.',
     data: [
       { id: 1, name: 'Alice', isActive: true, isVerified: true, tierColor: '#ffd700', tier: 'Gold', score: 92 },
       { id: 2, name: 'Bob',   isActive: false, isVerified: true,  tierColor: '#c0c0c0', tier: 'Silver', score: 71 },
@@ -1788,7 +1788,7 @@ const widgemoExamples: Array<{
       id: 'field-boolean-swatch',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Boolean, Swatch & Field Options', subtitle: 'booleanTrueLabel · swatch type · formatter · condition · visible=false · span' },
+        header: { title: 'Boolean, Swatch & Field Options', subtitle: 'booleanTrueLabel · swatch type · formatter · condition · visible=false' },
         content: {
           mode: 'table',
           item: {
@@ -1807,6 +1807,63 @@ const widgemoExamples: Array<{
               { key: 'id', label: 'ID (hidden)', visible: false },
             ],
             layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  // ── NEW: Field span in grid field layout ─────────────────────────────────
+  {
+    id: 'field-span-grid-layout',
+    title: 'Field: span (grid field layout)',
+    description: 'FieldConfig.span stretches selected fields across multiple columns when item.layout.type="grid".',
+    data: [
+      {
+        id: 1,
+        name: 'Aurora Chen',
+        role: 'Design Lead',
+        team: 'Design Systems',
+        summary: 'Leads cross-functional design initiatives and drives consistency across product surfaces.',
+      },
+      {
+        id: 2,
+        name: 'Mateo Silva',
+        role: 'Platform Engineer',
+        team: 'Core Platform',
+        summary: 'Owns platform reliability and performance guardrails for internal developer tooling.',
+      },
+    ] as Entity[],
+    config: {
+      id: 'field-span-grid-layout',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Field span with layout.grid',
+          subtitle: 'summary uses span: 2 in a two-column field grid',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '320px',
+              gap: '0.75rem',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'team', label: 'Team' },
+              { key: 'summary', label: 'Summary', span: 2, wrap: true },
+            ],
+            layout: {
+              type: 'grid',
+              grid: {
+                columns: 'repeat(2, minmax(0, 1fr))',
+                gap: '0.5rem 0.75rem',
+              },
+            },
           },
         },
       },
