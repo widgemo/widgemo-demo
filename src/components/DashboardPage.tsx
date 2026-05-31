@@ -393,7 +393,15 @@ export const DashboardPage: React.FC = () => {
         align: 'right',
         width: '120px',
       },
-      { key: 'dueDate', label: 'Due', type: 'date', sortable: true, width: '120px' },
+      {
+        key: 'dueDate',
+        label: 'Due',
+        type: 'date',
+        renderAs: 'date',
+        renderAsOptions: { parseMode: 'iso-date', locale: 'en-US', timezone: 'local', formatPreset: 'short' },
+        sortable: true,
+        width: '120px',
+      },
       {
         key: 'risk',
         label: 'Risk',
@@ -462,7 +470,14 @@ export const DashboardPage: React.FC = () => {
         showLabel: false,
       },
       { key: 'owner', label: 'Owner', type: 'text', wrap: false },
-      { key: 'dueDate', label: 'Due', type: 'date', wrap: false },
+      {
+        key: 'dueDate',
+        label: 'Due',
+        type: 'date',
+        renderAs: 'date',
+        renderAsOptions: { parseMode: 'iso-date', locale: 'en-US', timezone: 'local', formatPreset: 'medium' },
+        wrap: false,
+      },
     ],
     [],
   );
