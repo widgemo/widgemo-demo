@@ -481,7 +481,13 @@ export const CashflowDashboardPage: React.FC = () => {
       { key: 'amount', label: 'Amount', type: 'number' },
       { key: 'accountName', label: 'Account', type: 'text' },
       { key: 'status', label: 'Status', type: 'text' },
-      { key: 'date', label: 'Date', type: 'date' },
+      {
+        key: 'date',
+        label: 'Date',
+        type: 'date',
+        renderAs: 'date',
+        renderAsOptions: { parseMode: 'iso-date', locale: 'en-US', timezone: 'local', formatPreset: 'medium' },
+      },
     ],
     [],
   );
@@ -544,7 +550,15 @@ export const CashflowDashboardPage: React.FC = () => {
         sortable: true,
         width: '240px',
       },
-      { key: 'postedAt', label: 'Posted', type: 'date', sortable: true, width: '120px' },
+      {
+        key: 'postedAt',
+        label: 'Posted',
+        type: 'date',
+        renderAs: 'date',
+        renderAsOptions: { parseMode: 'iso-date', locale: 'en-US', timezone: 'local', formatPreset: 'short' },
+        sortable: true,
+        width: '120px',
+      },
       {
         key: 'flowType',
         label: 'Flow',

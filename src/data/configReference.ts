@@ -116,11 +116,11 @@ export const widgemoConfigProperties: Array<{
   // FieldConfig properties
   { category: 'FieldConfig', property: 'key', type: 'string', status: 'implemented', description: 'Unique field key', usage: 'Used in rendering and data mapping.', example: '"id"' },
   { category: 'FieldConfig', property: 'label', type: 'string', status: 'implemented', description: 'Human-readable label', usage: 'Displayed in headers/labels.', example: '"ID"' },
-  { category: 'FieldConfig', property: 'type', type: "'text' | 'number' | 'date' | 'boolean' | 'select' | 'relation' | 'textarea' | 'email' | 'url'", status: 'partial', description: 'Data type', usage: "Basic types rendered; 'relation', 'textarea' not fully.", example: "'text'" },
+  { category: 'FieldConfig', property: 'type', type: "'text' | 'number' | 'date' | 'time' | 'datetime' | 'timestamp' | 'duration' | 'boolean' | 'select' | 'relation' | 'textarea' | 'email' | 'url'", status: 'partial', description: 'Data type', usage: "Temporal types require explicit renderAsOptions contracts: parseMode for date/time/datetime/timestamp and unit for duration.", example: "'date'" },
   { category: 'FieldConfig', property: 'options', type: 'Array<{ value: string | number | boolean; label: string }>', status: 'implemented', description: 'Options for select/relation', usage: 'For select fields.', example: '[{ value: "active", label: "Active" }]' },
   { category: 'FieldConfig', property: 'validation', type: 'Object', status: 'not-implemented', description: 'Validation rules', usage: 'Not implemented: Property exists but no validation logic.', example: '{ required: true }' },
   { category: 'FieldConfig', property: 'render', type: 'Object', status: 'not-implemented', description: 'Custom rendering', usage: 'Not implemented: Property exists but not used.', example: '{ component: MyComponent }' },
-  { category: 'FieldConfig', property: 'renderAs', type: "'text' | 'boolean' | 'select' | 'custom' | 'link' | 'progress' | 'rating'", status: 'implemented', description: 'Render type', usage: 'Defaults to type. Use "link" to render text fields as clickable links, "progress" for progress bars, "rating" for star ratings.', example: "'link'" },
+  { category: 'FieldConfig', property: 'renderAs', type: "'text' | 'boolean' | 'select' | 'custom' | 'link' | 'progress' | 'rating' | 'date' | 'time' | 'datetime' | 'timestamp' | 'duration'", status: 'implemented', description: 'Render type', usage: 'Defaults to type. Temporal renderers require explicit parseMode/unit contracts in renderAsOptions.', example: "'date'" },
   { category: 'FieldConfig', property: 'booleanTrueLabel', type: 'string', status: 'implemented', description: 'True label for booleans', usage: 'Used in rendering.', example: '"Yes"' },
   { category: 'FieldConfig', property: 'booleanFalseLabel', type: 'string', status: 'implemented', description: 'False label for booleans', usage: 'Used in rendering.', example: '"No"' },
   { category: 'FieldConfig', property: 'sortable', type: 'boolean', status: 'not-implemented', description: 'Sortable flag', usage: 'Flag exists, but sorting UI incomplete.', example: 'true' },
@@ -130,7 +130,7 @@ export const widgemoConfigProperties: Array<{
   { category: 'FieldConfig', property: 'width', type: 'number | string', status: 'not-implemented', description: 'Width in table', usage: 'Not implemented in table view.', example: '100' },
   { category: 'FieldConfig', property: 'align', type: "'left' | 'center' | 'right'", status: 'implemented', description: 'Text alignment', usage: 'Applied in table cells.', example: "'center'" },
   { category: 'FieldConfig', property: 'showLabel', type: 'boolean', status: 'implemented', description: 'Show label in cards', usage: 'For card views.', example: 'true' },
-  { category: 'FieldConfig', property: 'renderAsOptions', type: 'Object', status: 'implemented', description: 'Renderer-specific options for renderAs modes such as link, currency, badge, progress, and rating.', usage: 'Used with renderAs to customize formatting and interactive behavior.', example: '{ newTab: true, externalWarning: true }', isComplexType: true, complexTypeSection: 'RenderAsOptions' },
+  { category: 'FieldConfig', property: 'renderAsOptions', type: 'Object', status: 'implemented', description: 'Renderer-specific options for renderAs modes such as link, currency, badge, progress, rating, and temporal renderers.', usage: 'Used with renderAs to customize formatting and interactive behavior. Temporal renderers must provide parseMode/unit.', example: "{ parseMode: 'iso-date', formatPreset: 'medium' }", isComplexType: true, complexTypeSection: 'RenderAsOptions' },
 
   // RenderAsOptions properties
   { category: 'RenderAsOptions', property: 'text', type: 'string | ((entity: Entity) => string)', status: 'implemented', description: 'Custom link text when renderAs is "link".', usage: 'If not provided, uses the field value.', example: '"Click here"' },
@@ -166,6 +166,10 @@ export const fieldTypes = [
   { value: 'number', label: 'Number' },
   { value: 'boolean', label: 'Boolean' },
   { value: 'date', label: 'Date' },
+  { value: 'time', label: 'Time' },
+  { value: 'datetime', label: 'Datetime' },
+  { value: 'timestamp', label: 'Timestamp' },
+  { value: 'duration', label: 'Duration' },
   { value: 'select', label: 'Select' },
   { value: 'textarea', label: 'Textarea' },
 ];
@@ -272,7 +276,14 @@ export const presetConfigs = {
             { key: 'name', label: 'Name', type: 'text' as const, filterable: true },
             { key: 'category', label: 'Category', type: 'select' as const, options: [], filterable: true },
             { key: 'status', label: 'Active', type: 'boolean' as const, filterable: true },
-            { key: 'createdAt', label: 'Created', type: 'date' as const, sortable: true },
+            {
+              key: 'createdAt',
+              label: 'Created',
+              type: 'date' as const,
+              renderAs: 'date' as const,
+              renderAsOptions: { parseMode: 'iso-date', locale: 'en-US', timezone: 'local', formatPreset: 'short' },
+              sortable: true,
+            },
           ],
         },
         actions: [
