@@ -153,17 +153,17 @@ Use these locations to validate retry behavior end-to-end in the demo:
 - [ ] Confirm retry layout remains obvious and aligned in warning/error examples.
 	Expected: both `content-error-state` and `content-error-state-severity-error` show retry buttons centered and visually separated below the message, and triggering each retry emits the demo action event.
 - [ ] Validate compositionBar compact table example using `renderas-composition-bar-compact-table` in `src/data/widgemoExamples.tsx`.
-	Expected: legend is hidden (`legend=none`), percentages are still present in segment hover/tooltips, and compact strip height stays visually dense.
+	Expected: legend is hidden (`legend=none`), default visual style is segmented with per-segment rounded corners, percentages are present in segment hover/tooltips, and compact strip height stays visually dense.
 - [ ] Validate compositionBar grid summary example using `renderas-composition-bar-grid-summary` in `src/data/widgemoExamples.tsx`.
-	Expected: inline legend remains visible, percentages are hidden, and a totals row appears under each composition bar.
+	Expected: inline legend remains visible, style is `continuous` with band-level corners, percentages are hidden, and a totals row appears under each composition bar.
 - [ ] Validate compositionBar palette + numeric array example using `renderas-composition-bar-palette-numeric-table` in `src/data/widgemoExamples.tsx`.
-	Expected: numeric-array values render correctly, custom `palette` colors apply in order, and `total=120` affects percentage math and totals output.
+	Expected: numeric-array values render correctly, custom `palette` colors apply in order, `style=segmented` plus `segmentGap/cornerRadius/cornerScope` are visually obvious, and `total=120` affects percentage math and totals output.
 - [ ] Validate compositionBar callback-driven example using `renderas-composition-bar-callback-segments-total-callback` in `src/data/widgemoExamples.tsx`.
-	Expected: `segments(entity)` and `total(entity)` are used (not field value), with inline legend + totals visible in grid cards.
+	Expected: `segments(entity)` and `total(entity)` are used (not field value), with inline legend + totals visible in grid cards, and `cornerScope=none` produces square segment ends.
 - [ ] Validate compositionBar object-input + segmentColors example using `renderas-composition-bar-segmentcolors-object-input` in `src/data/widgemoExamples.tsx`.
-	Expected: mixed object keys (`name`/`key`/`label`, `amount`/`total`/`value`) normalize correctly and `segmentColors` alias controls swatch/bar colors.
+	Expected: mixed object keys (`name`/`key`/`label`, `amount`/`total`/`value`) normalize correctly, `segmentColors` alias controls swatch/bar colors, and segmented chip-style corners render with the configured radius.
 - [ ] Validate compositionBar static segments option example using `renderas-composition-bar-static-segments-option` in `src/data/widgemoExamples.tsx`.
-	Expected: `renderAsOptions.segments` static array drives rendering independent of field value, with `legend=none`, `totals=true`, and fixed `total=100`.
+	Expected: `renderAsOptions.segments` static array drives rendering independent of field value, with `style=continuous`, rounded band/edge corners, `legend=none`, `totals=true`, and fixed `total=100`.
 
 ### 9. Registry In Action Validation
 - [ ] Open the Cashflow dashboard page (`src/components/CashflowDashboardPage.tsx`) and confirm the "Registry in Action" callout is visible near the top of Command Center.

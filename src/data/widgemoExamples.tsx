@@ -2088,7 +2088,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-compact-table',
     title: 'renderAs: compositionBar — compact table',
-    description: 'Compact table-style composition bars with legend suppressed. Demonstrates a narrow stacked strip that reads like a dense inline field.',
+    description: 'Compact table-style composition bars with legend suppressed. Demonstrates default compositionBar visuals (segmented style + per-segment corner rounding).',
     data: [
       {
         id: 1,
@@ -2130,7 +2130,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (Compact Table)',
-          subtitle: 'renderAs="compositionBar" · legend=none · percentages=true · compact barHeight',
+          subtitle: 'defaults: style=segmented · cornerScope=segment · legend=none · compact barHeight',
         },
         content: {
           mode: 'table',
@@ -2164,7 +2164,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-grid-summary',
     title: 'renderAs: compositionBar — grid summary cards',
-    description: 'Card/grid summary usage with totals view, inline legend, and a richer segment mix. Uses segment labels and explicit colors for at-a-glance composition snapshots.',
+    description: 'Card/grid summary usage showing continuous style with band-level corners for a smooth single-track look.',
     data: [
       {
         id: 1,
@@ -2209,7 +2209,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (Grid Summary Cards)',
-          subtitle: 'renderAs="compositionBar" · mode="grid" · inline legend · totals=true',
+          subtitle: 'style=continuous · cornerScope=track · mode="grid" · inline legend · totals=true',
         },
         content: {
           mode: 'grid',
@@ -2228,6 +2228,9 @@ const widgemoExamples: Array<{
                 label: 'Composition Snapshot',
                 renderAs: 'compositionBar',
                 renderAsOptions: {
+                  style: 'continuous',
+                  cornerScope: 'track',
+                  cornerRadius: '999px',
                   legend: 'inline',
                   percentages: false,
                   totals: true,
@@ -2249,7 +2252,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-palette-numeric-table',
     title: 'renderAs: compositionBar — palette + numeric array + fixed total',
-    description: 'Shows numeric-array field input with a custom palette, explicit fixed total denominator, percentages, totals, and numeric gap value.',
+    description: 'Shows numeric-array field input with custom palette plus segmented style tuning (`segmentGap`, `cornerRadius`, `cornerScope`).',
     data: [
       { id: 1, team: 'Acquisition', workload: [44, 26, 18, 12] },
       { id: 2, team: 'Lifecycle', workload: [39, 31, 17, 13] },
@@ -2261,7 +2264,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (Palette + Numeric Arrays)',
-          subtitle: 'palette · totals=true · total=120 · percentages=true · gap=6',
+          subtitle: 'style=segmented · cornerScope=both · cornerRadius=7px · segmentGap=4px',
         },
         content: {
           mode: 'table',
@@ -2273,6 +2276,10 @@ const widgemoExamples: Array<{
                 label: 'Workload Split',
                 renderAs: 'compositionBar',
                 renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'both',
+                  cornerRadius: '7px',
+                  segmentGap: '4px',
                   legend: 'inline',
                   percentages: true,
                   totals: true,
@@ -2293,7 +2300,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-callback-segments-total-callback',
     title: 'renderAs: compositionBar — segments callback + total callback',
-    description: 'Shows callback-driven segment generation from entity fields plus callback total override for percentage math.',
+    description: 'Shows callback-driven segment generation from entity fields plus callback total override, with square segmented blocks (no corner rounding).',
     data: [
       { id: 1, portfolio: 'North America', cash: 220, equity: 540, debt: 140, hedge: 100, portfolioTotal: 1200 },
       { id: 2, portfolio: 'EMEA', cash: 180, equity: 410, debt: 220, hedge: 90, portfolioTotal: 1100 },
@@ -2305,7 +2312,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (Segments Callback)',
-          subtitle: 'segments(entity)=>[] · total(entity)=>number · inline legend + totals',
+          subtitle: 'segments(entity)=>[] · total(entity)=>number · style=segmented · cornerScope=none',
         },
         content: {
           mode: 'grid',
@@ -2318,6 +2325,9 @@ const widgemoExamples: Array<{
                 label: 'Derived Mix',
                 renderAs: 'compositionBar',
                 renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'none',
+                  segmentGap: '5px',
                   legend: 'inline',
                   percentages: true,
                   totals: true,
@@ -2346,7 +2356,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-segmentcolors-object-input',
     title: 'renderAs: compositionBar — object segments + segmentColors alias',
-    description: 'Shows field value object with heterogeneous segment keys (name/key/label and amount/total/value) and segmentColors alias usage.',
+    description: 'Shows field value object with heterogeneous segment keys and segmentColors alias usage, with compact segmented chips.',
     data: [
       {
         id: 1,
@@ -2373,7 +2383,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (segmentColors Alias + Object Input)',
-          subtitle: 'segmentColors alias · object value input · percentages=false',
+          subtitle: 'segmentColors alias · object value input · style=segmented · cornerRadius=5px',
         },
         content: {
           mode: 'table',
@@ -2385,6 +2395,10 @@ const widgemoExamples: Array<{
                 label: 'Object Segment Input',
                 renderAs: 'compositionBar',
                 renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'segment',
+                  cornerRadius: '5px',
+                  segmentGap: 3,
                   legend: 'inline',
                   percentages: false,
                   totals: false,
@@ -2404,7 +2418,7 @@ const widgemoExamples: Array<{
   {
     id: 'renderas-composition-bar-static-segments-option',
     title: 'renderAs: compositionBar — static segments option',
-    description: 'Shows static segment array configured directly in renderAsOptions.segments, independent of field value.',
+    description: 'Shows static segment array configured directly in renderAsOptions.segments, rendered as continuous with rounded band + segment edges.',
     data: [
       { id: 1, scenario: 'Baseline' },
       { id: 2, scenario: 'Optimistic' },
@@ -2416,7 +2430,7 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Composition Bar (Static Segments in Options)',
-          subtitle: 'segments=[...] in options · legend=none · totals=true · barHeight=6',
+          subtitle: 'segments=[...] in options · style=continuous · cornerScope=both · totals=true',
         },
         content: {
           mode: 'table',
@@ -2428,6 +2442,9 @@ const widgemoExamples: Array<{
                 label: 'Static Mix',
                 renderAs: 'compositionBar',
                 renderAsOptions: {
+                  style: 'continuous',
+                  cornerScope: 'both',
+                  cornerRadius: '10px',
                   legend: 'none',
                   percentages: false,
                   totals: true,
