@@ -951,34 +951,32 @@ export const CashflowDashboardPage: React.FC = () => {
   );
 
   const summaryFields = useMemo<FieldConfig[]>(
-    () => {
-      const baseField: FieldConfig = { key: 'category', label: 'Category', type: 'text', width: '172px' };
-
-      if (summaryMetric === 'totals') {
-        return [
-          baseField,
-          {
-            key: 'amount',
-            label: 'Total',
-            type: 'number',
-            width: '138px',
-            renderAs: 'currency',
-            renderAsOptions: { currency: 'USD', locale: 'en-US', compact: false },
-          },
-        ];
-      }
-
-      return [
-        baseField,
-        {
-          key: 'percent',
-          label: 'Share',
-          type: 'number',
-          width: '100px',
-          formatter: (value: unknown) => `${Number(value ?? 0).toFixed(1)}%`,
+    () => [
+      {
+        key: 'section',
+        label: 'Section',
+        type: 'text',
+        showLabel: false,
+        width: '110px',
+        wrap: false,
+      },
+      {
+        key: 'total',
+        label: summaryMetric === 'totals' ? 'Totals' : 'Percent',
+        type: 'number',
+        showLabel: false,
+        renderAs: 'compositionBar',
+        renderAsOptions: {
+          legend: 'inline',
+          percentages: summaryMetric === 'percent',
+          totals: summaryMetric === 'totals',
+          total: (entity: Entity) => Number((entity as { total?: number }).total ?? 0),
+          segments: (entity: Entity) => (entity as { segments?: Array<{ label?: string; value: number | string; color?: string }> }).segments ?? [],
+          barHeight: 11,
+          gap: '0.35rem',
         },
-      ];
-    },
+      },
+    ],
     [summaryMetric],
   );
 
@@ -1004,15 +1002,68 @@ export const CashflowDashboardPage: React.FC = () => {
     [summaryMetric],
   );
 
-  const summaryGroupTotals = useMemo(
-    () => accountsSummaryRows.reduce<Record<string, number>>((acc, row) => {
+  const accountsSummaryCompositionRows = useMemo(() => {
+    const colorByCategory: Record<string, string> = {
+      'Real Estate': '#8b5cf6',
+      Investments: '#67c5df',
+      Vehicles: '#f97316',
+      Cash: '#33b37a',
+      Loans: '#f5c242',
+      'Credit Cards': '#ef4444',
+    };
+
+    const grouped = accountsSummaryRows.reduce<Record<string, {
+      id: string;
+      section: string;
+      total: number;
+      segments: Array<{ label: string; value: number; color: string }>;
+    }>>((acc, row) => {
       const section = String(row.section ?? 'Other');
-      const next = acc[section] ?? 0;
-      acc[section] = next + Number(row.amount ?? 0);
+      const entry = acc[section] ?? {
+        id: `accounts-summary-section-${section.toLowerCase()}`,
+        section,
+        total: Number(row.total ?? 0),
+        segments: [],
+      };
+
+      const label = String(row.category ?? 'Unknown');
+      const value = Number(row.amount ?? 0);
+
+      if (Number.isFinite(value) && value > 0) {
+        entry.segments.push({
+          label,
+          value,
+          color: colorByCategory[label] ?? '#6b7280',
+        });
+      }
+
+      if (!entry.total || entry.total <= 0) {
+        entry.total = Number(row.total ?? 0);
+      }
+
+      acc[section] = entry;
       return acc;
-    }, {}),
-    [accountsSummaryRows],
-  );
+    }, {});
+
+    const rows = Object.values(grouped).map((row) => {
+      const computedTotal = row.total > 0
+        ? row.total
+        : row.segments.reduce((sum, segment) => sum + segment.value, 0);
+
+      return {
+        ...row,
+        total: computedTotal,
+      };
+    });
+
+    const priority = ['Assets', 'Liabilities'];
+    const prioritized = priority
+      .map((section) => rows.find((row) => row.section === section))
+      .filter((row): row is (typeof rows)[number] => Boolean(row));
+    const remainder = rows.filter((row) => !priority.includes(row.section));
+
+    return [...prioritized, ...remainder];
+  }, [accountsSummaryRows]);
 
   const accountsNetWorthConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
@@ -1137,7 +1188,7 @@ export const CashflowDashboardPage: React.FC = () => {
       zones: {
         header: {
           title: 'Summary',
-          subtitle: summaryMetric === 'totals' ? 'Totals by category' : 'Share of section by category',
+          subtitle: summaryMetric === 'totals' ? 'Assets and liabilities composition (totals)' : 'Assets and liabilities composition (percent)',
           actions: summaryActions,
           actionOverflow: { maxInline: { mobile: 2, tablet: 2, desktop: 2 }, menuLabel: 'View' },
           themeOverrides: {
@@ -1147,36 +1198,30 @@ export const CashflowDashboardPage: React.FC = () => {
             borderRadius: '2px 2px 0 0',
           },
         },
-        content: createTableContent(summaryFields, {
-          table: {
-            type: 'traditional',
-            hover: true,
-            alternatingRows: false,
-            showHeader: false,
-            rowSeparator: true,
+        content: createGridContent(summaryFields, {
+          grid: {
+            minItemWidth: '280px',
+            maxColumns: 2,
+            gap: '0',
           },
-          groupings: [
-            {
-              fieldKey: 'section',
-              initiallyCollapsed: false,
-              collapsible: false,
-              renderer: (groupValue: unknown, count: number) => {
-                const section = String(groupValue ?? 'Other');
-                const amountTotal = summaryGroupTotals[section] ?? 0;
-                return `${section} (${count}) · $${Math.round(amountTotal).toLocaleString()}`;
-              },
+          item: {
+            cardOptions: {
+              border: true,
+              borderColor: 'var(--app-border)',
+              borderRadius: '2px',
+              backgroundColor: 'var(--app-bg-primary)',
             },
-          ],
+          },
           themeOverrides: {
             backgroundColor: 'var(--app-bg-secondary)',
             borderColor: 'var(--app-border)',
-            padding: '0.35rem 0.55rem 0.55rem',
+            padding: '0',
             borderRadius: '0 0 2px 2px',
           },
         }),
       },
     }),
-    [summaryFields, summaryGroupTotals, summaryActions, summaryMetric],
+    [summaryFields, summaryActions, summaryMetric],
   );
 
   const isAccountsView = activeNav === 'accounts';
@@ -1318,7 +1363,7 @@ export const CashflowDashboardPage: React.FC = () => {
 
                   <div className="col-12 col-xl-4 d-flex">
                     <div className="w-100 h-100">
-                      <Widgemo data={accountsSummaryRows} config={injectDevMode(accountsSummaryConfig)} />
+                      <Widgemo data={accountsSummaryCompositionRows} config={injectDevMode(accountsSummaryConfig)} />
                     </div>
                   </div>
                 </div>

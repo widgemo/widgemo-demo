@@ -2084,6 +2084,371 @@ const widgemoExamples: Array<{
     },
   },
 
+  // ── NEW: renderAs: compositionBar — compact table + summary cards ──────
+  {
+    id: 'renderas-composition-bar-compact-table',
+    title: 'renderAs: compositionBar — compact table',
+    description: 'Compact table-style composition bars with legend suppressed. Demonstrates a narrow stacked strip that reads like a dense inline field.',
+    data: [
+      {
+        id: 1,
+        stream: 'Paid Media',
+        allocation: {
+          segments: [
+            { label: 'Search', value: 46, color: '#2f80ed' },
+            { label: 'Social', value: 34, color: '#27ae60' },
+            { label: 'Display', value: 20, color: '#f2994a' },
+          ],
+        },
+      },
+      {
+        id: 2,
+        stream: 'Lifecycle',
+        allocation: {
+          segments: [
+            { label: 'Email', value: 58, color: '#6c5ce7' },
+            { label: 'In-app', value: 24, color: '#00b894' },
+            { label: 'SMS', value: 18, color: '#fdcb6e' },
+          ],
+        },
+      },
+      {
+        id: 3,
+        stream: 'Sales Enablement',
+        allocation: {
+          segments: [
+            { label: 'Demos', value: 41, color: '#0984e3' },
+            { label: 'POCs', value: 37, color: '#00cec9' },
+            { label: 'Follow-up', value: 22, color: '#fab1a0' },
+          ],
+        },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-compact-table',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Compact Table)',
+          subtitle: 'renderAs="compositionBar" · legend=none · percentages=true · compact barHeight',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'stream', label: 'Workstream' },
+              {
+                key: 'allocation',
+                label: 'Channel Mix',
+                renderAs: 'compositionBar',
+                width: '320px',
+                renderAsOptions: {
+                  legend: 'none',
+                  percentages: true,
+                  totals: false,
+                  barHeight: 8,
+                  gap: '0.25rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: each segment shows labeled inline legend rows with value + percentage.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-grid-summary',
+    title: 'renderAs: compositionBar — grid summary cards',
+    description: 'Card/grid summary usage with totals view, inline legend, and a richer segment mix. Uses segment labels and explicit colors for at-a-glance composition snapshots.',
+    data: [
+      {
+        id: 1,
+        portfolio: 'Enterprise Pipeline',
+        owner: 'Revenue Ops',
+        summaryMix: {
+          segments: [
+            { label: 'Committed', value: 340, color: '#16a085' },
+            { label: 'Best Case', value: 120, color: '#f39c12' },
+            { label: 'At Risk', value: 40, color: '#e74c3c' },
+          ],
+        },
+      },
+      {
+        id: 2,
+        portfolio: 'Product Adoption',
+        owner: 'Growth',
+        summaryMix: {
+          segments: [
+            { label: 'Activated', value: 510, color: '#2980b9' },
+            { label: 'Trialing', value: 140, color: '#8e44ad' },
+            { label: 'Dormant', value: 70, color: '#c0392b' },
+          ],
+        },
+      },
+      {
+        id: 3,
+        portfolio: 'Support Load',
+        owner: 'CX',
+        summaryMix: {
+          segments: [
+            { label: 'Resolved', value: 780, color: '#27ae60' },
+            { label: 'In Review', value: 210, color: '#f1c40f' },
+            { label: 'Escalated', value: 55, color: '#d35400' },
+          ],
+        },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-grid-summary',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Grid Summary Cards)',
+          subtitle: 'renderAs="compositionBar" · mode="grid" · inline legend · totals=true',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '300px',
+              gap: '0.9rem',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'portfolio', label: 'Portfolio' },
+              { key: 'owner', label: 'Owner', renderAs: 'badge' },
+              {
+                key: 'summaryMix',
+                label: 'Composition Snapshot',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  legend: 'inline',
+                  percentages: false,
+                  totals: true,
+                  barHeight: 12,
+                  gap: '0.4rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: legend stays inline while totals row summarizes each card composition.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-palette-numeric-table',
+    title: 'renderAs: compositionBar — palette + numeric array + fixed total',
+    description: 'Shows numeric-array field input with a custom palette, explicit fixed total denominator, percentages, totals, and numeric gap value.',
+    data: [
+      { id: 1, team: 'Acquisition', workload: [44, 26, 18, 12] },
+      { id: 2, team: 'Lifecycle', workload: [39, 31, 17, 13] },
+      { id: 3, team: 'Retention', workload: [47, 22, 20, 11] },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-palette-numeric-table',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Palette + Numeric Arrays)',
+          subtitle: 'palette · totals=true · total=120 · percentages=true · gap=6',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'team', label: 'Team' },
+              {
+                key: 'workload',
+                label: 'Workload Split',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  legend: 'inline',
+                  percentages: true,
+                  totals: true,
+                  total: 120,
+                  palette: ['#2563eb', '#22c55e', '#f59e0b', '#ef4444'],
+                  barHeight: '10px',
+                  gap: 6,
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-callback-segments-total-callback',
+    title: 'renderAs: compositionBar — segments callback + total callback',
+    description: 'Shows callback-driven segment generation from entity fields plus callback total override for percentage math.',
+    data: [
+      { id: 1, portfolio: 'North America', cash: 220, equity: 540, debt: 140, hedge: 100, portfolioTotal: 1200 },
+      { id: 2, portfolio: 'EMEA', cash: 180, equity: 410, debt: 220, hedge: 90, portfolioTotal: 1100 },
+      { id: 3, portfolio: 'APAC', cash: 140, equity: 360, debt: 160, hedge: 80, portfolioTotal: 900 },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-callback-segments-total-callback',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Segments Callback)',
+          subtitle: 'segments(entity)=>[] · total(entity)=>number · inline legend + totals',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: { grid: { minItemWidth: '320px', gap: '0.9rem' } },
+          item: {
+            fields: [
+              { key: 'portfolio', label: 'Portfolio' },
+              {
+                key: 'portfolio',
+                label: 'Derived Mix',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  legend: 'inline',
+                  percentages: true,
+                  totals: true,
+                  total: (entity: Entity) => Number((entity as { portfolioTotal?: number }).portfolioTotal ?? 0),
+                  segments: (entity: Entity) => {
+                    const row = entity as { cash?: number; equity?: number; debt?: number; hedge?: number };
+                    return [
+                      { label: 'Cash', value: row.cash ?? 0, color: '#10b981' },
+                      { label: 'Equity', value: row.equity ?? 0, color: '#3b82f6' },
+                      { label: 'Debt', value: row.debt ?? 0, color: '#f59e0b' },
+                      { label: 'Hedge', value: row.hedge ?? 0, color: '#8b5cf6' },
+                    ];
+                  },
+                  barHeight: 14,
+                  gap: '0.5rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-segmentcolors-object-input',
+    title: 'renderAs: compositionBar — object segments + segmentColors alias',
+    description: 'Shows field value object with heterogeneous segment keys (name/key/label and amount/total/value) and segmentColors alias usage.',
+    data: [
+      {
+        id: 1,
+        stream: 'Platform',
+        objectMix: { segments: [
+          { name: 'Core', amount: 48 },
+          { key: 'Integrations', total: '31' },
+          { label: 'Support', value: 21 },
+        ] },
+      },
+      {
+        id: 2,
+        stream: 'Product',
+        objectMix: { segments: [
+          { name: 'Discovery', amount: 36 },
+          { key: 'Delivery', total: '44' },
+          { label: 'Ops', value: 20 },
+        ] },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-segmentcolors-object-input',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (segmentColors Alias + Object Input)',
+          subtitle: 'segmentColors alias · object value input · percentages=false',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'stream', label: 'Stream' },
+              {
+                key: 'objectMix',
+                label: 'Object Segment Input',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  legend: 'inline',
+                  percentages: false,
+                  totals: false,
+                  segmentColors: ['#0ea5e9', '#14b8a6', '#f97316'],
+                  barHeight: '11px',
+                  gap: '0.3rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-static-segments-option',
+    title: 'renderAs: compositionBar — static segments option',
+    description: 'Shows static segment array configured directly in renderAsOptions.segments, independent of field value.',
+    data: [
+      { id: 1, scenario: 'Baseline' },
+      { id: 2, scenario: 'Optimistic' },
+      { id: 3, scenario: 'Conservative' },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-static-segments-option',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Static Segments in Options)',
+          subtitle: 'segments=[...] in options · legend=none · totals=true · barHeight=6',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'scenario', label: 'Scenario' },
+              {
+                key: 'scenario',
+                label: 'Static Mix',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  legend: 'none',
+                  percentages: false,
+                  totals: true,
+                  total: 100,
+                  segments: [
+                    { label: 'A', value: 45, color: '#2563eb' },
+                    { label: 'B', value: 35, color: '#22c55e' },
+                    { label: 'C', value: 20, color: '#f59e0b' },
+                  ],
+                  barHeight: 6,
+                  gap: 2,
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
   // ── NEW: Image Field — all imageOptions ──────────────────────────────────
   {
     id: 'image-advanced',
