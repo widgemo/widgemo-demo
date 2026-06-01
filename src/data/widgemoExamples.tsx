@@ -2272,7 +2272,7 @@ const widgemoExamples: Array<{
           modeConfig: { grid: { maxColumns: 1 } },
           item: {
             fields: [
-              { key: 'src',        label: 'Photo', type: 'image' as const, imageOptions: { circular: true, width: 56, height: 56 } },
+              { key: 'photo',      label: 'Photo', type: 'image' as const, imageOptions: { circular: true, width: 56, height: 56 } },
               { key: 'name',       label: 'Name', showLabel: false },
               { key: 'email',      label: 'Email', type: 'email' as const, showLabel: false },
               { key: 'role',       label: 'Role', renderAs: 'badge' },
@@ -2285,7 +2285,7 @@ const widgemoExamples: Array<{
                 gap: '0.5rem',
                 areas: [
                   '"photo name   role"',
-                  '"photo email  dept"',
+                  '"photo email  department"',
                 ],
               },
             },
