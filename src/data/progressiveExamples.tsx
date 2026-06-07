@@ -154,6 +154,22 @@ const statusField: FieldConfig = {
   },
 };
 
+const groupingControlFields: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text', sortable: true },
+  { key: 'role', label: 'Role', type: 'text' },
+  { key: 'department', label: 'Department', type: 'text', sortable: true, groupable: true },
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'text',
+    renderAs: 'badge',
+    groupable: true,
+    renderAsOptions: {
+      colorMap: statusColorMap,
+    },
+  },
+];
+
 const currencyField: FieldConfig = {
   key: 'amount',
   label: 'Salary',
@@ -668,6 +684,74 @@ export const progressiveExamples: ProgressiveExample[] = [
             ],
           },
         ),
+      },
+    },
+  },
+  {
+    id: 'progressive-7a-grouping-dropdown-only',
+    title: 'Progressive 7A — Grouping Controls: Dropdown Only',
+    description:
+      'Shows only the grouping dropdown by enabling showDropdownControl and disabling header controls.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-7a',
+      zones: {
+        content: createTableContent(twentyUsersData, groupingControlFields, {
+          table: traditionalTableConfig,
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: false,
+              showDropdownControl: true,
+              showHeaderControls: false,
+            },
+          ],
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-7b-grouping-icons-only',
+    title: 'Progressive 7B — Grouping Controls: Header Icons Only',
+    description:
+      'Shows grouping controls in table headers only. No dropdown is rendered.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-7b',
+      zones: {
+        content: createTableContent(twentyUsersData, groupingControlFields, {
+          table: traditionalTableConfig,
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: false,
+              showHeaderControls: true,
+            },
+          ],
+        }),
+      },
+    },
+  },
+  {
+    id: 'progressive-7c-grouping-dropdown-and-icons',
+    title: 'Progressive 7C — Grouping Controls: Dropdown + Header Icons',
+    description:
+      'Enables both grouping control surfaces so users can switch grouping via dropdown or header icons.',
+    data: twentyUsersData,
+    config: {
+      id: 'progressive-7c',
+      zones: {
+        content: createTableContent(twentyUsersData, groupingControlFields, {
+          table: traditionalTableConfig,
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: false,
+              showDropdownControl: true,
+              showHeaderControls: true,
+            },
+          ],
+        }),
       },
     },
   },

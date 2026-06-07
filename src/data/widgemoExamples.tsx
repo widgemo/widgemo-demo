@@ -3411,6 +3411,104 @@ const widgemoExamples: Array<{
     },
   },
 
+  {
+    id: 'grouping-controls-dropdown-only',
+    title: 'Grouping Controls — Dropdown Only',
+    description: 'groupings[].showDropdownControl=true and showHeaderControls=false. Users change grouping from the dropdown without header icons.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-dropdown-only',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Dropdown Only', subtitle: 'showDropdownControl=true · showHeaderControls=false' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showDropdownControl: true,
+              showHeaderControls: false,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-controls-icons-only',
+    title: 'Grouping Controls — Header Icons Only',
+    description: 'Header grouping icons are enabled by groupable fields while dropdown remains hidden.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-icons-only',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Header Icons Only', subtitle: 'showDropdownControl=false (default) · showHeaderControls=true' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showHeaderControls: true,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-controls-dropdown-and-icons',
+    title: 'Grouping Controls — Dropdown + Header Icons',
+    description: 'Both grouping controls are enabled so users can use either dropdown or header icons.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-dropdown-and-icons',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Dropdown + Header Icons', subtitle: 'showDropdownControl=true · showHeaderControls=true' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showDropdownControl: true,
+              showHeaderControls: true,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
   // ── NEW: Content filtering, sorting, virtualization, style, themeOverrides ─
   {
     id: 'content-filtering-sorting',
