@@ -34,6 +34,14 @@ export interface DemoActionPayload {
   from?: DemoBoardLocation;
   /** Optional destination location for board drag interactions */
   to?: DemoBoardLocation;
+  /** For reference-click: the field key that was clicked */
+  fieldKey?: string;
+  /** For reference-click: the raw FK/ID value */
+  fieldValue?: unknown;
+  /** For reference-click: the resolved display label */
+  fieldLabel?: string;
+  /** For reference-click: the entity type declared on the field */
+  relatedEntity?: string;
 }
 
 type Listener = (payload: DemoActionPayload) => void;

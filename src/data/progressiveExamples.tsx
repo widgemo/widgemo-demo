@@ -355,6 +355,10 @@ const emitDemoInteraction = (ctx: InteractionContext): void => {
     zone: ctx.zone,
     ...(ctx.from ? { from: ctx.from } : {}),
     ...(ctx.to ? { to: ctx.to } : {}),
+    ...(ctx.fieldKey !== undefined ? { fieldKey: ctx.fieldKey } : {}),
+    ...(ctx.fieldValue !== undefined ? { fieldValue: ctx.fieldValue } : {}),
+    ...(ctx.fieldLabel !== undefined ? { fieldLabel: ctx.fieldLabel } : {}),
+    ...(ctx.relatedEntity !== undefined ? { relatedEntity: ctx.relatedEntity } : {}),
   });
 };
 
@@ -3313,6 +3317,116 @@ export const progressiveExamples: ProgressiveExample[] = [
         }),
         footer: {
           subtitle: 'Relative mode supports both layouts: relative-only or absolute timestamp with smaller relative text below.',
+        },
+      },
+    },
+  },
+  // ─── Progressive 66 — Reference Field: Static Resolution ───────────────────
+  {
+    id: 'progressive-66-reference-field-static',
+    title: 'Progressive 66 — Reference Field (Static Resolution)',
+    description:
+      'type: "reference" resolves a raw foreign key against a local options array and displays the matched label. relatedEntity declares the entity type the FK points to (e.g. "user", "project").',
+    data: [
+      { id: 't1', name: 'API redesign',    assignee: 'user-2', project: 'proj-1', reviewer: 'user-1' },
+      { id: 't2', name: 'Onboarding flow', assignee: 'user-3', project: 'proj-2', reviewer: 'user-2' },
+      { id: 't3', name: 'Billing export',  assignee: 'user-1', project: 'proj-1', reviewer: null     },
+    ],
+    config: {
+      id: 'progressive-66',
+      zones: {
+        content: {
+          mode: 'table',
+          modeConfig: { table: { showHeader: true, hover: true } },
+          item: {
+            fields: [
+              { key: 'name',     label: 'Task',     type: 'text' },
+              {
+                key: 'assignee',
+                label: 'Assignee',
+                type: 'reference',
+                relatedEntity: 'user',
+                options: [
+                  { value: 'user-1', label: 'Aurora Chen' },
+                  { value: 'user-2', label: 'Mateo Silva' },
+                  { value: 'user-3', label: 'Priya Nair'  },
+                ],
+              },
+              {
+                key: 'project',
+                label: 'Project',
+                type: 'reference',
+                relatedEntity: 'project',
+                options: [
+                  { value: 'proj-1', label: 'Platform v2' },
+                  { value: 'proj-2', label: 'Growth'      },
+                ],
+              },
+              {
+                key: 'reviewer',
+                label: 'Reviewer',
+                type: 'reference',
+                relatedEntity: 'user',
+                options: [
+                  { value: 'user-1', label: 'Aurora Chen' },
+                  { value: 'user-2', label: 'Mateo Silva' },
+                  { value: 'user-3', label: 'Priya Nair'  },
+                ],
+                condition: (entity) => entity.reviewer !== null && entity.reviewer !== undefined,
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+  // ─── Progressive 67 — Reference Field: Clickable + reference-click Event ────
+  {
+    id: 'progressive-67-reference-field-clickable',
+    title: 'Progressive 67 — Reference Field (Clickable + reference-click Event)',
+    description:
+      'clickable: true renders the resolved label as an interactive element. Clicking fires a reference-click interaction event with fieldKey, fieldValue, fieldLabel, and relatedEntity populated. The host application handles navigation or drawer-open logic.',
+    data: [
+      { id: 't1', name: 'API redesign',    assignee: 'user-2', project: 'proj-1' },
+      { id: 't2', name: 'Onboarding flow', assignee: 'user-3', project: 'proj-2' },
+      { id: 't3', name: 'Billing export',  assignee: 'user-1', project: 'proj-1' },
+    ],
+    config: {
+      id: 'progressive-67',
+      zones: {
+        content: {
+          mode: 'table',
+          modeConfig: { table: { showHeader: true, hover: true } },
+          item: {
+            fields: [
+              { key: 'name', label: 'Task', type: 'text' },
+              {
+                key: 'assignee',
+                label: 'Assignee',
+                type: 'reference',
+                relatedEntity: 'user',
+                clickable: true,
+                options: [
+                  { value: 'user-1', label: 'Aurora Chen' },
+                  { value: 'user-2', label: 'Mateo Silva' },
+                  { value: 'user-3', label: 'Priya Nair'  },
+                ],
+              },
+              {
+                key: 'project',
+                label: 'Project',
+                type: 'reference',
+                relatedEntity: 'project',
+                clickable: true,
+                options: [
+                  { value: 'proj-1', label: 'Platform v2' },
+                  { value: 'proj-2', label: 'Growth'      },
+                ],
+              },
+            ],
+            layout: { type: 'auto' },
+          },
         },
       },
     },
