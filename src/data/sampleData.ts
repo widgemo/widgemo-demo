@@ -16,7 +16,6 @@ export const teaserSampleData: SampleData[] = [
 ];
 
 export const defaultSandboxConfig: WidgemoConfig = {
-  id: 'default-sandbox',
   zones: {
     header: {
       actions: [

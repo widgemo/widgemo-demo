@@ -415,7 +415,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'This is the smallest configuration that is fully type-safe against the current WidgemoConfig contract: table mode plus item.fields/layout scaffolding. The fields mirror what runtime auto-discovery would surface.',
     data: eightUsersData,
     config: {
-      id: 'progressive-1',
       zones: {
         content: createTableContent(eightUsersData, autoDiscoveredFields),
       },
@@ -428,7 +427,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds explicit item.fields with key, label, and type so the columns are intentional instead of auto-shaped. This is the first step from generic rendering to a curated schema.',
     data: eightUsersData,
     config: {
-      id: 'progressive-2',
       zones: {
         content: createTableContent(eightUsersData, namedFields),
       },
@@ -441,7 +439,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds sortable columns and a traditional table layout, plus width hints on selected fields. This is where the table starts behaving like a data grid rather than a plain listing.',
     data: tenUsersData,
     config: {
-      id: 'progressive-3',
       zones: {
         content: createTableContent(tenUsersData, sortableFields, {
           table: traditionalTableConfig,
@@ -456,7 +453,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds search and pagination. Search is restricted to name, email, and department, while pagination limits the table to 5 rows per page.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -479,7 +475,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Overrides table content horizontal padding to 0. Search and pagination stay inside the same content container, so they align with the zero-padding table edges.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4a',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -503,7 +498,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Overrides table content horizontal padding to 1.5rem. Search and pagination inherit the same container spacing, so all table controls align consistently.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4b',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -528,7 +522,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates default striping behavior with alternatingRows omitted. Core default should render alternating row backgrounds in traditional table mode.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4c',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -553,7 +546,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Explicitly enables alternating row backgrounds using alternatingRows=true to match canonical core striping behavior.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4d',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -578,7 +570,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Disables alternating rows while applying conditionalBackgroundColor to status-specific rows. This demonstrates custom row backgrounds without zebra striping.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4e',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -612,7 +603,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Disables alternating row backgrounds with no conditional overrides. Rows should use a uniform background.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-4f',
       zones: {
         content: createTableContent(twentyUsersData, namedFields.map((field) => ({
           ...field,
@@ -637,7 +627,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Introduces rich field rendering with a badge-based status field and a currency-formatted salary field. The underlying data stays the same; only presentation changes.',
     data: tenUsersData,
     config: {
-      id: 'progressive-5',
       zones: {
         content: createTableContent(tenUsersData, badgeCurrencyFields, {
           table: traditionalTableConfig,
@@ -652,7 +641,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds richer per-field visualization: circular avatar images, progress bars, and rating stars alongside the existing status badge.',
     data: eightUsersData,
     config: {
-      id: 'progressive-6',
       zones: {
         content: createTableContent(eightUsersData, richFields, {
           table: traditionalTableConfig,
@@ -667,7 +655,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds table grouping by department. Groups are expanded by default so the same table becomes easier to scan in clustered sections.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-7',
       zones: {
         content: createTableContent(
           twentyUsersData,
@@ -698,7 +685,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Shows only the grouping dropdown by enabling showDropdownControl and disabling header controls.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-7a',
       zones: {
         content: createTableContent(twentyUsersData, groupingControlFields, {
           table: traditionalTableConfig,
@@ -721,7 +707,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Shows grouping controls in table headers only. No dropdown is rendered.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-7b',
       zones: {
         content: createTableContent(twentyUsersData, groupingControlFields, {
           table: traditionalTableConfig,
@@ -743,7 +728,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Enables both grouping control surfaces so users can switch grouping via dropdown or header icons.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-7c',
       zones: {
         content: createTableContent(twentyUsersData, groupingControlFields, {
           table: traditionalTableConfig,
@@ -766,7 +750,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds a header zone with title, subtitle, and icon so the widget gains framing and context beyond the raw content area.',
     data: tenUsersData,
     config: {
-      id: 'progressive-8',
       zones: {
         header: {
           title: 'Team Directory',
@@ -786,7 +769,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds header zone actions using onAction(ActionContext). These actions operate on the whole dataset in scope rather than a single row.',
     data: tenUsersData,
     config: {
-      id: 'progressive-9',
       zones: {
         header: {
           title: 'Team Directory',
@@ -810,7 +792,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds per-row actions with three placements: pinned, onHover, and menu. The delete action is conditionally visible only for inactive users.',
     data: tenUsersData,
     config: {
-      id: 'progressive-10',
       zones: {
         header: {
           title: 'Team Directory',
@@ -847,7 +828,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds a footer zone for lightweight metadata and keeps the item actions introduced in the previous step.',
     data: tenUsersData,
     config: {
-      id: 'progressive-11',
       zones: {
         header: {
           title: 'Team Directory',
@@ -885,7 +865,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds row-level click via gestures[item-click] routed to interactions.onEvent. This is separate from item actions because the whole row becomes clickable.',
     data: tenUsersData,
     config: {
-      id: 'progressive-12',
       zones: {
         header: {
           title: 'Clickable Rows',
@@ -926,7 +905,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Adds initial sorting and static filtering so the widget opens already focused on active users ordered by name.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-13',
       zones: {
         header: {
           title: 'Active Users Only',
@@ -951,7 +929,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Combines search, pagination, grouping, header actions, item actions, currency, badges, and rating into a single composable table example.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-14',
       zones: {
         header: {
           title: 'Team Directory',
@@ -1001,7 +978,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Combines header actions, footer metadata, avatars, badges, currency, progress, rating, grouping, pagination, search, sortable fields, and row actions into the most feature-rich typed example in the progression.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-15',
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -1067,7 +1043,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Switches the content zone to grid mode. Items are arranged in a responsive auto-fit grid with default settings.',
     data: tenUsersData,
     config: {
-      id: 'progressive-16',
       zones: {
         header: { title: 'User Grid', icon: 'grid' },
         content: createGridContent(tenUsersData, [
@@ -1085,7 +1060,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Configures the grid with a custom minItemWidth and gap to control density and responsiveness.',
     data: tenUsersData,
     config: {
-      id: 'progressive-17',
       zones: {
         header: { title: 'User Grid — Custom Layout', subtitle: 'min 220px items, 16px gap', icon: 'grid' },
         content: createGridContent(tenUsersData, [
@@ -1104,7 +1078,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Low-level CSS Grid controls (autoFlow, justifyItems, alignItems). Usually not needed for first-release demos, but available for advanced fine-tuning.',
     data: tenUsersData,
     config: {
-      id: 'progressive-17a',
       zones: {
         header: {
           title: 'User Grid — Advanced Alignment',
@@ -1137,7 +1110,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Demonstrates content.responsive.breakpoints switching between carousel (mobile), grid (tablet), and table (desktop).',
     data: tenUsersData,
     config: {
-      id: 'progressive-17b',
       zones: {
         header: {
           title: 'Responsive Mode Switching',
@@ -1184,7 +1156,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Mirrors the docs Responsive Mode Switching snippet: base desktop mode is table, tablet override switches to grid, and mobile override switches to carousel.',
     data: tenUsersData,
     config: {
-      id: 'progressive-17c',
       zones: {
         header: {
           title: 'Responsive Mode Switching (Docs Parity)',
@@ -1225,7 +1196,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Grid cards with rich field types: avatar image, status badge, progress bar, and star rating.',
     data: tenUsersData,
     config: {
-      id: 'progressive-18',
       zones: {
         header: { title: 'Team Grid — Rich Cards', icon: 'grid' },
         content: createGridContent(tenUsersData, [
@@ -1246,7 +1216,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds pinned and menu item actions to grid cards, and zone-level actions in the header.',
     data: tenUsersData,
     config: {
-      id: 'progressive-19',
       zones: {
         header: {
           title: 'Team Grid — Actions',
@@ -1278,7 +1247,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Full grid showcase: rich fields, item actions, zone header/footer, custom layout, and max columns cap.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-20',
       zones: {
         header: {
           title: 'Team Directory',
@@ -1317,7 +1285,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Uses a precise CSS-grid card layout: avatar left, stacked name and clickable email, department and salary row, progress row, and status plus rating row. The full card is clickable.',
     data: tenUsersData,
     config: {
-      id: 'progressive-20a',
       zones: {
         header: {
           title: 'Team Grid — Custom Profile Cards',
@@ -1364,7 +1331,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Switches to carousel mode. Items scroll horizontally with default settings — no arrows or indicators.',
     data: tenUsersData,
     config: {
-      id: 'progressive-21',
       zones: {
         header: { title: 'User Carousel', icon: 'carousel' },
         content: createCarouselContent(tenUsersData, [
@@ -1382,7 +1348,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Enables arrow buttons and slide indicators for explicit navigation.',
     data: tenUsersData,
     config: {
-      id: 'progressive-22',
       zones: {
         header: { title: 'User Carousel — Navigation', subtitle: 'Arrows + indicators enabled', icon: 'carousel' },
         content: createCarouselContent(tenUsersData, [
@@ -1400,7 +1365,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Enables infinite looping with auto-play every 3 seconds. No navigation controls for a passive, self-advancing carousel experience.',
     data: tenUsersData,
     config: {
-      id: 'progressive-23',
       zones: {
         header: { title: 'User Carousel — Auto-Play', subtitle: 'Infinite loop, 3s interval', icon: 'carousel' },
         content: createCarouselContent(tenUsersData, [
@@ -1418,7 +1382,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Comparison baseline with infinite=true and revolving=true. Continuous wrap keeps forward momentum across the loop boundary.',
     data: tenUsersData,
     config: {
-      id: 'progressive-23a',
       zones: {
         header: {
           title: 'Carousel Looping — Continuous Wrap',
@@ -1451,7 +1414,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Same config as 23A except revolving=false. This produces a rewind-style loop at the boundary.',
     data: tenUsersData,
     config: {
-      id: 'progressive-23b',
       zones: {
         header: {
           title: 'Carousel Looping — Rewind Style',
@@ -1484,7 +1446,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Sets explicit item width and gap for a tighter or wider card presentation.',
     data: tenUsersData,
     config: {
-      id: 'progressive-24',
       zones: {
         header: { title: 'User Carousel — Custom Sizing', subtitle: '260px items, 20px gap', icon: 'carousel' },
         content: createCarouselContent(tenUsersData, [
@@ -1514,7 +1475,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Full carousel showcase: rich fields, auto-play, arrows, indicators, zone actions, and item actions.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-25',
       zones: {
         header: {
           title: 'Team Showcase',
@@ -1552,7 +1512,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Introduces board (Kanban) mode. Items are sorted into status columns using the columns.field and columns.items config.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-26',
       zones: {
         header: { title: 'Status Board', subtitle: 'Items grouped by status column', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1580,7 +1539,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds a header with title/icon/zone actions and a footer subtitle to the board.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-27',
       zones: {
         header: {
           title: 'Team Board',
@@ -1617,7 +1575,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds pinned, hover, and menu actions to board cards, and enables item-click gestures.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-28',
       zones: {
         header: { title: 'Team Board — Card Actions', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1653,7 +1610,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Enables drag-and-drop between columns. Cards can be dragged across status columns with a drop gesture callback.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-29',
       zones: {
         header: { title: 'Team Board — Drag & Drop', subtitle: 'Drag cards between columns', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1689,7 +1645,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds work-in-progress (WIP) limits to columns. The column header is highlighted when the limit is exceeded.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-30',
       zones: {
         header: { title: 'Team Board — WIP Limits', subtitle: 'Columns highlight when limit exceeded', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1724,7 +1679,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds department swimlane rows. By default swimlanes use collapsible mode, each showing its own column headers. Toggle the chevron to collapse a swimlane.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-31',
       zones: {
         header: { title: 'Team Board by Department', subtitle: 'Status columns × department swimlanes', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1761,7 +1715,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Combines collapsible swimlanes with card actions and an item-click gesture.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-32',
       zones: {
         header: {
           title: 'Team Board with Actions',
@@ -1814,7 +1767,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Uses layout: { type: "matrix" } for a traditional matrix board with a single sticky column header row and swimlane label column on the left.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-33',
       zones: {
         header: { title: 'Team Board — Matrix Layout', subtitle: 'Status columns × department rows', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1852,7 +1804,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Final full-featured board: matrix swimlanes, drag-and-drop, custom swimlane labels, WIP limits, card actions, and drop gesture callbacks.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-34',
       zones: {
         header: {
           title: 'Advanced Team Board',
@@ -1909,7 +1860,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Demonstrates repeatingHeaders: false on collapsible swimlanes, producing a single global column header row above all swimlanes rather than repeating headers per lane.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-35',
       zones: {
         header: { title: 'Board with Single Global Header Row', subtitle: 'Collapsible swimlanes · unified column headers', icon: 'table' },
         content: createBoardContent(twentyUsersData, [
@@ -1958,7 +1908,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Shows that columns.items[].id does not have to match the data field value. Use value to explicitly declare what field value routes items into this column. Here id is a slug ("eng-active") and value is the real field string ("active").',
     data: twentyUsersData,
     config: {
-      id: 'progressive-35a',
       zones: {
         header: {
           title: 'Board — Explicit Value Mapping',
@@ -1992,7 +1941,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Sets visibly different widths per column and adds wipLimit to Active and Pending so the header highlights when the count exceeds the limit.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-35b',
       zones: {
         header: {
           title: 'Board — Column Width & WIP Limits',
@@ -2026,7 +1974,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Uses items[].filter for custom routing logic. Note: filter is a function and cannot be expressed as plain JSON — it requires code-level config. Here "High Performers" catches progress >= 70 regardless of status, "Needs Attention" catches progress < 40, and "Mid Range" catches everything else.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-35c',
       zones: {
         header: {
           title: 'Board — Filter-Based Routing',
@@ -2076,7 +2023,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Demonstrates mixed swimlane routing in one board: Engineering and Design lanes route by explicit value mapping, while a third lane uses a filter predicate to capture all remaining departments. This keeps lane assignment deterministic and easy to verify.',
     data: twentyUsersData,
     config: {
-      id: 'progressive-35d',
       zones: {
         header: {
           title: 'Board — Swimlane Value + Filter Routing',
@@ -2126,7 +2072,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Introduces chart mode with a basic bar chart using month on the x-axis and revenue as a single y-axis series.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-36',
       zones: {
         header: { title: 'Monthly Revenue', subtitle: 'Basic chart mode setup', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
@@ -2149,7 +2094,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Switches to a line chart and plots revenue and cost together to compare trends over time.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-37',
       zones: {
         header: { title: 'Revenue vs Cost Trend', subtitle: 'Line chart with two series', icon: 'chart-line' },
         content: createChartContent(monthlyKpiData, [
@@ -2175,7 +2119,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Uses an area chart and enables labels to make each monthly value readable directly on the chart.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-38',
       zones: {
         header: { title: 'Revenue Area', subtitle: 'Area chart with labels', icon: 'chart-line' },
         content: createChartContent(monthlyKpiData, [
@@ -2199,7 +2142,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Renders a pie chart to visualize how monthly users are distributed across the period.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-39',
       zones: {
         header: { title: 'User Distribution by Month', subtitle: 'Pie chart mode', icon: 'chart-pie' },
         content: createChartContent(monthlyKpiData, [
@@ -2223,7 +2165,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Applies a custom palette and disables the grid to show chart styling controls with the same data.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-40',
       zones: {
         header: { title: 'Styled Revenue Bar', subtitle: 'Custom colors and presentation settings', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
@@ -2249,7 +2190,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Adds item-click gesture wiring in chart mode so bars emit canonical interaction events.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-41',
       zones: {
         header: {
           title: 'Interactive Revenue Chart',
@@ -2285,7 +2225,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Plots revenue and cost side-by-side each month using multiple yAxis keys, demonstrating grouped bar chart layout.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-42',
       zones: {
         header: { title: 'Revenue vs Cost (Grouped Bars)', subtitle: 'Multiple yAxis series on a bar chart', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
@@ -2313,7 +2252,6 @@ export const progressiveExamples: ProgressiveExample[] = [
     description: 'Rotates the bar chart 90° with orientation: horizontal to compare revenue per month with categories on the y-axis.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-43',
       zones: {
         header: { title: 'Monthly Revenue (Horizontal)', subtitle: 'Bar chart with horizontal orientation', icon: 'chart-bar' },
         content: createChartContent(monthlyKpiData, [
@@ -2342,7 +2280,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Demonstrates a fully custom tooltip render function that renders a rich card with revenue, cost, users, and computed margin.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-44',
       zones: {
         header: {
           title: 'Revenue with Custom Tooltip',
@@ -2463,7 +2400,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Demonstrates lineThickness and showDots together for a stronger trend line with visible point markers.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-45',
       zones: {
         header: {
           title: 'Revenue Trend (Thick + Points)',
@@ -2496,7 +2432,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Shows areaGradient enabled with a thicker line and point markers, combining all new line/area style controls.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-46',
       zones: {
         header: {
           title: 'Area Trend Styling Controls',
@@ -2528,7 +2463,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Demonstrates mixed cartesian series by overlaying a line on top of bars in a single chart using the new series model.',
     data: monthlyKpiData,
     config: {
-      id: 'progressive-47',
       zones: {
         header: {
           title: 'Revenue Bars + Cost Line',
@@ -2567,7 +2501,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Provider-driven full-surface validation (light side of the pair). Uses the same config/data as Progressive 50; only the provider theme differs.',
     data: eightUsersData,
     config: {
-      id: 'progressive-48',
       zones: {
         header: {
           title: 'Provider Theme Surface Validation',
@@ -2599,7 +2532,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates CSS-variable-driven action theming for both button and menu surfaces. ActionTheme remains typed API, but runtime visuals here are intentionally demonstrated through token variables.',
     data: eightUsersData,
     config: {
-      id: 'progressive-49',
       style: ({
         '--widgemo-color-primary': '#7c3aed',
         '--widgemo-color-text': '#ffffff',
@@ -2646,7 +2578,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Provider-driven full-surface validation (dark side of the pair). Uses the same config/data as Progressive 48; only the provider theme differs.',
     data: eightUsersData,
     config: {
-      id: 'progressive-50',
       zones: {
         header: {
           title: 'Provider Theme Surface Validation',
@@ -2678,7 +2609,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates fallback and override paths in one snapshot: header uses an undefined variable and falls back, while footer uses a defined variable and resolves to the override value.',
     data: eightUsersData,
     config: {
-      id: 'progressive-51',
       style: ({
         '--widgemo-color-demo-override': '#dcfce7',
         '--widgemo-color-demo-override-text': '#166534',
@@ -2720,7 +2650,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Runnable provider auto-mode case. theme="auto" resolves from current OS/browser preference at mount time, then stays fixed until remount/reload.',
     data: eightUsersData,
     config: {
-      id: 'progressive-52',
       zones: {
         header: {
           title: 'Provider Auto Snapshot Check',
@@ -2749,7 +2678,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Advanced/non-primary behavior: config.theme selects registry zone/action baselines. It is not the primary full-surface dark/light path; provider theme presets are the primary mechanism.',
     data: eightUsersData,
     config: {
-      id: 'progressive-53',
       theme: 'dark',
       zones: {
         header: {
@@ -2779,7 +2707,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Hook validation (provider path). The page-level hook probe should report non-empty theme keys and resolved color tokens when this example is wrapped by WidgemoThemeProvider.',
     data: eightUsersData,
     config: {
-      id: 'progressive-54',
       zones: {
         header: {
           title: 'Hook Probe — Provider Path',
@@ -2808,7 +2735,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Hook validation (no-provider path). This example intentionally renders without WidgemoThemeProvider so the hook probe can demonstrate empty-object behavior.',
     data: eightUsersData,
     config: {
-      id: 'progressive-55',
       zones: {
         header: {
           title: 'Hook Probe — No Provider Path',
@@ -2837,7 +2763,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Registry validation using registerTheme + getTheme. This example applies a named config.theme and should visibly differ from default zone/action baselines.',
     data: eightUsersData,
     config: {
-      id: 'progressive-56',
       theme: 'demo-registry-contrast',
       zones: {
         header: {
@@ -2872,7 +2797,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates preRender contract with local proof controls. Use Mount/Refresh on this card and confirm preRender status flips to Hook fired with a payload summary.',
     data: eightUsersData,
     config: {
-      id: 'progressive-57',
       zones: {
         header: {
           title: 'preRender Validation',
@@ -2901,7 +2825,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates postRender element override path with local wrapper controls. Toggle wrapper/default path and verify status + wrapper proof on this card.',
     data: eightUsersData,
     config: {
-      id: 'progressive-58',
       zones: {
         header: {
           title: 'postRender Validation',
@@ -2929,7 +2852,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates onItemClick metadata for carousel interactions with local controls. Arm capture here, then click indicator + card and compare source fields.',
     data: tenUsersData,
     config: {
-      id: 'progressive-59',
       zones: {
         header: {
           title: 'onItemClick Carousel Validation',
@@ -2957,7 +2879,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates onItemClick metadata for board cards with local controls. Arm capture then click a board card to inspect board context payload.',
     data: lifecycleBoardData,
     config: {
-      id: 'progressive-60',
       zones: {
         header: {
           title: 'onItemClick Board Validation',
@@ -2992,7 +2913,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates onModeChange emission on resolved mode transitions with local width controls. Use Desktop/Mobile buttons on this card to trigger deterministic changes.',
     data: tenUsersData,
     config: {
-      id: 'progressive-61',
       zones: {
         header: {
           title: 'onModeChange Validation',
@@ -3029,7 +2949,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates onDragDrop payload fields with local drag controls. Arm capture, drag card across columns, and inspect from/to summary on this card.',
     data: lifecycleBoardData,
     config: {
-      id: 'progressive-62',
       zones: {
         header: {
           title: 'onDragDrop Validation',
@@ -3065,7 +2984,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Validates custom hook re-registration with local controls. Register Default vs Custom on this card, then click indicator/card to verify last-write-wins payload behavior.',
     data: tenUsersData,
     config: {
-      id: 'progressive-63',
       zones: {
         header: {
           title: 'Hook Re-registration Validation',
@@ -3093,7 +3011,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Demonstrates config-driven retry behavior in content.errorState. This uses status="error", a message function, and a retry callback wired to the demo action sink.',
     data: eightUsersData,
     config: {
-      id: 'progressive-63a',
       zones: {
         header: {
           title: 'Config-Driven Retry Validation',
@@ -3139,7 +3056,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Combines date, time, datetime, timestamp, and duration fields in one sortable table. Every temporal field declares explicit parse/unit contracts.',
     data: temporalOperationsData,
     config: {
-      id: 'progressive-64',
       zones: {
         header: {
           title: 'Temporal Contracts — Mixed Table',
@@ -3236,7 +3152,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       'Showcases temporal render variants: relative-only vs both absolute+relative, formatted time with seconds, and duration decimal/humanized output.',
     data: temporalOperationsData,
     config: {
-      id: 'progressive-65',
       zones: {
         header: {
           title: 'Temporal Render Options Matrix',
@@ -3333,7 +3248,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       { id: 't3', name: 'Billing export',  assignee: 'user-1', project: 'proj-1', reviewer: null     },
     ],
     config: {
-      id: 'progressive-66',
       zones: {
         content: {
           mode: 'table',
@@ -3393,7 +3307,6 @@ export const progressiveExamples: ProgressiveExample[] = [
       { id: 't3', name: 'Billing export',  assignee: 'user-1', project: 'proj-1' },
     ],
     config: {
-      id: 'progressive-67',
       zones: {
         content: {
           mode: 'table',

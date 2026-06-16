@@ -157,7 +157,6 @@ export const SimplifiedTest: React.FC = () => {
               { id: 4, name: 'Task D', progress: 25 }
             ]}
             config={{
-              id: 'progress-test',
               devMode: true,
               zones: {
                 header: {
@@ -212,7 +211,6 @@ export const SimplifiedTest: React.FC = () => {
               }
             ]}
             config={{
-              id: 'json-test',
               devMode: true,
               zones: {
                 content: {

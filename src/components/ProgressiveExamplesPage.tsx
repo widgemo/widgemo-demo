@@ -220,7 +220,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     caption: 'Border off + shadow off removes outer shell chrome so the queue can sit inline inside a parent surface.',
     data: containerFrameTableRows,
     config: {
-      id: 'container-frame-borderless-inline',
       containerFrame: { border: 'none', shadow: 'none' },
       zones: {
         header: { title: 'Embedded Approvals', subtitle: 'Inline approvals queue', icon: 'table' },
@@ -248,7 +247,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     data: containerFrameTableRows,
     hostStyle: { background: 'var(--app-bg-secondary)', border: '1px dashed var(--app-border)', borderRadius: '6px', padding: '1rem' },
     config: {
-      id: 'container-frame-shellless',
       containerFrame: { shell: 'none' },
       zones: {
         header: { title: 'Embedded Approvals', subtitle: 'Shellless — no outer surface', icon: 'table' },
@@ -274,7 +272,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     caption: 'Border on + shadow on + rounded radius gives a softer card treatment for executive-facing summaries.',
     data: containerFrameGridRows,
     config: {
-      id: 'container-frame-rounded-shadow',
       containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded' },
       zones: {
         header: { title: 'Forecast Commitments', subtitle: 'Executive summary card', icon: 'chart-bar' },
@@ -300,7 +297,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     caption: 'Square radius + shadow off keeps edges crisp for denser operational tables and admin layouts.',
     data: containerFrameTableRows,
     config: {
-      id: 'container-frame-square-shell',
       containerFrame: { border: 'on', shadow: 'none', borderRadius: 'square' },
       zones: {
         header: { title: 'Settlement Handoff', subtitle: 'Operations board handoff', icon: 'settings' },
@@ -325,7 +321,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     caption: 'Explicit radius plus borderColor and borderWidth creates a branded frame without changing inner widget structure.',
     data: containerFrameTableRows,
     config: {
-      id: 'container-frame-accented-shell',
       containerFrame: {
         border: 'on',
         shadow: 'on',
@@ -357,7 +352,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     data: containerFrameOverflowRows,
     shellStyle: { width: '320px', maxWidth: '100%' },
     config: {
-      id: 'container-frame-overflow-hidden',
       containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded', overflow: 'hidden' },
       style: { height: '250px' },
       zones: {
@@ -386,7 +380,6 @@ const containerFrameShowcaseCards: ContainerFrameShowcaseCard[] = [
     data: containerFrameOverflowRows,
     shellStyle: { width: '320px', maxWidth: '100%' },
     config: {
-      id: 'container-frame-overflow-auto',
       containerFrame: { border: 'on', shadow: 'on', borderRadius: 'rounded', overflow: 'auto' },
       style: { height: '250px' },
       zones: {
@@ -522,8 +515,8 @@ export const ProgressiveExamplesPage: React.FC = () => {
       name: 'preRender',
       hook: (...args: unknown[]) => {
         const componentName = String(args[0] ?? 'unknown');
-        const payload = args[1] as { config?: { id?: string } } | undefined;
-        const configId = payload?.config?.id;
+        const payload = args[1] as { id?: string } | undefined;
+        const configId = payload?.id;
 
         if (configId && lifecycleConfigIdSet.has(configId)) {
           emitLifecycleMonitorEntry({
@@ -545,7 +538,7 @@ export const ProgressiveExamplesPage: React.FC = () => {
         const renderedNode = args[1] as React.ReactElement | undefined;
 
         if (componentName === 'Widgemo') {
-          const configId = (renderedNode?.props as { config?: { id?: string } } | undefined)?.config?.id;
+          const configId = (renderedNode?.props as { id?: string } | undefined)?.id;
           if (configId && lifecycleConfigIdSet.has(configId)) {
             const isWrapped = configId === 'progressive-58' && postRenderWrapperEnabled;
             emitLifecycleMonitorEntry({
@@ -981,16 +974,16 @@ export const ProgressiveExamplesPage: React.FC = () => {
       example.id === 'progressive-54-theme-hook-with-provider' ||
       example.id === 'progressive-55-theme-hook-without-provider';
 
-    const configId = example.config?.id;
-    const renderKey = configId && lifecycleConfigIdSet.has(configId)
+    const configId = example.id;
+    const renderKey = lifecycleConfigIdSet.has(configId)
       ? `${configId}-${exampleRenderKeyByConfigId[configId] ?? 0}`
-      : example.id;
+      : configId;
 
     const widgetElement = harnessMode === 'no-provider'
       ? (
         <div key={renderKey}>
           {shouldShowHookProbe && <ThemeHookProbe label="useWidgemoTheme() probe" />}
-          <Widgemo data={example.data} config={example.config} className="my-custom-widgemo" />
+          <Widgemo data={example.data} config={example.config} id={example.id} className="my-custom-widgemo" />
         </div>
       )
       : (
@@ -1007,7 +1000,7 @@ export const ProgressiveExamplesPage: React.FC = () => {
           }
         >
           {shouldShowHookProbe && <ThemeHookProbe label="useWidgemoTheme() probe" />}
-          <Widgemo data={example.data} config={example.config} className="my-custom-widgemo" />
+          <Widgemo data={example.data} config={example.config} id={example.id} className="my-custom-widgemo" />
         </WidgemoThemeProvider>
       );
 
@@ -1097,7 +1090,7 @@ export const ProgressiveExamplesPage: React.FC = () => {
         </div>
 
         {examplesWithDevMode.map((example) => {
-          const configId = example.config?.id;
+          const configId = example.id;
           return (
             <div key={example.id} className="col-12 mb-3">
               <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>{example.title}</h2>
