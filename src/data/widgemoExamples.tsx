@@ -1539,19 +1539,19 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Zone Dynamic Renderers (titleRenderer / subtitleRenderer) ────────
+  // ── Zone Dynamic Title/Subtitle (function form) ──────────────────────────
   {
     id: 'zone-dynamic-renderers',
-    title: 'Zone: titleRenderer & subtitleRenderer',
-    description: 'ZoneConfig.titleRenderer and subtitleRenderer as functions that receive live data and return strings. ActionConfig.handler receives the full ActionContext (entity, data, zone).',
+    title: 'Zone: dynamic title & subtitle',
+    description: 'ZoneConfig.title and .subtitle accept a function (data, id?) => string that receives the live data array on every render. Use it to reflect counts or derived summaries without external state.',
     data: eightUsersData as Entity[],
     config: {
       id: 'zone-dynamic-renderers',
       collapse: { initialState: 'fixed' },
       zones: {
         header: {
-          titleRenderer: (data: Entity[]) => `Team Overview (${data.length} members)`,
-          subtitleRenderer: (data: Entity[]) =>
+          title: (data: Entity[]) => `Team Overview (${data.length} members)`,
+          subtitle: (data: Entity[]) =>
             `Active: ${data.filter(d => d.status === 'active').length} · Inactive: ${data.filter(d => d.status === 'inactive').length} · Pending: ${data.filter(d => d.status === 'pending').length}`,
           icon: { name: 'users', size: 22, color: '#059669' },
           collapse: { initialState: 'fixed' },
