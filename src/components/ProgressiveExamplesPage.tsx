@@ -408,6 +408,7 @@ export const ProgressiveExamplesPage: React.FC = () => {
   const [onItemClickHookMode, setOnItemClickHookMode] = useState<LifecycleHookMode>('default');
   const [postRenderWrapperEnabled, setPostRenderWrapperEnabled] = useState<boolean>(true);
   const [example61Width, setExample61Width] = useState<ModeWidth>('desktop');
+  const [example68ContentEnabled, setExample68ContentEnabled] = useState<boolean>(true);
   const [lifecycleStateByConfigId, setLifecycleStateByConfigId] =
     useState<Record<string, LifecycleExampleState>>(buildInitialLifecycleState);
   const [exampleRenderKeyByConfigId, setExampleRenderKeyByConfigId] = useState<Record<string, number>>({
@@ -704,15 +705,33 @@ export const ProgressiveExamplesPage: React.FC = () => {
   };
 
   const examplesWithDevMode = useMemo(() => {
-    if (!isDevEnvironment) {
-      return progressiveExamples;
-    }
+    return progressiveExamples.map((example) => {
+      const configWithContentToggle = example.id === 'progressive-68-content-enabled-toggle'
+        ? {
+          ...example.config,
+          zones: {
+            ...example.config.zones,
+            content: {
+              ...example.config.zones?.content,
+              enabled: example68ContentEnabled,
+            },
+          },
+        }
+        : example.config;
 
-    return progressiveExamples.map((example) => ({
-      ...example,
-      config: injectDevMode(example.config, includeWidgemoInspector),
-    }));
-  }, [includeWidgemoInspector, isDevEnvironment]);
+      if (!isDevEnvironment) {
+        return {
+          ...example,
+          config: configWithContentToggle,
+        };
+      }
+
+      return {
+        ...example,
+        config: injectDevMode(configWithContentToggle, includeWidgemoInspector),
+      };
+    });
+  }, [example68ContentEnabled, includeWidgemoInspector, isDevEnvironment]);
 
   const lifecycleState = (configId: string): LifecycleExampleState => lifecycleStateByConfigId[configId] ?? emptyLifecycleState();
 
@@ -1015,6 +1034,39 @@ export const ProgressiveExamplesPage: React.FC = () => {
         >
           {widgetElement}
         </div>
+      );
+    }
+
+    if (configId === 'progressive-68-content-enabled-toggle') {
+      return (
+        <>
+          <div
+            className="mb-2 p-2 rounded"
+            style={{ backgroundColor: 'var(--app-bg-secondary)', border: '1px solid var(--app-border)' }}
+          >
+            <div className="d-flex flex-wrap gap-2 align-items-center mb-2">
+              <span className={`badge ${example68ContentEnabled ? 'text-bg-success' : 'text-bg-secondary'}`}>
+                content.enabled: {String(example68ContentEnabled)}
+              </span>
+              <div className="form-check m-0">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="progressive-68-content-enabled"
+                  checked={example68ContentEnabled}
+                  onChange={(event) => setExample68ContentEnabled(event.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="progressive-68-content-enabled">
+                  Toggle content.enabled
+                </label>
+              </div>
+            </div>
+            <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+              When unchecked, the content zone is hidden while header remains visible.
+            </div>
+          </div>
+          {widgetElement}
+        </>
       );
     }
 

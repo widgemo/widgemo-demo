@@ -3344,6 +3344,54 @@ export const progressiveExamples: ProgressiveExample[] = [
       },
     },
   },
+  // ─── Progressive 68 — ContentConfig.enabled Toggle ─────────────────────────
+  {
+    id: 'progressive-68-content-enabled-toggle',
+    title: 'Progressive 68 — content.enabled (Interactive Toggle)',
+    description:
+      'Demonstrates ContentConfig.enabled. Use the checkbox above this example to switch content.enabled between true and false at runtime.',
+    data: [
+      { id: 'ce-1', name: 'Ava Brooks', team: 'Platform', status: 'active' },
+      { id: 'ce-2', name: 'Noah Patel', team: 'Revenue', status: 'pending' },
+      { id: 'ce-3', name: 'Mia Johnson', team: 'Operations', status: 'inactive' },
+    ],
+    config: {
+      zones: {
+        header: {
+          title: 'content.enabled Demo',
+          subtitle: 'Toggle the content zone on and off',
+          icon: 'table',
+        },
+        content: {
+          enabled: true,
+          mode: 'table',
+          modeConfig: {
+            table: { type: 'traditional', showHeader: true, alternatingRows: true },
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' },
+              { key: 'team', label: 'Team', type: 'text' },
+              {
+                key: 'status',
+                label: 'Status',
+                type: 'text',
+                renderAs: 'badge',
+                renderAsOptions: {
+                  colorMap: {
+                    active: '#198754',
+                    pending: '#ffc107',
+                    inactive: '#dc3545',
+                  },
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
 ];
 
 export const progressiveExamplesWithInteractionSink: ProgressiveExample[] = progressiveExamples.map((example) => ({
