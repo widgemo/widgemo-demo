@@ -1,3 +1,8 @@
+import {
+  coreActions,
+  createAction,
+  createActions,
+} from '@widgemo/widgemo-core';
 import type {
   ActionConfig,
   BoardModeConfig,
@@ -406,6 +411,39 @@ const itemAction = (
       entity: ctx.entity as Record<string, unknown>,
     }),
 });
+
+const coreZoneAction = (
+  actionId: string,
+  overrides: Partial<ActionConfig<Entity>> = {},
+): ActionConfig<Entity> => {
+  const action = createAction(actionId, overrides);
+
+  return {
+    ...action,
+    onAction: (ctx: InteractionContext) =>
+      fireDemoAction({
+        actionId: action.id,
+        actionLabel: action.label,
+        source: 'action.onAction',
+        data: ctx.data as Record<string, unknown>[],
+        zone: ctx.zone,
+      }),
+  };
+};
+
+const coreItemActions = (
+  actions: Array<{ id: string; overrides?: Partial<ActionConfig<Entity>> }>,
+): ActionConfig<Entity>[] =>
+  createActions(actions).map((action) => ({
+    ...action,
+    onAction: (ctx: InteractionContext) =>
+      fireDemoAction({
+        actionId: action.id,
+        actionLabel: action.label,
+        source: 'action.onAction',
+        entity: ctx.entity as Record<string, unknown>,
+      }),
+  }));
 
 export const progressiveExamples: ProgressiveExample[] = [
   {
@@ -818,6 +856,74 @@ export const progressiveExamples: ProgressiveExample[] = [
             ],
           },
         ),
+      },
+    },
+  },
+  {
+    id: 'progressive-10b-core-action-builders',
+    title: 'Progressive 10B — Core Action Builders',
+    description:
+      'Uses widgemo-core\'s shipped action helpers exactly as implemented: createAction(actionId, overrides), createActions([{ id, overrides }]), and direct coreActions preset spreads.',
+    data: tenUsersData,
+    config: {
+      zones: {
+        header: {
+          title: 'Core Builder Actions',
+          subtitle: 'Preset-backed actions via createAction/createActions/coreActions',
+          icon: 'users',
+          actions: [
+            coreZoneAction('add', { id: 'add-user', label: 'Add User', placement: 'pinned', variant: 'primary' }),
+            coreZoneAction('refresh', { id: 'sync-users', label: 'Sync', placement: 'pinned', variant: 'secondary' }),
+            {
+              ...coreActions.export,
+              id: 'export-users',
+              label: 'Export Users',
+              onAction: (ctx: InteractionContext) =>
+                fireDemoAction({
+                  actionId: 'export-users',
+                  actionLabel: 'Export Users',
+                  source: 'action.onAction',
+                  data: ctx.data as Record<string, unknown>[],
+                  zone: ctx.zone,
+                }),
+            },
+          ],
+        },
+        content: createTableContent(
+          tenUsersData,
+          [
+            { key: 'name', label: 'Name', type: 'text', sortable: true },
+            { key: 'email', label: 'Email', type: 'email' },
+            { key: 'role', label: 'Role', type: 'text' },
+            { key: 'department', label: 'Department', type: 'text' },
+            statusField,
+          ],
+          {
+            table: traditionalTableConfig,
+            actions: coreItemActions([
+              { id: 'edit', overrides: { id: 'edit-user', label: 'Edit User', placement: 'pinned', variant: 'secondary' } },
+              { id: 'view', overrides: { id: 'view-profile', label: 'View Profile', placement: 'onHover' } },
+              {
+                id: 'delete',
+                overrides: {
+                  id: 'delete-user',
+                  label: 'Delete User',
+                  placement: 'menu',
+                  variant: 'danger',
+                  visibleIf: (entity) => entity.status === 'inactive',
+                },
+              },
+            ]),
+            actionOverflow: {
+              maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+              menuLabel: 'More',
+              indicator: 'pulse',
+            },
+          },
+        ),
+        footer: {
+          subtitle: 'Builders are preset helpers, not arbitrary action factories',
+        },
       },
     },
   },
