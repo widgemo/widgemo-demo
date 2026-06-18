@@ -1,7 +1,5 @@
 import {
   coreActions,
-  createAction,
-  createActions,
 } from '@widgemo/widgemo-core';
 import type {
   ActionConfig,
@@ -411,39 +409,6 @@ const itemAction = (
       entity: ctx.entity as Record<string, unknown>,
     }),
 });
-
-const coreZoneAction = (
-  actionId: string,
-  overrides: Partial<ActionConfig<Entity>> = {},
-): ActionConfig<Entity> => {
-  const action = createAction(actionId, overrides);
-
-  return {
-    ...action,
-    onAction: (ctx: InteractionContext) =>
-      fireDemoAction({
-        actionId: action.id,
-        actionLabel: action.label,
-        source: 'action.onAction',
-        data: ctx.data as Record<string, unknown>[],
-        zone: ctx.zone,
-      }),
-  };
-};
-
-const coreItemActions = (
-  actions: Array<{ id: string; overrides?: Partial<ActionConfig<Entity>> }>,
-): ActionConfig<Entity>[] =>
-  createActions(actions).map((action) => ({
-    ...action,
-    onAction: (ctx: InteractionContext) =>
-      fireDemoAction({
-        actionId: action.id,
-        actionLabel: action.label,
-        source: 'action.onAction',
-        entity: ctx.entity as Record<string, unknown>,
-      }),
-  }));
 
 export const progressiveExamples: ProgressiveExample[] = [
   {
@@ -860,20 +825,48 @@ export const progressiveExamples: ProgressiveExample[] = [
     },
   },
   {
-    id: 'progressive-10b-core-action-builders',
-    title: 'Progressive 10B — Core Action Builders',
+    id: 'progressive-10b-core-action-presets',
+    title: 'Progressive 10B — Core Action Presets',
     description:
-      'Uses widgemo-core\'s shipped action helpers exactly as implemented: createAction(actionId, overrides), createActions([{ id, overrides }]), and direct coreActions preset spreads.',
+      'Uses widgemo-core action presets via object spread. This keeps config explicit while reusing shared defaults.',
     data: tenUsersData,
     config: {
       zones: {
         header: {
-          title: 'Core Builder Actions',
-          subtitle: 'Preset-backed actions via createAction/createActions/coreActions',
+          title: 'Core Preset Actions',
+          subtitle: 'Preset-backed actions via coreActions spread and local overrides',
           icon: 'users',
           actions: [
-            coreZoneAction('add', { id: 'add-user', label: 'Add User', placement: 'pinned', variant: 'primary' }),
-            coreZoneAction('refresh', { id: 'sync-users', label: 'Sync', placement: 'pinned', variant: 'secondary' }),
+            {
+              ...coreActions.add,
+              id: 'add-user',
+              label: 'Add User',
+              placement: 'pinned',
+              variant: 'primary',
+              onAction: (ctx: InteractionContext) =>
+                fireDemoAction({
+                  actionId: 'add-user',
+                  actionLabel: 'Add User',
+                  source: 'action.onAction',
+                  data: ctx.data as Record<string, unknown>[],
+                  zone: ctx.zone,
+                }),
+            },
+            {
+              ...coreActions.refresh,
+              id: 'sync-users',
+              label: 'Sync',
+              placement: 'pinned',
+              variant: 'secondary',
+              onAction: (ctx: InteractionContext) =>
+                fireDemoAction({
+                  actionId: 'sync-users',
+                  actionLabel: 'Sync',
+                  source: 'action.onAction',
+                  data: ctx.data as Record<string, unknown>[],
+                  zone: ctx.zone,
+                }),
+            },
             {
               ...coreActions.export,
               id: 'export-users',
@@ -900,20 +893,50 @@ export const progressiveExamples: ProgressiveExample[] = [
           ],
           {
             table: traditionalTableConfig,
-            actions: coreItemActions([
-              { id: 'edit', overrides: { id: 'edit-user', label: 'Edit User', placement: 'pinned', variant: 'secondary' } },
-              { id: 'view', overrides: { id: 'view-profile', label: 'View Profile', placement: 'onHover' } },
+            actions: [
               {
-                id: 'delete',
-                overrides: {
-                  id: 'delete-user',
-                  label: 'Delete User',
-                  placement: 'menu',
-                  variant: 'danger',
-                  visibleIf: (entity) => entity.status === 'inactive',
-                },
+                ...coreActions.edit,
+                id: 'edit-user',
+                label: 'Edit User',
+                placement: 'pinned',
+                variant: 'secondary',
+                onAction: (ctx: InteractionContext) =>
+                  fireDemoAction({
+                    actionId: 'edit-user',
+                    actionLabel: 'Edit User',
+                    source: 'action.onAction',
+                    entity: ctx.entity as Record<string, unknown>,
+                  }),
               },
-            ]),
+              {
+                ...coreActions.view,
+                id: 'view-profile',
+                label: 'View Profile',
+                placement: 'onHover',
+                onAction: (ctx: InteractionContext) =>
+                  fireDemoAction({
+                    actionId: 'view-profile',
+                    actionLabel: 'View Profile',
+                    source: 'action.onAction',
+                    entity: ctx.entity as Record<string, unknown>,
+                  }),
+              },
+              {
+                ...coreActions.delete,
+                id: 'delete-user',
+                label: 'Delete User',
+                placement: 'menu',
+                variant: 'danger',
+                visibleIf: (entity) => entity.status === 'inactive',
+                onAction: (ctx: InteractionContext) =>
+                  fireDemoAction({
+                    actionId: 'delete-user',
+                    actionLabel: 'Delete User',
+                    source: 'action.onAction',
+                    entity: ctx.entity as Record<string, unknown>,
+                  }),
+              },
+            ],
             actionOverflow: {
               maxInline: { mobile: 1, tablet: 2, desktop: 2 },
               menuLabel: 'More',
@@ -922,7 +945,7 @@ export const progressiveExamples: ProgressiveExample[] = [
           },
         ),
         footer: {
-          subtitle: 'Builders are preset helpers, not arbitrary action factories',
+          subtitle: 'Presets reduce repetition through shared defaults and local overrides',
         },
       },
     },
