@@ -1,50 +1,76 @@
 import React from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FaChartLine, FaWallet } from 'react-icons/fa';
 
 interface AdvancedSectionProps {
   currentTheme: string;
 }
 
 export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
-  <section id="advanced" className="section-block theme-aware-section">
+  <section id="applications-preview" className="section-block theme-aware-section">
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
       <div className="section-header">
-        <h2 className="section-title theme-aware-text">Advanced Usage</h2>
-        <p className="section-subtitle theme-aware-text">Compositions, nesting, parent-controls, dashboards, and special configurations</p>
+        <h2 className="section-title theme-aware-text">See It In Context</h2>
+        <p className="section-subtitle theme-aware-text">Full applications built with Widgemo to prove real-world composability.</p>
       </div>
-    <Row className="justify-content-center">
-      <Col lg={8} className="text-center">
-        <Card className="shadow theme-aware-card border-0 bg-transparent">
-          <Card.Body className="py-4">
-            <div className="mb-3">
-              <h3 className="text-muted mb-2" style={{ fontSize: '1rem' }}>🚧 Coming Soon</h3>
-              <p className="text-muted mb-3" style={{ fontSize: '0.9375rem' }}>
-                We're building the foundation for truly extensible UIs with advanced compositions,
-                nested components, parent-controlled capabilities, and sophisticated dashboard configurations.
+      <Row className="g-4">
+        <Col lg={6}>
+          <Card className="h-100 shadow-sm theme-aware-card">
+            <Card.Body className="d-flex flex-column">
+              <div className="d-flex align-items-center mb-3">
+                <FaChartLine className="text-primary me-2" />
+                <h3 className="mb-0" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Team Portfolio</h3>
+              </div>
+              <p className="text-muted" style={{ fontSize: '0.9rem' }}>
+                Executive initiative tracking with multiple Widgemos on one page: KPI cards, throughput trends,
+                board execution lanes, and summary views.
               </p>
-              <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                In the meantime, explore the <strong>Sandbox</strong> to experiment with current capabilities
-                and see how Widgemo can adapt to your data visualization needs.
+              <ul className="text-muted" style={{ fontSize: '0.84rem', paddingLeft: '1.1rem' }}>
+                <li>Mixed modes in one workflow</li>
+                <li>Shared filters and focused interactions</li>
+                <li>Table + chart + board + carousel composition</li>
+              </ul>
+              <div className="mt-auto d-flex gap-2">
+                <Button as={Link as any} to="/dashboard" variant="primary" className="px-3 py-2">
+                  Open Team Portfolio
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col lg={6}>
+          <Card className="h-100 shadow-sm theme-aware-card">
+            <Card.Body className="d-flex flex-column">
+              <div className="d-flex align-items-center mb-3">
+                <FaWallet className="text-success me-2" />
+                <h3 className="mb-0" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Finance Tracker</h3>
+              </div>
+              <p className="text-muted" style={{ fontSize: '0.9rem' }}>
+                Cashflow command center covering forecasts, upcoming events, transactions, alerts, scenarios,
+                and account-level analytics in one cohesive interface.
               </p>
-            </div>
-            <Button
-              variant="outline-primary"
-              onClick={() => {
-                const element = document.getElementById('sandbox');
-                if (element) {
-                  const navbarHeight = 56;
-                  const elementPosition = element.offsetTop - navbarHeight;
-                  window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-                }
-              }}
-              className="px-4 py-2"
-            >
-              Jump to Sandbox →
-            </Button>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  </div>
-</section>
+              <ul className="text-muted" style={{ fontSize: '0.84rem', paddingLeft: '1.1rem' }}>
+                <li>Domain-focused renderers and iconography</li>
+                <li>Forecasts, alerts, and planning loops</li>
+                <li>Realistic financial application composition</li>
+              </ul>
+              <div className="mt-auto d-flex gap-2">
+                <Button as={Link as any} to="/cashflow-dashboard" variant="success" className="px-3 py-2">
+                  Open Finance Tracker
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <div className="text-center mt-4">
+        <Button as={Link as any} to="/applications" variant="outline-primary" className="px-4 py-2">
+          Explore All Applications
+        </Button>
+      </div>
+    </div>
+  </section>
 );

@@ -97,7 +97,7 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
       <div className="flex-grow-1 overflow-auto" style={{ overflowX: 'hidden' }}>
         <div className="row g-3">
           <div className="col-12">
-            <h6 className="mb-3 text-primary">Loading & Error States</h6>
+            <h6 className="mb-3 text-primary">Test Loading & Errors</h6>
             <p className="small text-muted mb-4">
               Configure loading spinners and error messages to test different states in your Widgemo component.
             </p>
@@ -201,7 +201,7 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
           aria-label="Apply loading and error state changes"
         >
           <FaCheck className="me-1" />
-          Apply Changes
+          Apply State Changes
         </Button>
       </div>
     </div>

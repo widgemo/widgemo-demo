@@ -27,7 +27,7 @@ export const MainPage: React.FC = () => {
   return (
     <div style={{ minHeight: '100vh' }}>
       <TeaserSection
-        onExploreGallery={() => scrollToSection('gallery')}
+        onExploreExamples={() => scrollToSection('examples-preview')}
         onJumpToSandbox={() => navigate('/sandbox')}
         shouldHaveDarkText={shouldHaveDarkTeaserText}
       />

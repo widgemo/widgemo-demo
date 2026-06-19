@@ -1,5 +1,5 @@
 import { Suspense, lazy, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WidgemoThemeProvider, widgemoRegistry, registerTheme, getTheme } from '@widgemo/widgemo-core';
 import { AppNavbar, DevBanner } from './components/navigation';
@@ -15,7 +15,8 @@ import {
 import './App.css';
 
 const SandboxPage = lazy(() => import('./components/SandboxPage').then((module) => ({ default: module.SandboxPage })));
-const SimplifiedTest = lazy(() => import('./components/SimplifiedTest').then((module) => ({ default: module.SimplifiedTest })));
+const ExamplesPage = lazy(() => import('./components/ExamplesPage').then((module) => ({ default: module.ExamplesPage })));
+const ApplicationsPage = lazy(() => import('./components/ApplicationsPage').then((module) => ({ default: module.ApplicationsPage })));
 const ProgressiveExamplesPage = lazy(() => import('./components/ProgressiveExamplesPage').then((module) => ({ default: module.ProgressiveExamplesPage })));
 const DashboardPage = lazy(() => import('./components/DashboardPage').then((module) => ({ default: module.DashboardPage })));
 const CashflowDashboardPage = lazy(() => import('./components/CashflowDashboardPage').then((module) => ({ default: module.CashflowDashboardPage })));
@@ -287,12 +288,24 @@ function AppContent() {
                 element={<WidgemoThemeProvider theme={currentTheme}><SandboxPage /></WidgemoThemeProvider>}
               />
               <Route
-                path="/simplified-test"
-                element={<WidgemoThemeProvider theme={currentTheme}><SimplifiedTest /></WidgemoThemeProvider>}
+                path="/examples"
+                element={<WidgemoThemeProvider theme={currentTheme}><ExamplesPage /></WidgemoThemeProvider>}
+              />
+              <Route
+                path="/applications"
+                element={<WidgemoThemeProvider theme={currentTheme}><ApplicationsPage /></WidgemoThemeProvider>}
+              />
+              <Route
+                path="/lab"
+                element={<WidgemoThemeProvider theme={currentTheme}><ProgressiveExamplesPage /></WidgemoThemeProvider>}
               />
               <Route
                 path="/progressive-examples"
-                element={<ProgressiveExamplesPage />}
+                element={<Navigate to="/lab" replace />}
+              />
+              <Route
+                path="/simplified-test"
+                element={<Navigate to="/examples" replace />}
               />
               <Route
                 path="/dashboard"
@@ -309,7 +322,7 @@ function AppContent() {
                     <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
                       <h1>Route Not Found</h1>
                       <p>Current path: {window.location.pathname}</p>
-                      <p>Available routes: /, /sandbox, /simplified-test, /progressive-examples, /dashboard, /cashflow-dashboard</p>
+                      <p>Available routes: /, /examples, /applications, /sandbox, /lab, /dashboard, /cashflow-dashboard</p>
                     </div>
                   </WidgemoThemeProvider>
                 }

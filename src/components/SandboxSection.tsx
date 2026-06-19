@@ -724,6 +724,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onHeightChange={setHeight}
                 onAutoWidthChange={setIsAutoWidth}
                 onAutoHeightChange={setIsAutoHeight}
+                loading={loading}
+                error={error}
+                onRetry={() => {
+                  setLoading(false);
+                  setError('');
+                }}
               />
             </Panel>
             {!isAppliedConfigCollapsed && (
@@ -770,21 +776,18 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
               </>
             )}
             {isAppliedConfigCollapsed && (
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-start pt-2 px-1">
                 <button
                   className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center"
                   onClick={() => setIsAppliedConfigCollapsed(false)}
                   title="Expand Applied Configuration panel"
                   style={{
-                    writingMode: 'vertical-rl',
-                    textOrientation: 'mixed',
-                    height: '120px',
-                    width: '24px',
-                    borderRadius: '4px 0 0 4px',
-                    marginLeft: '2px'
+                    borderRadius: '6px',
+                    minWidth: '140px',
+                    fontSize: '0.75rem'
                   }}
                 >
-                  <span style={{ fontSize: '11px', letterSpacing: '1px' }}>APPLIED</span>
+                  Show Applied Config
                 </button>
               </div>
             )}

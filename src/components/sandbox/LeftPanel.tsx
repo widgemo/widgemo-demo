@@ -134,10 +134,10 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onUseCustomErrorChange,
 }) => {
   const tabs = [
-    { id: 'config-editor', label: 'Config Editor' },
-    { id: 'loading-states', label: 'Loading & States' },
+    { id: 'config-editor', label: 'Configuration' },
     { id: 'sample-data', label: 'Sample Data' },
-    { id: 'advanced-properties', label: 'Advanced Properties' },
+    { id: 'loading-states', label: 'Test Loading & Errors' },
+    { id: 'advanced-properties', label: 'Advanced Settings' },
   ];
 
   return (

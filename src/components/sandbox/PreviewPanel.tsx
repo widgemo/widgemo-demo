@@ -18,6 +18,9 @@ interface PreviewPanelProps {
   onHeightChange: (height: number) => void;
   onAutoWidthChange: (auto: boolean) => void;
   onAutoHeightChange: (auto: boolean) => void;
+  loading: boolean;
+  error: string;
+  onRetry: () => void;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
@@ -31,26 +34,29 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   onHeightChange,
   onAutoWidthChange,
   onAutoHeightChange,
+  loading,
+  error,
+  onRetry,
 }) => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
   const [selectedTheme, setSelectedTheme] = React.useState('default');
+  const [showDevOverlay, setShowDevOverlay] = React.useState(false);
 
-  // Sugar props for testing
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-
-  // Modify config to include devMode
+  // Keep dev overlay opt-in for public-facing sandbox use.
   const getConfig = () => {
     const modifiedConfig = { ...config };
-    // Enable devMode for testing
-    modifiedConfig.devMode = {
-      enabled: true,
-      zone: 'auto',
-      overlay: {
-        excludeFields: ['zones.content.status', 'zones.content.error']
-      }
-    };
+
+    if (showDevOverlay) {
+      modifiedConfig.devMode = {
+        enabled: true,
+        zone: 'auto',
+        overlay: {
+          excludeFields: ['zones.content.status', 'zones.content.error']
+        }
+      };
+    }
+
     return modifiedConfig;
   };
 
@@ -70,15 +76,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           </Form.Select>
           <Form.Check
             type="checkbox"
-            label="Loading"
-            checked={loading}
-            onChange={(e) => setLoading(e.target.checked)}
-          />
-          <Form.Check
-            type="checkbox"
-            label="Error"
-            checked={!!error}
-            onChange={(e) => setError(e.target.checked ? 'Test error occurred' : null)}
+            label="Dev Overlay"
+            checked={showDevOverlay}
+            onChange={(e) => setShowDevOverlay(e.target.checked)}
           />
           <Form.Check
             type="checkbox"
@@ -138,11 +138,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           config={getConfig()} 
           className="my-custom-widgemo"
           loading={loading}
-          error={error}
-          onRetry={() => {
-            setLoading(false);
-            setError(null);
-          }}
+          error={error || null}
+          onRetry={onRetry}
         />
       </div>
     </div>

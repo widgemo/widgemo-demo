@@ -4,13 +4,13 @@ import { Widgemo } from '@widgemo/widgemo-core';
 import widgemoExamples from '../../data/widgemoExamples';
 
 interface TeaserSectionProps {
-  onExploreGallery: () => void;
+  onExploreExamples: () => void;
   onJumpToSandbox: () => void;
   shouldHaveDarkText: boolean;
 }
 
 export const TeaserSection: React.FC<TeaserSectionProps> = ({
-  onExploreGallery,
+  onExploreExamples,
   onJumpToSandbox,
   shouldHaveDarkText
 }) => {
@@ -61,9 +61,9 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
               <Button
                 variant="secondary"
                 className="px-3 py-2 fw-bold"
-                onClick={onExploreGallery}
+                onClick={onExploreExamples}
               >
-                Explore Gallery
+                Explore Examples
               </Button>
               <Button
                 variant="primary"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
@@ -11,31 +11,10 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
   const location = useLocation();
   const isSandbox = location.pathname === '/sandbox';
 
-  const sections = [
-    { id: 'teaser', label: 'Teaser', path: '/' },
-    { id: 'anatomy', label: 'Anatomy', path: '/' },
-    { id: 'gallery', label: 'Gallery', path: '/' },
-    { id: 'sandbox', label: 'Sandbox', path: '/sandbox' },
-    { id: 'simplified-test', label: 'Simplified Test', path: '/simplified-test' },
-    { id: 'progressive-examples', label: 'Progressive Examples', path: '/progressive-examples' },
-    { id: 'dashboard', label: 'Dashboard Showcase', path: '/dashboard' },
-    { id: 'cashflow-dashboard', label: 'Cashflow App', path: '/cashflow-dashboard' },
-    { id: 'advanced', label: 'Advanced', path: '/' },
-    { id: 'resources', label: 'Resources', path: '/' },
-  ];
-
-  const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
-      // If not on main page, navigate first
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const navbarHeight = 56; // Bootstrap navbar height
-      const elementPosition = element.offsetTop - navbarHeight;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-  };
+  const isApplicationsActive =
+    location.pathname === '/applications' ||
+    location.pathname === '/dashboard' ||
+    location.pathname === '/cashflow-dashboard';
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
@@ -60,23 +39,71 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
         <BootstrapNavbar.Collapse id="demo-nav" className='me-4'>
           <div className="d-flex justify-content-end align-items-center w-100">
             <Nav className="mb-0 me-3">
-              {sections.map(section => (
-                <Nav.Link
-                  key={section.id}
+              <Nav.Link
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                as={Link as any}
+                to="/"
+                active={location.pathname === '/'}
+                className="mx-2"
+              >
+                Overview
+              </Nav.Link>
+              <Nav.Link
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                as={Link as any}
+                to="/examples"
+                active={location.pathname === '/examples'}
+                className="mx-2"
+              >
+                Examples
+              </Nav.Link>
+
+              <NavDropdown
+                title="Applications"
+                id="applications-nav-dropdown"
+                className="mx-2"
+                active={isApplicationsActive}
+              >
+                <NavDropdown.Item
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   as={Link as any}
-                  to={section.path}
-                  active={
-                    section.path === '/'
-                      ? location.pathname === '/' && !isSandbox
-                      : location.pathname === section.path
-                  }
-                  onClick={() => section.path === '/' && scrollToSection(section.id)}
-                  className="mx-2"
+                  to="/applications"
                 >
-                  {section.label}
-                </Nav.Link>
-              ))}
+                  Overview
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  as={Link as any}
+                  to="/dashboard"
+                >
+                  Team Portfolio
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  as={Link as any}
+                  to="/cashflow-dashboard"
+                >
+                  Finance Tracker
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              <Nav.Link
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                as={Link as any}
+                to="/sandbox"
+                active={location.pathname === '/sandbox'}
+                className="mx-2"
+              >
+                Sandbox
+              </Nav.Link>
+              <Nav.Link
+                href="https://docs.widgemo.com/core"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-2"
+              >
+                Docs
+              </Nav.Link>
             </Nav>
             {isSandbox && (
               <Button 

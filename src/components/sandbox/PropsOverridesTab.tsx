@@ -105,6 +105,12 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
       <div className="flex-grow-1 overflow-auto" style={{ overflowX: 'hidden' }}>
         <div className="row g-3">
           <div className="col-12">
+            <h6 className="mb-1 text-primary">Advanced Settings</h6>
+            <p className="small text-muted mb-0">
+              Optional overrides for styling and debugging. Most users can skip this tab.
+            </p>
+          </div>
+          <div className="col-12">
             <Form.Label className="small fw-bold">Overrides (Partial Config)</Form.Label>
             <Form.Control
               as="textarea"
@@ -241,7 +247,7 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
               type="checkbox"
               checked={showConfigDetails}
               onChange={(e) => onShowConfigDetailsChange(e.target.checked)}
-              label="Show config details button (for development)"
+              label="Show config details button (developer tool)"
               aria-label="Show config details button"
             />
           </div>
@@ -272,7 +278,7 @@ export const PropsOverridesTab: React.FC<PropsOverridesTabProps> = ({
             aria-label="Apply advanced properties to preview"
           >
             <FaCheck className="me-1" />
-            Apply Advanced Properties
+            Apply Settings
           </Button>
           <Button
             variant="outline-secondary"
