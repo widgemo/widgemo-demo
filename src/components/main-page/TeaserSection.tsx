@@ -7,6 +7,7 @@ interface CuratedTeaserSpec {
   id: string;
   scenario: string;
   modeLabel: string;
+  previewItemCount?: number;
   headerTitle: string;
   headerSubtitle?: string;
   footerSubtitle?: string;
@@ -40,6 +41,7 @@ interface CuratedTeaserSpec {
   actionButtonHoverBackground?: string;
   actionButtonHoverBorder?: string;
   centerHeaderTitle?: boolean;
+  carouselAutoPlayInterval?: number;
 }
 
 const ROTATION_MS = 4200;
@@ -49,6 +51,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'chart-throughput-mixed',
     scenario: 'Product Delivery Command Center',
     modeLabel: 'Chart',
+    previewItemCount: 5,
     headerTitle: 'Release Velocity Snapshot',
     headerSubtitle: 'Weekly completion, commitments, and spillover by squad',
     footerSubtitle: 'Updated 6 minutes ago',
@@ -82,6 +85,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'board-basic',
     scenario: 'Cross-Team Sprint Board',
     modeLabel: 'Board',
+    previewItemCount: 4,
     headerTitle: 'Q3 Launch Workboard',
     headerSubtitle: 'Execution lanes across product, design, and GTM',
     collapseInitialState: 'expanded',
@@ -118,6 +122,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'rich-cells-table',
     scenario: 'Client Portfolio Operations',
     modeLabel: 'Table',
+    previewItemCount: 4,
     headerTitle: 'Enterprise Account Health',
     centerHeaderTitle: true,
     footerSubtitle: 'Prioritized by renewal risk and expansion upside',
@@ -151,6 +156,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'basic-grid-layout',
     scenario: 'Retail Workforce Directory',
     modeLabel: 'Grid',
+    previewItemCount: 4,
     headerTitle: 'Store Team Roster',
     headerSubtitle: 'Coverage for weekend staffing and manager escalation',
     collapseInitialState: 'expanded',
@@ -183,6 +189,8 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'carousel-full',
     scenario: 'Marketing Asset Review',
     modeLabel: 'Carousel',
+    previewItemCount: 6,
+    carouselAutoPlayInterval: 1600,
     headerTitle: 'Campaign Creative Picks',
     headerSubtitle: 'Regional teams shortlisting hero visuals for launch',
     collapseInitialState: 'expanded',
@@ -215,6 +223,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     id: 'zone-dynamic-renderers',
     scenario: 'Support Queue Triage',
     modeLabel: 'Composable Zones',
+    previewItemCount: 4,
     headerTitle: 'Priority Inbox Console',
     collapseInitialState: 'expanded',
     fontFamily: 'Century Gothic, Futura, Trebuchet MS, sans-serif',
@@ -361,6 +370,52 @@ const buildTeaserConfig = (baseConfig: any, spec: CuratedTeaserSpec): any => {
     initialState: 'expanded',
   };
 
+  if (spec.id === 'carousel-full' && spec.carouselAutoPlayInterval) {
+    const existingModeConfig = nextConfig.zones?.content?.modeConfig ?? {};
+    const existingCarousel = existingModeConfig.carousel ?? {};
+    const existingItem = nextConfig.zones?.content?.item ?? {};
+    const existingFields = Array.isArray(existingItem.fields) ? existingItem.fields : [];
+    const normalizedFields = existingFields.map((field: any) => {
+      if (field?.type !== 'image') {
+        return field;
+      }
+
+      return {
+        ...field,
+        imageOptions: {
+          ...(field.imageOptions ?? {}),
+          borderRadius: '8px 8px 0 0',
+        },
+      };
+    });
+
+    nextConfig.zones = {
+      ...nextConfig.zones,
+      content: {
+        ...nextConfig.zones.content,
+        modeConfig: {
+          ...existingModeConfig,
+          carousel: {
+            ...existingCarousel,
+            autoPlay: true,
+            autoPlayInterval: spec.carouselAutoPlayInterval,
+          },
+        },
+        item: {
+          ...existingItem,
+          cardOptions: {
+            ...(existingItem.cardOptions ?? {}),
+            borderRadius: '8px',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: spec.borderColor,
+          },
+          fields: normalizedFields,
+        },
+      },
+    };
+  }
+
   return nextConfig;
 };
 
@@ -386,10 +441,11 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
         return {
           ...spec,
           example,
+          teaserData: example.data.slice(0, spec.previewItemCount ?? example.data.length),
           teaserConfig: buildTeaserConfig(example.config, spec),
         };
       })
-      .filter((item): item is CuratedTeaserSpec & { example: (typeof widgemoExamples)[number]; teaserConfig: any } => Boolean(item));
+      .filter((item): item is CuratedTeaserSpec & { example: (typeof widgemoExamples)[number]; teaserData: (typeof widgemoExamples)[number]['data']; teaserConfig: any } => Boolean(item));
 
     if (curated.length > 0) {
       return curated;
@@ -399,6 +455,7 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
       {
         ...TEASER_CURATION[0],
         example: widgemoExamples[0],
+        teaserData: widgemoExamples[0].data.slice(0, TEASER_CURATION[0].previewItemCount ?? widgemoExamples[0].data.length),
         teaserConfig: buildTeaserConfig(widgemoExamples[0].config, TEASER_CURATION[0]),
       },
     ];
@@ -509,14 +566,15 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                 </div>
                 <div
                   inert
-                  className="flex-grow-1 overflow-auto"
+                  className="flex-grow-1 overflow-hidden"
                   style={{
                     padding: '8px',
+                    minHeight: 0,
                   }}
                 >
                   <Widgemo
                     key={currentConfigIndex}
-                    data={currentTeaserItem.example.data}
+                    data={currentTeaserItem.teaserData}
                     config={currentTeaserItem.teaserConfig}
                     className="my-custom-widgemo"
                   />

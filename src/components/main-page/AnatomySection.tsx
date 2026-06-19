@@ -66,40 +66,87 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
     },
   };
 
+  const chartConfig: WidgemoConfig = {
+    zones: {
+      content: {
+        mode: 'chart',
+        modeConfig: {
+          chart: {
+            xAxis: 'name',
+            series: [
+              { type: 'bar', key: 'progress', label: 'Progress' },
+              { type: 'line', key: 'rating', label: 'Rating', showDots: true },
+            ],
+            height: 220,
+            showGrid: true,
+            showLegend: true,
+            legendAlign: 'center',
+          },
+        },
+        item: {
+          fields: [
+            { key: 'name', label: 'Name', type: 'text' },
+            { key: 'progress', label: 'Progress', type: 'number' },
+            { key: 'rating', label: 'Rating', type: 'number' },
+          ],
+          layout: { type: 'auto' },
+        },
+      },
+    },
+  };
+
+  const renderMiniPreview = (title: string, config: WidgemoConfig) => (
+    <Card className="h-100 shadow-sm theme-aware-card">
+      <Card.Body className="p-2 d-flex flex-column" style={{ minHeight: '250px' }}>
+        <h3 className="mb-2" style={{ fontSize: '0.88rem', fontWeight: 600 }}>{title}</h3>
+        <div
+          className="flex-grow-1"
+          style={{
+            height: '190px',
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--app-border, #dee2e6)',
+            background: 'var(--app-bg-primary)',
+          }}
+        >
+          <div
+            style={{
+              transform: 'scale(0.52)',
+              transformOrigin: 'top left',
+              width: '192%',
+              height: '192%',
+              pointerEvents: 'none',
+            }}
+          >
+            <Widgemo data={sampleData} config={config} className="my-custom-widgemo" />
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+
   return (
     <section id="anatomy" className="section-block theme-aware-section">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="section-header">
           <h2 className="section-title theme-aware-text">How Widgemo Works</h2>
           <p className="section-subtitle theme-aware-text">
-            One primitive, many outputs. The same data and field schema can render as table, grid, and board with config alone.
+            One primitive, many outputs. The same data and field schema can render as table, grid, board, and chart with config alone.
           </p>
         </div>
 
-        <Row className="g-4 mb-4">
-          <Col xl={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <h3 className="mb-2" style={{ fontSize: '0.95rem', fontWeight: 600 }}>Table</h3>
-                <Widgemo data={sampleData} config={tableConfig} className="my-custom-widgemo" />
-              </Card.Body>
-            </Card>
+        <Row className="g-3 mb-4">
+          <Col md={6}>
+            {renderMiniPreview('Table', tableConfig)}
           </Col>
-          <Col xl={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <h3 className="mb-2" style={{ fontSize: '0.95rem', fontWeight: 600 }}>Grid</h3>
-                <Widgemo data={sampleData} config={gridConfig} className="my-custom-widgemo" />
-              </Card.Body>
-            </Card>
+          <Col md={6}>
+            {renderMiniPreview('Grid', gridConfig)}
           </Col>
-          <Col xl={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <h3 className="mb-2" style={{ fontSize: '0.95rem', fontWeight: 600 }}>Board</h3>
-                <Widgemo data={sampleData} config={boardConfig} className="my-custom-widgemo" />
-              </Card.Body>
-            </Card>
+          <Col md={6}>
+            {renderMiniPreview('Board', boardConfig)}
+          </Col>
+          <Col md={6}>
+            {renderMiniPreview('Chart', chartConfig)}
           </Col>
         </Row>
 
