@@ -1,211 +1,197 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Row, Col, Card, Badge } from 'react-bootstrap';
-import { FaLayerGroup, FaCog, FaCodeBranch, FaPuzzlePiece } from 'react-icons/fa';
+import { Widgemo, type FieldConfig, type WidgemoConfig } from '@widgemo/widgemo-core';
+import { teaserSampleData } from '../../data/sampleData';
 
 interface AnatomySectionProps {
   currentTheme?: string;
 }
 
+const baseFields: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text' },
+  { key: 'role', label: 'Role', type: 'text' },
+  { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' },
+];
+
 export const AnatomySection: React.FC<AnatomySectionProps> = () => {
+  const sampleData = useMemo(() => teaserSampleData.slice(0, 4), []);
+
+  const tableConfig: WidgemoConfig = {
+    zones: {
+      content: {
+        mode: 'table',
+        item: {
+          fields: baseFields,
+          layout: { type: 'auto' },
+        },
+      },
+    },
+  };
+
+  const gridConfig: WidgemoConfig = {
+    zones: {
+      content: {
+        mode: 'grid',
+        modeConfig: { grid: { maxColumns: 2, gap: '0.6rem' } },
+        item: {
+          fields: baseFields,
+          layout: { type: 'auto' },
+        },
+      },
+    },
+  };
+
+  const boardConfig: WidgemoConfig = {
+    zones: {
+      content: {
+        mode: 'board',
+        modeConfig: {
+          board: {
+            columns: {
+              field: 'status',
+              items: [
+                { id: 'active', label: 'Active', value: 'active' },
+                { id: 'pending', label: 'Pending', value: 'pending' },
+                { id: 'inactive', label: 'Inactive', value: 'inactive' },
+              ],
+            },
+            dragEnabled: false,
+          },
+        },
+        item: {
+          fields: baseFields,
+          layout: { type: 'auto' },
+        },
+      },
+    },
+  };
+
+  const chartConfig: WidgemoConfig = {
+    zones: {
+      content: {
+        mode: 'chart',
+        modeConfig: {
+          chart: {
+            xAxis: 'name',
+            series: [
+              { type: 'bar', key: 'progress', label: 'Progress' },
+              { type: 'line', key: 'rating', label: 'Rating', showDots: true },
+            ],
+            height: 220,
+            showGrid: true,
+            showLegend: true,
+            legendAlign: 'center',
+          },
+        },
+        item: {
+          fields: [
+            { key: 'name', label: 'Name', type: 'text' },
+            { key: 'progress', label: 'Progress', type: 'number' },
+            { key: 'rating', label: 'Rating', type: 'number' },
+          ],
+          layout: { type: 'auto' },
+        },
+      },
+    },
+  };
+
+  const renderMiniPreview = (title: string, config: WidgemoConfig) => (
+    <Card className="h-100 shadow-sm theme-aware-card">
+      <Card.Body className="p-2 d-flex flex-column" style={{ minHeight: '250px' }}>
+        <h3 className="mb-2" style={{ fontSize: '0.88rem', fontWeight: 600 }}>{title}</h3>
+        <div
+          className="flex-grow-1"
+          style={{
+            height: '190px',
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--app-border, #dee2e6)',
+            background: 'var(--app-bg-primary)',
+          }}
+        >
+          <div
+            style={{
+              transform: 'scale(0.52)',
+              transformOrigin: 'top left',
+              width: '192%',
+              height: '192%',
+              pointerEvents: 'none',
+            }}
+          >
+            <Widgemo data={sampleData} config={config} className="my-custom-widgemo" />
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+
   return (
     <section id="anatomy" className="section-block theme-aware-section">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="section-header">
-          <h2 className="section-title theme-aware-text">Anatomy of a Widgemo</h2>
-          <p className="section-subtitle theme-aware-text">Understanding the configurable layers of the primitive</p>
+          <h2 className="section-title theme-aware-text">How Widgemo Works</h2>
+          <p className="section-subtitle theme-aware-text">
+            One primitive, many outputs. The same data and field schema can render as table, grid, board, and chart with config alone.
+          </p>
         </div>
-      <div className="mb-4">
+
+        <Row className="g-3 mb-4">
+          <Col md={6}>
+            {renderMiniPreview('Table', tableConfig)}
+          </Col>
+          <Col md={6}>
+            {renderMiniPreview('Grid', gridConfig)}
+          </Col>
+          <Col md={6}>
+            {renderMiniPreview('Board', boardConfig)}
+          </Col>
+          <Col md={6}>
+            {renderMiniPreview('Chart', chartConfig)}
+          </Col>
+        </Row>
+
         <Row className="g-4">
-          {/* The Single Primitive */}
-          <Col lg={12} className="mb-4">
+          <Col lg={6}>
             <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-3">
+                <h3 className="mb-3" style={{ fontSize: '1rem', fontWeight: 600 }}>Core Layers</h3>
                 <div className="d-flex align-items-center mb-2">
-                  <FaLayerGroup className="text-primary me-2" size={18} />
-                  <h3 className="mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>The Single Primitive</h3>
+                  <Badge bg="primary" className="me-2">Header</Badge>
+                  <span style={{ fontSize: '0.86rem' }}>Titles, summary, top-level actions</span>
                 </div>
-                <p className="text-muted mb-3" style={{ fontSize: '0.875rem' }}>
-                  One React component that adapts to render boards, tables, grids, charts, and more through configuration alone.
-                </p>
-                <div className="text-center">
-                  {/* Placeholder for diagram showing one component → many modes */}
-                  <div style={{
-                    height: '140px',
-                    backgroundColor: 'rgba(0,0,0,0.06)',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: '1px dashed var(--app-border)'
-                  }}>
-                    <div className="text-center">
-                      <FaLayerGroup size={28} className="text-muted mb-1" />
-                      <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>
-                        [Diagram: Widgemo Component → Table, Board, Grid, Chart modes]<br/>
-                        <em>Future: Interactive SVG showing component transformation</em>
-                      </p>
-                    </div>
-                  </div>
+                <div className="d-flex align-items-center mb-2">
+                  <Badge bg="success" className="me-2">Content</Badge>
+                  <span style={{ fontSize: '0.86rem' }}>Modes, filtering, grouping, pagination, interactions</span>
+                </div>
+                <div className="d-flex align-items-center mb-2">
+                  <Badge bg="warning" className="me-2">Item & Fields</Badge>
+                  <span style={{ fontSize: '0.86rem' }}>Value semantics and render behavior</span>
+                </div>
+                <div className="d-flex align-items-center mb-2">
+                  <Badge bg="info" className="me-2">Theme</Badge>
+                  <span style={{ fontSize: '0.86rem' }}>Visual identity and system consistency</span>
                 </div>
               </Card.Body>
             </Card>
           </Col>
-
-          {/* Core Layers of Configurability */}
           <Col lg={6}>
             <Card className="h-100 shadow-sm theme-aware-card">
               <Card.Body className="p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaCog className="text-success me-2" size={18} />
-                  <h3 className="mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>Core Layers of Configurability</h3>
-                </div>
-                <p className="text-muted mb-3" style={{ fontSize: '0.875rem' }}>
-                  Four independent configuration layers that can be mixed and matched.
+                <h3 className="mb-3" style={{ fontSize: '1rem', fontWeight: 600 }}>Extension Story</h3>
+                <p className="text-muted mb-2" style={{ fontSize: '0.86rem' }}>
+                  Start with built-ins, then extend only where your product needs it.
                 </p>
-                <div className="mb-3">
-                  <div className="d-flex align-items-center mb-1">
-                    <Badge bg="primary" className="me-2">Header</Badge>
-                    <span style={{ fontSize: '0.8125rem' }}>Controls, actions, and navigation</span>
-                  </div>
-                  <div className="d-flex align-items-center mb-1">
-                    <Badge bg="success" className="me-2">Content</Badge>
-                    <span style={{ fontSize: '0.8125rem' }}>Layout, rendering, and display modes</span>
-                  </div>
-                  <div className="d-flex align-items-center mb-1">
-                    <Badge bg="warning" className="me-2">Theme</Badge>
-                    <span style={{ fontSize: '0.8125rem' }}>Colors, spacing, and visual styling</span>
-                  </div>
-                  <div className="d-flex align-items-center mb-1">
-                    <Badge bg="info" className="me-2">Capabilities</Badge>
-                    <span style={{ fontSize: '0.8125rem' }}>Features, interactions, and behaviors</span>
-                  </div>
-                </div>
-                {/* Annotated screenshot of configuration layers */}
-                <img
-                  src="/annotated.jpg"
-                  alt="Annotated screenshot showing the four layers of Widgemo configuration: Header, Content, Theme, and Capabilities"
-                  className="img-fluid rounded shadow-sm"
-                  style={{ maxHeight: '400px', width: '100%', objectFit: 'contain' }}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-
-          {/* How Modes Adapt */}
-          <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaCodeBranch className="text-warning me-2" size={18} />
-                  <h3 className="mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>How Modes Adapt</h3>
-                </div>
-                <p className="text-muted mb-3" style={{ fontSize: '0.875rem' }}>
-                  The same data rendered differently through mode configuration alone.
-                </p>
-                {/* Placeholder for side-by-side mode comparison */}
-                <div style={{
-                  height: '140px',
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px dashed rgba(255,255,255,0.3)'
-                }}>
-                  <div className="text-center">
-                    <FaCodeBranch size={28} className="text-muted mb-2" />
-                    <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>
-                      [Side-by-side Comparison]<br/>
-                      <em>Future: Carousel showing same data in Table/Board/Grid modes</em>
-                    </p>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          {/* Extending with Overrides */}
-          <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaPuzzlePiece className="text-info me-2" size={18} />
-                  <h3 className="mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>Extending with Overrides</h3>
-                </div>
-                <p className="text-muted mb-3" style={{ fontSize: '0.875rem' }}>
-                  Customize behavior through adapter functions and render prop overrides.
-                </p>
-                <div className="bg-dark p-3 rounded mb-3" style={{ fontSize: '0.875rem' }}>
-                  <pre style={{ color: '#e9ecef', margin: 0 }}>
-{`// Custom data adapter
-const customAdapters = {
-  fetchData: async (params) => {
-    const response = await api.get('/data', { params });
-    return {
-      data: response.data.items,
-      total: response.data.total
-    };
-  }
-};`}
-                  </pre>
-                </div>
-                {/* Placeholder for before/after comparison */}
-                <div style={{
-                  height: '100px',
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px dashed rgba(255,255,255,0.3)'
-                }}>
-                  <div className="text-center">
-                    <FaPuzzlePiece size={28} className="text-muted mb-2" />
-                    <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>
-                      [Before/After Comparison]<br/>
-                      <em>Future: Split view showing default vs customized rendering</em>
-                    </p>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          {/* Parent-Child Composition */}
-          <Col lg={6}>
-            <Card className="h-100 shadow-sm theme-aware-card">
-              <Card.Body className="p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaLayerGroup className="text-danger me-2" size={18} />
-                  <h3 className="mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>Parent-Child Composition</h3>
-                </div>
-                <p className="text-muted mb-3" style={{ fontSize: '0.875rem' }}>
-                  Compose complex interfaces by nesting Widgemo instances with different configurations.
-                </p>
-                {/* Placeholder for composition diagram */}
-                <div style={{
-                  height: '140px',
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px dashed rgba(255,255,255,0.3)'
-                }}>
-                  <div className="text-center">
-                    <FaLayerGroup size={28} className="text-muted mb-2" />
-                    <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>
-                      [Composition Diagram]<br/>
-                      <em>Future: Tree diagram showing parent-child Widgemo relationships</em>
-                    </p>
-                  </div>
-                </div>
+                <ul className="text-muted" style={{ fontSize: '0.84rem', paddingLeft: '1rem' }}>
+                  <li>Custom renderAs for new visual treatments</li>
+                  <li>Custom field types for domain semantics</li>
+                  <li>Custom modes for layout strategies</li>
+                  <li>Custom icons and hooks for product integration</li>
+                </ul>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };

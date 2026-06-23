@@ -43,8 +43,8 @@ export const ResourcesSection: React.FC = () => (
             <Card.Body className="text-center p-3">
               <div className="mb-2 text-warning" style={{ fontSize: '1.75rem', lineHeight: 1 }}>$</div>
               <h5 style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Install</h5>
-              <code className="d-block bg-dark p-2 rounded" style={{ fontSize: '0.8125rem' }}>npm install widgemo-core</code>
-              <Button variant="outline-light" size="sm" className="mt-2">Copy Command</Button>
+              <code className="d-block bg-dark p-2 rounded" style={{ fontSize: '0.8125rem' }}>npm install @widgemo/widgemo-core</code>
+              <Button variant="outline-light" size="sm" className="mt-2" href="https://docs.widgemo.com/core/getting-started/installation" target="_blank" rel="noopener noreferrer">Install Guide →</Button>
             </Card.Body>
           </Card>
         </Col>

@@ -2881,6 +2881,103 @@ const widgemoExamples: Array<{
     },
   },
 
+  // ── NEW: Chart mode examples ─────────────────────────────────────────────
+  {
+    id: 'chart-throughput-mixed',
+    title: 'Chart Mode: Throughput (bar + area + line)',
+    description: 'Demonstrates chart mode with mixed series types to visualize completed, planned, and spillover work over time.',
+    data: [
+      { id: 'w1', label: 'Week 1', completed: 22, planned: 24, spillover: 4 },
+      { id: 'w2', label: 'Week 2', completed: 27, planned: 26, spillover: 3 },
+      { id: 'w3', label: 'Week 3', completed: 25, planned: 28, spillover: 5 },
+      { id: 'w4', label: 'Week 4', completed: 31, planned: 30, spillover: 2 },
+      { id: 'w5', label: 'Week 5', completed: 29, planned: 31, spillover: 4 },
+      { id: 'w6', label: 'Week 6', completed: 34, planned: 33, spillover: 2 },
+    ] as Entity[],
+    config: {
+      id: 'chart-throughput-mixed',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Chart Mode — Throughput Trend',
+          subtitle: 'Mixed series configuration: bar + area + line',
+        },
+        content: {
+          mode: 'chart',
+          modeConfig: {
+            chart: {
+              xAxis: 'label',
+              series: [
+                { type: 'bar', key: 'completed', label: 'Completed', color: '#3b82f6' },
+                { type: 'area', key: 'spillover', label: 'Spillover', color: '#a78bfa', areaGradient: true },
+                { type: 'line', key: 'planned', label: 'Planned', color: '#f59e0b', showDots: true },
+              ],
+              height: 320,
+              showGrid: true,
+              showLabels: false,
+              showLegend: true,
+              legendAlign: 'center',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'label', label: 'Period' },
+              { key: 'completed', label: 'Completed' },
+              { key: 'planned', label: 'Planned' },
+              { key: 'spillover', label: 'Spillover' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'chart-allocation-donut',
+    title: 'Chart Mode: Allocation (donut)',
+    description: 'Demonstrates chart mode donut series for composition and proportion analysis across workstreams.',
+    data: [
+      { id: 'eng', workstream: 'Engineering', count: 18 },
+      { id: 'design', workstream: 'Design', count: 7 },
+      { id: 'growth', workstream: 'Growth', count: 10 },
+      { id: 'ops', workstream: 'Operations', count: 5 },
+    ] as Entity[],
+    config: {
+      id: 'chart-allocation-donut',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Chart Mode — Capacity Allocation',
+          subtitle: 'Donut series with legend and labels',
+        },
+        content: {
+          mode: 'chart',
+          modeConfig: {
+            chart: {
+              xAxis: 'workstream',
+              series: [
+                { type: 'donut', key: 'count', label: 'Allocation' },
+              ],
+              height: 320,
+              showLegend: true,
+              legendAlign: 'center',
+              showLabels: true,
+              donutInnerRadiusRatio: 0.62,
+            },
+          },
+          item: {
+            fields: [
+              { key: 'workstream', label: 'Workstream' },
+              { key: 'count', label: 'Count' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
   // ── NEW: Content loadingState ────────────────────────────────────────────
   {
     id: 'content-loading-state-skeleton-text-bars',
