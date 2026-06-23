@@ -13,16 +13,26 @@ interface ExampleItem {
   config: WidgemoConfig;
 }
 
-const FEATURED_IDS = [
-  'rich-cells-table',
-  'basic-grid-layout',
-  'board-basic',
-  'chart-throughput-mixed',
-  'per-item-actions-demo',
-  'zone-dynamic-renderers',
-  'item-layout-grid',
-  'content-loading-state-spinner',
-] as const;
+// Description overrides applied to catalog cards (replaces source descriptions for these IDs)
+const DESCRIPTION_OVERRIDES: Record<string, string> = {
+  'rich-cells-table': 'Images, formatted values, and badges in a rich table layout. A realistic starting point for any people or resource directory.',
+  'basic-grid-layout': 'Responsive card grid driven entirely by field config. Switch from table to grid with one property change.',
+  'per-item-actions-demo': 'Pinned, hover, and menu actions per row — configured declaratively, no custom render logic required.',
+  'board-basic': "Kanban columns that emerge automatically from your data's status field. No column definitions, no drag-drop boilerplate.",
+  'chart-throughput-mixed': 'Mixed series chart — bars, area, and line — from the same data and field schema as your table. One component, zero charting setup.',
+  'responsive-mode-switching': 'Table on desktop, grid on tablet, carousel on mobile. Resize the window and watch Widgemo switch modes automatically.',
+  'zone-dynamic-renderers': 'The zone header title and subtitle can reflect live data — record counts, derived labels, or any computed string. No external state required.',
+  'renderas-badge-advanced': 'Render any field as a badge with icon, color, size, and style controlled by config. Use a colorMap function for data-driven badge colors.',
+  'currency-advanced': 'Currency fields with compact notation, positive/negative colorization, locale formatting, and decimal control — all from field config.',
+  'image-advanced': 'Every image display option in one view: objectFit, circular crop, border, shadow, lightbox, and lazy loading. Combine freely per field.',
+  'item-layout-grid': 'Full CSS grid control per item — define columns, gap, and template areas to position fields exactly where you need them.',
+  'carousel-full': 'Every carousel config option in one example: item dimensions, indicators, arrows, infinite scroll, autoplay, and drag threshold.',
+  'chart-allocation-donut': 'Donut chart mode for composition and proportion data. Configure series, labels, and legend from the same field schema as your table.',
+  'content-loading-state-skeleton-pie-chart': 'Skeleton loading variant shaped like a pie chart. Use it when your chart data loads async and you want a visually appropriate placeholder.',
+  'content-loading-state-spinner': 'Built-in loading spinner state — animated, visually distinct from skeleton placeholders. Triggered by a single status prop.',
+  'content-error-state': 'Error state with warning severity and a centered retry action. Configure message, severity, and retry behavior without custom error components.',
+  'search-with-pagination': 'Search filters the full dataset first, then pagination slices the results. Page resets automatically on each new query — no wiring required.',
+};
 
 const CORE_EXAMPLE_IDS = [
   'rich-cells-table',
@@ -75,15 +85,15 @@ export const ExamplesPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const coreExampleSet = useMemo(() => new Set<string>(CORE_EXAMPLE_IDS), []);
-  const featuredSet = useMemo(() => new Set(FEATURED_IDS), []);
 
   const coreExamples = useMemo(() => {
-    return widgemoExamples.filter((item) => coreExampleSet.has(item.id));
+    return widgemoExamples
+      .filter((item) => coreExampleSet.has(item.id))
+      .map((item) => ({
+        ...item,
+        description: DESCRIPTION_OVERRIDES[item.id] ?? item.description,
+      }));
   }, [coreExampleSet]);
-
-  const featuredExamples = useMemo(() => {
-    return coreExamples.filter((item) => featuredSet.has(item.id as (typeof FEATURED_IDS)[number]));
-  }, [coreExamples, featuredSet]);
 
   const filteredCatalog = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -167,28 +177,21 @@ export const ExamplesPage: React.FC = () => {
   };
 
   return (
-    <Container fluid className="py-4" style={{ maxWidth: '1500px' }}>
+    <Container fluid className="pt-5 pb-4" style={{ maxWidth: '1500px' }}>
       <div className="mb-4">
         <h1 style={{ fontSize: '1.85rem', fontWeight: 700, marginBottom: '0.4rem' }}>Examples</h1>
         <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
-          Core Widgemo capabilities only. This catalog is intentionally curated to 17 examples.
-        </p>
-        <p className="text-muted mb-0" style={{ fontSize: '0.85rem' }}>
-          Custom mode showcases (including timeline) are intentionally kept in Applications.
+          Real Widgemo configs, ready to explore. Open any example in the Sandbox to edit it live.
         </p>
       </div>
 
-      <section className="mb-5">
-        <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }} className="mb-3">Featured Examples</h2>
-        <Row className="g-3">
-          {featuredExamples.map(renderCard)}
-        </Row>
-      </section>
-
       <section>
-        <div className="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: 0 }}>Core Catalog</h2>
-          <div className="d-flex gap-2" style={{ minWidth: '340px', maxWidth: '540px', width: '100%' }}>
+        <div className="d-flex justify-content-end mb-3">
+          <div style={{ minWidth: '340px', maxWidth: '540px', width: '100%' }}>
+            <p className="text-muted mb-2" style={{ fontSize: '0.85rem' }}>
+              Filter by capability, or search by name. Each card opens a live Sandbox.
+            </p>
+            <div className="d-flex gap-2">
             <Form.Control
               size="sm"
               value={search}
@@ -205,6 +208,7 @@ export const ExamplesPage: React.FC = () => {
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </Form.Select>
+            </div>
           </div>
         </div>
 

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar as BootstrapNavbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
   topOffset?: number;
+  onHeightChange?: (height: number) => void;
 }
 
-export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
+export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightChange }) => {
   const location = useLocation();
+  const navbarRef = useRef<HTMLElement | null>(null);
   const isSandbox = location.pathname === '/sandbox';
 
   const isApplicationsActive =
@@ -16,9 +18,33 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
     location.pathname === '/dashboard' ||
     location.pathname === '/cashflow-dashboard';
 
+  useEffect(() => {
+    if (!onHeightChange || !navbarRef.current) return;
+
+    const element = navbarRef.current;
+    onHeightChange(element.offsetHeight);
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const nextHeight = entry?.contentRect?.height ?? element.offsetHeight;
+      onHeightChange(Math.round(nextHeight));
+    });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [onHeightChange]);
+
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow" style={{ top: `${topOffset}px` }}>
+      <BootstrapNavbar
+        bg="dark"
+        variant="dark"
+        fixed="top"
+        expand="lg"
+        className="shadow"
+        style={{ top: `${topOffset}px` }}
+        ref={navbarRef as never}
+      >
         <BootstrapNavbar.Brand 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           as={Link as any} 

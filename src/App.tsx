@@ -155,6 +155,8 @@ function AppContent() {
   ensureRegistryExtensions();
 
   const { currentTheme } = useTheme();
+  const siteBannerHeight = 38;
+  const navbarBaseHeight = 88;
   const [bannerVisible, setBannerVisible] = useState(
     window.location.hostname === 'dev.widgemo.com' &&
     localStorage.getItem('widgemo-devbanner-dismissed') !== 'true'
@@ -276,7 +278,34 @@ function AppContent() {
       }}>
         <AppNavbar topOffset={navOffset} />
 
-        <div style={{ marginTop: `${56 + navOffset}px` }}>
+        <div style={{ marginTop: `${navOffset + navbarBaseHeight}px` }}>
+          <div
+            style={{
+              minHeight: `${siteBannerHeight}px`,
+              display: 'flex',
+              alignItems: 'center',
+              background: 'rgba(95, 75, 139, 0.35)',
+              color: '#ffffff',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.14)',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              lineHeight: 1.25,
+            }}
+          >
+            <span
+              style={{
+                width: '100%',
+                textAlign: 'center',
+                color: '#ffffff',
+                opacity: 1,
+                textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                padding: '0.35rem 1rem',
+              }}
+            >
+              ↳ This demo site is built entirely with Widgemo — every data view you see is a live instance.
+            </span>
+          </div>
+
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route

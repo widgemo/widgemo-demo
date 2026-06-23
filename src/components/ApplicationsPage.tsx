@@ -9,8 +9,7 @@ export const ApplicationsPage: React.FC = () => {
       <div className="mb-4">
         <h1 style={{ fontSize: '1.85rem', fontWeight: 700, marginBottom: '0.4rem' }}>Applications</h1>
         <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
-          Full application experiences built with multiple Widgemo instances. These are advanced examples that show
-          how mode combinations, shared filters, and interaction flows work together in real interfaces.
+          Realistic application mockups built with Widgemo. These show what production-scale UIs look like when data views are config-driven — not what you'd build from scratch.
         </p>
       </div>
 
@@ -55,7 +54,7 @@ export const ApplicationsPage: React.FC = () => {
               </div>
               <p className="text-muted" style={{ fontSize: '0.9rem' }}>
                 Cashflow command center with liquidity KPIs, forecasts, upcoming events timeline, transaction
-                intelligence, alerts triage, and scenario planning.
+                intelligence, alerts triage, and scenario planning. Built entirely from Widgemo instances — no custom layout components.
               </p>
               <div className="mb-3">
                 <Badge bg="secondary" className="me-2">Grid</Badge>
