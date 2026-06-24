@@ -17,6 +17,21 @@ export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
       <Row className="g-4">
         <Col lg={6}>
           <Card className="h-100 shadow-sm theme-aware-card">
+            <div style={{ overflow: 'hidden', borderRadius: '0.375rem 0.375rem 0 0' }}>
+              <img
+                src="/assets/app-thumb-team-portfolio.png"
+                alt="Team Portfolio dashboard preview"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: '0.375rem 0.375rem 0 0',
+                }}
+                onError={(event) => {
+                  event.currentTarget.style.visibility = 'hidden';
+                }}
+              />
+            </div>
             <Card.Body className="d-flex flex-column">
               <div className="d-flex align-items-center mb-3">
                 <FaChartLine className="text-primary me-2" />
@@ -36,6 +51,21 @@ export const AdvancedSection: React.FC<AdvancedSectionProps> = () => (
 
         <Col lg={6}>
           <Card className="h-100 shadow-sm theme-aware-card">
+            <div style={{ overflow: 'hidden', borderRadius: '0.375rem 0.375rem 0 0' }}>
+              <img
+                src="/assets/app-thumb-finance-tracker.png"
+                alt="Finance Tracker dashboard preview"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: '0.375rem 0.375rem 0 0',
+                }}
+                onError={(event) => {
+                  event.currentTarget.style.visibility = 'hidden';
+                }}
+              />
+            </div>
             <Card.Body className="d-flex flex-column">
               <div className="d-flex align-items-center mb-3">
                 <FaWallet className="text-success me-2" />

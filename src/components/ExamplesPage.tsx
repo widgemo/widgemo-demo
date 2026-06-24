@@ -32,6 +32,7 @@ const DESCRIPTION_OVERRIDES: Record<string, string> = {
   'content-loading-state-spinner': 'Built-in loading spinner state — animated, visually distinct from skeleton placeholders. Triggered by a single status prop.',
   'content-error-state': 'Error state with warning severity and a centered retry action. Configure message, severity, and retry behavior without custom error components.',
   'search-with-pagination': 'Search filters the full dataset first, then pagination slices the results. Page resets automatically on each new query — no wiring required.',
+  'grouped-rows-with-collapse': 'Group records by field and collapse each group independently. Pure config-driven grouping with no custom components.',
 };
 
 const CORE_EXAMPLE_IDS = [
@@ -44,6 +45,7 @@ const CORE_EXAMPLE_IDS = [
   'responsive-mode-switching',
   'per-item-actions-demo',
   'search-with-pagination',
+  'grouped-rows-with-collapse',
   'zone-dynamic-renderers',
   'renderas-badge-advanced',
   'currency-advanced',
@@ -62,6 +64,7 @@ const CATEGORY_BY_ID: Record<string, string> = {
   'responsive-mode-switching': 'Core Modes',
   'per-item-actions-demo': 'Interactions',
   'search-with-pagination': 'Interactions',
+  'grouped-rows-with-collapse': 'Interactions',
   'zone-dynamic-renderers': 'Data Presentation',
   'renderas-badge-advanced': 'Data Presentation',
   'currency-advanced': 'Data Presentation',

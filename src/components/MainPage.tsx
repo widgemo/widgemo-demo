@@ -25,7 +25,7 @@ export const MainPage: React.FC = () => {
           <div className="section-header">
             <h2 className="section-title theme-aware-text">See It Working</h2>
             <p className="section-subtitle theme-aware-text">
-              17 curated examples — each one a real Widgemo config you can open in the Sandbox and edit live.
+              Every example is a real Widgemo config — open any of them in the Sandbox and edit live.
             </p>
           </div>
           <Button

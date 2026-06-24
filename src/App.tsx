@@ -302,7 +302,7 @@ function AppContent() {
                 padding: '0.35rem 1rem',
               }}
             >
-              ↳ This demo site is built entirely with Widgemo — every data view you see is a live instance.
+              This demo site is built entirely with Widgemo — every data view you see is a live instance.
             </span>
           </div>
 
