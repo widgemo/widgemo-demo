@@ -1,7 +1,14 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Widgemo, type FieldConfig, type WidgemoConfig } from '@widgemo/widgemo-core';
-import { FaCogs, FaLayerGroup, FaPlug } from 'react-icons/fa';
+import { FaCogs, FaLayerGroup, FaPlug, FaChevronDown } from 'react-icons/fa';
+import {
+  LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON,
+  LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE,
+  LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE,
+  liquiditySnapshotSummaryConfig,
+} from '../CashflowDashboardPage';
+import { getCashflowKpis } from '../../data/cashflowDashboardData';
 import { teaserSampleData } from '../../data/sampleData';
 
 interface AnatomySectionProps {
@@ -89,7 +96,12 @@ const snippetLabelStyle: React.CSSProperties = {
 export const AnatomySection: React.FC<AnatomySectionProps> = () => {
   const [activeMode, setActiveMode] = useState<'table' | 'grid' | 'board' | 'chart'>('table');
   const [deltaVisible, setDeltaVisible] = useState(true);
+  const [activePanel, setActivePanel] = useState<'config-driven' | 'composable' | 'extensible' | null>(null);
   const sampleData = useMemo(() => teaserSampleData.slice(0, 4), []);
+  const liquiditySnapshotData = useMemo(
+    () => getCashflowKpis(LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE, LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON, LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE),
+    [],
+  );
 
   // Fade the config delta panel out briefly then back in on mode change
   useEffect(() => {
@@ -185,6 +197,243 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
         : activeMode === 'board'
           ? boardConfig
           : chartConfig;
+
+  const configDrivenSnippet = `// Switch the mode. That's it.
+const config = {
+  zones: {
+    content: {
+      mode: "table"   // change to "board", "grid", or "chart"
+    }
+  }
+}`;
+
+  const extensibleSnippet = `// Custom renderer — drop in anywhere
+const renderAs = (value, item) => (
+  <span style={{
+    background: value > 80 ? '#22c55e' : '#f59e0b',
+    color: 'white',
+    padding: '2px 8px',
+    borderRadius: '999px',
+    fontSize: '0.75rem',
+  }}>
+    {value}%
+  </span>
+)
+
+// Wire it to any field
+{
+  key: 'progress',
+  label: 'Progress',
+  renderAs: renderAs
+}`;
+
+  const ConfigDrivenPanel = () => (
+    <Row className="g-4 align-items-start">
+      <Col xs={12} md={6}>
+        <span style={snippetLabelStyle}>config snippet</span>
+        <pre
+          style={{
+            ...codeBlockBase,
+            border: '1px solid var(--app-border, #dee2e6)',
+          }}
+        >
+          <code>{configDrivenSnippet}</code>
+        </pre>
+      </Col>
+      <Col xs={12} md={6}>
+        <div className="mb-2" style={{ fontSize: '0.72rem', color: 'var(--app-text-muted, #64748b)', fontFamily: 'monospace' }}>
+          mode: table
+        </div>
+        <div
+          style={{
+            height: '174px',
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--app-border, #dee2e6)',
+            background: 'var(--app-bg-primary)',
+            marginBottom: '0.75rem',
+          }}
+        >
+          <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: '133.333%', pointerEvents: 'none' }}>
+            <Widgemo data={sampleData} config={tableConfig} className="my-custom-widgemo" />
+          </div>
+        </div>
+
+        <div className="mb-2" style={{ fontSize: '0.72rem', color: 'var(--app-text-muted, #64748b)', fontFamily: 'monospace' }}>
+          mode: board
+        </div>
+        <div
+          style={{
+            height: '174px',
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--app-border, #dee2e6)',
+            background: 'var(--app-bg-primary)',
+          }}
+        >
+          <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: '133.333%', pointerEvents: 'none' }}>
+            <Widgemo data={sampleData} config={boardConfig} className="my-custom-widgemo" />
+          </div>
+        </div>
+
+        <p className="mb-0 mt-2" style={{ fontSize: '0.82rem', color: 'var(--app-text-muted, #64748b)' }}>
+          Same data. Same config shape. One property changed.
+        </p>
+      </Col>
+    </Row>
+  );
+
+  const ComposablePanel = () => (
+    <Row className="g-4 align-items-start">
+      <Col xs={12} md={6}>
+        <h4 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>
+          Multiple instances. One cohesive UI.
+        </h4>
+        <p style={{ fontSize: '0.84rem', color: 'rgba(255, 255, 255, 0.78)', marginBottom: '1rem' }}>
+          Drop several Widgemo instances onto the same page. Wire them to shared state for filters, selections, or time ranges. Each instance renders independently — but they behave as one.
+        </p>
+
+        <div
+          style={{
+            border: '1px solid rgba(95, 75, 139, 0.35)',
+            borderRadius: '10px',
+            padding: '0.85rem',
+            background: 'rgba(19, 16, 28, 0.72)',
+          }}
+        >
+          <div className="d-flex justify-content-between gap-2">
+            {['Table', 'Chart', 'Board'].map((label) => (
+              <div
+                key={label}
+                style={{
+                  flex: 1,
+                  borderRadius: '8px',
+                  border: '1px solid rgba(148, 163, 184, 0.45)',
+                  padding: '0.45rem 0.35rem',
+                  textAlign: 'center',
+                  fontSize: '0.72rem',
+                  color: '#ffffff',
+                  fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+                  background: 'rgba(30, 27, 45, 0.82)',
+                }}
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+
+          <div className="d-flex justify-content-around mt-1 mb-1">
+            {[0, 1, 2].map((index) => (
+              <div key={index} style={{ height: '14px', borderLeft: '1px solid #5f4b8b' }} />
+            ))}
+          </div>
+
+          <div className="d-flex justify-content-center mb-1">
+            <div style={{ width: '1px', height: '12px', backgroundColor: '#5f4b8b' }} />
+          </div>
+
+          <div
+            style={{
+              borderRadius: '8px',
+              padding: '0.5rem 0.55rem',
+              textAlign: 'center',
+              fontSize: '0.72rem',
+              color: '#ffffff',
+              fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+              background: 'rgba(95, 75, 139, 0.2)',
+              border: '1px solid rgba(95, 75, 139, 0.55)',
+            }}
+          >
+            Shared Filter State
+          </div>
+        </div>
+      </Col>
+
+      <Col xs={12} md={6}>
+        <div
+          style={{
+            maxHeight: '380px',
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--app-border, #dee2e6)',
+            background: 'var(--app-bg-primary)',
+          }}
+        >
+          <div style={{ pointerEvents: 'none' }}>
+            <Widgemo data={liquiditySnapshotData} config={liquiditySnapshotSummaryConfig} className="my-custom-widgemo" />
+          </div>
+        </div>
+        <p className="mb-0 mt-2" style={{ fontSize: '0.82rem', color: 'var(--app-text-muted, #64748b)' }}>
+          This is a live Widgemo instance — the same one used in the Finance Tracker demo.
+        </p>
+      </Col>
+    </Row>
+  );
+
+  const ExtensiblePanel = () => {
+    const extensibleDemoConfig: WidgemoConfig = {
+      zones: {
+        content: {
+          mode: 'table',
+          item: {
+            fields: baseFields.map((field) => {
+              if (field.key !== 'status') {
+                return field;
+              }
+
+              return {
+                ...field,
+                renderAs: 'badge',
+                renderAsOptions: {
+                  colorMap: {
+                    active: { background: '#22c55e', text: '#ffffff' },
+                    pending: { background: '#f59e0b', text: '#ffffff' },
+                    inactive: { background: '#64748b', text: '#ffffff' },
+                  },
+                  size: 'sm',
+                },
+              };
+            }),
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    };
+
+    return (
+      <Row className="g-4 align-items-start">
+        <Col xs={12} md={6}>
+          <span style={snippetLabelStyle}>custom render snippet</span>
+          <pre
+            style={{
+              ...codeBlockBase,
+              border: '1px solid var(--app-border, #dee2e6)',
+            }}
+          >
+            <code>{extensibleSnippet}</code>
+          </pre>
+        </Col>
+        <Col xs={12} md={6}>
+          <div
+            style={{
+              maxHeight: '360px',
+              overflow: 'hidden',
+              borderRadius: '8px',
+              border: '1px solid var(--app-border, #dee2e6)',
+              background: 'var(--app-bg-primary)',
+            }}
+          >
+            <div style={{ pointerEvents: 'none' }}>
+              <Widgemo data={sampleData} config={extensibleDemoConfig} className="my-custom-widgemo" />
+            </div>
+          </div>
+          <p className="mb-0 mt-2" style={{ fontSize: '0.82rem', color: 'var(--app-text-muted, #64748b)' }}>
+            The status field now renders as a custom badge — no changes to the component, only to the field config.
+          </p>
+        </Col>
+      </Row>
+    );
+  };
 
   return (
     <section id="anatomy" className="section-block theme-aware-section">
@@ -299,7 +548,15 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
 
         <Row className="g-4">
           <Col xs={12} md={6} lg={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
+            <Card
+              className="h-100 shadow-sm theme-aware-card"
+              onClick={() => setActivePanel(activePanel === 'config-driven' ? null : 'config-driven')}
+              style={
+                activePanel === 'config-driven'
+                  ? { borderColor: '#5f4b8b', borderWidth: '2px', borderStyle: 'solid', cursor: 'pointer' }
+                  : { cursor: 'pointer' }
+              }
+            >
               <Card.Body className="p-3 p-md-4">
                 <div className="mb-3" aria-hidden="true">
                   <FaCogs style={{ fontSize: '2rem', color: '#5f4b8b' }} />
@@ -308,12 +565,30 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
                 <p className="text-muted mb-0" style={{ fontSize: '0.87rem', lineHeight: 1.5 }}>
                   One prop controls the entire UI mode. Switch from table to board to chart without touching your components.
                 </p>
+                <div className="d-flex justify-content-end mt-2">
+                  <FaChevronDown
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--app-text-muted, #64748b)',
+                      transform: activePanel === 'config-driven' ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  />
+                </div>
               </Card.Body>
             </Card>
           </Col>
 
           <Col xs={12} md={6} lg={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
+            <Card
+              className="h-100 shadow-sm theme-aware-card"
+              onClick={() => setActivePanel(activePanel === 'composable' ? null : 'composable')}
+              style={
+                activePanel === 'composable'
+                  ? { borderColor: '#5f4b8b', borderWidth: '2px', borderStyle: 'solid', cursor: 'pointer' }
+                  : { cursor: 'pointer' }
+              }
+            >
               <Card.Body className="p-3 p-md-4">
                 <div className="mb-3" aria-hidden="true">
                   <FaLayerGroup style={{ fontSize: '2rem', color: '#5f4b8b' }} />
@@ -322,12 +597,30 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
                 <p className="text-muted mb-0" style={{ fontSize: '0.87rem', lineHeight: 1.5 }}>
                   Multiple Widgemo instances share filters, state, and interactions. Build dashboards, not widgets.
                 </p>
+                <div className="d-flex justify-content-end mt-2">
+                  <FaChevronDown
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--app-text-muted, #64748b)',
+                      transform: activePanel === 'composable' ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  />
+                </div>
               </Card.Body>
             </Card>
           </Col>
 
           <Col xs={12} md={6} lg={4}>
-            <Card className="h-100 shadow-sm theme-aware-card">
+            <Card
+              className="h-100 shadow-sm theme-aware-card"
+              onClick={() => setActivePanel(activePanel === 'extensible' ? null : 'extensible')}
+              style={
+                activePanel === 'extensible'
+                  ? { borderColor: '#5f4b8b', borderWidth: '2px', borderStyle: 'solid', cursor: 'pointer' }
+                  : { cursor: 'pointer' }
+              }
+            >
               <Card.Body className="p-3 p-md-4">
                 <div className="mb-3" aria-hidden="true">
                   <FaPlug style={{ fontSize: '2rem', color: '#5f4b8b' }} />
@@ -336,8 +629,46 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
                 <p className="text-muted mb-0" style={{ fontSize: '0.87rem', lineHeight: 1.5 }}>
                   Drop in custom renderers, field types, and modes exactly where your product needs them. Nothing is locked.
                 </p>
+                <div className="d-flex justify-content-end mt-2">
+                  <FaChevronDown
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--app-text-muted, #64748b)',
+                      transform: activePanel === 'extensible' ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  />
+                </div>
               </Card.Body>
             </Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12}>
+            <div
+              style={{
+                maxHeight: activePanel ? '600px' : '0px',
+                overflow: 'hidden',
+                transition: 'max-height 0.35s ease',
+              }}
+            >
+              {activePanel && (
+                <div
+                  style={{
+                    padding: '2rem',
+                    marginTop: '0.5rem',
+                    borderRadius: '0.5rem',
+                    backgroundColor: 'rgba(95, 75, 139, 0.08)',
+                    border: '1px solid rgba(95, 75, 139, 0.2)',
+                  }}
+                >
+                  {activePanel === 'config-driven' && <ConfigDrivenPanel />}
+                  {activePanel === 'composable' && <ComposablePanel />}
+                  {activePanel === 'extensible' && <ExtensiblePanel />}
+                </div>
+              )}
+            </div>
           </Col>
         </Row>
 
