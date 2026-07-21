@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar as BootstrapNavbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
@@ -12,8 +12,8 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightCha
   const location = useLocation();
   const navbarRef = useRef<HTMLElement | null>(null);
   const isSandbox = location.pathname === '/sandbox';
-
-  const isApplicationsActive =
+  const isExamplesActive =
+    location.pathname === '/examples' ||
     location.pathname === '/applications' ||
     location.pathname === '/dashboard' ||
     location.pathname === '/cashflow-dashboard';
@@ -78,40 +78,11 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightCha
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 as={Link as any}
                 to="/examples"
-                active={location.pathname === '/examples'}
+                active={isExamplesActive}
                 className="mx-2"
               >
                 Examples
               </Nav.Link>
-
-              <NavDropdown
-                title="Applications"
-                id="applications-nav-dropdown"
-                className="mx-2"
-                active={isApplicationsActive}
-              >
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/applications"
-                >
-                  Overview
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/dashboard"
-                >
-                  Team Portfolio
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/cashflow-dashboard"
-                >
-                  Finance Tracker
-                </NavDropdown.Item>
-              </NavDropdown>
 
               <Nav.Link
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

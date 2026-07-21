@@ -3,12 +3,9 @@ import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Widgemo, type FieldConfig, type WidgemoConfig } from '@widgemo/widgemo-core';
 import { FaCogs, FaLayerGroup, FaPlug, FaChevronDown } from 'react-icons/fa';
 import {
-  LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON,
-  LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE,
-  LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE,
+  getLiquiditySnapshotPreviewData,
   liquiditySnapshotSummaryConfig,
-} from '../CashflowDashboardPage';
-import { getCashflowKpis } from '../../data/cashflowDashboardData';
+} from '../../config/liquiditySnapshotPreview';
 import { teaserSampleData } from '../../data/sampleData';
 
 interface AnatomySectionProps {
@@ -98,10 +95,7 @@ export const AnatomySection: React.FC<AnatomySectionProps> = () => {
   const [deltaVisible, setDeltaVisible] = useState(true);
   const [activePanel, setActivePanel] = useState<'config-driven' | 'composable' | 'extensible' | null>(null);
   const sampleData = useMemo(() => teaserSampleData.slice(0, 4), []);
-  const liquiditySnapshotData = useMemo(
-    () => getCashflowKpis(LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE, LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON, LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE),
-    [],
-  );
+  const liquiditySnapshotData = useMemo(() => getLiquiditySnapshotPreviewData(), []);
 
   // Fade the config delta panel out briefly then back in on mode change
   useEffect(() => {

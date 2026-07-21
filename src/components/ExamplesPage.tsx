@@ -13,6 +13,16 @@ interface ExampleItem {
   config: WidgemoConfig;
 }
 
+interface MockupItem {
+  id: string;
+  title: string;
+  description: string;
+  route: string;
+  imageSrc: string;
+  imageAlt: string;
+  variant: 'primary' | 'success';
+}
+
 // Description overrides applied to catalog cards (replaces source descriptions for these IDs)
 const DESCRIPTION_OVERRIDES: Record<string, string> = {
   'rich-cells-table': 'Images, formatted values, and badges in a rich table layout. A realistic starting point for any people or resource directory.',
@@ -76,7 +86,28 @@ const CATEGORY_BY_ID: Record<string, string> = {
   'content-error-state': 'States',
 };
 
-const CATEGORIES = ['All', 'Core Modes', 'Interactions', 'Data Presentation', 'Layout', 'States'] as const;
+const APP_MOCKUPS: MockupItem[] = [
+  {
+    id: 'team-portfolio-mockup',
+    title: 'Team Portfolio',
+    description: 'Full-page product delivery mockup composed from multiple Widgemo instances working together in one cohesive UI.',
+    route: '/dashboard',
+    imageSrc: '/assets/app-thumb-team-portfolio.png',
+    imageAlt: 'Team Portfolio dashboard preview',
+    variant: 'primary',
+  },
+  {
+    id: 'finance-tracker-mockup',
+    title: 'Finance Tracker',
+    description: 'Full-page cashflow command center mockup using Widgemo for KPI snapshots, timelines, transactions, and scenario views.',
+    route: '/cashflow-dashboard',
+    imageSrc: '/assets/app-thumb-finance-tracker.png',
+    imageAlt: 'Finance Tracker dashboard preview',
+    variant: 'success',
+  },
+];
+
+const CATEGORIES = ['All', 'Core Modes', 'Interactions', 'Data Presentation', 'Layout', 'States', 'App Mockups'] as const;
 
 export const ExamplesPage: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -99,6 +130,10 @@ export const ExamplesPage: React.FC = () => {
   }, [coreExampleSet]);
 
   const filteredCatalog = useMemo(() => {
+    if (category === 'App Mockups') {
+      return [];
+    }
+
     const query = search.trim().toLowerCase();
 
     return coreExamples.filter((item) => {
@@ -113,6 +148,20 @@ export const ExamplesPage: React.FC = () => {
     });
   }, [category, coreExamples, search]);
 
+  const filteredMockups = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return APP_MOCKUPS.filter((item) => {
+      const matchesCategory = category === 'All' || category === 'App Mockups';
+      const matchesSearch =
+        query.length === 0 ||
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.id.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [category, search]);
+
   const openPreview = (item: ExampleItem) => {
     setSelectedItem(item);
     setShowModal(true);
@@ -125,6 +174,10 @@ export const ExamplesPage: React.FC = () => {
 
   const handleTryInSandbox = (id: string) => {
     navigate(`/sandbox?config=${id}`);
+  };
+
+  const handleOpenMockup = (route: string) => {
+    navigate(route);
   };
 
   const renderCard = (item: ExampleItem) => {
@@ -179,6 +232,39 @@ export const ExamplesPage: React.FC = () => {
     );
   };
 
+  const renderMockupCard = (item: MockupItem) => (
+    <Col xs={12} lg={6} key={item.id}>
+      <Card className="h-100 shadow-sm theme-aware-card" style={{ minHeight: '290px' }}>
+        <div style={{ overflow: 'hidden', borderRadius: '0.375rem 0.375rem 0 0' }}>
+          <img
+            src={item.imageSrc}
+            alt={item.imageAlt}
+            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '0.375rem 0.375rem 0 0' }}
+            onError={(event) => {
+              event.currentTarget.style.visibility = 'hidden';
+            }}
+          />
+        </div>
+        <Card.Body className="d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <Card.Title style={{ fontSize: '0.95rem', marginBottom: 0 }}>{item.title}</Card.Title>
+          </div>
+          <div className="mb-2">
+            <Badge bg="secondary" style={{ fontSize: '0.65rem' }}>App Mockup</Badge>
+          </div>
+          <Card.Text className="text-muted" style={{ fontSize: '0.82rem' }}>
+            {item.description}
+          </Card.Text>
+          <div className="mt-auto d-flex gap-2">
+            <Button size="sm" variant={item.variant} onClick={() => handleOpenMockup(item.route)}>
+              Open Mockup
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+
   return (
     <Container fluid className="pt-5 pb-4" style={{ maxWidth: '1500px' }}>
       <div className="mb-4">
@@ -218,6 +304,20 @@ export const ExamplesPage: React.FC = () => {
         <Row className="g-3">
           {filteredCatalog.map(renderCard)}
         </Row>
+
+        {(category === 'All' || category === 'App Mockups') && (
+          <div id="app-mockups" className="mt-5">
+            <div className="mb-3">
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.35rem' }}>App Mockups</h2>
+              <p className="text-muted mb-0" style={{ fontSize: '0.88rem' }}>
+                Higher-fidelity, full-page examples. These are realistic mockups that demonstrate how Widgemo compositions scale in an application context.
+              </p>
+            </div>
+            <Row className="g-3">
+              {filteredMockups.map(renderMockupCard)}
+            </Row>
+          </div>
+        )}
       </section>
 
       {selectedItem && (

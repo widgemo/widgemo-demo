@@ -16,7 +16,6 @@ import './App.css';
 
 const SandboxPage = lazy(() => import('./components/SandboxPage').then((module) => ({ default: module.SandboxPage })));
 const ExamplesPage = lazy(() => import('./components/ExamplesPage').then((module) => ({ default: module.ExamplesPage })));
-const ApplicationsPage = lazy(() => import('./components/ApplicationsPage').then((module) => ({ default: module.ApplicationsPage })));
 const ProgressiveExamplesPage = lazy(() => import('./components/ProgressiveExamplesPage').then((module) => ({ default: module.ProgressiveExamplesPage })));
 const DashboardPage = lazy(() => import('./components/DashboardPage').then((module) => ({ default: module.DashboardPage })));
 const CashflowDashboardPage = lazy(() => import('./components/CashflowDashboardPage').then((module) => ({ default: module.CashflowDashboardPage })));
@@ -322,7 +321,7 @@ function AppContent() {
               />
               <Route
                 path="/applications"
-                element={<WidgemoThemeProvider theme={currentTheme}><ApplicationsPage /></WidgemoThemeProvider>}
+                element={<Navigate to="/examples#app-mockups" replace />}
               />
               <Route
                 path="/lab"
@@ -351,7 +350,7 @@ function AppContent() {
                     <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
                       <h1>Route Not Found</h1>
                       <p>Current path: {window.location.pathname}</p>
-                      <p>Available routes: /, /examples, /applications, /sandbox, /lab, /dashboard, /cashflow-dashboard</p>
+                      <p>Available routes: /, /examples, /sandbox, /lab, /dashboard, /cashflow-dashboard</p>
                     </div>
                   </WidgemoThemeProvider>
                 }
