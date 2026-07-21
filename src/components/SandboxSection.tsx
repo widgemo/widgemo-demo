@@ -1,58 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Card } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
-import { FaCopy } from 'react-icons/fa';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
-import { AppliedConfig } from './sandbox/AppliedConfig';
 import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
 import type { Theme } from '../utils/themeConfig';
 import { sanitizeReactInternals } from '../utils';
-
-// Custom loading component that matches widgemo-core's expected interface
-const CustomLoadingComponent: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
-  <div className={`d-flex flex-column align-items-center justify-content-center p-4 ${className || ''}`} style={style}>
-    <div className="spinner-border text-primary mb-3" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>
-    <h5 className="text-muted">Custom Loading Component</h5>
-    <p className="text-center text-muted small">
-      This is a custom loading component that can be passed to Widgemo via the customLoading prop.
-    </p>
-  </div>
-);
-
-// Custom error component that matches widgemo-core's expected interface
-const CustomErrorComponent: React.FC<{
-  error: string | Error;
-  onRetry?: () => void;
-  className?: string;
-  style?: React.CSSProperties;
-}> = ({ error, onRetry, className, style }) => (
-  <div className={`d-flex flex-column align-items-center justify-content-center p-4 ${className || ''}`} style={style}>
-    <div className="text-danger mb-3">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-      </svg>
-    </div>
-    <h5 className="text-danger mb-2">Custom Error Component</h5>
-    <p className="text-center text-muted small mb-3">
-      This is a custom error component that can be passed to Widgemo via the customError prop.
-    </p>
-    <div className="bg-light border border-danger p-3 rounded w-100 text-center mb-3">
-      <code className="text-danger fw-bold">{typeof error === 'string' ? error : error.message}</code>
-    </div>
-    {onRetry && (
-      <button className="btn btn-outline-danger btn-sm" onClick={onRetry}>
-        Retry
-      </button>
-    )}
-  </div>
-);
 
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
@@ -82,19 +39,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [styleJson, setStyleJson] = useState('{}');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [useCustomLoading, setUseCustomLoading] = useState(false);
-  const [useCustomError, setUseCustomError] = useState(false);
   const [baseColor, setBaseColor] = useState('');
   const [autoContrast, setAutoContrast] = useState(true);
   const [contrastAmount, setContrastAmount] = useState(0.05);
   const [overrideBackground, setOverrideBackground] = useState('');
   const [showConfigDetails, setShowConfigDetails] = useState(false);
-  const [applyAdvancedProps, setApplyAdvancedProps] = useState(false);
   const [renderTrigger, setRenderTrigger] = useState(0);
-
-  // Applied Configuration panel state
-  const [isAppliedConfigCollapsed, setIsAppliedConfigCollapsed] = useState(false);
-  const [appliedConfigCopyStatus, setAppliedConfigCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // SimplifiedWidgemo doesn't need resolved props
 
@@ -113,16 +63,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [overrideBaseColorEnabled, setOverrideBaseColorEnabled] = useState(false);
   const [overrideBackgroundEnabled, setOverrideBackgroundEnabled] = useState(false);
 
-  // Applied advanced props state (to prevent live updates)
-  const [appliedOverrides, setAppliedOverrides] = useState<Partial<WidgemoConfig>>({});
-  const [appliedClassName, setAppliedClassName] = useState('');
-  const [appliedStyleJson, setAppliedStyleJson] = useState('{}');
-
   // Preview dimensions state
   const [width, setWidth] = useState<number>(400);
   const [height, setHeight] = useState<number>(300);
   const [isAutoWidth, setIsAutoWidth] = useState<boolean>(true);
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
+  const [showDevOverlay, setShowDevOverlay] = useState(false);
 
   // Theming state
   // const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
@@ -214,50 +160,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       }
     }
   }, [configJson]);
-
-  // Copy applied configuration to clipboard
-  const copyAppliedConfigToClipboard = useCallback(async () => {
-    console.log('Copy button clicked, config:', config);
-    
-    const configText = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(config))), null, 2);
-    console.log('Config text to copy:', configText.substring(0, 100) + '...');
-    
-    // Try fallback first (more reliable in localhost/development)
-    try {
-      const textArea = document.createElement('textarea');
-      textArea.value = configText;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      const success = document.execCommand('copy');
-      document.body.removeChild(textArea);
-      if (success) {
-        console.log('Fallback copy succeeded');
-        setAppliedConfigCopyStatus('success');
-        setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
-        return;
-      } else {
-        throw new Error('execCommand returned false');
-      }
-    } catch (fallbackError) {
-      console.log('Fallback copy failed, trying modern API:', fallbackError);
-    }
-    
-    // Try modern clipboard API as fallback
-    try {
-      await navigator.clipboard.writeText(configText);
-      console.log('Modern clipboard API succeeded');
-      setAppliedConfigCopyStatus('success');
-      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
-    } catch (error) {
-      console.log('Both copy methods failed:', error);
-      setAppliedConfigCopyStatus('error');
-      setTimeout(() => setAppliedConfigCopyStatus('idle'), 2000);
-    }
-  }, [config]);
 
   // Download config as JSON file
   const downloadConfig = useCallback(() => {
@@ -392,39 +294,26 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const handleApplyAdvancedProperties = useCallback(() => {
     try {
       // Parse overrides JSON
-      const parsedOverrides = overridesJson.trim() ? JSON.parse(overridesJson) : {};
-      setAppliedOverrides(parsedOverrides);
+      void (overridesJson.trim() ? JSON.parse(overridesJson) : {});
 
       // Parse style JSON (though we don't store it separately, just validate)
       if (styleJson.trim()) {
         JSON.parse(styleJson);
       }
 
-      // Apply all current values to applied state
-      setAppliedClassName(className);
-      setAppliedStyleJson(styleJson);
-      setApplyAdvancedProps(true);
       setExportStatus('Advanced properties applied successfully!');
       setTimeout(() => setExportStatus(null), 3000);
     } catch (error) {
       setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
       setTimeout(() => setExportStatus(null), 5000);
     }
-  }, [overridesJson, styleJson, className]);
+  }, [overridesJson, styleJson]);
 
   const handleApplyLoadingStates = useCallback(() => {
     // Force re-render of preview
     setRenderTrigger(prev => prev + 1);
     setExportStatus('Loading and error states applied successfully!');
     setTimeout(() => setExportStatus(null), 3000);
-  }, []);
-
-  const handleUseCustomLoadingChange = useCallback((value: boolean) => {
-    setUseCustomLoading(value);
-  }, []);
-
-  const handleUseCustomErrorChange = useCallback((value: boolean) => {
-    setUseCustomError(value);
   }, []);
 
   const handleResetAll = useCallback(() => {
@@ -437,7 +326,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     setContrastAmount(0.05);
     setOverrideBaseColorEnabled(false);
     setOverrideBackgroundEnabled(false);
-    setApplyAdvancedProps(false);
     setExportStatus('Advanced properties reset to defaults!');
     setTimeout(() => setExportStatus(null), 3000);
   }, []);
@@ -704,10 +592,16 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 errorMessage={error}
                 onErrorMessageChange={handleErrorChange}
                 onApplyChanges={handleApplyLoadingStates}
-                useCustomLoading={useCustomLoading}
-                onUseCustomLoadingChange={handleUseCustomLoadingChange}
-                useCustomError={useCustomError}
-                onUseCustomErrorChange={handleUseCustomErrorChange}
+                showDevOverlay={showDevOverlay}
+                onShowDevOverlayChange={setShowDevOverlay}
+                isAutoWidth={isAutoWidth}
+                onAutoWidthChange={setIsAutoWidth}
+                isAutoHeight={isAutoHeight}
+                onAutoHeightChange={setIsAutoHeight}
+                width={width}
+                onWidthChange={setWidth}
+                height={height}
+                onHeightChange={setHeight}
               />
             </Panel>
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
@@ -720,10 +614,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 height={height}
                 isAutoWidth={isAutoWidth}
                 isAutoHeight={isAutoHeight}
-                onWidthChange={setWidth}
-                onHeightChange={setHeight}
-                onAutoWidthChange={setIsAutoWidth}
-                onAutoHeightChange={setIsAutoHeight}
+                showDevOverlay={showDevOverlay}
                 loading={loading}
                 error={error}
                 onRetry={() => {
@@ -732,65 +623,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 }}
               />
             </Panel>
-            {!isAppliedConfigCollapsed && (
-              <>
-                <Separator className="bg-secondary" style={{ width: '1.5px' }} />
-                <Panel defaultSize={15} minSize={10} className="d-flex flex-column">
-                  <div className="d-flex align-items-center justify-content-between p-2 border-bottom theme-aware-card">
-                    <h6 className="mb-0 fw-bold">Applied Config</h6>
-                    <div className="d-flex gap-1">
-                      <button
-                        className="btn btn-sm btn-outline-secondary"
-                        onClick={copyAppliedConfigToClipboard}
-                        disabled={false}
-                        title="Copy configuration to clipboard"
-                        aria-label="Copy configuration to clipboard"
-                      >
-                        <FaCopy className="me-1" />
-                        {appliedConfigCopyStatus === 'success' ? 'Copied!' : appliedConfigCopyStatus === 'error' ? 'Failed' : 'Copy'}
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-secondary"
-                        onClick={() => setIsAppliedConfigCollapsed(true)}
-                        title="Collapse panel"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex-grow-1 overflow-auto p-2">
-                    <AppliedConfig
-                      config={config}
-                      showConfigDetails={showConfigDetails}
-                      loading={loading}
-                      error={error}
-                      overrides={applyAdvancedProps && Object.keys(appliedOverrides || {}).length > 0 ? appliedOverrides : undefined}
-                      className={applyAdvancedProps && appliedClassName ? appliedClassName : undefined}
-                      style={applyAdvancedProps && appliedStyleJson?.trim() ? JSON.parse(appliedStyleJson) : undefined}
-                      currentSandboxTheme={currentSandboxTheme}
-                      customLoading={useCustomLoading ? CustomLoadingComponent : undefined}
-                      customError={useCustomError ? CustomErrorComponent : undefined}
-                    />
-                  </div>
-                </Panel>
-              </>
-            )}
-            {isAppliedConfigCollapsed && (
-              <div className="d-flex align-items-start pt-2 px-1">
-                <button
-                  className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center"
-                  onClick={() => setIsAppliedConfigCollapsed(false)}
-                  title="Expand Applied Configuration panel"
-                  style={{
-                    borderRadius: '6px',
-                    minWidth: '140px',
-                    fontSize: '0.75rem'
-                  }}
-                >
-                  Show Applied Config
-                </button>
-              </div>
-            )}
           </Group>
         </Card.Body>
       </Card>

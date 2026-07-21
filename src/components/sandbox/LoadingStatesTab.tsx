@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import { FaCheck, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 
 interface LoadingStatesTabProps {
   /** Whether loading state is enabled */
@@ -11,14 +11,6 @@ interface LoadingStatesTabProps {
   errorMessage: string;
   /** Callback when error message changes */
   onErrorMessageChange: (message: string) => void;
-  /** Whether to use custom loading component */
-  useCustomLoading: boolean;
-  /** Callback when custom loading toggle changes */
-  onUseCustomLoadingChange: (use: boolean) => void;
-  /** Whether to use custom error component */
-  useCustomError: boolean;
-  /** Callback when custom error toggle changes */
-  onUseCustomErrorChange: (use: boolean) => void;
   /** Callback when apply changes is clicked */
   onApplyChanges: () => void;
 }
@@ -48,17 +40,11 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
   onShowLoadingChange,
   errorMessage,
   onErrorMessageChange,
-  useCustomLoading,
-  onUseCustomLoadingChange,
-  useCustomError,
-  onUseCustomErrorChange,
   onApplyChanges,
 }) => {
   // Local state for pending changes
   const [localShowLoading, setLocalShowLoading] = useState(showLoading);
   const [localErrorMessage, setLocalErrorMessage] = useState(errorMessage);
-  const [localUseCustomLoading, setLocalUseCustomLoading] = useState(useCustomLoading);
-  const [localUseCustomError, setLocalUseCustomError] = useState(useCustomError);
 
   // Sync local state when props change
   React.useEffect(() => {
@@ -69,28 +55,11 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
     setLocalErrorMessage(errorMessage);
   }, [errorMessage]);
 
-  React.useEffect(() => {
-    setLocalUseCustomLoading(useCustomLoading);
-  }, [useCustomLoading]);
-
-  React.useEffect(() => {
-    setLocalUseCustomError(useCustomError);
-  }, [useCustomError]);
-
-  // Disable custom error when there's no error message
-  React.useEffect(() => {
-    if (!localErrorMessage.trim()) {
-      setLocalUseCustomError(false);
-    }
-  }, [localErrorMessage]);
-
   const handleApplyChanges = useCallback(() => {
     onShowLoadingChange(localShowLoading);
     onErrorMessageChange(localErrorMessage);
-    onUseCustomLoadingChange(localUseCustomLoading);
-    onUseCustomErrorChange(localUseCustomError);
     onApplyChanges();
-  }, [localShowLoading, localErrorMessage, localUseCustomLoading, localUseCustomError, onShowLoadingChange, onErrorMessageChange, onUseCustomLoadingChange, onUseCustomErrorChange, onApplyChanges]);
+  }, [localShowLoading, localErrorMessage, onShowLoadingChange, onErrorMessageChange, onApplyChanges]);
 
   return (
     <div className="d-flex flex-column h-100">
@@ -130,56 +99,6 @@ export const LoadingStatesTab: React.FC<LoadingStatesTabProps> = ({
             <Form.Text className="text-muted">
               Custom error message to display. Leave empty to show no error.
             </Form.Text>
-          </div>
-
-          <div className="col-12">
-            <hr className="my-3" />
-            <h6 className="mb-3 text-primary">Custom Components</h6>
-          </div>
-
-          <div className="col-md-6">
-            <Form.Label className="small fw-bold">Custom Loading</Form.Label>
-            <Form.Check
-              type="checkbox"
-              checked={localUseCustomLoading}
-              onChange={(e) => setLocalUseCustomLoading(e.target.checked)}
-              label="Use custom loading component"
-              aria-label="Toggle custom loading component"
-            />
-            <Form.Text className="text-muted">
-              Replace default spinner with a custom loading component.
-            </Form.Text>
-            {localUseCustomLoading && (
-              <Alert variant="info" className="mt-2 py-2">
-                <small>
-                  <FaSpinner className="me-1" />
-                  Custom loading shows: "Loading your amazing data..."
-                </small>
-              </Alert>
-            )}
-          </div>
-
-          <div className="col-md-6">
-            <Form.Label className="small fw-bold">Custom Error</Form.Label>
-            <Form.Check
-              type="checkbox"
-              checked={localUseCustomError}
-              onChange={(e) => setLocalUseCustomError(e.target.checked)}
-              disabled={!localErrorMessage.trim()}
-              label="Use custom error component"
-              aria-label="Toggle custom error component"
-            />
-            <Form.Text className="text-muted">
-              Replace default error with a custom error component. {!localErrorMessage.trim() && "Requires an error message."}
-            </Form.Text>
-            {localUseCustomError && (
-              <Alert variant="warning" className="mt-2 py-2">
-                <small>
-                  <FaExclamationTriangle className="me-1" />
-                  Custom error shows elegant red-themed design with error icon, bordered error message box, and retry button.
-                </small>
-              </Alert>
-            )}
           </div>
 
           <div className="col-12">
