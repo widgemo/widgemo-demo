@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav } from 'react-bootstrap';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
@@ -11,7 +12,6 @@ interface AppNavbarProps {
 export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightChange }) => {
   const location = useLocation();
   const navbarRef = useRef<HTMLElement | null>(null);
-  const isSandbox = location.pathname === '/sandbox';
   const isExamplesActive =
     location.pathname === '/examples' ||
     location.pathname === '/applications' ||
@@ -98,22 +98,18 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightCha
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mx-2"
+                aria-label="Docs (opens in a new tab)"
+                active={false}
+                onClick={(event) => {
+                  event.currentTarget.blur();
+                }}
               >
-                Docs
+                <span className="d-inline-flex align-items-center gap-1">
+                  Docs
+                  <FaExternalLinkAlt style={{ fontSize: '0.72rem', opacity: 0.9 }} aria-hidden="true" />
+                </span>
               </Nav.Link>
             </Nav>
-            {isSandbox && (
-              <Button 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                as={Link as any} 
-                to="/" 
-                variant="outline-light" 
-                size="sm" 
-                className="me-3"
-              >
-                ← Back to Main
-              </Button>
-            )}
             <ThemeToggle />
           </div>
         </BootstrapNavbar.Collapse>
