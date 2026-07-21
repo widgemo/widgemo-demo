@@ -27,8 +27,6 @@ interface JsonConfigTabProps {
   onLoadPresetWithDataChange: (value: boolean) => void;
   /** JSON validation error message, if any */
   jsonError?: string | null;
-  /** Callback to show reference modal */
-  onShowReference?: () => void;
   /** Callback to show CodeSandbox modal */
   onShowCodeSandbox?: () => void;
   /** Callback to copy current JSON to clipboard */
@@ -46,7 +44,6 @@ interface JsonConfigTabProps {
  * - Apply Changes button with validation feedback
  * - Export dropdown (copy, download, CodeSandbox)
  * - Error display for invalid JSON
- * - Reference button for configuration documentation
  *
  * Future extensibility:
  * - JSON formatting/prettifying
@@ -65,7 +62,6 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
   loadPresetWithData,
   onLoadPresetWithDataChange,
   jsonError,
-  onShowReference,
   onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
@@ -93,17 +89,13 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
               style={{
                 minWidth: '360px',
                 maxWidth: '520px',
-                maxHeight: '360px',
-                overflowY: 'auto',
-                overflowX: 'hidden',
+                padding: 0,
+                overflow: 'hidden',
               }}
             >
               <div
                 className="px-3 py-2 border-bottom"
                 style={{
-                  position: 'sticky',
-                  top: 0,
-                  zIndex: 2,
                   backgroundColor: 'var(--bs-dropdown-bg, #fff)',
                 }}
               >
@@ -123,32 +115,30 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
                   onClick={(event) => event.stopPropagation()}
                 />
               </div>
-              {presets.map((item, index) => (
-                <Dropdown.Item
-                  key={index}
-                  onClick={() => onLoadPreset(item)}
-                  title={item.name}
-                  style={{
-                    whiteSpace: 'normal',
-                    lineHeight: 1.25,
-                    wordBreak: 'break-word',
-                  }}
-                >
-                  {item.name}
-                </Dropdown.Item>
-              ))}
+              <div
+                style={{
+                  maxHeight: '220px',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                }}
+              >
+                {presets.map((item, index) => (
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => onLoadPreset(item)}
+                    title={item.name}
+                    style={{
+                      whiteSpace: 'normal',
+                      lineHeight: 1.25,
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {item.name}
+                  </Dropdown.Item>
+                ))}
+              </div>
             </Dropdown.Menu>
           </Dropdown>
-          {onShowReference && (
-            <Button
-              variant="outline-info"
-              size="sm"
-              onClick={onShowReference}
-              aria-label="Show configuration reference"
-            >
-              Reference
-            </Button>
-          )}
         </div>
       </div>
 

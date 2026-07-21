@@ -30,7 +30,6 @@ export interface LeftPanelProps {
   loadPresetWithData: boolean;
   onLoadPresetWithDataChange: (value: boolean) => void;
   jsonError: string | null;
-  onShowReference: () => void;
   onShowCodeSandbox: () => void;
   onCopyToClipboard: () => void;
   onDownloadConfig: () => void;
@@ -101,7 +100,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   loadPresetWithData,
   onLoadPresetWithDataChange,
   jsonError,
-  onShowReference,
   onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
@@ -281,7 +279,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             loadPresetWithData={loadPresetWithData}
             onLoadPresetWithDataChange={onLoadPresetWithDataChange}
             jsonError={jsonError}
-            onShowReference={onShowReference}
             onShowCodeSandbox={onShowCodeSandbox}
             onCopyToClipboard={onCopyToClipboard}
             onDownloadConfig={onDownloadConfig}

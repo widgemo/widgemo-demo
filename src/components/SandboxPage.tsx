@@ -10,19 +10,23 @@ export const SandboxPage: React.FC = () => {
   const { currentTheme } = useTheme();
   const [searchParams] = useSearchParams();
 
+  const selectedExample = useMemo(() => {
+    const configId = searchParams.get('config');
+    if (!configId) {
+      return null;
+    }
+    return widgemoExamples.find(item => item.id === configId) || null;
+  }, [searchParams]);
+
   // Get initial config from URL params
   const initialConfig = useMemo(() => {
-    const configId = searchParams.get('config');
-    if (configId) {
-      const configItem = widgemoExamples.find(item => item.id === configId);
-      if (configItem) {
-        // For gallery configs, don't inject theme properties so they use core defaults
-        return configItem.config as WidgemoConfig;
-      }
+    if (selectedExample) {
+      // For gallery configs, don't inject theme properties so they use core defaults
+      return selectedExample.config as WidgemoConfig;
     }
     // For default sandbox, don't inject theme properties so it uses core defaults
     return defaultSandboxConfig;
-  }, [searchParams]);
+  }, [selectedExample]);
 
   // Get initial theme mode - use 'defaults' for gallery configs, 'config' for default
   // const initialThemeMode = useMemo(() => {
@@ -31,13 +35,11 @@ export const SandboxPage: React.FC = () => {
   // }, [searchParams]);
 
   const initialData = useMemo(() => {
-    const configId = searchParams.get('config');
-    if (configId) {
-      const configItem = widgemoExamples.find(item => item.id === configId);
-      return configItem?.data || teaserSampleData;
+    if (selectedExample) {
+      return selectedExample.data;
     }
     return teaserSampleData;
-  }, [searchParams]);
+  }, [selectedExample]);
 
   return (
     <div style={{ 
@@ -56,6 +58,7 @@ export const SandboxPage: React.FC = () => {
         key={searchParams.get('config') || 'default'}
         initialConfig={initialConfig}
         initialData={initialData}
+        initialPresetName={selectedExample?.title}
         // initialThemeMode={initialThemeMode}
         currentTheme={currentTheme}
       />

@@ -5,7 +5,6 @@ import type { WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../data/widgemoExamples';
 import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
-import { ConfigurationReferenceModal } from './sandbox/ConfigurationReferenceModal';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
 import type { Theme } from '../utils/themeConfig';
@@ -14,6 +13,7 @@ import { sanitizeReactInternals } from '../utils';
 interface SandboxSectionProps {
   initialConfig: WidgemoConfig;
   initialData: Record<string, unknown>[];
+  initialPresetName?: string;
   onConfigChange?: (config: WidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
   currentTheme: Theme;
@@ -51,15 +51,20 @@ const SANDBOX_PRESET_IDS = [
 export const SandboxSection: React.FC<SandboxSectionProps> = ({
   initialConfig,
   initialData,
+  initialPresetName,
   onConfigChange,
   onDataChange,
   currentTheme,
   // initialThemeMode = 'config'
 }) => {
-  const [configJson, setConfigJson] = useState(JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(initialConfig))), null, 2));
+  const buildCommentedConfigJson = useCallback((cfg: WidgemoConfig, presetName?: string) => {
+    const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(cfg))), null, 2);
+    return presetName ? `// ${presetName}\n${json}` : json;
+  }, []);
+
+  const [configJson, setConfigJson] = useState(buildCommentedConfigJson(initialConfig, initialPresetName));
   const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
-  const [showReferenceModal, setShowReferenceModal] = useState(false);
 
   // Additional WidgemoProps state
   const [overridesJson, setOverridesJson] = useState('{}');
@@ -120,6 +125,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
   const [entityLabel, setEntityLabel] = useState('User');
   const [entityLabelPlural, setEntityLabelPlural] = useState('Users');
+  const [lastLoadedPresetName, setLastLoadedPresetName] = useState<string | undefined>(initialPresetName);
   const [exportStatus, setExportStatus] = useState<string | null>(null);
 
   // Sync jsonEditorText with customData
@@ -210,14 +216,48 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   // Download config as JSON file
   const downloadConfig = useCallback(() => {
+    const toFilenameBase = (value: string): string => {
+      const base = value
+        .toLowerCase()
+        .replace(/["']/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 80);
+
+      return base || 'widgemo-config';
+    };
+
+    const commentLine = configJson
+      .split('\n')
+      .find((line) => line.trim().startsWith('//'))
+      ?.replace(/^\s*\/\//, '')
+      .trim();
+
+    const defaultFileName = `${toFilenameBase(lastLoadedPresetName || commentLine || 'widgemo-config')}.json`;
+    const userInput = window.prompt('Enter a file name for this configuration:', defaultFileName);
+
+    if (userInput === null) {
+      return;
+    }
+
+    const trimmedInput = userInput.trim();
+    if (!trimmedInput) {
+      setExportStatus('Download cancelled: file name is required.');
+      setTimeout(() => setExportStatus(null), 3000);
+      return;
+    }
+
+    const withExtension = trimmedInput.toLowerCase().endsWith('.json') ? trimmedInput : `${trimmedInput}.json`;
+    const safeFileName = withExtension.replace(/[<>:"/\\|?*\u0000-\u001F]/g, '').trim() || defaultFileName;
+
     const blob = new Blob([configJson], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'widgemo-config.json';
+    link.download = safeFileName;
     link.click();
     URL.revokeObjectURL(url);
-  }, [configJson]);
+  }, [configJson, lastLoadedPresetName]);
 
   const applyConfig = () => {
     try {
@@ -246,8 +286,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   // Sync with initial props
   useEffect(() => {
     setConfig(initialConfig);
-    setConfigJson(JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(initialConfig))), null, 2));
-  }, [initialConfig]);
+    setConfigJson(buildCommentedConfigJson(initialConfig, initialPresetName));
+    setLastLoadedPresetName(initialPresetName);
+  }, [buildCommentedConfigJson, initialConfig, initialPresetName]);
 
   useEffect(() => {
     setCustomData(initialData);
@@ -262,11 +303,9 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   const loadPreset = (preset: PresetOption) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
-    const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(preset.config))), null, 2);
-    const titleComment = preset.name ? `// ${preset.name}\n` : '';
-    const commentedJson = `${titleComment}${json}`;
-    setConfigJson(commentedJson);
+    setConfigJson(buildCommentedConfigJson(preset.config, preset.name));
     setConfig(preset.config);
+    setLastLoadedPresetName(preset.name);
     if (onConfigChange) onConfigChange(preset.config);
 
     if (loadPresetWithData) {
@@ -611,7 +650,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 loadPresetWithData={loadPresetWithData}
                 onLoadPresetWithDataChange={setLoadPresetWithData}
                 jsonError={jsonError}
-                onShowReference={() => setShowReferenceModal(true)}
                 onShowCodeSandbox={() => setShowCodeSandboxModal(true)}
                 onCopyToClipboard={copyToClipboard}
                 onDownloadConfig={downloadConfig}
@@ -688,11 +726,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
       </Card>
 
       {/* Modals */}
-      <ConfigurationReferenceModal
-        isOpen={showReferenceModal}
-        onClose={() => setShowReferenceModal(false)}
-      />
-
       <CodeSandboxExportModal
         isOpen={showCodeSandboxModal}
         onClose={() => setShowCodeSandboxModal(false)}
