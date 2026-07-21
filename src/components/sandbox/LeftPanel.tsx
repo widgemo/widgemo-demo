@@ -91,7 +91,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   const tabs = [
     { id: 'config-editor', label: 'Configuration' },
     { id: 'sample-data', label: 'Sample Data' },
-    { id: 'advanced', label: 'Advanced' },
+    { id: 'advanced', label: 'Preview Settings' },
   ];
 
   return (
