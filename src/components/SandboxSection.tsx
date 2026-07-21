@@ -128,6 +128,31 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [lastLoadedPresetName, setLastLoadedPresetName] = useState<string | undefined>(initialPresetName);
   const [exportStatus, setExportStatus] = useState<string | null>(null);
 
+  const stripCommentLines = useCallback((jsonText: string) => {
+    return jsonText
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('//'))
+      .join('\n')
+      .trim();
+  }, []);
+
+  const inferFieldType = useCallback((value: unknown): 'text' | 'number' | 'boolean' | 'date' | 'email' => {
+    if (typeof value === 'number') return 'number';
+    if (typeof value === 'boolean') return 'boolean';
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) return 'date';
+    if (typeof value === 'string' && value.includes('@')) return 'email';
+    return 'text';
+  }, []);
+
+  const toFieldLabel = useCallback((key: string) => {
+    return key
+      .replace(/[_-]+/g, ' ')
+      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/^./, (char) => char.toUpperCase());
+  }, []);
+
   // Sync jsonEditorText with customData
   useEffect(() => {
     setJsonEditorText(JSON.stringify(customData, null, 2));
@@ -262,11 +287,7 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const applyConfig = () => {
     try {
       // Remove comment lines (lines starting with //) before parsing
-      const cleanJson = configJson
-        .split('\n')
-        .filter(line => !line.trim().startsWith('//'))
-        .join('\n')
-        .trim();
+      const cleanJson = stripCommentLines(configJson);
 
       const parsed = JSON.parse(cleanJson);
       
@@ -494,73 +515,81 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
     setCustomData(generatedData);
     if (onDataChange) onDataChange(generatedData);
-    setExportStatus('Data generated successfully!');
-    setTimeout(() => setExportStatus(null), 3000);
 
     // Adjust configuration if requested
     if (options.adjustConfig && generatedData.length > 0) {
-      const sampleRecord = generatedData[0] as Record<string, unknown>;
-      const fields = Object.keys(sampleRecord).map(key => {
-        const value = sampleRecord[key];
-        let fieldType: string = 'text';
+      try {
+        const cleanJson = stripCommentLines(configJson);
+        const parsedConfig = JSON.parse(cleanJson) as WidgemoConfig;
+        const existingItem = parsedConfig.zones?.content?.item;
 
-        if (typeof value === 'number') fieldType = 'number';
-        else if (typeof value === 'boolean') fieldType = 'boolean';
-        else if (value && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) fieldType = 'date';
-        else if (value && typeof value === 'string' && value.includes('@')) fieldType = 'email';
-
-        return {
-          name: key,
-          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
-          type: fieldType,
-          sortable: fieldType !== 'boolean',
-          filterable: true
-        };
-      });
-
-      // Get appropriate title based on data type
-      const getTitleForType = (dataType: string) => {
-        switch (dataType) {
-          case 'users':
-          case 'users-api':
-          case 'users-jsonplaceholder':
-            return 'User Management';
-          case 'sales':
-            return 'Sales Records';
-          case 'customers':
-            return 'Customer Management';
-          case 'posts-api':
-          case 'posts-jsonplaceholder':
-            return 'Blog Posts';
-          case 'comments-jsonplaceholder':
-            return 'Comments';
-          case 'albums-jsonplaceholder':
-            return 'Photo Albums';
-          case 'photos-jsonplaceholder':
-            return 'Photos';
-          case 'todos-jsonplaceholder':
-            return 'Todo Items';
-          case 'custom-api': {
-            const endpointName = 'Custom';
-            return endpointName.charAt(0).toUpperCase() + endpointName.slice(1) + ' Data';
-          }
-          default:
-            return 'Data Management';
+        if (!existingItem) {
+          setExportStatus('Data generated. Field adjustment skipped for this mode because item fields are not available.');
+          setTimeout(() => setExportStatus(null), 4000);
+          return;
         }
-      };
 
-      const newConfig = {
-        ...JSON.parse(configJson),
-        title: getTitleForType(options.dataType),
-        fields: fields
-      };
+        const keysInOrder: string[] = [];
+        const keySet = new Set<string>();
 
-      const newConfigJson = JSON.stringify(newConfig, null, 2);
-      setConfigJson(newConfigJson);
-      setConfig(newConfig);
-      if (onConfigChange) onConfigChange(newConfig);
+        generatedData.slice(0, 30).forEach((row) => {
+          Object.keys(row).forEach((key) => {
+            if (!keySet.has(key)) {
+              keySet.add(key);
+              keysInOrder.push(key);
+            }
+          });
+        });
+
+        const fields = keysInOrder.map((key) => {
+          const sampleValue = generatedData.find((row) => row[key] !== undefined && row[key] !== null)?.[key];
+          const fieldType = inferFieldType(sampleValue);
+
+          return {
+            key,
+            label: toFieldLabel(key),
+            type: fieldType,
+            sortable: fieldType !== 'boolean',
+          };
+        });
+
+        const newConfig: WidgemoConfig = {
+          ...parsedConfig,
+          zones: {
+            ...parsedConfig.zones,
+            content: {
+              ...parsedConfig.zones.content,
+              item: {
+                ...existingItem,
+                fields,
+              },
+            },
+          },
+        };
+
+        setConfigJson(buildCommentedConfigJson(newConfig, lastLoadedPresetName));
+        setConfig(newConfig);
+        if (onConfigChange) onConfigChange(newConfig);
+        setExportStatus('Data generated and displayed fields were adjusted to the generated schema.');
+        setTimeout(() => setExportStatus(null), 4000);
+      } catch (error) {
+        setExportStatus(`Error adjusting configuration: ${(error as Error).message}`);
+        setTimeout(() => setExportStatus(null), 5000);
+      }
+    } else {
+      setExportStatus('Data generated successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
     }
-  }, [configJson, onConfigChange, onDataChange]);
+  }, [
+    buildCommentedConfigJson,
+    configJson,
+    inferFieldType,
+    lastLoadedPresetName,
+    onConfigChange,
+    onDataChange,
+    stripCommentLines,
+    toFieldLabel,
+  ]);
 
   const handleSampleDataFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
