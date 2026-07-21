@@ -20,6 +20,34 @@ interface SandboxSectionProps {
   // initialThemeMode?: 'defaults' | 'config' | 'custom';
 }
 
+interface PresetOption {
+  id: string;
+  name: string;
+  config: WidgemoConfig;
+  data: Record<string, unknown>[];
+}
+
+const SANDBOX_PRESET_IDS = [
+  'rich-cells-table',
+  'basic-grid-layout',
+  'carousel-full',
+  'board-basic',
+  'chart-throughput-mixed',
+  'chart-allocation-donut',
+  'responsive-mode-switching',
+  'per-item-actions-demo',
+  'search-with-pagination',
+  'grouped-rows-with-collapse',
+  'zone-dynamic-renderers',
+  'renderas-badge-advanced',
+  'currency-advanced',
+  'image-advanced',
+  'item-layout-grid',
+  'content-loading-state-skeleton-pie-chart',
+  'content-loading-state-spinner',
+  'content-error-state',
+] as const;
+
 export const SandboxSection: React.FC<SandboxSectionProps> = ({
   initialConfig,
   initialData,
@@ -69,6 +97,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [isAutoWidth, setIsAutoWidth] = useState<boolean>(true);
   const [isAutoHeight, setIsAutoHeight] = useState<boolean>(true);
   const [showDevOverlay, setShowDevOverlay] = useState(false);
+  const [loadPresetWithData, setLoadPresetWithData] = useState(false);
+
+  // Save preset loading preference to localStorage
+  useEffect(() => {
+    localStorage.setItem('sandbox-load-preset-with-data', String(loadPresetWithData));
+  }, [loadPresetWithData]);
 
   // Theming state
   // const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
@@ -119,19 +153,32 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
   const currentSandboxTheme = undefined;
 
+  useEffect(() => {
+    const saved = localStorage.getItem('sandbox-load-preset-with-data');
+    if (saved === 'true') {
+      setLoadPresetWithData(true);
+    }
+  }, []);
+
   // Determine if dark mode is actually active based on current theme
   // const isDarkModeActive = useMemo(() => {
   //   // Dark mode is now handled via CSS variables, check the current theme
   //   return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
   // }, [currentTheme]);
 
-  // Transform widgemoExamples to PresetOption format for JsonConfigTab
+  const sandboxPresetIdSet = useMemo(() => new Set<string>(SANDBOX_PRESET_IDS), []);
+
+  // Transform curated example set to PresetOption format for JsonConfigTab
   const presetOptions = useMemo(() => {
-    return widgemoExamples.map(config => ({
-      name: config.title,
-      config: config.config as WidgemoConfig
-    }));
-  }, []);
+    return widgemoExamples
+      .filter((item) => sandboxPresetIdSet.has(item.id))
+      .map((item) => ({
+        id: item.id,
+        name: item.title,
+        config: item.config as WidgemoConfig,
+        data: item.data as Record<string, unknown>[],
+      }));
+  }, [sandboxPresetIdSet]);
 
   // Copy JSON to clipboard
   const copyToClipboard = useCallback(async () => {
@@ -213,14 +260,25 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     lastAppliedThemeRef.current = currentTheme;
   }, [currentTheme]);
 
-  const loadPreset = (presetConfig: WidgemoConfig, presetTitle?: string) => {
+  const loadPreset = (preset: PresetOption) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
-    const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(presetConfig))), null, 2);
-    const titleComment = presetTitle ? `// ${presetTitle}\n` : '';
+    const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(preset.config))), null, 2);
+    const titleComment = preset.name ? `// ${preset.name}\n` : '';
     const commentedJson = `${titleComment}${json}`;
     setConfigJson(commentedJson);
-    setConfig(presetConfig);
-    if (onConfigChange) onConfigChange(presetConfig);
+    setConfig(preset.config);
+    if (onConfigChange) onConfigChange(preset.config);
+
+    if (loadPresetWithData) {
+      setCustomData(preset.data);
+      if (onDataChange) onDataChange(preset.data);
+      setExportStatus('Loaded preset config and matching sample data.');
+      setTimeout(() => setExportStatus(null), 3000);
+    } else {
+      setExportStatus('Loaded preset config only. Current sample data was kept.');
+      setTimeout(() => setExportStatus(null), 3000);
+    }
+
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
@@ -550,6 +608,8 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onApplyJson={applyConfig}
                 presets={presetOptions}
                 onLoadPreset={loadPreset}
+                loadPresetWithData={loadPresetWithData}
+                onLoadPresetWithDataChange={setLoadPresetWithData}
                 jsonError={jsonError}
                 onShowReference={() => setShowReferenceModal(true)}
                 onShowCodeSandbox={() => setShowCodeSandboxModal(true)}

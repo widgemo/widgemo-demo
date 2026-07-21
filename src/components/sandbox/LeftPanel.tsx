@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Nav, Form } from 'react-bootstrap';
+import { Nav, Form, Toast, ToastContainer } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
 import { PropsOverridesTab } from './PropsOverridesTab';
 import { SampleDataTab } from './SampleDataTab';
@@ -7,8 +7,10 @@ import { LoadingStatesTab } from './LoadingStatesTab';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
+  id: string;
   name: string;
   config: WidgemoConfig;
+  data: Record<string, unknown>[];
 }
 
 export interface LeftPanelProps {
@@ -24,7 +26,9 @@ export interface LeftPanelProps {
   onJsonChange: (json: string) => void;
   onApplyJson: () => void;
   presets: PresetOption[];
-  onLoadPreset: (presetConfig: WidgemoConfig, presetName?: string) => void;
+  onLoadPreset: (preset: PresetOption) => void;
+  loadPresetWithData: boolean;
+  onLoadPresetWithDataChange: (value: boolean) => void;
   jsonError: string | null;
   onShowReference: () => void;
   onShowCodeSandbox: () => void;
@@ -94,6 +98,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onApplyJson,
   presets,
   onLoadPreset,
+  loadPresetWithData,
+  onLoadPresetWithDataChange,
   jsonError,
   onShowReference,
   onShowCodeSandbox,
@@ -147,6 +153,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   height,
   onHeightChange,
 }) => {
+  const isErrorToast = !!exportStatus && exportStatus.toLowerCase().includes('error');
+
   const tabs = [
     { id: 'config-editor', label: 'Configuration' },
     { id: 'sample-data', label: 'Sample Data' },
@@ -154,7 +162,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   ];
 
   return (
-    <div className="p-3 h-100 d-flex flex-column" >
+    <div className="p-3 h-100 d-flex flex-column" style={{ position: 'relative' }}>
       <style>
         {`
           .left-panel-content * {
@@ -181,14 +189,43 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
           .left-panel-tabs .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
           }
+
+          @media (max-width: 576px) {
+            .sandbox-status-toast {
+              top: auto !important;
+              right: 0.5rem !important;
+              bottom: 0.5rem !important;
+              left: 0.5rem !important;
+              padding: 0 !important;
+            }
+
+            .sandbox-status-toast .toast {
+              width: 100%;
+              max-width: none;
+            }
+
+            .sandbox-status-toast .toast-body {
+              min-width: 0 !important;
+            }
+          }
         `}
       </style>
-      {/* Export Status */}
-      {exportStatus && (
-        <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
-          {exportStatus}
-        </Alert>
-      )}
+
+      <ToastContainer className="p-2 sandbox-status-toast" position="top-end" style={{ zIndex: 1060 }}>
+        <Toast
+          show={!!exportStatus}
+          onClose={() => {
+            // no-op: parent state uses timeout lifecycle; close affordance still dismisses locally
+          }}
+          autohide
+          delay={3000}
+          bg={isErrorToast ? 'danger' : 'success'}
+        >
+          <Toast.Body className="text-white" style={{ minWidth: '260px' }}>
+            {exportStatus}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
 
       <div className="mb-3 flex-shrink-0">
         <div className="bg-dark rounded" style={{ padding: '2px' }}>
@@ -241,6 +278,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             onApply={onApplyJson}
             presets={presets}
             onLoadPreset={onLoadPreset}
+            loadPresetWithData={loadPresetWithData}
+            onLoadPresetWithDataChange={onLoadPresetWithDataChange}
             jsonError={jsonError}
             onShowReference={onShowReference}
             onShowCodeSandbox={onShowCodeSandbox}

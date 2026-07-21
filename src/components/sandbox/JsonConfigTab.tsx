@@ -1,11 +1,13 @@
 import React from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
+import { Button, Dropdown, Form } from 'react-bootstrap';
 import { FaCopy, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
+  id: string;
   name: string;
   config: WidgemoConfig;
+  data: Record<string, unknown>[];
 }
 
 interface JsonConfigTabProps {
@@ -18,7 +20,11 @@ interface JsonConfigTabProps {
   /** Available preset configurations */
   presets: PresetOption[];
   /** Callback when a preset is loaded */
-  onLoadPreset: (presetConfig: WidgemoConfig, presetName?: string) => void;
+  onLoadPreset: (preset: PresetOption) => void;
+  /** Whether preset loading should include matching sample data */
+  loadPresetWithData: boolean;
+  /** Callback when load-with-data preference changes */
+  onLoadPresetWithDataChange: (value: boolean) => void;
   /** JSON validation error message, if any */
   jsonError?: string | null;
   /** Callback to show reference modal */
@@ -56,6 +62,8 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
   onApply,
   presets,
   onLoadPreset,
+  loadPresetWithData,
+  onLoadPresetWithDataChange,
   jsonError,
   onShowReference,
   onShowCodeSandbox,
@@ -81,11 +89,50 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
             >
               Load Preset
             </Dropdown.Toggle>
-            <Dropdown.Menu>
+            <Dropdown.Menu
+              style={{
+                minWidth: '360px',
+                maxWidth: '520px',
+                maxHeight: '360px',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
+              <div
+                className="px-3 py-2 border-bottom"
+                style={{
+                  position: 'sticky',
+                  top: 0,
+                  zIndex: 2,
+                  backgroundColor: 'var(--bs-dropdown-bg, #fff)',
+                }}
+              >
+                <div className="small text-muted mb-2" style={{ lineHeight: 1.35 }}>
+                  Presets load configuration only by default and keep your current Sample Data.
+                </div>
+                <div className="small text-muted mb-2" style={{ lineHeight: 1.35 }}>
+                  Opening Sandbox from an Example loads matching config and sample data.
+                </div>
+                <Form.Check
+                  type="checkbox"
+                  id="load-preset-with-data"
+                  label="Also load preset sample data"
+                  checked={loadPresetWithData}
+                  onChange={(event) => onLoadPresetWithDataChange(event.target.checked)}
+                  className="small"
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </div>
               {presets.map((item, index) => (
                 <Dropdown.Item
                   key={index}
-                  onClick={() => onLoadPreset(item.config, item.name)}
+                  onClick={() => onLoadPreset(item)}
+                  title={item.name}
+                  style={{
+                    whiteSpace: 'normal',
+                    lineHeight: 1.25,
+                    wordBreak: 'break-word',
+                  }}
                 >
                   {item.name}
                 </Dropdown.Item>
