@@ -1,14 +1,13 @@
 import React from 'react';
-import { Alert, Nav } from 'react-bootstrap';
+import { Nav, Form, Toast, ToastContainer } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
-import { PropsOverridesTab } from './PropsOverridesTab';
 import { SampleDataTab } from './SampleDataTab';
-import { LoadingStatesTab } from './LoadingStatesTab';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
   name: string;
   config: WidgemoConfig;
+  data: Record<string, unknown>[];
 }
 
 export interface LeftPanelProps {
@@ -24,36 +23,13 @@ export interface LeftPanelProps {
   onJsonChange: (json: string) => void;
   onApplyJson: () => void;
   presets: PresetOption[];
-  onLoadPreset: (presetConfig: WidgemoConfig, presetName?: string) => void;
+  onLoadPreset: (preset: PresetOption) => void;
+  loadPresetWithData: boolean;
+  onLoadPresetWithDataChange: (value: boolean) => void;
   jsonError: string | null;
-  onShowReference: () => void;
   onShowCodeSandbox: () => void;
   onCopyToClipboard: () => void;
   onDownloadConfig: () => void;
-
-  // PropsOverridesTab props
-  overridesJson: string;
-  onOverridesJsonChange: (value: string) => void;
-  className: string;
-  onClassNameChange: (value: string) => void;
-  styleJson: string;
-  onStyleJsonChange: (value: string) => void;
-  overrideBaseColorEnabled: boolean;
-  onOverrideBaseColorEnabledChange: (value: boolean) => void;
-  baseColor: string;
-  onBaseColorChange: (value: string) => void;
-  overrideBackgroundEnabled: boolean;
-  onOverrideBackgroundEnabledChange: (value: boolean) => void;
-  overrideBackground: string;
-  onOverrideBackgroundChange: (value: string) => void;
-  autoContrast: boolean;
-  onAutoContrastChange: (value: boolean) => void;
-  contrastAmount: number;
-  onContrastAmountChange: (value: number) => void;
-  showConfigDetails: boolean;
-  onShowConfigDetailsChange: (value: boolean) => void;
-  onApplyAdvancedProperties: () => void;
-  onResetAll: () => void;
 
   // SampleDataTab props
   currentData: Record<string, unknown>[];
@@ -64,57 +40,34 @@ export interface LeftPanelProps {
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges: () => void;
 
-  // LoadingStatesTab props
-  showLoading: boolean;
-  onShowLoadingChange: (value: boolean) => void;
-  errorMessage: string;
-  onErrorMessageChange: (value: string) => void;
-  onApplyChanges: () => void;
-  useCustomLoading: boolean;
-  onUseCustomLoadingChange: (value: boolean) => void;
-  useCustomError: boolean;
-  onUseCustomErrorChange: (value: boolean) => void;
+  // Preview controls (moved from preview header)
+  showDevOverlay: boolean;
+  onShowDevOverlayChange: (value: boolean) => void;
+  isAutoWidth: boolean;
+  onAutoWidthChange: (value: boolean) => void;
+  isAutoHeight: boolean;
+  onAutoHeightChange: (value: boolean) => void;
+  width: number;
+  onWidthChange: (value: number) => void;
+  height: number;
+  onHeightChange: (value: number) => void;
 }
 
 export const LeftPanel: React.FC<LeftPanelProps> = ({
   activeTab,
   onTabChange,
   exportStatus,
-  // JsonConfigTab props
   currentJson,
   onJsonChange,
   onApplyJson,
   presets,
   onLoadPreset,
+  loadPresetWithData,
+  onLoadPresetWithDataChange,
   jsonError,
-  onShowReference,
   onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
-  // PropsOverridesTab props
-  overridesJson,
-  onOverridesJsonChange,
-  className,
-  onClassNameChange,
-  styleJson,
-  onStyleJsonChange,
-  overrideBaseColorEnabled,
-  onOverrideBaseColorEnabledChange,
-  baseColor,
-  onBaseColorChange,
-  overrideBackgroundEnabled,
-  onOverrideBackgroundEnabledChange,
-  overrideBackground,
-  onOverrideBackgroundChange,
-  autoContrast,
-  onAutoContrastChange,
-  contrastAmount,
-  onContrastAmountChange,
-  showConfigDetails,
-  onShowConfigDetailsChange,
-  onApplyAdvancedProperties,
-  onResetAll,
-  // SampleDataTab props
   currentData,
   jsonEditorText,
   onJsonEditorTextChange,
@@ -122,26 +75,27 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onGenerateClick,
   onFileUpload,
   onSaveChanges,
-  // LoadingStatesTab props
-  showLoading,
-  onShowLoadingChange,
-  errorMessage,
-  onErrorMessageChange,
-  onApplyChanges,
-  useCustomLoading,
-  onUseCustomLoadingChange,
-  useCustomError,
-  onUseCustomErrorChange,
+  showDevOverlay,
+  onShowDevOverlayChange,
+  isAutoWidth,
+  onAutoWidthChange,
+  isAutoHeight,
+  onAutoHeightChange,
+  width,
+  onWidthChange,
+  height,
+  onHeightChange,
 }) => {
+  const isErrorToast = !!exportStatus && exportStatus.toLowerCase().includes('error');
+
   const tabs = [
     { id: 'config-editor', label: 'Configuration' },
     { id: 'sample-data', label: 'Sample Data' },
-    { id: 'loading-states', label: 'Test Loading & Errors' },
-    { id: 'advanced-properties', label: 'Advanced Settings' },
+    { id: 'advanced', label: 'Preview Settings' },
   ];
 
   return (
-    <div className="p-3 h-100 d-flex flex-column" >
+    <div className="p-3 h-100 d-flex flex-column" style={{ position: 'relative' }}>
       <style>
         {`
           .left-panel-content * {
@@ -168,14 +122,43 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
           .left-panel-tabs .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
           }
+
+          @media (max-width: 576px) {
+            .sandbox-status-toast {
+              top: auto !important;
+              right: 0.5rem !important;
+              bottom: 0.5rem !important;
+              left: 0.5rem !important;
+              padding: 0 !important;
+            }
+
+            .sandbox-status-toast .toast {
+              width: 100%;
+              max-width: none;
+            }
+
+            .sandbox-status-toast .toast-body {
+              min-width: 0 !important;
+            }
+          }
         `}
       </style>
-      {/* Export Status */}
-      {exportStatus && (
-        <Alert variant={exportStatus.includes('Error') ? 'danger' : 'success'} className="py-2 mb-3">
-          {exportStatus}
-        </Alert>
-      )}
+
+      <ToastContainer className="p-2 sandbox-status-toast" position="top-end" style={{ zIndex: 1060 }}>
+        <Toast
+          show={!!exportStatus}
+          onClose={() => {
+            // no-op: parent state uses timeout lifecycle; close affordance still dismisses locally
+          }}
+          autohide
+          delay={3000}
+          bg={isErrorToast ? 'danger' : 'success'}
+        >
+          <Toast.Body className="text-white" style={{ minWidth: '260px' }}>
+            {exportStatus}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
 
       <div className="mb-3 flex-shrink-0">
         <div className="bg-dark rounded" style={{ padding: '2px' }}>
@@ -228,38 +211,12 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
             onApply={onApplyJson}
             presets={presets}
             onLoadPreset={onLoadPreset}
+            loadPresetWithData={loadPresetWithData}
+            onLoadPresetWithDataChange={onLoadPresetWithDataChange}
             jsonError={jsonError}
-            onShowReference={onShowReference}
             onShowCodeSandbox={onShowCodeSandbox}
             onCopyToClipboard={onCopyToClipboard}
             onDownloadConfig={onDownloadConfig}
-          />
-        )}
-
-        {activeTab === 'advanced-properties' && (
-          <PropsOverridesTab
-            overridesJson={overridesJson}
-            onOverridesJsonChange={onOverridesJsonChange}
-            className={className}
-            onClassNameChange={onClassNameChange}
-            styleJson={styleJson}
-            onStyleJsonChange={onStyleJsonChange}
-            overrideBaseColorEnabled={overrideBaseColorEnabled}
-            onOverrideBaseColorEnabledChange={onOverrideBaseColorEnabledChange}
-            baseColor={baseColor}
-            onBaseColorChange={onBaseColorChange}
-            overrideBackgroundEnabled={overrideBackgroundEnabled}
-            onOverrideBackgroundEnabledChange={onOverrideBackgroundEnabledChange}
-            overrideBackground={overrideBackground}
-            onOverrideBackgroundChange={onOverrideBackgroundChange}
-            autoContrast={autoContrast}
-            onAutoContrastChange={onAutoContrastChange}
-            contrastAmount={contrastAmount}
-            onContrastAmountChange={onContrastAmountChange}
-            showConfigDetails={showConfigDetails}
-            onShowConfigDetailsChange={onShowConfigDetailsChange}
-            onApplyAdvancedProperties={onApplyAdvancedProperties}
-            onResetAll={onResetAll}
           />
         )}
 
@@ -275,18 +232,58 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
           />
         )}
 
-        {activeTab === 'loading-states' && (
-          <LoadingStatesTab
-            showLoading={showLoading}
-            onShowLoadingChange={onShowLoadingChange}
-            errorMessage={errorMessage}
-            onErrorMessageChange={onErrorMessageChange}
-            onApplyChanges={onApplyChanges}
-            useCustomLoading={useCustomLoading}
-            onUseCustomLoadingChange={onUseCustomLoadingChange}
-            useCustomError={useCustomError}
-            onUseCustomErrorChange={onUseCustomErrorChange}
-          />
+        {activeTab === 'advanced' && (
+          <div className="h-100 overflow-auto pe-1">
+            <div className="mb-3 p-2 border rounded">
+              <h6 className="mb-2">Preview Controls</h6>
+              <div className="d-flex flex-column gap-2">
+                <Form.Check
+                  type="checkbox"
+                  label="Show Dev Overlay"
+                  checked={showDevOverlay}
+                  onChange={(event) => onShowDevOverlayChange(event.target.checked)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Auto width"
+                  checked={isAutoWidth}
+                  onChange={(event) => onAutoWidthChange(event.target.checked)}
+                />
+                {!isAutoWidth && (
+                  <div className="d-flex align-items-center gap-2">
+                    <Form.Label className="mb-0" style={{ width: '72px' }}>Width</Form.Label>
+                    <Form.Control
+                      type="number"
+                      size="sm"
+                      min="100"
+                      max="1200"
+                      value={width}
+                      onChange={(event) => onWidthChange(Number(event.target.value))}
+                    />
+                  </div>
+                )}
+                <Form.Check
+                  type="checkbox"
+                  label="Auto height"
+                  checked={isAutoHeight}
+                  onChange={(event) => onAutoHeightChange(event.target.checked)}
+                />
+                {!isAutoHeight && (
+                  <div className="d-flex align-items-center gap-2">
+                    <Form.Label className="mb-0" style={{ width: '72px' }}>Height</Form.Label>
+                    <Form.Control
+                      type="number"
+                      size="sm"
+                      min="100"
+                      max="800"
+                      value={height}
+                      onChange={(event) => onHeightChange(Number(event.target.value))}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

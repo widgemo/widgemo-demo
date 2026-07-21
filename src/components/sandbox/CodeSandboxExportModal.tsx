@@ -138,13 +138,13 @@ export default App;`
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Alert variant="info">
-          <strong>CodeSandbox Export</strong>
+        <Alert variant="warning">
+          <strong>Coming Soon</strong>
           <p className="mb-2">
-            This will create a new CodeSandbox with your current Widgemo configuration and sample data.
+            CodeSandbox export is not available yet.
           </p>
           <small>
-            The sandbox will include:
+            This dialog previews the planned behavior:
             <ul className="mb-0 mt-2">
               <li>React application with Widgemo component</li>
               <li>Your current configuration settings</li>
@@ -153,6 +153,10 @@ export default App;`
             </ul>
           </small>
         </Alert>
+
+        <p className="text-muted small mb-0">
+          The launch button is disabled until this feature is ready.
+        </p>
 
         {!currentConfig && (
           <Alert variant="warning">
@@ -168,9 +172,9 @@ export default App;`
         <Button
           variant="primary"
           onClick={handleExport}
-          disabled={!currentConfig}
+          disabled
         >
-          Generate CodeSandbox
+          Generate CodeSandbox (Coming Soon)
         </Button>
       </Modal.Footer>
     </Modal>
