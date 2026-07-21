@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Badge, Button, Card, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
@@ -117,6 +117,22 @@ export const ExamplesPage: React.FC = () => {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>('All');
   const [selectedItem, setSelectedItem] = useState<ExampleItem | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (typeof document === 'undefined' || !showModal) return;
+
+    const rootStyle = document.documentElement.style;
+    const previousValue = rootStyle.getPropertyValue('--widgemo-dropdown-z-index');
+    rootStyle.setProperty('--widgemo-dropdown-z-index', '1080');
+
+    return () => {
+      if (previousValue) {
+        rootStyle.setProperty('--widgemo-dropdown-z-index', previousValue);
+      } else {
+        rootStyle.removeProperty('--widgemo-dropdown-z-index');
+      }
+    };
+  }, [showModal]);
 
   const coreExampleSet = useMemo(() => new Set<string>(CORE_EXAMPLE_IDS), []);
 
