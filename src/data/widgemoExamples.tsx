@@ -979,7 +979,7 @@ const widgemoExamples: Array<{
               { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-user',
               label: 'Edit',
@@ -997,21 +997,21 @@ const widgemoExamples: Array<{
             {
               id: 'send-message',
               label: 'Send Message',
-              icon: 'message',
+              icon: 'share',
               placement: 'onHover',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'duplicate-user',
               label: 'Duplicate',
-              icon: 'duplicate',
+              icon: 'copy',
               placement: 'menu',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-user', actionLabel: 'Duplicate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'archive-user',
               label: 'Archive',
-              icon: 'archive',
+              icon: 'download',
               placement: 'menu',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             }
@@ -1280,6 +1280,23 @@ const widgemoExamples: Array<{
           title: 'User Directory',
           subtitle: 'Search then page through results',
           icon: 'table',
+          actions: [
+            {
+              id: 'refresh-results',
+              label: 'Refresh Results',
+              icon: 'refresh',
+              placement: 'pinned',
+              variant: 'secondary',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'refresh-results', actionLabel: 'Refresh Results', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            },
+            {
+              id: 'export-results',
+              label: 'Export Results',
+              icon: 'download',
+              placement: 'menu',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-results', actionLabel: 'Export Results', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            }
+          ]
         },
         content: {
           mode: 'table',
@@ -1293,6 +1310,25 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' },
             ],
           },
+        },
+        footer: {
+          subtitle: 'Quick actions for current result set',
+          actions: [
+            {
+              id: 'clear-filters',
+              label: 'Clear Filters',
+              icon: 'close',
+              placement: 'pinned',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'clear-filters', actionLabel: 'Clear Filters', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            },
+            {
+              id: 'bulk-export',
+              label: 'Bulk Export',
+              icon: 'export',
+              placement: 'menu',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'bulk-export', actionLabel: 'Bulk Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            }
+          ]
         },
       },
     },
