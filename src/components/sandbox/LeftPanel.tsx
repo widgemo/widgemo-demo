@@ -5,7 +5,6 @@ import { SampleDataTab } from './SampleDataTab';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
-  id: string;
   name: string;
   config: WidgemoConfig;
   data: Record<string, unknown>[];
@@ -58,7 +57,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   activeTab,
   onTabChange,
   exportStatus,
-  // JsonConfigTab props
   currentJson,
   onJsonChange,
   onApplyJson,
@@ -70,7 +68,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
-  // SampleDataTab props
   currentData,
   jsonEditorText,
   onJsonEditorTextChange,

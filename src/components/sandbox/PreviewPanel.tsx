@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Widgemo } from 'widgemo-core';
 import { Widgemo } from '@widgemo/widgemo-core';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 

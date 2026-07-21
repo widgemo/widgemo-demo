@@ -4,7 +4,6 @@ import { FaCopy, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
-  id: string;
   name: string;
   config: WidgemoConfig;
   data: Record<string, unknown>[];
@@ -45,13 +44,6 @@ interface JsonConfigTabProps {
  * - Export dropdown (copy, download, CodeSandbox)
  * - Error display for invalid JSON
  *
- * Future extensibility:
- * - JSON formatting/prettifying
- * - Syntax highlighting in editor
- * - Auto-complete suggestions
- * - JSON schema validation
- * - Undo/redo functionality
- * - Import from file
  */
 export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
   currentJson,

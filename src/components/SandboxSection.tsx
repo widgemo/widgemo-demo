@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card } from 'react-bootstrap';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
@@ -7,7 +7,6 @@ import { PreviewPanel } from './sandbox/PreviewPanel';
 import { LeftPanel } from './sandbox/LeftPanel';
 import { SampleDataGenerationModal } from './sandbox/SampleDataGenerationModal';
 import { CodeSandboxExportModal } from './sandbox/CodeSandboxExportModal';
-import type { Theme } from '../utils/themeConfig';
 import { sanitizeReactInternals } from '../utils';
 
 interface SandboxSectionProps {
@@ -16,12 +15,9 @@ interface SandboxSectionProps {
   initialPresetName?: string;
   onConfigChange?: (config: WidgemoConfig) => void;
   onDataChange?: (data: Record<string, unknown>[]) => void;
-  currentTheme: Theme;
-  // initialThemeMode?: 'defaults' | 'config' | 'custom';
 }
 
 interface PresetOption {
-  id: string;
   name: string;
   config: WidgemoConfig;
   data: Record<string, unknown>[];
@@ -54,8 +50,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   initialPresetName,
   onConfigChange,
   onDataChange,
-  currentTheme,
-  // initialThemeMode = 'config'
 }) => {
   const buildCommentedConfigJson = useCallback((cfg: WidgemoConfig, presetName?: string) => {
     const json = JSON.stringify(sanitizeReactInternals(JSON.parse(JSON.stringify(cfg))), null, 2);
@@ -89,19 +83,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   useEffect(() => {
     localStorage.setItem('sandbox-load-preset-with-data', String(loadPresetWithData));
   }, [loadPresetWithData]);
-
-  // Theming state
-  // const [themeMode, setThemeMode] = useState<'defaults' | 'config' | 'custom'>(initialThemeMode);
-  // const [primaryColor, setPrimaryColor] = useState('#0066cc');
-  // const [customTheme, setCustomTheme] = useState<Partial<WidgemoTheme>>({});
-  // const [darkMode, setDarkMode] = useState(false);
-
-  // Ensure darkMode is used for TypeScript
-  // void darkMode;
-
-  // Note: darkMode is used by ThemingTab for palette generation display
-  // const [autoGeneratePalette, setAutoGeneratePalette] = useState(true);
-
 
   const [customData, setCustomData] = useState<Record<string, unknown>[]>(initialData);
   const [entityLabel, setEntityLabel] = useState('User');
@@ -142,41 +123,12 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [showSampleGen, setShowSampleGen] = useState(false);
   const [jsonEditorText, setJsonEditorText] = useState('');
 
-  // Current theme based on theming tab settings
-  // const currentSandboxTheme = useMemo(() => {
-  //   switch (themeMode) {
-  //     case 'defaults':
-  //       // For defaults mode, return null to use widgemo defaults
-  //       return null;
-  //     case 'config':
-  //       return undefined; // undefined means use config.theme as-is
-  //     case 'custom':
-  //       return {
-  //         colors: {
-  //           primary: primaryColor,
-  //           ...customTheme.colors
-  //         },
-  //         ...customTheme
-  //       } as WidgemoTheme;
-  //     default:
-  //       return null;
-  //   }
-  // }, [themeMode, primaryColor, customTheme]);
-
-  const currentSandboxTheme = undefined;
-
   useEffect(() => {
     const saved = localStorage.getItem('sandbox-load-preset-with-data');
     if (saved === 'true') {
       setLoadPresetWithData(true);
     }
   }, []);
-
-  // Determine if dark mode is actually active based on current theme
-  // const isDarkModeActive = useMemo(() => {
-  //   // Dark mode is now handled via CSS variables, check the current theme
-  //   return currentTheme === 'dark' || currentTheme.startsWith('theme-dark');
-  // }, [currentTheme]);
 
   const sandboxPresetIdSet = useMemo(() => new Set<string>(SANDBOX_PRESET_IDS), []);
 
@@ -185,7 +137,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     return widgemoExamples
       .filter((item) => sandboxPresetIdSet.has(item.id))
       .map((item) => ({
-        id: item.id,
         name: item.title,
         config: item.config as WidgemoConfig,
         data: item.data as Record<string, unknown>[],
@@ -272,11 +223,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
 
       const parsed = JSON.parse(cleanJson);
       
-      // Apply current theme settings if not in 'config' mode
-      if (currentSandboxTheme !== undefined) {
-        parsed.theme = currentSandboxTheme;
-      }
-      
       setConfig(parsed);
       if (onConfigChange) onConfigChange(parsed);
       setJsonError(null);
@@ -295,13 +241,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   useEffect(() => {
     setCustomData(initialData);
   }, [initialData]);
-
-  const lastAppliedThemeRef = useRef(currentTheme);
-
-  // Update theme ref when currentTheme changes (but don't modify sandbox config)
-  useEffect(() => {
-    lastAppliedThemeRef.current = currentTheme;
-  }, [currentTheme]);
 
   const loadPreset = (preset: PresetOption) => {
     // Don't inject theme properties - let presets use their own themes or fall back to defaults
@@ -323,23 +262,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
     // Don't apply the config automatically - wait for user to click Apply Changes
     setJsonError(null);
   };
-
-  // Theming handlers
-  // const handleThemeModeChange = useCallback((mode: 'defaults' | 'config' | 'custom') => {
-  //   setThemeMode(mode);
-  // }, []);
-
-  // const handlePrimaryColorChange = useCallback((color: string) => {
-  //   setPrimaryColor(color);
-  // }, []);
-
-  // const handleCustomThemeChange = useCallback((theme: Partial<WidgemoTheme>) => {
-  //   setCustomTheme(theme);
-  // }, []);
-
-  // const handleDarkModeChange = useCallback((dark: boolean) => {
-  //   setDarkMode(dark);
-  // }, []);
 
   // Sample Data handlers
   const handleJsonEditorTextChange = useCallback((text: string) => {
