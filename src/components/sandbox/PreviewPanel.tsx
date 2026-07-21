@@ -14,9 +14,6 @@ interface PreviewPanelProps {
   isAutoWidth: boolean;
   isAutoHeight: boolean;
   showDevOverlay: boolean;
-  loading: boolean;
-  error: string;
-  onRetry: () => void;
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
@@ -27,9 +24,6 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   isAutoWidth,
   isAutoHeight,
   showDevOverlay,
-  loading,
-  error,
-  onRetry,
 }) => {
   // Keep dev overlay opt-in for public-facing sandbox use.
   const getConfig = () => {
@@ -65,9 +59,6 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           data={data} 
           config={getConfig()} 
           className="my-custom-widgemo"
-          loading={loading}
-          error={error || null}
-          onRetry={onRetry}
         />
       </div>
     </div>

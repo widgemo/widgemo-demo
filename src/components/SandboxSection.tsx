@@ -66,21 +66,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   const [config, setConfig] = useState(initialConfig);
   const [jsonError, setJsonError] = useState<string | null>(null);
 
-  // Additional WidgemoProps state
-  const [overridesJson, setOverridesJson] = useState('{}');
-  const [className, setClassName] = useState('');
-  const [styleJson, setStyleJson] = useState('{}');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [baseColor, setBaseColor] = useState('');
-  const [autoContrast, setAutoContrast] = useState(true);
-  const [contrastAmount, setContrastAmount] = useState(0.05);
-  const [overrideBackground, setOverrideBackground] = useState('');
-  const [showConfigDetails, setShowConfigDetails] = useState(false);
-  const [renderTrigger, setRenderTrigger] = useState(0);
-
-  // SimplifiedWidgemo doesn't need resolved props
-
   // Active tab state
   const [activeTab, setActiveTab] = useState(() => {
     const saved = localStorage.getItem('sandbox-active-tab');
@@ -91,10 +76,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   useEffect(() => {
     localStorage.setItem('sandbox-active-tab', activeTab);
   }, [activeTab]);
-
-  // Control whether to override specific properties
-  const [overrideBaseColorEnabled, setOverrideBaseColorEnabled] = useState(false);
-  const [overrideBackgroundEnabled, setOverrideBackgroundEnabled] = useState(false);
 
   // Preview dimensions state
   const [width, setWidth] = useState<number>(400);
@@ -360,94 +341,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
   //   setDarkMode(dark);
   // }, []);
 
-  // Props & Overrides handlers
-  const handleOverridesJsonChange = useCallback((value: string) => {
-    setOverridesJson(value);
-  }, []);
-
-  const handleClassNameChange = useCallback((value: string) => {
-    setClassName(value);
-  }, []);
-
-  const handleStyleJsonChange = useCallback((value: string) => {
-    setStyleJson(value);
-  }, []);
-
-  const handleLoadingChange = useCallback((value: boolean) => {
-    setLoading(value);
-  }, []);
-
-  const handleErrorChange = useCallback((value: string) => {
-    setError(value);
-  }, []);
-
-  const handleOverrideBaseColorEnabledChange = useCallback((value: boolean) => {
-    setOverrideBaseColorEnabled(value);
-  }, []);
-
-  const handleBaseColorChange = useCallback((value: string) => {
-    setBaseColor(value);
-  }, []);
-
-  const handleOverrideBackgroundEnabledChange = useCallback((value: boolean) => {
-    setOverrideBackgroundEnabled(value);
-  }, []);
-
-  const handleOverrideBackgroundChange = useCallback((value: string) => {
-    setOverrideBackground(value);
-  }, []);
-
-  const handleAutoContrastChange = useCallback((value: boolean) => {
-    setAutoContrast(value);
-  }, []);
-
-  const handleContrastAmountChange = useCallback((value: number) => {
-    setContrastAmount(value);
-  }, []);
-
-  const handleShowConfigDetailsChange = useCallback((value: boolean) => {
-    setShowConfigDetails(value);
-  }, []);
-
-  const handleApplyAdvancedProperties = useCallback(() => {
-    try {
-      // Parse overrides JSON
-      void (overridesJson.trim() ? JSON.parse(overridesJson) : {});
-
-      // Parse style JSON (though we don't store it separately, just validate)
-      if (styleJson.trim()) {
-        JSON.parse(styleJson);
-      }
-
-      setExportStatus('Advanced properties applied successfully!');
-      setTimeout(() => setExportStatus(null), 3000);
-    } catch (error) {
-      setExportStatus(`Error applying advanced properties: ${(error as Error).message}`);
-      setTimeout(() => setExportStatus(null), 5000);
-    }
-  }, [overridesJson, styleJson]);
-
-  const handleApplyLoadingStates = useCallback(() => {
-    // Force re-render of preview
-    setRenderTrigger(prev => prev + 1);
-    setExportStatus('Loading and error states applied successfully!');
-    setTimeout(() => setExportStatus(null), 3000);
-  }, []);
-
-  const handleResetAll = useCallback(() => {
-    setOverridesJson('{}');
-    setClassName('');
-    setStyleJson('{}');
-    setBaseColor('#ffffff');
-    setOverrideBackground('#f0f0f0');
-    setAutoContrast(true);
-    setContrastAmount(0.05);
-    setOverrideBaseColorEnabled(false);
-    setOverrideBackgroundEnabled(false);
-    setExportStatus('Advanced properties reset to defaults!');
-    setTimeout(() => setExportStatus(null), 3000);
-  }, []);
-
   // Sample Data handlers
   const handleJsonEditorTextChange = useCallback((text: string) => {
     setJsonEditorText(text);
@@ -682,29 +575,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onShowCodeSandbox={() => setShowCodeSandboxModal(true)}
                 onCopyToClipboard={copyToClipboard}
                 onDownloadConfig={downloadConfig}
-                // PropsOverridesTab props
-                overridesJson={overridesJson}
-                onOverridesJsonChange={handleOverridesJsonChange}
-                className={className}
-                onClassNameChange={handleClassNameChange}
-                styleJson={styleJson}
-                onStyleJsonChange={handleStyleJsonChange}
-                overrideBaseColorEnabled={overrideBaseColorEnabled}
-                onOverrideBaseColorEnabledChange={handleOverrideBaseColorEnabledChange}
-                baseColor={baseColor}
-                onBaseColorChange={handleBaseColorChange}
-                overrideBackgroundEnabled={overrideBackgroundEnabled}
-                onOverrideBackgroundEnabledChange={handleOverrideBackgroundEnabledChange}
-                overrideBackground={overrideBackground}
-                onOverrideBackgroundChange={handleOverrideBackgroundChange}
-                autoContrast={autoContrast}
-                onAutoContrastChange={handleAutoContrastChange}
-                contrastAmount={contrastAmount}
-                onContrastAmountChange={handleContrastAmountChange}
-                showConfigDetails={showConfigDetails}
-                onShowConfigDetailsChange={handleShowConfigDetailsChange}
-                onApplyAdvancedProperties={handleApplyAdvancedProperties}
-                onResetAll={handleResetAll}
                 // SampleDataTab props
                 currentData={customData}
                 jsonEditorText={jsonEditorText}
@@ -713,12 +583,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 onGenerateClick={() => setShowSampleGen(true)}
                 onFileUpload={handleSampleDataFileUpload}
                 onSaveChanges={handleSaveChanges}
-                // LoadingStatesTab props
-                showLoading={loading}
-                onShowLoadingChange={handleLoadingChange}
-                errorMessage={error}
-                onErrorMessageChange={handleErrorChange}
-                onApplyChanges={handleApplyLoadingStates}
                 showDevOverlay={showDevOverlay}
                 onShowDevOverlayChange={setShowDevOverlay}
                 isAutoWidth={isAutoWidth}
@@ -734,7 +598,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
             <Separator className="bg-secondary" style={{ width: '1.5px' }} />
             <Panel defaultSize={50} minSize={30} className="flex-grow-1 overflow-auto">
               <PreviewPanel
-                key={renderTrigger}
                 config={config}
                 data={customData}
                 width={width}
@@ -742,12 +605,6 @@ export const SandboxSection: React.FC<SandboxSectionProps> = ({
                 isAutoWidth={isAutoWidth}
                 isAutoHeight={isAutoHeight}
                 showDevOverlay={showDevOverlay}
-                loading={loading}
-                error={error}
-                onRetry={() => {
-                  setLoading(false);
-                  setError('');
-                }}
               />
             </Panel>
           </Group>

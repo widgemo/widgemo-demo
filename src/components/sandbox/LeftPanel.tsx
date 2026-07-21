@@ -1,9 +1,7 @@
 import React from 'react';
 import { Nav, Form, Toast, ToastContainer } from 'react-bootstrap';
 import { JsonConfigTab } from './JsonConfigTab';
-import { PropsOverridesTab } from './PropsOverridesTab';
 import { SampleDataTab } from './SampleDataTab';
-import { LoadingStatesTab } from './LoadingStatesTab';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
@@ -34,30 +32,6 @@ export interface LeftPanelProps {
   onCopyToClipboard: () => void;
   onDownloadConfig: () => void;
 
-  // PropsOverridesTab props
-  overridesJson: string;
-  onOverridesJsonChange: (value: string) => void;
-  className: string;
-  onClassNameChange: (value: string) => void;
-  styleJson: string;
-  onStyleJsonChange: (value: string) => void;
-  overrideBaseColorEnabled: boolean;
-  onOverrideBaseColorEnabledChange: (value: boolean) => void;
-  baseColor: string;
-  onBaseColorChange: (value: string) => void;
-  overrideBackgroundEnabled: boolean;
-  onOverrideBackgroundEnabledChange: (value: boolean) => void;
-  overrideBackground: string;
-  onOverrideBackgroundChange: (value: string) => void;
-  autoContrast: boolean;
-  onAutoContrastChange: (value: boolean) => void;
-  contrastAmount: number;
-  onContrastAmountChange: (value: number) => void;
-  showConfigDetails: boolean;
-  onShowConfigDetailsChange: (value: boolean) => void;
-  onApplyAdvancedProperties: () => void;
-  onResetAll: () => void;
-
   // SampleDataTab props
   currentData: Record<string, unknown>[];
   jsonEditorText: string;
@@ -66,13 +40,6 @@ export interface LeftPanelProps {
   onGenerateClick: () => void;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges: () => void;
-
-  // LoadingStatesTab props
-  showLoading: boolean;
-  onShowLoadingChange: (value: boolean) => void;
-  errorMessage: string;
-  onErrorMessageChange: (value: string) => void;
-  onApplyChanges: () => void;
 
   // Preview controls (moved from preview header)
   showDevOverlay: boolean;
@@ -103,29 +70,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
-  // PropsOverridesTab props
-  overridesJson,
-  onOverridesJsonChange,
-  className,
-  onClassNameChange,
-  styleJson,
-  onStyleJsonChange,
-  overrideBaseColorEnabled,
-  onOverrideBaseColorEnabledChange,
-  baseColor,
-  onBaseColorChange,
-  overrideBackgroundEnabled,
-  onOverrideBackgroundEnabledChange,
-  overrideBackground,
-  onOverrideBackgroundChange,
-  autoContrast,
-  onAutoContrastChange,
-  contrastAmount,
-  onContrastAmountChange,
-  showConfigDetails,
-  onShowConfigDetailsChange,
-  onApplyAdvancedProperties,
-  onResetAll,
   // SampleDataTab props
   currentData,
   jsonEditorText,
@@ -134,12 +78,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
   onGenerateClick,
   onFileUpload,
   onSaveChanges,
-  // LoadingStatesTab props
-  showLoading,
-  onShowLoadingChange,
-  errorMessage,
-  onErrorMessageChange,
-  onApplyChanges,
   showDevOverlay,
   onShowDevOverlayChange,
   isAutoWidth,
@@ -348,49 +286,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                 )}
               </div>
             </div>
-
-            <details className="mb-3" open>
-              <summary className="fw-semibold" style={{ cursor: 'pointer' }}>Loading & Error Testing</summary>
-              <div className="mt-2 border rounded p-2">
-                <LoadingStatesTab
-                  showLoading={showLoading}
-                  onShowLoadingChange={onShowLoadingChange}
-                  errorMessage={errorMessage}
-                  onErrorMessageChange={onErrorMessageChange}
-                  onApplyChanges={onApplyChanges}
-                />
-              </div>
-            </details>
-
-            <details>
-              <summary className="fw-semibold" style={{ cursor: 'pointer' }}>Configuration Overrides</summary>
-              <div className="mt-2 border rounded p-2">
-                <PropsOverridesTab
-                  overridesJson={overridesJson}
-                  onOverridesJsonChange={onOverridesJsonChange}
-                  className={className}
-                  onClassNameChange={onClassNameChange}
-                  styleJson={styleJson}
-                  onStyleJsonChange={onStyleJsonChange}
-                  overrideBaseColorEnabled={overrideBaseColorEnabled}
-                  onOverrideBaseColorEnabledChange={onOverrideBaseColorEnabledChange}
-                  baseColor={baseColor}
-                  onBaseColorChange={onBaseColorChange}
-                  overrideBackgroundEnabled={overrideBackgroundEnabled}
-                  onOverrideBackgroundEnabledChange={onOverrideBackgroundEnabledChange}
-                  overrideBackground={overrideBackground}
-                  onOverrideBackgroundChange={onOverrideBackgroundChange}
-                  autoContrast={autoContrast}
-                  onAutoContrastChange={onAutoContrastChange}
-                  contrastAmount={contrastAmount}
-                  onContrastAmountChange={onContrastAmountChange}
-                  showConfigDetails={showConfigDetails}
-                  onShowConfigDetailsChange={onShowConfigDetailsChange}
-                  onApplyAdvancedProperties={onApplyAdvancedProperties}
-                  onResetAll={onResetAll}
-                />
-              </div>
-            </details>
           </div>
         )}
       </div>
