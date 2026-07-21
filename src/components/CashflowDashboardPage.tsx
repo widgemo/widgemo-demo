@@ -31,6 +31,11 @@ import {
   type ForecastHorizon,
   type RiskPosture,
 } from '../data/cashflowDashboardData';
+import {
+  LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON,
+  LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE,
+  LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE,
+} from '../config/liquiditySnapshotPreview';
 import { useTheme } from '../hooks/useTheme';
 
 const autoItemLayout = { type: 'auto' as const };
@@ -162,9 +167,9 @@ export const CashflowDashboardPage: React.FC = () => {
   const { currentTheme } = useTheme();
   const [activeNav, setActiveNav] = useState<DashboardNavKey>('command');
   const [summaryMetric, setSummaryMetric] = useState<'totals' | 'percent'>('totals');
-  const [selectedScope, setSelectedScope] = useState<AccountScope>('all');
-  const [selectedHorizon, setSelectedHorizon] = useState<ForecastHorizon>('30d');
-  const [selectedPosture, setSelectedPosture] = useState<RiskPosture>('expected');
+  const [selectedScope, setSelectedScope] = useState<AccountScope>(LIQUIDITY_SNAPSHOT_DEFAULT_SCOPE);
+  const [selectedHorizon, setSelectedHorizon] = useState<ForecastHorizon>(LIQUIDITY_SNAPSHOT_DEFAULT_HORIZON);
+  const [selectedPosture, setSelectedPosture] = useState<RiskPosture>(LIQUIDITY_SNAPSHOT_DEFAULT_POSTURE);
   const [focusedAlertId, setFocusedAlertId] = useState<string | null>(null);
   const [showInspector, setShowInspector] = useState(true);
   const [demoNotice, setDemoNotice] = useState<string | null>(null);
@@ -334,7 +339,6 @@ export const CashflowDashboardPage: React.FC = () => {
 
   const summaryConfig = useMemo<WidgemoConfig<Entity>>(
     () => ({
-      id: 'cashflow-liquidity-snapshot',
       containerFrame: { shadow: 'none', borderRadius: 0 },
       zones: {
         header: {

@@ -1298,6 +1298,39 @@ const widgemoExamples: Array<{
     },
   },
   {
+    id: 'grouped-rows-with-collapse',
+    title: 'Grouped Rows with Collapse',
+    description: 'Group records by any field value and collapse groups independently. Driven entirely by a single groupBy config property.',
+    data: twentyUsersData as Entity[],
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Grouped User Directory',
+          subtitle: 'Grouped by department with collapsible sections',
+          icon: 'table',
+        },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: true,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+      },
+    },
+  },
+  {
     id: 'board-basic',
     title: 'Board — Columns by field value',
     description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',

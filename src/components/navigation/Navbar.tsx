@@ -1,24 +1,50 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar as BootstrapNavbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav } from 'react-bootstrap';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
   topOffset?: number;
+  onHeightChange?: (height: number) => void;
 }
 
-export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
+export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightChange }) => {
   const location = useLocation();
-  const isSandbox = location.pathname === '/sandbox';
-
-  const isApplicationsActive =
+  const navbarRef = useRef<HTMLElement | null>(null);
+  const isExamplesActive =
+    location.pathname === '/examples' ||
     location.pathname === '/applications' ||
     location.pathname === '/dashboard' ||
     location.pathname === '/cashflow-dashboard';
 
+  useEffect(() => {
+    if (!onHeightChange || !navbarRef.current) return;
+
+    const element = navbarRef.current;
+    onHeightChange(element.offsetHeight);
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const nextHeight = entry?.contentRect?.height ?? element.offsetHeight;
+      onHeightChange(Math.round(nextHeight));
+    });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [onHeightChange]);
+
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow" style={{ top: `${topOffset}px` }}>
+      <BootstrapNavbar
+        bg="dark"
+        variant="dark"
+        fixed="top"
+        expand="lg"
+        className="shadow"
+        style={{ top: `${topOffset}px` }}
+        ref={navbarRef as never}
+      >
         <BootstrapNavbar.Brand 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           as={Link as any} 
@@ -52,40 +78,11 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 as={Link as any}
                 to="/examples"
-                active={location.pathname === '/examples'}
+                active={isExamplesActive}
                 className="mx-2"
               >
                 Examples
               </Nav.Link>
-
-              <NavDropdown
-                title="Applications"
-                id="applications-nav-dropdown"
-                className="mx-2"
-                active={isApplicationsActive}
-              >
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/applications"
-                >
-                  Overview
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/dashboard"
-                >
-                  Team Portfolio
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to="/cashflow-dashboard"
-                >
-                  Finance Tracker
-                </NavDropdown.Item>
-              </NavDropdown>
 
               <Nav.Link
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,22 +98,18 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mx-2"
+                aria-label="Docs (opens in a new tab)"
+                active={false}
+                onClick={(event) => {
+                  event.currentTarget.blur();
+                }}
               >
-                Docs
+                <span className="d-inline-flex align-items-center gap-1">
+                  Docs
+                  <FaExternalLinkAlt style={{ fontSize: '0.72rem', opacity: 0.9 }} aria-hidden="true" />
+                </span>
               </Nav.Link>
             </Nav>
-            {isSandbox && (
-              <Button 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                as={Link as any} 
-                to="/" 
-                variant="outline-light" 
-                size="sm" 
-                className="me-3"
-              >
-                ← Back to Main
-              </Button>
-            )}
             <ThemeToggle />
           </div>
         </BootstrapNavbar.Collapse>

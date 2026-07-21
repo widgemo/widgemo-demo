@@ -1,7 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
-import { Widgemo } from '@widgemo/widgemo-core';
+import { Widgemo, type Entity, type FieldConfig, type WidgemoConfig } from '@widgemo/widgemo-core';
 import widgemoExamples from '../../data/widgemoExamples';
+import {
+  accountScopeLabels,
+  forecastHorizonLabels,
+  riskPostureLabels,
+  getCashflowKpis,
+  type AccountScope,
+  type ForecastHorizon,
+  type RiskPosture,
+} from '../../data/cashflowDashboardData';
 
 interface CuratedTeaserSpec {
   id: string;
@@ -42,9 +51,140 @@ interface CuratedTeaserSpec {
   actionButtonHoverBorder?: string;
   centerHeaderTitle?: boolean;
   carouselAutoPlayInterval?: number;
+  scale?: number;
 }
 
 const ROTATION_MS = 4200;
+const FINANCE_TRACKER_TEASER_ID = 'finance-tracker-command-center';
+
+const financeScope: AccountScope = 'all';
+const financeHorizon: ForecastHorizon = '30d';
+const financePosture: RiskPosture = 'expected';
+
+const financeKpiFields: FieldConfig[] = [
+  { key: 'title', label: 'Metric', type: 'text', showLabel: false, wrap: false },
+  {
+    key: 'value',
+    label: 'Value',
+    type: 'number',
+    renderAs: 'currency',
+    renderAsOptions: { currency: 'USD', locale: 'en-US', compact: true },
+    showLabel: false,
+  },
+  {
+    key: 'delta',
+    label: 'Delta',
+    type: 'number',
+    renderAs: 'deltaValue',
+    renderAsOptions: { trendIndicator: true, fractionDigits: 0 },
+    showLabel: false,
+  },
+  {
+    key: 'healthScore',
+    label: 'Health',
+    type: 'number',
+    renderAs: 'scoreMeter',
+    renderAsOptions: {
+      showValue: true,
+      valueAsPercent: false,
+      decimals: 0,
+      tagPosition: 'top',
+      tagAlign: 'left',
+      valueAlign: 'right',
+      bands: [
+        { max: 35, label: 'Critical', color: '#c53030', background: 'rgba(229, 62, 62, 0.18)' },
+        { max: 65, label: 'Watch', color: '#c05621', background: 'rgba(237, 137, 54, 0.18)' },
+        { label: 'Healthy', color: '#2f855a', background: 'rgba(56, 161, 105, 0.16)' },
+      ],
+    },
+    showLabel: false,
+  },
+  {
+    key: 'confidence',
+    label: 'Confidence',
+    type: 'number',
+    renderAs: 'scoreMeter',
+    renderAsOptions: {
+      density: 'compact',
+      valueAsPercent: true,
+      decimals: 0,
+      tagPosition: 'bottom',
+      tagAlign: 'right',
+      valueAlign: 'left',
+      bands: [
+        { min: 85, label: 'High', color: '#2b6cb0', background: 'rgba(43, 108, 176, 0.14)' },
+        { min: 70, label: 'Good', color: '#2f855a', background: 'rgba(56, 161, 105, 0.14)' },
+        { min: 55, label: 'Medium', color: '#c05621', background: 'rgba(237, 137, 54, 0.15)' },
+        { label: 'Low', color: '#c53030', background: 'rgba(229, 62, 62, 0.14)' },
+      ],
+    },
+    showLabel: false,
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'text',
+    renderAs: 'badge',
+    renderAsOptions: { style: 'badge', size: 'sm' },
+    showLabel: false,
+  },
+];
+
+const createFinanceTrackerTeaser = () => {
+  const kpiRows = getCashflowKpis(financeScope, financeHorizon, financePosture) as Entity[];
+
+  const config: WidgemoConfig<Entity> = {
+    containerFrame: { shadow: 'none', borderRadius: 0 },
+    zones: {
+      header: {
+        title: 'Liquidity Snapshot',
+        subtitle: `${accountScopeLabels[financeScope]} · ${forecastHorizonLabels[financeHorizon]} · ${riskPostureLabels[financePosture]}`,
+        icon: 'finance-reserve',
+        themeOverrides: {
+          backgroundColor: 'var(--app-bg-secondary)',
+          borderColor: 'var(--app-border)',
+          padding: '0.7rem 0.85rem 0.55rem',
+          borderRadius: '1px 1px 0 0',
+          iconSize: 24,
+        },
+      },
+      content: {
+        mode: 'grid',
+        modeConfig: {
+          grid: { minItemWidth: '260px', gap: '0.8rem', maxColumns: 4 },
+        },
+        item: {
+          fields: financeKpiFields,
+          layout: { type: 'auto' },
+          cardOptions: {
+            border: true,
+            borderColor: 'var(--app-border)',
+            borderRadius: '2px',
+            backgroundColor: 'var(--app-bg-primary)',
+            boxShadow: '0 8px 20px rgba(15, 23, 42, 0.06)',
+          },
+          conditionalBorder: (row) => {
+            const status = String(row.status ?? 'watch');
+            const color = status === 'healthy' ? '#2f855a' : status === 'critical' ? '#c53030' : '#c05621';
+            return { color, thickness: 3, placement: 'top' as const };
+          },
+        },
+        themeOverrides: {
+          backgroundColor: 'var(--app-bg-secondary)',
+          borderColor: 'var(--app-border)',
+          padding: '0.62rem 0.85rem 0.75rem',
+          borderRadius: '0 0 1px 1px',
+        },
+      },
+      footer: {
+        subtitle: `${kpiRows.length} KPI records · Scope ${accountScopeLabels[financeScope]} · Horizon ${forecastHorizonLabels[financeHorizon]}`,
+        style: { padding: '0.2rem 0.5rem', fontSize: '0.68rem', lineHeight: 1.2 },
+      },
+    },
+  };
+
+  return { data: kpiRows, config };
+};
 
 const TEASER_CURATION: CuratedTeaserSpec[] = [
   {
@@ -251,6 +391,40 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     actionButtonHoverBackground: '#d8e4ef',
     actionButtonHoverBorder: '#5a7898',
   },
+  {
+    id: FINANCE_TRACKER_TEASER_ID,
+    scenario: 'Cash Flow Command Center',
+    modeLabel: 'Finance Tracker',
+    previewItemCount: 4,
+    scale: 0.52,
+    headerTitle: 'Liquidity Snapshot',
+    headerSubtitle: 'Command center KPI overview',
+    collapseInitialState: 'expanded',
+    fontFamily: 'IBM Plex Sans, ui-sans-serif, system-ui, sans-serif',
+    accent: '#5f4b8b',
+    titleColor: '#1f2544',
+    subtitleColor: '#49516f',
+    bodyColor: '#1f2937',
+    mutedColor: '#6b7280',
+    headerBackground: '#ecebff',
+    contentBackground: '#f8f8ff',
+    footerBackground: '#efefff',
+    borderColor: '#c9c4f2',
+    frameBorderRadius: '2px',
+    zoneBorderRadius: '2px',
+    titleFontSize: '1rem',
+    bodyFontSize: '0.9rem',
+    cardBackground: '#ffffff',
+    tableHeaderBackground: '#ecebff',
+    tableBodyBackground: '#f8f8ff',
+    rowAltBackground: '#f1f0ff',
+    rowHoverBackground: '#e8e6ff',
+    actionButtonBackground: '#e7e4ff',
+    actionButtonColor: '#2f3565',
+    actionButtonBorder: '#aea6e6',
+    actionButtonHoverBackground: '#dbd6ff',
+    actionButtonHoverBorder: '#8e86c9',
+  },
 ];
 
 const buildTeaserConfig = (baseConfig: any, spec: CuratedTeaserSpec): any => {
@@ -432,20 +606,33 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
 }) => {
   const curatedTeaserItems = useMemo(() => {
     const examplesById = new Map(widgemoExamples.map((item) => [item.id, item]));
+    const financeTrackerTeaser = createFinanceTrackerTeaser();
     const curated = TEASER_CURATION
       .map((spec) => {
-        const example = examplesById.get(spec.id);
-        if (!example) {
+        const source = spec.id === FINANCE_TRACKER_TEASER_ID
+          ? {
+              data: financeTrackerTeaser.data,
+              config: financeTrackerTeaser.config,
+            }
+          : (() => {
+              const example = examplesById.get(spec.id);
+              if (!example) return null;
+              return {
+                data: example.data,
+                config: example.config,
+              };
+            })();
+
+        if (!source) {
           return null;
         }
         return {
           ...spec,
-          example,
-          teaserData: example.data.slice(0, spec.previewItemCount ?? example.data.length),
-          teaserConfig: buildTeaserConfig(example.config, spec),
+          teaserData: source.data.slice(0, spec.previewItemCount ?? source.data.length),
+          teaserConfig: buildTeaserConfig(source.config, spec),
         };
       })
-      .filter((item): item is CuratedTeaserSpec & { example: (typeof widgemoExamples)[number]; teaserData: (typeof widgemoExamples)[number]['data']; teaserConfig: any } => Boolean(item));
+      .filter((item): item is CuratedTeaserSpec & { teaserData: Entity[]; teaserConfig: WidgemoConfig<Entity> } => Boolean(item));
 
     if (curated.length > 0) {
       return curated;
@@ -495,29 +682,28 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
         <Row>
           <Col lg={4} className="mb-5 mb-lg-0">
             <h1 className="display-1 fw-bold mb-4">
-              Experience <span className="text-warning">Widgemo</span>
+              One Component. Infinite Modes.
             </h1>
             <h2 className="mb-3 fw-light" style={{ fontSize: '1.125rem' }}>
-              One Configurable React Primitive for Infinite UIs
+              Table, grid, board, chart, or carousel — switched by config, not rewrites.
             </h2>
             <p className="mb-4" style={{ fontSize: '1rem', color: shouldHaveDarkText ? '#161616' : 'white' }}>
-              Configuration over custom code. Render boards, tables, grids, charts, and more—from a single component,
-              data-agnostic and themeable.
+              One config object. No rewrites, no new dependencies. Drop it in, configure the mode, and ship.
             </p>
             <div className="d-flex gap-3 flex-wrap">
               <Button
-                variant="secondary"
-                className="px-3 py-2 fw-bold"
-                onClick={onExploreExamples}
-              >
-                Explore Examples
-              </Button>
-              <Button
                 variant="primary"
-                className="px-3 py-2 fw-bold shadow"
+                className="px-3 py-2 fw-bold"
                 onClick={onJumpToSandbox}
               >
-                Jump to Sandbox
+                Try the Sandbox
+              </Button>
+              <Button
+                variant="secondary"
+                className="px-3 py-2 fw-bold shadow"
+                onClick={onExploreExamples}
+              >
+                See Examples
               </Button>
             </div>
           </Col>
@@ -572,12 +758,31 @@ export const TeaserSection: React.FC<TeaserSectionProps> = ({
                     minHeight: 0,
                   }}
                 >
-                  <Widgemo
-                    key={currentConfigIndex}
-                    data={currentTeaserItem.teaserData}
-                    config={currentTeaserItem.teaserConfig}
-                    className="my-custom-widgemo"
-                  />
+                  {currentTeaserItem.id === FINANCE_TRACKER_TEASER_ID ? (
+                    <div
+                      style={{
+                        transform: `scale(${currentTeaserItem.scale ?? 0.52})`,
+                        transformOrigin: 'top left',
+                        width: `${100 / (currentTeaserItem.scale ?? 0.52)}%`,
+                        height: `${100 / (currentTeaserItem.scale ?? 0.52)}%`,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      <Widgemo
+                        key={currentConfigIndex}
+                        data={currentTeaserItem.teaserData}
+                        config={currentTeaserItem.teaserConfig}
+                        className="my-custom-widgemo"
+                      />
+                    </div>
+                  ) : (
+                    <Widgemo
+                      key={currentConfigIndex}
+                      data={currentTeaserItem.teaserData}
+                      config={currentTeaserItem.teaserConfig}
+                      className="my-custom-widgemo"
+                    />
+                  )}
                 </div>
               </Card.Body>
             </Card>
