@@ -165,7 +165,6 @@ export const SimplifiedTest: React.FC = () => {
                 },
                 content: {
                   mode: 'table',
-                  layout: {},
                   item: {
                     fields: [
                       { key: 'name', label: 'Task Name' },
@@ -215,7 +214,6 @@ export const SimplifiedTest: React.FC = () => {
               zones: {
                 content: {
                   mode: 'table',
-                  layout: {},
                   item: {
                     fields: [
                       { key: 'name', label: 'Data Type' },

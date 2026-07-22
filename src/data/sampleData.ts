@@ -25,7 +25,6 @@ export const defaultSandboxConfig: WidgemoConfig = {
     },
     content: {
       mode: 'table',
-      layout: {},
       item: {
         layout: { type: 'auto' },
         fields: [

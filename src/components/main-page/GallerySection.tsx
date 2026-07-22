@@ -1,7 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button, Badge } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
+import {
+  EXAMPLE_CATEGORY_BY_ID,
+  GALLERY_DESCRIPTION_BY_ID,
+  GALLERY_FEATURED_IDS,
+} from '../../data/exampleCuration';
 import widgemoExamples from '../../data/widgemoExamples';
 import type { Theme } from '../../utils/themeConfig';
 
@@ -18,45 +23,34 @@ interface GalleryItem {
   config: WidgemoConfig;
 }
 
-const FEATURED_EXAMPLE_IDS = [
-  'rich-cells-table',
-  'basic-grid-layout',
-  'board-basic',
-  'chart-throughput-mixed',
-  'responsive-mode-switching',
-  'per-item-actions-demo',
-] as const;
-
-const FEATURED_DESCRIPTION_BY_ID: Record<string, string> = {
-  'rich-cells-table': 'Images, formatted values, and badges in a rich table layout. A realistic starting point for any people or resource directory.',
-  'basic-grid-layout': 'Responsive card grid driven entirely by field config. Switch from table to grid with one property change.',
-  'per-item-actions-demo': 'Pinned, hover, and menu actions per row — configured declaratively, no custom render logic required.',
-  'board-basic': "Kanban columns that emerge automatically from your data's status field. No column definitions, no drag-drop boilerplate.",
-  'chart-throughput-mixed': 'Mixed series chart — bars, area, and line — from the same data and field schema as your table. One component, zero charting setup.',
-  'responsive-mode-switching': 'Table on desktop, grid on tablet, carousel on mobile. Resize the window and watch Widgemo switch modes automatically.',
-};
-
-const FEATURED_CATEGORY_BY_ID: Record<string, string> = {
-  'rich-cells-table': 'Core Modes',
-  'basic-grid-layout': 'Core Modes',
-  'board-basic': 'Core Modes',
-  'chart-throughput-mixed': 'Core Modes',
-  'responsive-mode-switching': 'Core Modes',
-  'per-item-actions-demo': 'Interactions',
-};
-
 export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox, currentTheme }) => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    if (typeof document === 'undefined' || !showModal) return;
+
+    const rootStyle = document.documentElement.style;
+    const previousValue = rootStyle.getPropertyValue('--widgemo-dropdown-z-index');
+    rootStyle.setProperty('--widgemo-dropdown-z-index', '1080');
+
+    return () => {
+      if (previousValue) {
+        rootStyle.setProperty('--widgemo-dropdown-z-index', previousValue);
+      } else {
+        rootStyle.removeProperty('--widgemo-dropdown-z-index');
+      }
+    };
+  }, [showModal]);
+
   // Public homepage should show a curated examples preview, not the entire catalog.
   const filteredItems = useMemo(() => {
-    const featuredIdSet = new Set<string>(FEATURED_EXAMPLE_IDS);
+    const featuredIdSet = new Set<string>(GALLERY_FEATURED_IDS);
     return widgemoExamples
       .filter((item) => featuredIdSet.has(item.id))
       .map((item) => ({
         ...item,
-        description: FEATURED_DESCRIPTION_BY_ID[item.id] ?? item.description,
+        description: GALLERY_DESCRIPTION_BY_ID[item.id] ?? item.description,
       }));
   }, []);
 
@@ -126,7 +120,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             </div>
             <div className="mb-2">
               <Badge bg="secondary" style={{ fontSize: '0.65rem' }}>
-                {FEATURED_CATEGORY_BY_ID[item.id] ?? 'Examples'}
+                {EXAMPLE_CATEGORY_BY_ID[item.id] ?? 'Examples'}
               </Badge>
             </div>
             <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.75rem' }}>

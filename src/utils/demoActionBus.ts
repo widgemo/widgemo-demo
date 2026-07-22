@@ -58,12 +58,9 @@ export const setDemoActionListener = (fn: Listener | null): void => {
 
 /**
  * Fire an action event. Called from action handlers in widgemoExamples.tsx.
- * Falls back to console.info when no listener is registered (e.g. Gallery/Teaser previews).
  */
 export const fireDemoAction = (payload: DemoActionPayload): void => {
   if (_listener) {
     _listener(payload);
-  } else {
-    console.info('[Demo Interaction]', payload.actionLabel, payload);
   }
 };

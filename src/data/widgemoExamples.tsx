@@ -228,7 +228,6 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: {},
           item: {
             fields: [
               { key: 'id', label: 'ID', width: '60px' },
@@ -237,7 +236,7 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-item',
               label: 'Edit',
@@ -470,7 +469,7 @@ const widgemoExamples: Array<{
           themeOverrides: {
             padding: '1rem'
           },
-          layout: {
+          modeConfig: {
             table: {
               type: 'traditional',
               hover: false,
@@ -571,15 +570,18 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: {
+          modeConfig: {
             table: {
               type: 'rich-cells',
-              hover: false,
+              columns: 4,
+              showHeader: false,
+              hover: true,
             },
           },
           item: {
             fields: [
-              { key: 'src', label: 'Avatar', type: 'image', width: '60px' },
+              { key: 'src', label: '', type: 'image', width: '60px' },
+              { key: 'space', label: '', type: 'spacer', width: '1rem' },
               { key: 'name', label: 'Name', type: 'text' },
               { key: 'email', label: 'Email', type: 'email' },
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' },
@@ -1047,7 +1049,7 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit',
               label: 'Edit',
@@ -1736,7 +1738,7 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
             { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
             {
@@ -1778,7 +1780,7 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             {
               id: 'deactivate',
               label: 'Deactivate',
@@ -1819,7 +1821,7 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: {
+          modeConfig: {
             table: {
               type: 'traditional',
               alternatingRows: true,
@@ -3715,14 +3717,14 @@ const widgemoExamples: Array<{
   // ── NEW: Search — advanced options ───────────────────────────────────────
   {
     id: 'search-advanced',
-    title: 'Search — fields, debounceMs, onSearch',
-    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. onSearch callback logs each query. search.enabled explicitly set.',
+    title: 'Search — fields and debounceMs',
+    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. search.enabled explicitly set.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'search-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500 · onSearch callback (check console)' },
+        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500' },
         content: {
           mode: 'grid',
           search: {
@@ -3730,7 +3732,6 @@ const widgemoExamples: Array<{
             placeholder: 'Search by name or role only…',
             fields: ['name', 'role'],
             debounceMs: 500,
-            onSearch: (query: string) => console.log('[onSearch]', query),
           },
           item: {
             fields: [

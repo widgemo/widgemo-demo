@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Dropdown, Form } from 'react-bootstrap';
-import { FaCopy, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCopy, FaDownload } from 'react-icons/fa';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 interface PresetOption {
@@ -41,7 +41,7 @@ interface JsonConfigTabProps {
  * - JSON textarea editor with monospace font
  * - Load preset dropdown with available configurations
  * - Apply Changes button with validation feedback
- * - Export dropdown (copy, download, CodeSandbox)
+ * - Export dropdown (copy, download)
  * - Error display for invalid JSON
  *
  */
@@ -54,7 +54,6 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
   loadPresetWithData,
   onLoadPresetWithDataChange,
   jsonError,
-  onShowCodeSandbox,
   onCopyToClipboard,
   onDownloadConfig,
 }) => {
@@ -191,12 +190,6 @@ export const JsonConfigTab: React.FC<JsonConfigTabProps> = ({
               <Dropdown.Item onClick={onDownloadConfig}>
                 <FaDownload className="me-2" />
                 Download JSON
-              </Dropdown.Item>
-            )}
-            {onShowCodeSandbox && (
-              <Dropdown.Item onClick={onShowCodeSandbox}>
-                <FaExternalLinkAlt className="me-2" />
-                CodeSandbox
               </Dropdown.Item>
             )}
           </Dropdown.Menu>
