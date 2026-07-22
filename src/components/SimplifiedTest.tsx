@@ -48,7 +48,7 @@ export const SimplifiedTest: React.FC = () => {
   const { currentTheme } = useTheme();
 
   // Production gating: Only enable devMode toggle in development environment
-  const isDevEnvironment = import.meta.env.DEV || window.location.hostname === "dev.widgemo.com" || window.location.hostname === "localhost" || window.location.hostname === "10.0.0.229";
+  const isDevEnvironment = import.meta.env.DEV || window.location.hostname === "dev.widgemo.com" || window.location.hostname === "localhost";
 
   // State for devMode toggle (only used in development) - loads from localStorage initially
   const [includeWidgemoInspector, setIncludeWidgemoInspectorState] = useState(() => {
