@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Row, Col, Card, Modal, Button, Badge } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
@@ -48,6 +48,22 @@ const FEATURED_CATEGORY_BY_ID: Record<string, string> = {
 export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox, currentTheme }) => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (typeof document === 'undefined' || !showModal) return;
+
+    const rootStyle = document.documentElement.style;
+    const previousValue = rootStyle.getPropertyValue('--widgemo-dropdown-z-index');
+    rootStyle.setProperty('--widgemo-dropdown-z-index', '1080');
+
+    return () => {
+      if (previousValue) {
+        rootStyle.setProperty('--widgemo-dropdown-z-index', previousValue);
+      } else {
+        rootStyle.removeProperty('--widgemo-dropdown-z-index');
+      }
+    };
+  }, [showModal]);
 
   // Public homepage should show a curated examples preview, not the entire catalog.
   const filteredItems = useMemo(() => {

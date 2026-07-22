@@ -3715,14 +3715,14 @@ const widgemoExamples: Array<{
   // ── NEW: Search — advanced options ───────────────────────────────────────
   {
     id: 'search-advanced',
-    title: 'Search — fields, debounceMs, onSearch',
-    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. onSearch callback logs each query. search.enabled explicitly set.',
+    title: 'Search — fields and debounceMs',
+    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. search.enabled explicitly set.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'search-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500 · onSearch callback (check console)' },
+        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500' },
         content: {
           mode: 'grid',
           search: {
@@ -3730,7 +3730,6 @@ const widgemoExamples: Array<{
             placeholder: 'Search by name or role only…',
             fields: ['name', 'role'],
             debounceMs: 500,
-            onSearch: (query: string) => console.log('[onSearch]', query),
           },
           item: {
             fields: [
