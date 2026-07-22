@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import { Widgemo, type Entity, type FieldConfig, type WidgemoConfig } from '@widgemo/widgemo-core';
+import { CURATED_EXAMPLE_IDS } from '../../data/exampleCuration';
 import widgemoExamples from '../../data/widgemoExamples';
 import {
   accountScopeLabels,
@@ -188,7 +189,7 @@ const createFinanceTrackerTeaser = () => {
 
 const TEASER_CURATION: CuratedTeaserSpec[] = [
   {
-    id: 'chart-throughput-mixed',
+    id: CURATED_EXAMPLE_IDS.chartThroughputMixed,
     scenario: 'Product Delivery Command Center',
     modeLabel: 'Chart',
     previewItemCount: 5,
@@ -222,7 +223,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     actionButtonHoverBorder: '#6c9ade',
   },
   {
-    id: 'board-basic',
+    id: CURATED_EXAMPLE_IDS.boardBasic,
     scenario: 'Cross-Team Sprint Board',
     modeLabel: 'Board',
     previewItemCount: 4,
@@ -259,7 +260,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     actionButtonHoverBorder: '#26a08f',
   },
   {
-    id: 'rich-cells-table',
+    id: CURATED_EXAMPLE_IDS.richCellsTable,
     scenario: 'Client Portfolio Operations',
     modeLabel: 'Table',
     previewItemCount: 4,
@@ -293,7 +294,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     actionButtonHoverBorder: '#d5882f',
   },
   {
-    id: 'basic-grid-layout',
+    id: CURATED_EXAMPLE_IDS.basicGridLayout,
     scenario: 'Retail Workforce Directory',
     modeLabel: 'Grid',
     previewItemCount: 4,
@@ -326,7 +327,7 @@ const TEASER_CURATION: CuratedTeaserSpec[] = [
     actionButtonHoverBorder: '#a78bfa',
   },
   {
-    id: 'carousel-full',
+    id: CURATED_EXAMPLE_IDS.carouselFull,
     scenario: 'Marketing Asset Review',
     modeLabel: 'Carousel',
     previewItemCount: 6,
