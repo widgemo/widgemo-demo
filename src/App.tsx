@@ -76,6 +76,23 @@ const RouteFallback = () => (
   </div>
 );
 
+const NotFoundPage = () => (
+  <div className="container py-5">
+    <div className="text-center mx-auto" style={{ maxWidth: '640px' }}>
+      <p className="text-uppercase fw-semibold text-muted mb-2" style={{ letterSpacing: '0.08em' }}>
+        404
+      </p>
+      <h1 className="h3 mb-3">Page not found</h1>
+      <p className="mb-4" style={{ color: 'var(--app-text-muted)' }}>
+        The page you requested is not available in this demo.
+      </p>
+      <a className="btn btn-primary" href="/">
+        Back to Home
+      </a>
+    </div>
+  </div>
+);
+
 const financeIconPathMap: Record<string, string> = {
   'finance-wallet': 'M3 6.8c0-1.1.9-2 2-2h11c1.1 0 2 .9 2 2v8.4c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6.8zm2 .2v8h11V7H5zm8.2 2.1a1.8 1.8 0 110 3.6 1.8 1.8 0 010-3.6z',
   'finance-forecast': 'M2.8 15.6V4.4h1.8v9.4h11.8v1.8H2.8zm3.4-2.8l2.8-3.2 2.2 1.8 3.4-4 1.4 1.2-4.5 5.2-2.3-1.8-1.8 2.1-1.2-1.3z',
@@ -246,11 +263,7 @@ function AppContent() {
                 path="*"
                 element={
                   <WidgemoThemeProvider theme={currentTheme}>
-                    <div style={{ padding: '2rem', backgroundColor: 'yellow' }}>
-                      <h1>Route Not Found</h1>
-                      <p>Current path: {window.location.pathname}</p>
-                      <p>Available routes: /, /examples, /sandbox, /lab, /dashboard, /cashflow-dashboard</p>
-                    </div>
+                    <NotFoundPage />
                   </WidgemoThemeProvider>
                 }
               />
