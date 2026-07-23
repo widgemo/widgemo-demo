@@ -10,17 +10,14 @@ interface DemoActionModalProps {
 /**
  * DemoActionModal — shows the InteractionContext received by an action callback.
  *
- * Purpose: teach users what data is available across action.onAction,
- * gestures[item-click].onTrigger, and interactions.onEvent(InteractionContext).
+ * Purpose: teach users what data is available across action.onAction and
+ * interactions.onEvent(InteractionContext) — the two supported interaction paths.
  */
 export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClose }) => {
   if (!payload) return null;
   const isInteractionContext = payload.source === 'interactions.onEvent';
   const isLocalAction = payload.source === 'action.onAction';
-  const isGesture =
-    payload.source === 'gestures[item-click].onTrigger'
-    || payload.source === 'gestures[item-drag-start].onTrigger'
-    || payload.source === 'gestures[item-drop].onTrigger';
+  const isBoardDrop = isInteractionContext && !!(payload.from || payload.to);
 
   const renderBoardLocation = (location: { columnId: string; swimlaneValue?: string; index?: number } | undefined) => {
     if (!location) return <span className="text-muted fst-italic">Not provided</span>;
@@ -192,10 +189,8 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
             <Badge bg="primary">interactions.onEvent(InteractionContext)</Badge>
           ) : isLocalAction ? (
             <Badge bg="success">action.onAction(InteractionContext)</Badge>
-          ) : isGesture ? (
-            <Badge bg="info">{payload.source}(InteractionContext)</Badge>
           ) : (
-            <Badge bg="secondary">callback</Badge>
+            <Badge bg="secondary">unknown</Badge>
           )}
           {payload.zone && (
             <>
@@ -206,25 +201,37 @@ export const DemoActionModal: React.FC<DemoActionModalProps> = ({ payload, onClo
         </div>
 
         {/* interactions.onEvent explanation */}
-        {isInteractionContext && (
+        {isInteractionContext && !isBoardDrop && (
           <div
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-primary-bg-subtle, #cfe2ff)', fontSize: '0.8125rem', border: '1px solid var(--bs-primary-border-subtle, #9ec5fe)' }}
           >
-            <strong>interactions.onEvent(ctx)</strong> receives the full <code>InteractionContext</code>:{' '}
-            <code>ctx.entity</code>, <code>ctx.data</code> (all records in scope), and <code>ctx.zone</code>.
-            Use this for zone-level actions like Export, Refresh, or Batch operations.
+            <strong>interactions.onEvent(ctx)</strong> is the global sink for all gestures and zone-level events.{' '}
+            It receives the full <code>InteractionContext</code>: <code>ctx.entity</code>, <code>ctx.data</code>,
+            <code> ctx.zone</code>, and for board drops: <code>ctx.from</code> / <code>ctx.to</code>.
           </div>
         )}
 
-        {/* Non-interaction-context explanation */}
-        {!isInteractionContext && (
+        {/* action.onAction explanation */}
+        {isLocalAction && (
           <div
             className="mb-3 p-2 rounded"
             style={{ backgroundColor: 'var(--bs-success-bg-subtle, #d1e7dd)', fontSize: '0.8125rem', border: '1px solid var(--bs-success-border-subtle, #a3cfbb)' }}
           >
-            This event came from a local callback (<strong>action.onAction</strong> or a <strong>gestures[...].onTrigger</strong> callback)
-            instead of the global <strong>interactions.onEvent</strong> fallback sink.
+            <strong>action.onAction(ctx)</strong> is a per-action callback defined directly on an{' '}
+            <code>ActionConfig</code>. It receives the same <code>InteractionContext</code> but fires only
+            for that specific action button.
+          </div>
+        )}
+
+        {/* Board drop callout */}
+        {isBoardDrop && (
+          <div
+            className="mb-3 p-2 rounded"
+            style={{ backgroundColor: 'var(--bs-info-bg-subtle, #cff4fc)', fontSize: '0.8125rem', border: '1px solid var(--bs-info-border-subtle, #9eeaf9)' }}
+          >
+            <strong>Board Drop</strong> — fired via <code>interactions.onEvent</code> when a card is released.
+            The <code>ctx.from</code> and <code>ctx.to</code> fields below show the source and destination column/swimlane.
           </div>
         )}
 

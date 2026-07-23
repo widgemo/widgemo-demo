@@ -9,10 +9,7 @@
 
 export type DemoActionSource =
   | 'interactions.onEvent'
-  | 'action.onAction'
-  | 'gestures[item-click].onTrigger'
-  | 'gestures[item-drag-start].onTrigger'
-  | 'gestures[item-drop].onTrigger';
+  | 'action.onAction';
 
 export interface DemoBoardLocation {
   columnId: string;
@@ -37,6 +34,14 @@ export interface DemoActionPayload {
   from?: DemoBoardLocation;
   /** Optional destination location for board drag interactions */
   to?: DemoBoardLocation;
+  /** For reference-click: the field key that was clicked */
+  fieldKey?: string;
+  /** For reference-click: the raw FK/ID value */
+  fieldValue?: unknown;
+  /** For reference-click: the resolved display label */
+  fieldLabel?: string;
+  /** For reference-click: the entity type declared on the field */
+  relatedEntity?: string;
 }
 
 type Listener = (payload: DemoActionPayload) => void;
@@ -53,12 +58,9 @@ export const setDemoActionListener = (fn: Listener | null): void => {
 
 /**
  * Fire an action event. Called from action handlers in widgemoExamples.tsx.
- * Falls back to console.info when no listener is registered (e.g. Gallery/Teaser previews).
  */
 export const fireDemoAction = (payload: DemoActionPayload): void => {
   if (_listener) {
     _listener(payload);
-  } else {
-    console.info('[Demo Interaction]', payload.actionLabel, payload);
   }
 };

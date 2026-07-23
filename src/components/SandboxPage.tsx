@@ -1,43 +1,34 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useTheme } from '../hooks/useTheme';
 import { SandboxSection } from './SandboxSection';
 import { defaultSandboxConfig, teaserSampleData } from '../data/sampleData';
 import widgemoExamples from '../data/widgemoExamples';
 import type { WidgemoConfig } from '@widgemo/widgemo-core';
 
 export const SandboxPage: React.FC = () => {
-  const { currentTheme } = useTheme();
   const [searchParams] = useSearchParams();
 
-  // Get initial config from URL params
-  const initialConfig = useMemo(() => {
+  const selectedExample = useMemo(() => {
     const configId = searchParams.get('config');
-    if (configId) {
-      const configItem = widgemoExamples.find(item => item.id === configId);
-      if (configItem) {
-        // For gallery configs, don't inject theme properties so they use core defaults
-        return configItem.config as WidgemoConfig;
-      }
+    if (!configId) {
+      return null;
     }
-    // For default sandbox, don't inject theme properties so it uses core defaults
-    return defaultSandboxConfig;
+    return widgemoExamples.find(item => item.id === configId) || null;
   }, [searchParams]);
 
-  // Get initial theme mode - use 'defaults' for gallery configs, 'config' for default
-  // const initialThemeMode = useMemo(() => {
-  //   const configId = searchParams.get('config');
-  //   return configId ? 'defaults' : 'config';
-  // }, [searchParams]);
+  const initialConfig = useMemo(() => {
+    if (selectedExample) {
+      return selectedExample.config as WidgemoConfig;
+    }
+    return defaultSandboxConfig;
+  }, [selectedExample]);
 
   const initialData = useMemo(() => {
-    const configId = searchParams.get('config');
-    if (configId) {
-      const configItem = widgemoExamples.find(item => item.id === configId);
-      return configItem?.data || teaserSampleData;
+    if (selectedExample) {
+      return selectedExample.data;
     }
     return teaserSampleData;
-  }, [searchParams]);
+  }, [selectedExample]);
 
   return (
     <div style={{ 
@@ -56,8 +47,7 @@ export const SandboxPage: React.FC = () => {
         key={searchParams.get('config') || 'default'}
         initialConfig={initialConfig}
         initialData={initialData}
-        // initialThemeMode={initialThemeMode}
-        currentTheme={currentTheme}
+        initialPresetName={selectedExample?.title}
       />
     </div>
   );

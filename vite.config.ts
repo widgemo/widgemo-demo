@@ -11,7 +11,7 @@ export default defineConfig({
     //   cert: fs.readFileSync('./cert.pem'),
     // },
     host: '0.0.0.0',
-    allowedHosts: ["fcb32ff492ac.ngrok.app", "849991690ad0.ngrok.app", "10.0.0.229", "widgemo.com", "dev.widgemo.com"]
+    allowedHosts: ['widgemo.com', 'dev.widgemo.com']
   },
   resolve: {
     alias: {
@@ -25,8 +25,20 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('/react-router') || id.includes('/@remix-run/')) return 'vendor-router';
+            if (id.includes('/react-bootstrap/') || id.includes('/bootstrap/')) return 'vendor-bootstrap';
+            if (id.includes('/react-icons/')) return 'vendor-icons';
+            return 'vendor-misc';
+          }
+
+          // Keep core library code in its own shared chunk when imported from alias path.
+          if (id.includes('/widgemo-core/src/')) {
+            return 'widgemo-core';
+          }
+
+          return undefined;
         }
       }
     }

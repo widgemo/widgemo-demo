@@ -48,7 +48,7 @@ export const SimplifiedTest: React.FC = () => {
   const { currentTheme } = useTheme();
 
   // Production gating: Only enable devMode toggle in development environment
-  const isDevEnvironment = import.meta.env.DEV || window.location.hostname === "dev.widgemo.com" || window.location.hostname === "localhost" || window.location.hostname === "10.0.0.229";
+  const isDevEnvironment = import.meta.env.DEV || window.location.hostname === "dev.widgemo.com" || window.location.hostname === "localhost";
 
   // State for devMode toggle (only used in development) - loads from localStorage initially
   const [includeWidgemoInspector, setIncludeWidgemoInspectorState] = useState(() => {
@@ -90,6 +90,7 @@ export const SimplifiedTest: React.FC = () => {
       config: injectDevMode(example.config, includeWidgemoInspector)
     }));
   }, [includeWidgemoInspector, isDevEnvironment]);
+
 
   return (
     <div className="container" style={{
@@ -156,7 +157,6 @@ export const SimplifiedTest: React.FC = () => {
               { id: 4, name: 'Task D', progress: 25 }
             ]}
             config={{
-              id: 'progress-test',
               devMode: true,
               zones: {
                 header: {
@@ -165,7 +165,6 @@ export const SimplifiedTest: React.FC = () => {
                 },
                 content: {
                   mode: 'table',
-                  layout: {},
                   item: {
                     fields: [
                       { key: 'name', label: 'Task Name' },
@@ -183,7 +182,7 @@ export const SimplifiedTest: React.FC = () => {
         {/* JSON Field Type Test */}
         <div className="col-12 mb-3">
           <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.1rem' }}>JSON Field Type Test</h2>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing custom JSON field type with collapsible sections and color coding</p>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--app-text-muted)', marginBottom: '0.5rem' }}>Testing core JSON preview renderer with collapsible sections and color coding</p>
           <Widgemo
             data={[
               {
@@ -211,22 +210,20 @@ export const SimplifiedTest: React.FC = () => {
               }
             ]}
             config={{
-              id: 'json-test',
               devMode: true,
               zones: {
                 content: {
                   mode: 'table',
-                  layout: {},
                   item: {
                     fields: [
                       { key: 'name', label: 'Data Type' },
-                      { key: 'jsonData', label: 'JSON Data', renderAs: 'jsonView', renderAsOptions: { collapsed: true, maxDepth: 3 } }
+                      { key: 'jsonData', label: 'JSON Data', renderAs: 'jsonPreview', renderAsOptions: { defaultCollapsed: true, maxDepth: 3 } }
                     ],
                     layout: { type: 'auto' }
                   }
                 },
                 footer: {
-                  subtitle: 'Custom JSON tree renderer via widgemoRegistry.registerWidgemoRenderAs — collapsible nodes, color-coded values'
+                  subtitle: 'Core JSON preview renderer — collapsible nodes, color-coded values'
                 }
               }
             }}

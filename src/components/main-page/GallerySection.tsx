@@ -1,7 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { Row, Col, Card, Modal, Button } from 'react-bootstrap';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Row, Col, Card, Modal, Button, Badge } from 'react-bootstrap';
 import { FaPlay } from 'react-icons/fa';
 import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
+import {
+  EXAMPLE_CATEGORY_BY_ID,
+  GALLERY_DESCRIPTION_BY_ID,
+  GALLERY_FEATURED_IDS,
+} from '../../data/exampleCuration';
 import widgemoExamples from '../../data/widgemoExamples';
 import type { Theme } from '../../utils/themeConfig';
 
@@ -22,9 +27,31 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Filter items based on selected mode
+  useEffect(() => {
+    if (typeof document === 'undefined' || !showModal) return;
+
+    const rootStyle = document.documentElement.style;
+    const previousValue = rootStyle.getPropertyValue('--widgemo-dropdown-z-index');
+    rootStyle.setProperty('--widgemo-dropdown-z-index', '1080');
+
+    return () => {
+      if (previousValue) {
+        rootStyle.setProperty('--widgemo-dropdown-z-index', previousValue);
+      } else {
+        rootStyle.removeProperty('--widgemo-dropdown-z-index');
+      }
+    };
+  }, [showModal]);
+
+  // Public homepage should show a curated examples preview, not the entire catalog.
   const filteredItems = useMemo(() => {
-    return widgemoExamples;
+    const featuredIdSet = new Set<string>(GALLERY_FEATURED_IDS);
+    return widgemoExamples
+      .filter((item) => featuredIdSet.has(item.id))
+      .map((item) => ({
+        ...item,
+        description: GALLERY_DESCRIPTION_BY_ID[item.id] ?? item.description,
+      }));
   }, []);
 
   const handleItemClick = (item: GalleryItem) => {
@@ -91,6 +118,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
             <div className="d-flex justify-content-between align-items-start mb-1">
               <Card.Title className="mb-0 flex-grow-1" style={{ fontSize: '0.8125rem', fontWeight: 600 }}>{item.title}</Card.Title>
             </div>
+            <div className="mb-2">
+              <Badge bg="secondary" style={{ fontSize: '0.65rem' }}>
+                {EXAMPLE_CATEGORY_BY_ID[item.id] ?? 'Examples'}
+              </Badge>
+            </div>
             <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.75rem' }}>
               {item.description}
             </Card.Text>
@@ -104,11 +136,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
   };
 
   return (
-    <section id="gallery" className="section-block theme-aware-section">
+    <section id="examples-preview" className="section-block theme-aware-section">
       <div className="px-4">
         <div className="section-header">
-          <h2 className="section-title theme-aware-text">Gallery</h2>
-          <p className="section-subtitle theme-aware-text">Explore different configurations and modes</p>
+          <h2 className="section-title theme-aware-text">Examples Preview</h2>
+          <p className="section-subtitle theme-aware-text">A tightly curated, core-only preview focused on the most important Widgemo capabilities.</p>
         </div>
 
       {/* Gallery Content */}
@@ -148,7 +180,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onLoadToSandbox,
               Close
             </Button>
             <Button variant="primary" onClick={handleLoadToSandbox}>
-              Load to Sandbox
+              Try in Sandbox
             </Button>
           </Modal.Footer>
         </Modal>

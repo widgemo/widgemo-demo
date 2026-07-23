@@ -229,7 +229,7 @@ export const SampleDataGenerationModal: React.FC<SampleDataGenerationModalProps>
               <Form.Check
                 id="adjust-config-checkbox"
                 type="checkbox"
-                label="Adjust current configuration to match generated data fields"
+                label="Adjust displayed fields to generated data (table/grid/list modes)"
                 checked={adjustConfig}
                 onChange={(e) => setAdjustConfig(e.target.checked)}
                 disabled={isGenerating}
@@ -240,7 +240,7 @@ export const SampleDataGenerationModal: React.FC<SampleDataGenerationModalProps>
               <small>
                 <strong>Local options</strong> generate synthetic data. <strong>JSONPlaceholder options</strong> fetch real sample data from jsonplaceholder.typicode.com.
                 <strong>Custom API Endpoint</strong> allows you to test with any external API by providing a full URL (e.g., https://api.example.com/users).
-                Adjusting configuration will update the fields in your current setup to match the generated data structure.
+                When enabled, field adjustment updates visible item fields for table/grid/list style configurations and skips unsupported modes.
               </small>
             </Alert>
 
@@ -307,7 +307,17 @@ export const SampleDataGenerationModal: React.FC<SampleDataGenerationModalProps>
             )}
 
             {previewMode === 'json' && (
-              <pre className="bg-light p-3 rounded" style={{ maxHeight: '400px', overflowY: 'auto', fontSize: '0.85rem' }}>
+              <pre
+                className="p-3 rounded"
+                style={{
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                  fontSize: '0.85rem',
+                  backgroundColor: 'var(--app-bg-secondary)',
+                  color: 'var(--app-text-primary)',
+                  border: '1px solid var(--app-border)',
+                }}
+              >
                 <code>{JSON.stringify(generatedData.slice(0, 5), null, 2)}</code>
                 {generatedData.length > 5 && (
                   <div className="text-muted mt-2">... and {generatedData.length - 5} more records</div>

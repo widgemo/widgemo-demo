@@ -1,0 +1,300 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { Badge, Button, Card, Col, Container, Form, Modal, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Widgemo, WidgemoThemeProvider, type Entity, type WidgemoConfig } from '@widgemo/widgemo-core';
+import {
+  EXAMPLE_CATEGORY_BY_ID,
+  EXAMPLES_PAGE_CATEGORIES,
+  EXAMPLES_PAGE_CORE_IDS,
+  EXAMPLES_PAGE_DESCRIPTION_BY_ID,
+} from '../data/exampleCuration';
+import widgemoExamples from '../data/widgemoExamples';
+import { useTheme } from '../hooks/useTheme';
+
+interface ExampleItem {
+  id: string;
+  title: string;
+  description: string;
+  data: Entity[];
+  config: WidgemoConfig;
+}
+
+interface MockupItem {
+  id: string;
+  title: string;
+  description: string;
+  route: string;
+  imageSrc: string;
+  imageAlt: string;
+  variant: 'primary' | 'success';
+}
+
+
+const APP_MOCKUPS: MockupItem[] = [
+  {
+    id: 'team-portfolio-mockup',
+    title: 'Team Portfolio',
+    description: 'Full-page product delivery mockup composed from multiple Widgemo instances working together in one cohesive UI.',
+    route: '/dashboard',
+    imageSrc: '/assets/app-thumb-team-portfolio.png',
+    imageAlt: 'Team Portfolio dashboard preview',
+    variant: 'primary',
+  },
+  {
+    id: 'finance-tracker-mockup',
+    title: 'Finance Tracker',
+    description: 'Full-page cashflow command center mockup using Widgemo for KPI snapshots, timelines, transactions, and scenario views.',
+    route: '/cashflow-dashboard',
+    imageSrc: '/assets/app-thumb-finance-tracker.png',
+    imageAlt: 'Finance Tracker dashboard preview',
+    variant: 'success',
+  },
+];
+
+export const ExamplesPage: React.FC = () => {
+  const { currentTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState<(typeof EXAMPLES_PAGE_CATEGORIES)[number]>('All');
+  const [selectedItem, setSelectedItem] = useState<ExampleItem | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (typeof document === 'undefined' || !showModal) return;
+
+    const rootStyle = document.documentElement.style;
+    const previousValue = rootStyle.getPropertyValue('--widgemo-dropdown-z-index');
+    rootStyle.setProperty('--widgemo-dropdown-z-index', '1080');
+
+    return () => {
+      if (previousValue) {
+        rootStyle.setProperty('--widgemo-dropdown-z-index', previousValue);
+      } else {
+        rootStyle.removeProperty('--widgemo-dropdown-z-index');
+      }
+    };
+  }, [showModal]);
+
+  const coreExampleSet = useMemo(() => new Set<string>(EXAMPLES_PAGE_CORE_IDS), []);
+
+  const coreExamples = useMemo(() => {
+    return widgemoExamples
+      .filter((item) => coreExampleSet.has(item.id))
+      .map((item) => ({
+        ...item,
+        description: EXAMPLES_PAGE_DESCRIPTION_BY_ID[item.id] ?? item.description,
+      }));
+  }, [coreExampleSet]);
+
+  const filteredCatalog = useMemo(() => {
+    if (category === 'App Mockups') {
+      return [];
+    }
+
+    const query = search.trim().toLowerCase();
+
+    return coreExamples.filter((item) => {
+      const inferredCategory = EXAMPLE_CATEGORY_BY_ID[item.id] ?? 'States';
+      const matchesCategory = category === 'All' || inferredCategory === category;
+      const matchesSearch =
+        query.length === 0 ||
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.id.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [category, coreExamples, search]);
+
+  const filteredMockups = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return APP_MOCKUPS.filter((item) => {
+      const matchesCategory = category === 'All' || category === 'App Mockups';
+      const matchesSearch =
+        query.length === 0 ||
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.id.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [category, search]);
+
+  const openPreview = (item: ExampleItem) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const closePreview = () => {
+    setShowModal(false);
+    setSelectedItem(null);
+  };
+
+  const handleTryInSandbox = (id: string) => {
+    navigate(`/sandbox?config=${id}`);
+  };
+
+  const handleOpenMockup = (route: string) => {
+    navigate(route);
+  };
+
+  const renderCard = (item: ExampleItem) => {
+    const itemCategory = EXAMPLE_CATEGORY_BY_ID[item.id] ?? 'States';
+
+    return (
+      <Col xs={12} md={6} xl={4} key={item.id}>
+        <Card className="h-100 shadow-sm theme-aware-card" style={{ minHeight: '290px' }}>
+          <div
+            style={{
+              height: '150px',
+              overflow: 'hidden',
+              borderRadius: '0.375rem 0.375rem 0 0',
+              backgroundColor: 'transparent',
+            }}
+          >
+            <div
+              style={{
+                transform: 'scale(0.5)',
+                transformOrigin: 'top left',
+                width: '200%',
+                height: '200%',
+                pointerEvents: 'none',
+              }}
+            >
+              <WidgemoThemeProvider theme={currentTheme}>
+                <Widgemo data={item.data} config={item.config} className="my-custom-widgemo" />
+              </WidgemoThemeProvider>
+            </div>
+          </div>
+          <Card.Body className="d-flex flex-column">
+            <div className="d-flex justify-content-between align-items-start mb-2">
+              <Card.Title style={{ fontSize: '0.95rem', marginBottom: 0 }}>{item.title}</Card.Title>
+            </div>
+            <div className="mb-2">
+              <Badge bg="secondary" style={{ fontSize: '0.65rem' }}>{itemCategory}</Badge>
+            </div>
+            <Card.Text className="text-muted" style={{ fontSize: '0.82rem' }}>
+              {item.description}
+            </Card.Text>
+            <div className="mt-auto d-flex gap-2">
+              <Button size="sm" variant="outline-secondary" onClick={() => openPreview(item)}>
+                Preview
+              </Button>
+              <Button size="sm" variant="primary" onClick={() => handleTryInSandbox(item.id)}>
+                Try in Sandbox
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      </Col>
+    );
+  };
+
+  const renderMockupCard = (item: MockupItem) => (
+    <Col xs={12} lg={6} key={item.id}>
+      <Card className="h-100 shadow-sm theme-aware-card" style={{ minHeight: '290px' }}>
+        <div style={{ overflow: 'hidden', borderRadius: '0.375rem 0.375rem 0 0' }}>
+          <img
+            src={item.imageSrc}
+            alt={item.imageAlt}
+            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '0.375rem 0.375rem 0 0' }}
+            onError={(event) => {
+              event.currentTarget.style.visibility = 'hidden';
+            }}
+          />
+        </div>
+        <Card.Body className="d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <Card.Title style={{ fontSize: '0.95rem', marginBottom: 0 }}>{item.title}</Card.Title>
+          </div>
+          <div className="mb-2">
+            <Badge bg="secondary" style={{ fontSize: '0.65rem' }}>App Mockup</Badge>
+          </div>
+          <Card.Text className="text-muted" style={{ fontSize: '0.82rem' }}>
+            {item.description}
+          </Card.Text>
+          <div className="mt-auto d-flex gap-2">
+            <Button size="sm" variant={item.variant} onClick={() => handleOpenMockup(item.route)}>
+              Open Mockup
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+
+  return (
+    <Container fluid className="pt-5 pb-4" style={{ maxWidth: '1500px' }}>
+      <div className="mb-4">
+        <h1 style={{ fontSize: '1.85rem', fontWeight: 700, marginBottom: '0.4rem' }}>Examples</h1>
+        <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
+          Real Widgemo configs, ready to explore. Open any example in the Sandbox to edit it live.
+        </p>
+      </div>
+
+      <section>
+        <div className="d-flex justify-content-end mb-3">
+          <div style={{ minWidth: '340px', maxWidth: '540px', width: '100%' }}>
+            <p className="text-muted mb-2" style={{ fontSize: '0.85rem' }}>
+              Filter by capability, or search by name. Each card opens a live Sandbox.
+            </p>
+            <div className="d-flex gap-2">
+            <Form.Control
+              size="sm"
+              value={search}
+              placeholder="Search examples..."
+              onChange={(event) => setSearch(event.target.value)}
+            />
+            <Form.Select
+              size="sm"
+              value={category}
+              onChange={(event) => setCategory(event.target.value as (typeof EXAMPLES_PAGE_CATEGORIES)[number])}
+              style={{ maxWidth: '180px' }}
+            >
+              {EXAMPLES_PAGE_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </Form.Select>
+            </div>
+          </div>
+        </div>
+
+        <Row className="g-3">
+          {filteredCatalog.map(renderCard)}
+        </Row>
+
+        {(category === 'All' || category === 'App Mockups') && (
+          <div id="app-mockups" className="mt-5">
+            <div className="mb-3">
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.35rem' }}>App Mockups</h2>
+              <p className="text-muted mb-0" style={{ fontSize: '0.88rem' }}>
+                Higher-fidelity, full-page examples. These are realistic mockups that demonstrate how Widgemo compositions scale in an application context.
+              </p>
+            </div>
+            <Row className="g-3">
+              {filteredMockups.map(renderMockupCard)}
+            </Row>
+          </div>
+        )}
+      </section>
+
+      {selectedItem && (
+        <Modal show={showModal} onHide={closePreview} size="xl" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedItem.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <WidgemoThemeProvider theme={currentTheme}>
+              <Widgemo data={selectedItem.data} config={selectedItem.config} className="my-custom-widgemo" />
+            </WidgemoThemeProvider>
+            <p className="mt-3 mb-0">{selectedItem.description}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closePreview}>Close</Button>
+            <Button variant="primary" onClick={() => handleTryInSandbox(selectedItem.id)}>Try in Sandbox</Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </Container>
+  );
+};

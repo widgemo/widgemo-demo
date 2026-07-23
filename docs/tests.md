@@ -61,7 +61,7 @@ This checklist tests the light/dark theming functionality in the widgemo-demo Re
 - [ ] Table headers (`thead`)
 - [ ] Table body (`tbody`)
 - [ ] Row hover effects
-- [ ] Striped rows (`table-striped`)
+- [ ] Alternating rows (`table-striped`)
 
 #### Navbar
 - [ ] Navbar background and text
@@ -131,7 +131,69 @@ This checklist tests the light/dark theming functionality in the widgemo-demo Re
 - [ ] Smooth theme changes
 - [ ] No layout shifts
 
-### 7. System Preference Change Detection (Optional)
+### 7. Retry Path Validation
+Use these locations to validate retry behavior end-to-end in the demo:
+
+- [ ] Sandbox top-level retry path in `src/components/sandbox/PreviewPanel.tsx`.
+	Trigger an error state in the preview, click retry, and confirm loading/error reset behavior.
+- [ ] Config-driven retry path in `src/data/progressiveExamples.tsx` (`progressive-63a-config-driven-retry-error-state`).
+	Open "Progressive 63A - Config-Driven Retry (errorState)", click "Retry Fetch", and confirm the demo action modal appears.
+
+### 8. Loading and Error Runtime Validation
+- [ ] Open the loading skeleton state examples in `src/data/widgemoExamples.tsx` and confirm all four variants render distinct placeholder layouts.
+	Expected: `content-loading-state-skeleton-text-bars`, `content-loading-state-skeleton-table-cells`, `content-loading-state-skeleton-cards-grid`, and `content-loading-state-skeleton-pie-chart` each show their corresponding built-in skeleton visual treatment.
+- [ ] Validate skeleton animation behavior in runtime.
+	Expected: the cards-grid example (`content-loading-state-skeleton-cards-grid`) uses visible `animation: "morph"`; the other skeleton examples use shimmer/default animation behavior.
+- [ ] Validate loading renderer override behavior using `content-loading-state-renderer-override`.
+	Expected: custom loading UI renders the "Custom Loading Renderer" block, confirming `loadingState.renderer` overrides built-in indicator rendering.
+- [ ] Validate spinner animation using `content-loading-state-spinner`.
+	Expected: spinner is visibly rotating (not static) while loading message is shown.
+- [ ] Compare info vs warning vs error severity using `content-error-state-severity-info`, `content-error-state`, and `content-error-state-severity-error`.
+	Expected: `severity: "info"`, `severity: "warning"`, and `severity: "error"` present clearly distinct visual tones in runtime UI.
+- [ ] Confirm retry layout remains obvious and aligned in warning/error examples.
+	Expected: both `content-error-state` and `content-error-state-severity-error` show retry buttons centered and visually separated below the message, and triggering each retry emits the demo action event.
+- [ ] Validate compositionBar compact table example using `renderas-composition-bar-compact-table` in `src/data/widgemoExamples.tsx`.
+	Expected: legend is hidden (`legend=none`), default visual style is segmented with per-segment rounded corners, percentages are present in segment hover/tooltips, and compact strip height stays visually dense.
+- [ ] Validate compositionBar grid summary example using `renderas-composition-bar-grid-summary` in `src/data/widgemoExamples.tsx`.
+	Expected: inline legend remains visible, style is `continuous` with band-level corners, percentages are hidden, and a totals row appears under each composition bar.
+- [ ] Validate compositionBar palette + numeric array example using `renderas-composition-bar-palette-numeric-table` in `src/data/widgemoExamples.tsx`.
+	Expected: numeric-array values render correctly, custom `palette` colors apply in order, `style=segmented` plus `segmentGap/cornerRadius/cornerScope` are visually obvious, and `total=120` affects percentage math and totals output.
+- [ ] Validate compositionBar callback-driven example using `renderas-composition-bar-callback-segments-total-callback` in `src/data/widgemoExamples.tsx`.
+	Expected: `segments(entity)` and `total(entity)` are used (not field value), with inline legend + totals visible in grid cards, and `cornerScope=none` produces square segment ends.
+- [ ] Validate compositionBar object-input + segmentColors example using `renderas-composition-bar-segmentcolors-object-input` in `src/data/widgemoExamples.tsx`.
+	Expected: mixed object keys (`name`/`key`/`label`, `amount`/`total`/`value`) normalize correctly, `segmentColors` alias controls swatch/bar colors, and segmented chip-style corners render with the configured radius.
+- [ ] Validate compositionBar static segments option example using `renderas-composition-bar-static-segments-option` in `src/data/widgemoExamples.tsx`.
+	Expected: `renderAsOptions.segments` static array drives rendering independent of field value, with `style=continuous`, rounded band/edge corners, `legend=none`, `totals=true`, and fixed `total=100`.
+
+### 9. Registry In Action Validation
+- [ ] Open the Cashflow dashboard page (`src/components/CashflowDashboardPage.tsx`) and confirm the "Registry in Action" callout is visible near the top of Command Center.
+	Expected: callout references custom icons, custom renderAs formatting, and custom mode usage.
+- [ ] In the Transactions Intelligence area, confirm the in-context note is visible and the table shows rich transaction formatting.
+	Expected: custom renderAs behavior is user-observable (transaction metadata, compact value/status styling).
+- [ ] In the Events area, confirm the in-context note is visible above the timeline widget.
+	Expected: custom `cashflow-timeline` mode is clearly identified as the rendering path.
+- [ ] Open Simplified Test (`src/components/SimplifiedTest.tsx`) and confirm there is no prominent synthetic registry PASS/FAIL table in the main demo flow.
+	Expected: primary showcase experience remains product-focused rather than test-harness focused.
+
+### 10. ContainerFrame In Context Validation
+- [ ] Open the Progressive Examples page and find the "ContainerFrame In Context" showcase group near the top of the examples area.
+	Expected: seven product-like examples are visible with one-line captions under each widget.
+- [ ] Confirm border/shadow differences are visually obvious between the borderless inline shell, rounded forecast shell, and square settlement shell.
+	Expected: at least one example has no outer shell, one has rounded shadowed chrome, and one has square/no-shadow framing.
+- [ ] Confirm the accent review shell shows explicit frame styling.
+	Expected: border color, border width, and a custom radius are all visible together on the outer shell.
+- [ ] Confirm the **borderless** example ("Embedded approvals strip") still has a visible background surface behind the table.
+	Expected: the card background is present; only the border line and shadow are absent. The widget still reads as a card-like block.
+- [ ] Confirm the **shellless** example ("Shellless queue") has no background surface and blends into the dashed host wrapper.
+	Expected: the widget background is transparent; the table and header float directly on the host surface with no surrounding card chrome. The dashed host border must be visible through/around the widget, not behind a white card.
+- [ ] Toggle between light and dark mode while both examples are visible.
+	Expected: shellless adapts to the host surface in both modes (transparent, no card shape); borderless retains a distinct background in both modes.
+- [ ] Confirm the two planning shells demonstrate overflow behavior.
+	Expected: the clipped variant hides the wide content at the frame edge, while the scrollable variant exposes scrollbars in the narrow shell.
+- [ ] Scrollable planning shell must expose a scrollable region while clipped planning shell must not.
+	Expected: both cards use the same shell size and content, but only the scrollable variant allows access to hidden rows/columns.
+
+### 11. System Preference Change Detection (Optional)
 **If implemented:**
 - [ ] Change OS theme preference while app is open
 - [ ] Check if app detects and adapts to system change

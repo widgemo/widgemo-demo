@@ -1,43 +1,50 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav } from 'react-bootstrap';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { ThemeToggle } from './ThemeToggle';
 
 interface AppNavbarProps {
   topOffset?: number;
+  onHeightChange?: (height: number) => void;
 }
 
-export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
+export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0, onHeightChange }) => {
   const location = useLocation();
-  const isSandbox = location.pathname === '/sandbox';
+  const navbarRef = useRef<HTMLElement | null>(null);
+  const isExamplesActive =
+    location.pathname === '/examples' ||
+    location.pathname === '/applications' ||
+    location.pathname === '/dashboard' ||
+    location.pathname === '/cashflow-dashboard';
 
-  const sections = [
-    { id: 'teaser', label: 'Teaser', path: '/' },
-    { id: 'anatomy', label: 'Anatomy', path: '/' },
-    { id: 'gallery', label: 'Gallery', path: '/' },
-    { id: 'sandbox', label: 'Sandbox', path: '/sandbox' },
-    { id: 'simplified-test', label: 'Simplified Test', path: '/simplified-test' },
-    { id: 'progressive-examples', label: 'Progressive Examples', path: '/progressive-examples' },
-    { id: 'advanced', label: 'Advanced', path: '/' },
-    { id: 'resources', label: 'Resources', path: '/' },
-  ];
+  useEffect(() => {
+    if (!onHeightChange || !navbarRef.current) return;
 
-  const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
-      // If not on main page, navigate first
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const navbarHeight = 56; // Bootstrap navbar height
-      const elementPosition = element.offsetTop - navbarHeight;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-  };
+    const element = navbarRef.current;
+    onHeightChange(element.offsetHeight);
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const nextHeight = entry?.contentRect?.height ?? element.offsetHeight;
+      onHeightChange(Math.round(nextHeight));
+    });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [onHeightChange]);
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-      <BootstrapNavbar bg="dark" variant="dark" fixed="top" expand="lg" className="shadow" style={{ top: `${topOffset}px` }}>
+      <BootstrapNavbar
+        bg="dark"
+        variant="dark"
+        fixed="top"
+        expand="lg"
+        className="shadow"
+        style={{ top: `${topOffset}px` }}
+        ref={navbarRef as never}
+      >
         <BootstrapNavbar.Brand 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           as={Link as any} 
@@ -58,36 +65,51 @@ export const AppNavbar: React.FC<AppNavbarProps> = ({ topOffset = 0 }) => {
         <BootstrapNavbar.Collapse id="demo-nav" className='me-4'>
           <div className="d-flex justify-content-end align-items-center w-100">
             <Nav className="mb-0 me-3">
-              {sections.map(section => (
-                <Nav.Link
-                  key={section.id}
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  as={Link as any}
-                  to={section.path}
-                  active={
-                    section.path === '/'
-                      ? location.pathname === '/' && !isSandbox
-                      : location.pathname === section.path
-                  }
-                  onClick={() => section.path === '/' && scrollToSection(section.id)}
-                  className="mx-2"
-                >
-                  {section.label}
-                </Nav.Link>
-              ))}
-            </Nav>
-            {isSandbox && (
-              <Button 
+              <Nav.Link
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                as={Link as any} 
-                to="/" 
-                variant="outline-light" 
-                size="sm" 
-                className="me-3"
+                as={Link as any}
+                to="/"
+                active={location.pathname === '/'}
+                className="mx-2"
               >
-                ← Back to Main
-              </Button>
-            )}
+                Overview
+              </Nav.Link>
+              <Nav.Link
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                as={Link as any}
+                to="/examples"
+                active={isExamplesActive}
+                className="mx-2"
+              >
+                Examples
+              </Nav.Link>
+
+              <Nav.Link
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                as={Link as any}
+                to="/sandbox"
+                active={location.pathname === '/sandbox'}
+                className="mx-2"
+              >
+                Sandbox
+              </Nav.Link>
+              <Nav.Link
+                href="https://docs.widgemo.com/core"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-2"
+                aria-label="Docs (opens in a new tab)"
+                active={false}
+                onClick={(event) => {
+                  event.currentTarget.blur();
+                }}
+              >
+                <span className="d-inline-flex align-items-center gap-1">
+                  Docs
+                  <FaExternalLinkAlt style={{ fontSize: '0.72rem', opacity: 0.9 }} aria-hidden="true" />
+                </span>
+              </Nav.Link>
+            </Nav>
             <ThemeToggle />
           </div>
         </BootstrapNavbar.Collapse>

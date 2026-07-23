@@ -21,6 +21,19 @@ export const twentyUsersData = teaserSampleData.slice(0, 20);
 export const twelveUsersData = teaserSampleData.slice(0, 12);
 // Moved outside to prevent recreation on every render, ensuring stable props for better performance.
 
+const emitDemoInteraction = (ctx: InteractionContext): void => {
+  fireDemoAction({
+    actionId: ctx.interactionId,
+    actionLabel: ctx.interactionLabel,
+    source: 'interactions.onEvent',
+    ...(ctx.entity ? { entity: ctx.entity as Record<string, unknown> } : {}),
+    data: ctx.data as Record<string, unknown>[],
+    zone: ctx.zone,
+    ...(ctx.from ? { from: ctx.from } : {}),
+    ...(ctx.to ? { to: ctx.to } : {}),
+  });
+};
+
 
 // Array of examples for dynamic rendering in SimplifiedTest.
 const widgemoExamples: Array<{
@@ -94,7 +107,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -215,7 +228,6 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: {},
           item: {
             fields: [
               { key: 'id', label: 'ID', width: '60px' },
@@ -224,7 +236,7 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-item',
               label: 'Edit',
@@ -272,13 +284,101 @@ const widgemoExamples: Array<{
     }
   },
 
+  // ── Action Overflow: indicator variants ──────────────────────────────────
+  {
+    id: 'action-overflow-indicator-pulse',
+    title: 'Action Overflow — indicator: pulse',
+    description: 'maxInline: 2 forces overflow on desktop. When overflow count increases the ⋯ button plays a scale + blue ripple animation (indicator: "pulse", the default).',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: pulse',
+          subtitle: 'Overflow button pulses with a blue ripple when items tuck in',
+          actions: [
+            { id: 'p-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'p-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'p-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'pulse' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
+  {
+    id: 'action-overflow-indicator-scale',
+    title: 'Action Overflow — indicator: scale',
+    description: 'Same layout as the pulse example but uses indicator: "scale" — a clean scale-only pop with no color change.',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: scale',
+          subtitle: 'Overflow button pops with a scale-only animation — no ripple, no color',
+          actions: [
+            { id: 's-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 's-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 's-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'scale' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
+  {
+    id: 'action-overflow-indicator-color-shift',
+    title: 'Action Overflow — indicator: color-shift',
+    description: 'indicator: "color-shift" flashes the overflow button background and border to the primary color — no movement. Useful when motion-reduction is preferred.',
+    data: twoUsersData,
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Indicator: color-shift',
+          subtitle: 'Overflow button flashes its border and background tint — no scale movement',
+          actions: [
+            { id: 'c-save', label: 'Save', icon: 'save', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-save', actionLabel: 'Save', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-edit', label: 'Edit', icon: 'edit', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-edit', actionLabel: 'Edit', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-share', label: 'Share', icon: 'share', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-export', label: 'Export', icon: 'export', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-export', actionLabel: 'Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+            { id: 'c-delete', label: 'Delete', icon: 'delete', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'c-delete', actionLabel: 'Delete', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone }) },
+          ],
+          actionOverflow: {
+            maxInline: { mobile: 1, tablet: 2, desktop: 2 },
+            menuTooltip: 'More actions',
+            indicator: 'color-shift' as const,
+          },
+        },
+        content: { mode: 'table', item: { fields: [{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }] } },
+      },
+    },
+  },
+
   {
     id: 'grid-mode',
     title: 'Grid Mode',
     description: 'Grid mode with a centered header (header.layout.titlePosition = "center"). Title and subtitle stack below each other and are horizontally centered in the header bar.',
     data: teaserSampleData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -357,7 +457,7 @@ const widgemoExamples: Array<{
     description: 'Simple table layout with basic field display. Email column uses wrap: true to allow line wrapping; other columns use the default truncation. hover=false: row hover highlight is disabled.',
     data: fourUsersData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -369,7 +469,7 @@ const widgemoExamples: Array<{
           themeOverrides: {
             padding: '1rem'
           },
-          layout: {
+          modeConfig: {
             table: {
               type: 'traditional',
               hover: false,
@@ -392,35 +492,32 @@ const widgemoExamples: Array<{
 
   {
     id: 'row-click',
-    title: 'Row Click (onRowClick)',
-    description: 'Demonstrates interaction.onRowClick. Click any row — including the email cell — to fire the parent callback. The email column uses type: "email" which renders as plain text, so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
+    title: 'Row Click (item-click gesture)',
+    description: 'Demonstrates gestures[item-click]. Click any row — including the email cell — to fire interactions.onEvent. The email column uses type: "email" which renders as plain text so it participates in row-click normally. Use renderAs: "link" instead if you want email cells to open a mailto: link and skip the row handler.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows',
-          subtitle: 'Click any cell (including the plain-text email) to fire onRowClick'
+          subtitle: 'Click any cell (including the plain-text email) to fire interactions.onEvent via item-click gesture'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // type: 'email' renders plain text — clicking it fires onRowClick like any other cell
+              // type: 'email' renders plain text — clicking it fires interactions.onEvent like any other cell
               { key: 'email',      label: 'Email',      type: 'email' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; email: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
@@ -429,34 +526,31 @@ const widgemoExamples: Array<{
   {
     id: 'row-click-with-link',
     title: 'Row Click with Email Link (renderAs: link)',
-    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire onRowClick (stopPropagation). Clicking any other cell still fires the row handler.',
+    description: 'Like row-click, but the email column uses renderAs: "link" which renders a real <a href="mailto:..."> tag. Clicking the email opens the mail client and does NOT fire item-click (stopPropagation). Clicking any other cell still fires interactions.onEvent via the item-click gesture.',
     data: fourUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Clickable Rows + Email Link',
-          subtitle: 'Click a row to fire onRowClick · click the email to open mailto: (no row handler)'
+          subtitle: 'Click a row to fire interactions.onEvent · click the email to open mailto: (gesture skipped)'
         },
         content: {
           mode: 'table',
           modeConfig: { table: { type: 'traditional' } },
+          gestures: [
+            { type: 'item-click', enabled: true, interactionId: 'row-click', interactionLabel: 'Row Click' }
+          ],
           item: {
             fields: [
               { key: 'id',         label: 'ID',         width: '60px' },
               { key: 'name',       label: 'Name' },
-              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops row-click propagation
+              // renderAs: 'link' renders <a href="mailto:..."> — clicking stops item-click propagation
               { key: 'email',      label: 'Email',      type: 'email', renderAs: 'link' },
               { key: 'department', label: 'Department' },
               { key: 'role',       label: 'Role' },
             ]
           },
-          interaction: {
-            onRowClick: (item: unknown) => {
-              const row = item as { name: string; department: string };
-              fireDemoAction({ actionId: 'row-click', actionLabel: 'Row Click', source: 'gestures[item-click].onTrigger', entity: row as unknown as Record<string, unknown> });
-            }
-          }
         }
       }
     }
@@ -476,20 +570,23 @@ const widgemoExamples: Array<{
         },
         content: {
           mode: 'table',
-          layout: {
+          modeConfig: {
             table: {
               type: 'rich-cells',
-              hover: false,
+              columns: 4,
+              showHeader: false,
+              hover: true,
             },
           },
           item: {
             fields: [
-              { key: 'src', label: 'Avatar', type: 'image', width: '60px' },
+              { key: 'src', label: '', type: 'image', width: '60px' },
+              { key: 'space', label: '', type: 'spacer', width: '1rem' },
               { key: 'name', label: 'Name', type: 'text' },
               { key: 'email', label: 'Email', type: 'email' },
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' },
               { key: 'progress', label: 'Progress', type: 'number', renderAs: 'progress', width: '120px' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
+              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', renderAsOptions: { currency: 'USD' } }
             ]
           }
         }
@@ -532,7 +629,7 @@ const widgemoExamples: Array<{
     description: 'Grid/card layout with normal item card styling, while omitting only the outer Widgemo container chrome.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -566,10 +663,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-table',
     title: 'Container Trim None (Table)',
-    description: 'Uses config.containerTrim = "none" to remove outer shell trim while keeping normal table and item rendering.',
+    description: 'Uses config.containerFrame.border = "none" to remove outer shell trim while keeping normal table and item rendering.',
     data: fourUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -589,7 +686,7 @@ const widgemoExamples: Array<{
           }
         },
         footer: {
-          subtitle: 'containerTrim none keeps content rendering but removes shell trim'
+          subtitle: 'containerFrame.border none keeps content rendering but removes shell trim'
         }
       }
     }
@@ -598,10 +695,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-grid-basic',
     title: 'Container Trim None (Grid)',
-    description: 'Grid mode with containerTrim set to none; content cards render normally without outer Widgemo shell trim.',
+    description: 'Grid mode with containerFrame.border set to none; content cards render normally without outer Widgemo shell trim.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -635,10 +732,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-list',
     title: 'Container Trim None (List)',
-    description: 'List mode with containerTrim none for embedding in parent cards or custom page sections.',
+    description: 'List mode with containerFrame.border none for embedding in parent cards or custom page sections.',
     data: sixUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -665,7 +762,7 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-timeline',
     title: 'Container Trim None (Timeline)',
-    description: 'Timeline mode with containerTrim none; timeline visuals render without the outer Widgemo shell.',
+    description: 'Timeline mode with containerFrame.border none; timeline visuals render without the outer Widgemo shell.',
     data: [
       {
         id: 1,
@@ -690,7 +787,7 @@ const widgemoExamples: Array<{
       }
     ],
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -714,10 +811,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-carousel',
     title: 'Container Trim None (Carousel)',
-    description: 'Carousel mode with containerTrim none for seamless embedding in custom layouts.',
+    description: 'Carousel mode with containerFrame.border none for seamless embedding in custom layouts.',
     data: tenUsersData,
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -752,10 +849,10 @@ const widgemoExamples: Array<{
   {
     id: 'container-trim-none-board',
     title: 'Container Trim None (Board)',
-    description: 'Board mode with containerTrim none while keeping normal column and card rendering.',
+    description: 'Board mode with containerFrame.border none while keeping normal column and card rendering.',
     data: twentyUsersData as Entity[],
     config: {
-      containerTrim: 'none',
+      containerFrame: { border: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -766,22 +863,32 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active', label: 'Active', color: '#28a745' },
-                { id: 'pending', label: 'Pending', color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' }
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                  { key: 'department', label: 'Department' }
-                ],
-                layout: { type: 'auto' as const }
-              }
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active', label: 'Active', color: '#28a745' },
+                  { id: 'pending', label: 'Pending', color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' }
+                ]
+              },
+              dragEnabled: true
             }
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+              { key: 'department', label: 'Department' }
+            ],
+            layout: { type: 'auto' as const }
           }
         }
       }
@@ -791,18 +898,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-traditional-table',
     title: 'Grouped Traditional Table',
-    description: 'Traditional table with data grouped by department. item.wrap: true enables natural line wrapping across all columns.',
+    description: 'Traditional table with data grouped by department via groupings[].fieldKey. item.wrap: true enables natural line wrapping across all columns.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Users by Department',
-          subtitle: 'Grouped traditional table — item.wrap: true'
+          subtitle: 'Grouped traditional table — groupings[].fieldKey · item.wrap: true'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             // item-level wrap: true — all fields in every cell wrap freely
             wrap: true,
@@ -821,18 +930,20 @@ const widgemoExamples: Array<{
   {
     id: 'grouped-rich-cells-table',
     title: 'Grouped Rich Cells Table',
-    description: 'Rich cells table with data grouped by department and enhanced formatting',
+    description: 'Rich cells table with data grouped by department via groupings[].fieldKey and enhanced formatting.',
     data: eightUsersData,
     config: {
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
           title: 'Department Teams',
-          subtitle: 'Grouped rich table with enhanced content'
+          subtitle: 'Grouped rich table with enhanced content · groupings[].fieldKey'
         },
         content: {
           mode: 'table',
-          groupBy: 'department',
+          groupings: [
+            { fieldKey: 'department' },
+          ],
           item: {
             fields: [
               { key: 'src', label: 'Avatar', type: 'image', width: '50px' },
@@ -870,7 +981,7 @@ const widgemoExamples: Array<{
               { key: 'status', label: 'Status', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit-user',
               label: 'Edit',
@@ -888,21 +999,21 @@ const widgemoExamples: Array<{
             {
               id: 'send-message',
               label: 'Send Message',
-              icon: 'message',
+              icon: 'share',
               placement: 'onHover',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'send-message', actionLabel: 'Send Message', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'duplicate-user',
               label: 'Duplicate',
-              icon: 'duplicate',
+              icon: 'copy',
               placement: 'menu',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'duplicate-user', actionLabel: 'Duplicate', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             },
             {
               id: 'archive-user',
               label: 'Archive',
-              icon: 'archive',
+              icon: 'download',
               placement: 'menu',
               onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'archive-user', actionLabel: 'Archive', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> })
             }
@@ -918,7 +1029,7 @@ const widgemoExamples: Array<{
     description: 'Minimal list layout with essential information and actions',
     data: sixUsersData,
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -938,7 +1049,7 @@ const widgemoExamples: Array<{
               { key: 'department', label: 'Department', type: 'text', renderAs: 'badge' }
             ]
           },
-          itemActions: [
+          actions: [
             {
               id: 'edit',
               label: 'Edit',
@@ -991,60 +1102,6 @@ const widgemoExamples: Array<{
               { key: 'role', label: 'Role', renderAs: 'badge' },
               { key: 'department', label: 'Department' },
               { key: 'status', label: 'Status', renderAs: 'badge' }
-            ],
-            layout: { type: 'auto' }
-          }
-        }
-      }
-    }
-  },
-  {
-    id: 'zone-layout-actions-below',
-    title: 'Zone Layout: Actions Below + Right-Aligned Title',
-    description: 'Combines two layout options: header.layout.actionsPosition = "below" places actions in a dedicated row beneath the title bar; header.layout.titlePosition = "right" right-aligns the title and subtitle block.',
-    data: threeUsersData,
-    config: {
-      collapse: { initialState: 'expanded' },
-      zones: {
-        header: {
-          title: 'Reports Dashboard',
-          subtitle: 'Monthly summary',
-          icon: { name: 'chart', size: 22, color: '#059669' },
-          layout: { actionsPosition: 'below', titlePosition: 'right' },
-          actions: [
-            {
-              id: 'export-csv',
-              label: 'Export CSV',
-              icon: 'download',
-              variant: 'secondary',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-csv', actionLabel: 'Export CSV', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'export-pdf',
-              label: 'Export PDF',
-              icon: 'download',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-pdf', actionLabel: 'Export PDF', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            },
-            {
-              id: 'share',
-              label: 'Share',
-              icon: 'share',
-              placement: 'pinned',
-              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'share', actionLabel: 'Share', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
-            }
-          ]
-        },
-        content: {
-          mode: 'table',
-          modeConfig: { table: { type: 'traditional' } },
-          item: {
-            fields: [
-              { key: 'name', label: 'Name' },
-              { key: 'role', label: 'Role' },
-              { key: 'department', label: 'Department' },
-              { key: 'amount', label: 'Salary', type: 'number', renderAs: 'currency', currencyOptions: { currency: 'USD' } }
             ],
             layout: { type: 'auto' }
           }
@@ -1225,11 +1282,80 @@ const widgemoExamples: Array<{
           title: 'User Directory',
           subtitle: 'Search then page through results',
           icon: 'table',
+          actions: [
+            {
+              id: 'refresh-results',
+              label: 'Refresh Results',
+              icon: 'refresh',
+              placement: 'pinned',
+              variant: 'secondary',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'refresh-results', actionLabel: 'Refresh Results', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            },
+            {
+              id: 'export-results',
+              label: 'Export Results',
+              icon: 'download',
+              placement: 'menu',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'export-results', actionLabel: 'Export Results', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            }
+          ]
         },
         content: {
           mode: 'table',
           search: { placeholder: 'Search members…' },
           pagination: { pageSize: 5 },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'status', label: 'Status', renderAs: 'badge' },
+              { key: 'department', label: 'Department' },
+            ],
+          },
+        },
+        footer: {
+          subtitle: 'Quick actions for current result set',
+          actions: [
+            {
+              id: 'clear-filters',
+              label: 'Clear Filters',
+              icon: 'close',
+              placement: 'pinned',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'clear-filters', actionLabel: 'Clear Filters', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            },
+            {
+              id: 'bulk-export',
+              label: 'Bulk Export',
+              icon: 'export',
+              placement: 'menu',
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'bulk-export', actionLabel: 'Bulk Export', source: 'action.onAction', data: ctx.data as Record<string, unknown>[], zone: ctx.zone })
+            }
+          ]
+        },
+      },
+    },
+  },
+  {
+    id: 'grouped-rows-with-collapse',
+    title: 'Grouped Rows with Collapse',
+    description: 'Group records by any field value and collapse groups independently. Driven entirely by a single groupBy config property.',
+    data: twentyUsersData as Entity[],
+    config: {
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Grouped User Directory',
+          subtitle: 'Grouped by department with collapsible sections',
+          icon: 'table',
+        },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              initiallyCollapsed: true,
+            },
+          ],
           item: {
             fields: [
               { key: 'name', label: 'Name' },
@@ -1248,7 +1374,7 @@ const widgemoExamples: Array<{
     description: 'Kanban board grouping items by status. Columns are driven by item.status — no filter functions required.',
     data: twentyUsersData as Entity[],
     config: {
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: {
@@ -1263,22 +1389,32 @@ const widgemoExamples: Array<{
           },
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
-              dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name',       label: 'Name',       type: 'text' as const },
-                  { key: 'role',       label: 'Role' },
-                  { key: 'department', label: 'Department' },
-                ],
-                layout: { type: 'auto' as const },
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745', wipLimit: 8 },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14', wipLimit: 4 },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
               },
+              dragEnabled: true,
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name',       label: 'Name',       type: 'text' as const },
+              { key: 'role',       label: 'Role' },
+              { key: 'department', label: 'Department' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -1301,25 +1437,39 @@ const widgemoExamples: Array<{
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'active',   label: 'Active',   color: '#28a745' },
-                { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
-                { id: 'inactive', label: 'Inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'active',   label: 'Active',   color: '#28a745' },
+                  { id: 'pending',  label: 'Pending',  color: '#fd7e14' },
+                  { id: 'inactive', label: 'Inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
+                items: [
+                  { id: 'eng',  label: 'Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Design',      value: 'Design' },
+                  { id: 'bus',  label: 'Business',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -1460,19 +1610,19 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Zone Dynamic Renderers (titleRenderer / subtitleRenderer) ────────
+  // ── Zone Dynamic Title/Subtitle (function form) ──────────────────────────
   {
     id: 'zone-dynamic-renderers',
-    title: 'Zone: titleRenderer & subtitleRenderer',
-    description: 'ZoneConfig.titleRenderer and subtitleRenderer as functions that receive live data and return strings. ActionConfig.handler receives the full ActionContext (entity, data, zone).',
+    title: 'Zone: dynamic title & subtitle',
+    description: 'ZoneConfig.title and .subtitle accept a function (data, id?) => string that receives the live data array on every render. Use it to reflect counts or derived summaries without external state.',
     data: eightUsersData as Entity[],
     config: {
       id: 'zone-dynamic-renderers',
       collapse: { initialState: 'fixed' },
       zones: {
         header: {
-          titleRenderer: (data: Entity[]) => `Team Overview (${data.length} members)`,
-          subtitleRenderer: (data: Entity[]) =>
+          title: (data: Entity[]) => `Team Overview (${data.length} members)`,
+          subtitle: (data: Entity[]) =>
             `Active: ${data.filter(d => d.status === 'active').length} · Inactive: ${data.filter(d => d.status === 'inactive').length} · Pending: ${data.filter(d => d.status === 'pending').length}`,
           icon: { name: 'users', size: 22, color: '#059669' },
           collapse: { initialState: 'fixed' },
@@ -1588,7 +1738,7 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             { id: 'view', label: 'View', icon: 'view', placement: 'pinned' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
             { id: 'edit', label: 'Edit', icon: 'edit', placement: 'menu' as const, onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }) },
             {
@@ -1630,7 +1780,7 @@ const widgemoExamples: Array<{
             ],
             layout: { type: 'auto' },
           },
-          itemActions: [
+          actions: [
             {
               id: 'deactivate',
               label: 'Deactivate',
@@ -1658,7 +1808,7 @@ const widgemoExamples: Array<{
   {
     id: 'table-layout-options',
     title: 'Table layout.table & item.fields',
-    description: 'layout.table: striped, showHeader. item.fields (FieldConfig) is the unified config for all modes — use key/label, align, width, sortable on fields directly.',
+    description: 'layout.table: alternatingRows, showHeader. item.fields (FieldConfig) is the unified config for all modes — use key/label, align, width, sortable on fields directly.',
     data: sixUsersData as Entity[],
     config: {
       id: 'table-layout-options',
@@ -1666,15 +1816,15 @@ const widgemoExamples: Array<{
       zones: {
         header: {
           title: 'Table Layout Options',
-          subtitle: 'striped=true · item.fields with align, width, sortable',
+          subtitle: 'alternatingRows=true · item.fields with align, width, sortable',
           icon: { name: 'table', size: 22, color: '#0d6efd' },
         },
         content: {
           mode: 'table',
-          layout: {
+          modeConfig: {
             table: {
               type: 'traditional',
-              striped: true,
+              alternatingRows: true,
               showHeader: true,
             },
           },
@@ -1694,11 +1844,11 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Field Types: boolean, swatch, formatter, condition, visible, span ─
+  // ── NEW: Field Types: boolean, swatch, formatter, condition, visible ─
   {
     id: 'field-boolean-swatch',
-    title: 'Field: boolean, swatch, formatter, condition, visible, span',
-    description: 'type="boolean" with booleanTrueLabel/booleanFalseLabel. type="swatch" renders a color dot. formatter transforms raw values. condition hides fields per-entity. visible=false removes entirely. span for multi-column stretch.',
+    title: 'Field: boolean, swatch, formatter, condition, visible',
+    description: 'type="boolean" with booleanTrueLabel/booleanFalseLabel. type="swatch" renders a color dot. formatter transforms raw values. condition hides fields per-entity. visible=false removes entirely.',
     data: [
       { id: 1, name: 'Alice', isActive: true, isVerified: true, tierColor: '#ffd700', tier: 'Gold', score: 92 },
       { id: 2, name: 'Bob',   isActive: false, isVerified: true,  tierColor: '#c0c0c0', tier: 'Silver', score: 71 },
@@ -1709,7 +1859,7 @@ const widgemoExamples: Array<{
       id: 'field-boolean-swatch',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Boolean, Swatch & Field Options', subtitle: 'booleanTrueLabel · swatch type · formatter · condition · visible=false · span' },
+        header: { title: 'Boolean, Swatch & Field Options', subtitle: 'booleanTrueLabel · swatch type · formatter · condition · visible=false' },
         content: {
           mode: 'table',
           item: {
@@ -1734,11 +1884,68 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: renderAs: link — all linkOptions ─────────────────────────────────
+  // ── NEW: Field span in grid field layout ─────────────────────────────────
+  {
+    id: 'field-span-grid-layout',
+    title: 'Field: span (grid field layout)',
+    description: 'FieldConfig.span stretches selected fields across multiple columns when item.layout.type="grid".',
+    data: [
+      {
+        id: 1,
+        name: 'Aurora Chen',
+        role: 'Design Lead',
+        team: 'Design Systems',
+        summary: 'Leads cross-functional design initiatives and drives consistency across product surfaces.',
+      },
+      {
+        id: 2,
+        name: 'Mateo Silva',
+        role: 'Platform Engineer',
+        team: 'Core Platform',
+        summary: 'Owns platform reliability and performance guardrails for internal developer tooling.',
+      },
+    ] as Entity[],
+    config: {
+      id: 'field-span-grid-layout',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Field span with layout.grid',
+          subtitle: 'summary uses span: 2 in a two-column field grid',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '320px',
+              gap: '0.75rem',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+              { key: 'team', label: 'Team' },
+              { key: 'summary', label: 'Summary', span: 2, wrap: true },
+            ],
+            layout: {
+              type: 'grid',
+              grid: {
+                columns: 'repeat(2, minmax(0, 1fr))',
+                gap: '0.5rem 0.75rem',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  // ── NEW: renderAs: link — renderAsOptions ─────────────────────────────────
   {
     id: 'renderas-link',
-    title: 'renderAs: link — linkOptions',
-    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, externalWarning. Shows unified renderAsOptions API alongside legacy linkOptions.',
+    title: 'renderAs: link — renderAsOptions',
+    description: 'renderAs="link" with renderAsOptions: text (static), text (function), url (function), newTab, and externalWarning.',
     data: [
       { id: 1, name: 'GitHub',    url: 'https://github.com',           username: 'alice', docUrl: 'https://github.com' },
       { id: 2, name: 'Docs',      url: 'https://docs.example.com',    username: 'bob',   docUrl: 'https://docs.example.com' },
@@ -1762,8 +1969,7 @@ const widgemoExamples: Array<{
                 text: (entity: Entity) => `@${entity.username}`,
                 newTab: true,
               }},
-              // Legacy linkOptions approach
-              { key: 'docUrl', label: 'External Warning', renderAs: 'link', linkOptions: { newTab: true, externalWarning: true } },
+              { key: 'docUrl', label: 'External Warning', renderAs: 'link', renderAsOptions: { newTab: true, externalWarning: true } },
             ],
             layout: { type: 'auto' },
           },
@@ -1778,10 +1984,10 @@ const widgemoExamples: Array<{
     title: 'renderAs: badge — icons, style, size',
     description: 'Badge colorMap with icon+iconPosition: "left", "right", "only". Badge style "inline" vs "badge". Badge size "sm", "md", "lg". Dynamic colorMap via function.',
     data: [
-      { id: 1, name: 'Alice', priority: 'high',   status: 'active',   tier: 'gold'   },
-      { id: 2, name: 'Bob',   priority: 'medium', status: 'pending',  tier: 'silver' },
-      { id: 3, name: 'Carol', priority: 'low',    status: 'inactive', tier: 'bronze' },
-      { id: 4, name: 'David', priority: 'high',   status: 'active',   tier: 'gold'   },
+      { id: 1, name: 'Alice', priority: 'high',   status: 'active',   tier: 'gold',   segment: 'engineering' },
+      { id: 2, name: 'Bob',   priority: 'medium', status: 'pending',  tier: 'silver', segment: 'operations' },
+      { id: 3, name: 'Carol', priority: 'low',    status: 'inactive', tier: 'bronze', segment: 'support' },
+      { id: 4, name: 'David', priority: 'high',   status: 'active',   tier: 'gold',   segment: 'platform' },
     ] as Entity[],
     config: {
       id: 'renderas-badge-advanced',
@@ -1810,6 +2016,17 @@ const widgemoExamples: Array<{
                   inactive: { background: '#6c757d', text: '#fff', icon: 'close', iconPosition: 'only' },
                 },
                 size: 'lg',
+              }},
+              // className adds an app-specific CSS hook to the rendered badge
+              { key: 'segment', label: 'Segment (className hook)', renderAs: 'badge', renderAsOptions: {
+                colorMap: {
+                  engineering: { background: '#0d6efd', text: '#fff' },
+                  operations:   { background: '#6f42c1', text: '#fff' },
+                  support:      { background: '#198754', text: '#fff' },
+                  platform:     { background: '#20c997', text: '#053c33' },
+                },
+                className: 'demo-badge-emphasis',
+                size: 'md',
               }},
               // style inline + icon right, size md
               { key: 'tier', label: 'Tier (inline, icon right)', renderAs: 'badge', renderAsOptions: {
@@ -1930,6 +2147,388 @@ const widgemoExamples: Array<{
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
               }},
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  // ── NEW: renderAs: compositionBar — compact table + summary cards ──────
+  {
+    id: 'renderas-composition-bar-compact-table',
+    title: 'renderAs: compositionBar — compact table',
+    description: 'Compact table-style composition bars with legend suppressed. Demonstrates default compositionBar visuals (segmented style + per-segment corner rounding).',
+    data: [
+      {
+        id: 1,
+        stream: 'Paid Media',
+        allocation: {
+          segments: [
+            { label: 'Search', value: 46, color: '#2f80ed' },
+            { label: 'Social', value: 34, color: '#27ae60' },
+            { label: 'Display', value: 20, color: '#f2994a' },
+          ],
+        },
+      },
+      {
+        id: 2,
+        stream: 'Lifecycle',
+        allocation: {
+          segments: [
+            { label: 'Email', value: 58, color: '#6c5ce7' },
+            { label: 'In-app', value: 24, color: '#00b894' },
+            { label: 'SMS', value: 18, color: '#fdcb6e' },
+          ],
+        },
+      },
+      {
+        id: 3,
+        stream: 'Sales Enablement',
+        allocation: {
+          segments: [
+            { label: 'Demos', value: 41, color: '#0984e3' },
+            { label: 'POCs', value: 37, color: '#00cec9' },
+            { label: 'Follow-up', value: 22, color: '#fab1a0' },
+          ],
+        },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-compact-table',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Compact Table)',
+          subtitle: 'defaults: style=segmented · cornerScope=segment · legend=none · compact barHeight',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'stream', label: 'Workstream' },
+              {
+                key: 'allocation',
+                label: 'Channel Mix',
+                renderAs: 'compositionBar',
+                width: '320px',
+                renderAsOptions: {
+                  legend: 'none',
+                  percentages: true,
+                  totals: false,
+                  barHeight: 8,
+                  gap: '0.25rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: each segment shows labeled inline legend rows with value + percentage.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-grid-summary',
+    title: 'renderAs: compositionBar — grid summary cards',
+    description: 'Card/grid summary usage showing continuous style with band-level corners for a smooth single-track look.',
+    data: [
+      {
+        id: 1,
+        portfolio: 'Enterprise Pipeline',
+        owner: 'Revenue Ops',
+        summaryMix: {
+          segments: [
+            { label: 'Committed', value: 340, color: '#16a085' },
+            { label: 'Best Case', value: 120, color: '#f39c12' },
+            { label: 'At Risk', value: 40, color: '#e74c3c' },
+          ],
+        },
+      },
+      {
+        id: 2,
+        portfolio: 'Product Adoption',
+        owner: 'Growth',
+        summaryMix: {
+          segments: [
+            { label: 'Activated', value: 510, color: '#2980b9' },
+            { label: 'Trialing', value: 140, color: '#8e44ad' },
+            { label: 'Dormant', value: 70, color: '#c0392b' },
+          ],
+        },
+      },
+      {
+        id: 3,
+        portfolio: 'Support Load',
+        owner: 'CX',
+        summaryMix: {
+          segments: [
+            { label: 'Resolved', value: 780, color: '#27ae60' },
+            { label: 'In Review', value: 210, color: '#f1c40f' },
+            { label: 'Escalated', value: 55, color: '#d35400' },
+          ],
+        },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-grid-summary',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Grid Summary Cards)',
+          subtitle: 'style=continuous · cornerScope=track · mode="grid" · inline legend · totals=true',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: {
+            grid: {
+              minItemWidth: '300px',
+              gap: '0.9rem',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'portfolio', label: 'Portfolio' },
+              { key: 'owner', label: 'Owner', renderAs: 'badge' },
+              {
+                key: 'summaryMix',
+                label: 'Composition Snapshot',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  style: 'continuous',
+                  cornerScope: 'track',
+                  cornerRadius: '999px',
+                  legend: 'inline',
+                  percentages: false,
+                  totals: true,
+                  barHeight: 12,
+                  gap: '0.4rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: legend stays inline while totals row summarizes each card composition.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-palette-numeric-table',
+    title: 'renderAs: compositionBar — palette + numeric array + fixed total',
+    description: 'Shows numeric-array field input with custom palette plus segmented style tuning (`segmentGap`, `cornerRadius`, `cornerScope`).',
+    data: [
+      { id: 1, team: 'Acquisition', workload: [44, 26, 18, 12] },
+      { id: 2, team: 'Lifecycle', workload: [39, 31, 17, 13] },
+      { id: 3, team: 'Retention', workload: [47, 22, 20, 11] },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-palette-numeric-table',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Palette + Numeric Arrays)',
+          subtitle: 'style=segmented · cornerScope=both · cornerRadius=7px · segmentGap=4px',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'team', label: 'Team' },
+              {
+                key: 'workload',
+                label: 'Workload Split',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'both',
+                  cornerRadius: '7px',
+                  segmentGap: '4px',
+                  legend: 'inline',
+                  percentages: true,
+                  totals: true,
+                  total: 120,
+                  palette: ['#2563eb', '#22c55e', '#f59e0b', '#ef4444'],
+                  barHeight: '10px',
+                  gap: 6,
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-callback-segments-total-callback',
+    title: 'renderAs: compositionBar — segments callback + total callback',
+    description: 'Shows callback-driven segment generation from entity fields plus callback total override, with square segmented blocks (no corner rounding).',
+    data: [
+      { id: 1, portfolio: 'North America', cash: 220, equity: 540, debt: 140, hedge: 100, portfolioTotal: 1200 },
+      { id: 2, portfolio: 'EMEA', cash: 180, equity: 410, debt: 220, hedge: 90, portfolioTotal: 1100 },
+      { id: 3, portfolio: 'APAC', cash: 140, equity: 360, debt: 160, hedge: 80, portfolioTotal: 900 },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-callback-segments-total-callback',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Segments Callback)',
+          subtitle: 'segments(entity)=>[] · total(entity)=>number · style=segmented · cornerScope=none',
+        },
+        content: {
+          mode: 'grid',
+          modeConfig: { grid: { minItemWidth: '320px', gap: '0.9rem' } },
+          item: {
+            fields: [
+              { key: 'portfolio', label: 'Portfolio' },
+              {
+                key: 'portfolio',
+                label: 'Derived Mix',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'none',
+                  segmentGap: '5px',
+                  legend: 'inline',
+                  percentages: true,
+                  totals: true,
+                  total: (entity: Entity) => Number((entity as { portfolioTotal?: number }).portfolioTotal ?? 0),
+                  segments: (entity: Entity) => {
+                    const row = entity as { cash?: number; equity?: number; debt?: number; hedge?: number };
+                    return [
+                      { label: 'Cash', value: row.cash ?? 0, color: '#10b981' },
+                      { label: 'Equity', value: row.equity ?? 0, color: '#3b82f6' },
+                      { label: 'Debt', value: row.debt ?? 0, color: '#f59e0b' },
+                      { label: 'Hedge', value: row.hedge ?? 0, color: '#8b5cf6' },
+                    ];
+                  },
+                  barHeight: 14,
+                  gap: '0.5rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-segmentcolors-object-input',
+    title: 'renderAs: compositionBar — object segments + segmentColors alias',
+    description: 'Shows field value object with heterogeneous segment keys and segmentColors alias usage, with compact segmented chips.',
+    data: [
+      {
+        id: 1,
+        stream: 'Platform',
+        objectMix: { segments: [
+          { name: 'Core', amount: 48 },
+          { key: 'Integrations', total: '31' },
+          { label: 'Support', value: 21 },
+        ] },
+      },
+      {
+        id: 2,
+        stream: 'Product',
+        objectMix: { segments: [
+          { name: 'Discovery', amount: 36 },
+          { key: 'Delivery', total: '44' },
+          { label: 'Ops', value: 20 },
+        ] },
+      },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-segmentcolors-object-input',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (segmentColors Alias + Object Input)',
+          subtitle: 'segmentColors alias · object value input · style=segmented · cornerRadius=5px',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'stream', label: 'Stream' },
+              {
+                key: 'objectMix',
+                label: 'Object Segment Input',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  style: 'segmented',
+                  cornerScope: 'segment',
+                  cornerRadius: '5px',
+                  segmentGap: 3,
+                  legend: 'inline',
+                  percentages: false,
+                  totals: false,
+                  segmentColors: ['#0ea5e9', '#14b8a6', '#f97316'],
+                  barHeight: '11px',
+                  gap: '0.3rem',
+                },
+              },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'renderas-composition-bar-static-segments-option',
+    title: 'renderAs: compositionBar — static segments option',
+    description: 'Shows static segment array configured directly in renderAsOptions.segments, rendered as continuous with rounded band + segment edges.',
+    data: [
+      { id: 1, scenario: 'Baseline' },
+      { id: 2, scenario: 'Optimistic' },
+      { id: 3, scenario: 'Conservative' },
+    ] as Entity[],
+    config: {
+      id: 'renderas-composition-bar-static-segments-option',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Composition Bar (Static Segments in Options)',
+          subtitle: 'segments=[...] in options · style=continuous · cornerScope=both · totals=true',
+        },
+        content: {
+          mode: 'table',
+          item: {
+            fields: [
+              { key: 'scenario', label: 'Scenario' },
+              {
+                key: 'scenario',
+                label: 'Static Mix',
+                renderAs: 'compositionBar',
+                renderAsOptions: {
+                  style: 'continuous',
+                  cornerScope: 'both',
+                  cornerRadius: '10px',
+                  legend: 'none',
+                  percentages: false,
+                  totals: true,
+                  total: 100,
+                  segments: [
+                    { label: 'A', value: 45, color: '#2563eb' },
+                    { label: 'B', value: 35, color: '#22c55e' },
+                    { label: 'C', value: 20, color: '#f59e0b' },
+                  ],
+                  barHeight: 6,
+                  gap: 2,
+                },
+              },
             ],
             layout: { type: 'auto' },
           },
@@ -2126,7 +2725,7 @@ const widgemoExamples: Array<{
           modeConfig: { grid: { maxColumns: 1 } },
           item: {
             fields: [
-              { key: 'src',        label: 'Photo', type: 'image' as const, imageOptions: { circular: true, width: 56, height: 56 } },
+              { key: 'photo',      label: 'Photo', type: 'image' as const, imageOptions: { circular: true, width: 56, height: 56 } },
               { key: 'name',       label: 'Name', showLabel: false },
               { key: 'email',      label: 'Email', type: 'email' as const, showLabel: false },
               { key: 'role',       label: 'Role', renderAs: 'badge' },
@@ -2139,7 +2738,7 @@ const widgemoExamples: Array<{
                 gap: '0.5rem',
                 areas: [
                   '"photo name   role"',
-                  '"photo email  dept"',
+                  '"photo email  department"',
                 ],
               },
             },
@@ -2153,13 +2752,13 @@ const widgemoExamples: Array<{
   {
     id: 'grid-modeconfig-full',
     title: 'Grid ModeConfig — all options',
-    description: 'ModeConfig.grid: gap, minItemWidth, maxColumns, autoFlow, justifyItems, alignItems. Breakpoints (mobile/tablet/desktop) for responsive column sizing.',
+    description: 'ModeConfig.grid: gap, minItemWidth, maxColumns, autoFlow, justifyItems, and alignItems. Responsive switching belongs in content.responsive.breakpoints.',
     data: twelveUsersData as Entity[],
     config: {
       id: 'grid-modeconfig-full',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Grid Mode Full Config', subtitle: 'gap · minItemWidth · maxColumns · autoFlow · justifyItems · alignItems · breakpoints' },
+        header: { title: 'Grid Mode Full Config', subtitle: 'gap · minItemWidth · maxColumns · autoFlow · justifyItems · alignItems' },
         content: {
           mode: 'grid',
           modeConfig: {
@@ -2170,11 +2769,6 @@ const widgemoExamples: Array<{
               autoFlow: 'row' as const,
               justifyItems: 'stretch' as const,
               alignItems: 'start' as const,
-              breakpoints: {
-                mobile: '480px',
-                tablet: '768px',
-                desktop: '1200px',
-              },
             },
           },
           item: {
@@ -2199,7 +2793,7 @@ const widgemoExamples: Array<{
     data: tenUsersData as Entity[],
     config: {
       id: 'carousel-full',
-      containerShadow: 'none',
+      containerFrame: { shadow: 'none' },
       collapse: { initialState: 'expanded' },
       zones: {
         header: { title: 'Carousel Mode Full Config', subtitle: 'itemWidth · itemHeight · gap · indicators · arrows · infinite · autoPlay · dragThreshold' },
@@ -2358,24 +2952,303 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Content loadingState ────────────────────────────────────────────
+  // ── NEW: Chart mode examples ─────────────────────────────────────────────
   {
-    id: 'content-loading-state',
-    title: 'Content: loadingState',
-    description: 'ContentConfig.status="loading" with loadingState: indicator="skeleton", message as function, enabled=true.',
-    data: fourUsersData as Entity[],
+    id: 'chart-throughput-mixed',
+    title: 'Chart Mode: Throughput (bar + area + line)',
+    description: 'Demonstrates chart mode with mixed series types to visualize completed, planned, and spillover work over time.',
+    data: [
+      { id: 'w1', label: 'Week 1', completed: 22, planned: 24, spillover: 4 },
+      { id: 'w2', label: 'Week 2', completed: 27, planned: 26, spillover: 3 },
+      { id: 'w3', label: 'Week 3', completed: 25, planned: 28, spillover: 5 },
+      { id: 'w4', label: 'Week 4', completed: 31, planned: 30, spillover: 2 },
+      { id: 'w5', label: 'Week 5', completed: 29, planned: 31, spillover: 4 },
+      { id: 'w6', label: 'Week 6', completed: 34, planned: 33, spillover: 2 },
+    ] as Entity[],
     config: {
-      id: 'content-loading-state',
+      id: 'chart-throughput-mixed',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Loading State', subtitle: 'status="loading" · indicator="skeleton" · message fn' },
+        header: {
+          title: 'Chart Mode — Throughput Trend',
+          subtitle: 'Mixed series configuration: bar + area + line',
+        },
+        content: {
+          mode: 'chart',
+          modeConfig: {
+            chart: {
+              xAxis: 'label',
+              series: [
+                { type: 'bar', key: 'completed', label: 'Completed', color: '#3b82f6' },
+                { type: 'area', key: 'spillover', label: 'Spillover', color: '#a78bfa', areaGradient: true },
+                { type: 'line', key: 'planned', label: 'Planned', color: '#f59e0b', showDots: true },
+              ],
+              height: 320,
+              showGrid: true,
+              showLabels: false,
+              showLegend: true,
+              legendAlign: 'center',
+            },
+          },
+          item: {
+            fields: [
+              { key: 'label', label: 'Period' },
+              { key: 'completed', label: 'Completed' },
+              { key: 'planned', label: 'Planned' },
+              { key: 'spillover', label: 'Spillover' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'chart-allocation-donut',
+    title: 'Chart Mode: Allocation (donut)',
+    description: 'Demonstrates chart mode donut series for composition and proportion analysis across workstreams.',
+    data: [
+      { id: 'eng', workstream: 'Engineering', count: 18 },
+      { id: 'design', workstream: 'Design', count: 7 },
+      { id: 'growth', workstream: 'Growth', count: 10 },
+      { id: 'ops', workstream: 'Operations', count: 5 },
+    ] as Entity[],
+    config: {
+      id: 'chart-allocation-donut',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: {
+          title: 'Chart Mode — Capacity Allocation',
+          subtitle: 'Donut series with legend and labels',
+        },
+        content: {
+          mode: 'chart',
+          modeConfig: {
+            chart: {
+              xAxis: 'workstream',
+              series: [
+                { type: 'donut', key: 'count', label: 'Allocation' },
+              ],
+              height: 320,
+              showLegend: true,
+              legendAlign: 'center',
+              showLabels: true,
+              donutInnerRadiusRatio: 0.62,
+            },
+          },
+          item: {
+            fields: [
+              { key: 'workstream', label: 'Workstream' },
+              { key: 'count', label: 'Count' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  // ── NEW: Content loadingState ────────────────────────────────────────────
+  {
+    id: 'content-loading-state-skeleton-text-bars',
+    title: 'Content: loadingState skeleton (text-bars)',
+    description: 'Demonstrates skeleton variant="text-bars" with shimmer animation for baseline text placeholder loading UI.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-text-bars',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Text Bars', subtitle: 'status="loading" · indicator="skeleton" · variant="text-bars" · animation="shimmer"' },
         content: {
           mode: 'table',
           status: 'loading' as const,
           loadingState: {
             enabled: true,
             indicator: 'skeleton' as const,
-            message: () => `Loading records…`,
+            skeleton: {
+              variant: 'text-bars' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading records with text-bar placeholders…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-table-cells',
+    title: 'Content: loadingState skeleton (table-cells)',
+    description: 'Demonstrates skeleton variant="table-cells" to mimic tabular loading placeholders before rows resolve.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-table-cells',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Table Cells', subtitle: 'status="loading" · indicator="skeleton" · variant="table-cells"' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'table-cells' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading tabular cells…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-cards-grid',
+    title: 'Content: loadingState skeleton (cards-grid, morph)',
+    description: 'Demonstrates skeleton variant="cards-grid" with animation="morph" so animation behavior is explicit in runtime.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-cards-grid',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Cards Grid', subtitle: 'status="loading" · indicator="skeleton" · variant="cards-grid" · animation="morph"' },
+        content: {
+          mode: 'grid',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'cards-grid' as const,
+              animation: 'morph' as const,
+            },
+            message: () => 'Loading card placeholders with morph animation…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-skeleton-pie-chart',
+    title: 'Content: loadingState skeleton (pie-chart)',
+    description: 'Demonstrates skeleton variant="pie-chart" for chart-like loading presentation with legend placeholders.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-skeleton-pie-chart',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Skeleton Pie Chart', subtitle: 'status="loading" · indicator="skeleton" · variant="pie-chart"' },
+        content: {
+          mode: 'chart',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'skeleton' as const,
+            skeleton: {
+              variant: 'pie-chart' as const,
+              animation: 'shimmer' as const,
+            },
+            message: () => 'Loading chart placeholders…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-spinner',
+    title: 'Content: loadingState (spinner)',
+    description: 'Demonstrates built-in loading indicator="spinner" with animated rotation so it is visually distinct from skeleton placeholders.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-spinner',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Spinner', subtitle: 'status="loading" · indicator="spinner" · animated spin' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'spinner' as const,
+            message: () => 'Loading records with animated spinner…',
+          },
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role' },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-loading-state-renderer-override',
+    title: 'Content: loadingState renderer override',
+    description: 'Demonstrates loadingState.renderer taking precedence even when indicator="spinner" is configured, while still receiving message/data props.',
+    data: fourUsersData as Entity[],
+    config: {
+      id: 'content-loading-state-renderer-override',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Loading State — Custom Renderer', subtitle: 'status="loading" · loadingState.renderer override' },
+        content: {
+          mode: 'table',
+          status: 'loading' as const,
+          loadingState: {
+            enabled: true,
+            indicator: 'spinner' as const,
+            message: () => 'Loading records through custom renderer…',
+            renderer: ({ message, data }: { message?: string; data?: Entity[] }) => (
+              <div
+                style={{
+                  border: '1px dashed var(--widgemo-color-border, #dee2e6)',
+                  borderRadius: '8px',
+                  padding: '12px 14px',
+                  background: 'var(--widgemo-color-surfaceBg, #f8f9fa)',
+                  color: 'var(--widgemo-color-text, #212529)',
+                }}
+              >
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem' }}>Custom Loading Renderer</div>
+                <div style={{ fontSize: '0.82rem', marginBottom: '0.35rem' }}>{message ?? 'Loading…'}</div>
+                <div style={{ fontSize: '0.76rem', opacity: 0.8, marginBottom: '0.35rem' }}>Configured indicator: spinner (renderer override is active)</div>
+                <div style={{ fontSize: '0.76rem', opacity: 0.8 }}>Rows in current payload: {data?.length ?? 0}</div>
+              </div>
+            ),
           },
           item: {
             fields: [
@@ -2392,14 +3265,14 @@ const widgemoExamples: Array<{
   // ── NEW: Content errorState ──────────────────────────────────────────────
   {
     id: 'content-error-state',
-    title: 'Content: errorState with retry',
-    description: 'ContentConfig.status="error" with errorState: message fn, retry button (label + onRetry callback), severity="warning".',
+    title: 'Content: errorState warning + retry',
+    description: 'Demonstrates status="error" with severity="warning" and a centered retry action visually separated below the message.',
     data: [] as Entity[],
     config: {
       id: 'content-error-state',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Error State', subtitle: 'status="error" · errorState message fn · retry · severity="warning"' },
+        header: { title: 'Error State — Warning + Retry', subtitle: 'status="error" · severity="warning" · centered retry below message' },
         content: {
           mode: 'table',
           status: 'error' as const,
@@ -2407,13 +3280,100 @@ const widgemoExamples: Array<{
           errorState: {
             enabled: true,
             message: (err: unknown) => `Error: ${(err as Error)?.message ?? 'Something went wrong'}`,
-            retry: { label: 'Try Again', onRetry: () => alert('Retry triggered!') },
+            retry: {
+              label: 'Try Again',
+              onRetry: () =>
+                fireDemoAction({
+                  actionId: 'content-error-retry',
+                  actionLabel: 'Try Again',
+                  source: 'action.onAction',
+                  zone: 'content',
+                  data: [] as Record<string, unknown>[],
+                }),
+            },
             severity: 'warning' as const,
           },
           item: {
             fields: [{ key: 'name', label: 'Name' }],
             layout: { type: 'auto' },
           },
+        },
+        footer: {
+          subtitle: 'Expected: warning tone + centered retry button under message with visible spacing.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-error-state-severity-info',
+    title: 'Content: errorState severity=info',
+    description: 'Demonstrates severity="info" runtime tone so users can compare info, warning, and error presentations.',
+    data: [] as Entity[],
+    config: {
+      id: 'content-error-state-severity-info',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Error State — Severity Info', subtitle: 'status="error" · severity="info" · informational tone' },
+        content: {
+          mode: 'table',
+          status: 'error' as const,
+          error: { message: 'Background sync is delayed; latest snapshot is still usable.' },
+          errorState: {
+            enabled: true,
+            message: (err: unknown) => `Info severity demo: ${(err as Error)?.message ?? 'Informational state'}`,
+            severity: 'info' as const,
+            retry: false,
+          },
+          item: {
+            fields: [{ key: 'name', label: 'Name' }],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: softer informational tone than warning/error states.',
+        },
+      },
+    },
+  },
+
+  {
+    id: 'content-error-state-severity-error',
+    title: 'Content: errorState severity=error',
+    description: 'Demonstrates severity="error" styling with a centered retry action to compare against warning and info severities.',
+    data: [] as Entity[],
+    config: {
+      id: 'content-error-state-severity-error',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Error State — Severity Error', subtitle: 'status="error" · severity="error" · centered retry below message' },
+        content: {
+          mode: 'table',
+          status: 'error' as const,
+          error: { message: 'Batch processing failed after multiple retries' },
+          errorState: {
+            enabled: true,
+            message: (err: unknown) => `Error severity demo: ${(err as Error)?.message ?? 'Unknown failure'}`,
+            severity: 'error' as const,
+            retry: {
+              label: 'Retry Batch',
+              onRetry: () =>
+                fireDemoAction({
+                  actionId: 'content-error-severity-error-retry',
+                  actionLabel: 'Retry Batch',
+                  source: 'action.onAction',
+                  zone: 'content',
+                  data: [] as Record<string, unknown>[],
+                }),
+            },
+          },
+          item: {
+            fields: [{ key: 'name', label: 'Name' }],
+            layout: { type: 'auto' },
+          },
+        },
+        footer: {
+          subtitle: 'Expected: strongest error tone + centered retry button under message with visible spacing.',
         },
       },
     },
@@ -2423,7 +3383,7 @@ const widgemoExamples: Array<{
   {
     id: 'content-groupings',
     title: 'ContentConfig.groupings',
-    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function. Different from legacy groupBy string.',
+    description: 'groupings[]: GroupingConfig with fieldKey, initiallyCollapsed=true, and custom renderer function.',
     data: eightUsersData as Entity[],
     config: {
       id: 'content-groupings',
@@ -2619,6 +3579,104 @@ const widgemoExamples: Array<{
     },
   },
 
+  {
+    id: 'grouping-controls-dropdown-only',
+    title: 'Grouping Controls — Dropdown Only',
+    description: 'groupings[].showDropdownControl=true and showHeaderControls=false. Users change grouping from the dropdown without header icons.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-dropdown-only',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Dropdown Only', subtitle: 'showDropdownControl=true · showHeaderControls=false' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showDropdownControl: true,
+              showHeaderControls: false,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-controls-icons-only',
+    title: 'Grouping Controls — Header Icons Only',
+    description: 'Header grouping icons are enabled by groupable fields while dropdown remains hidden.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-icons-only',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Header Icons Only', subtitle: 'showDropdownControl=false (default) · showHeaderControls=true' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showHeaderControls: true,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    id: 'grouping-controls-dropdown-and-icons',
+    title: 'Grouping Controls — Dropdown + Header Icons',
+    description: 'Both grouping controls are enabled so users can use either dropdown or header icons.',
+    data: eightUsersData as Entity[],
+    config: {
+      id: 'grouping-controls-dropdown-and-icons',
+      collapse: { initialState: 'expanded' },
+      zones: {
+        header: { title: 'Grouping Controls: Dropdown + Header Icons', subtitle: 'showDropdownControl=true · showHeaderControls=true' },
+        content: {
+          mode: 'table',
+          groupings: [
+            {
+              fieldKey: 'department',
+              showDropdownControl: true,
+              showHeaderControls: true,
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+              { key: 'department', label: 'Department', groupable: true },
+              { key: 'status', label: 'Status', renderAs: 'badge', groupable: true },
+            ],
+            layout: { type: 'auto' },
+          },
+        },
+      },
+    },
+  },
+
   // ── NEW: Content filtering, sorting, virtualization, style, themeOverrides ─
   {
     id: 'content-filtering-sorting',
@@ -2659,14 +3717,14 @@ const widgemoExamples: Array<{
   // ── NEW: Search — advanced options ───────────────────────────────────────
   {
     id: 'search-advanced',
-    title: 'Search — fields, debounceMs, onSearch',
-    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. onSearch callback logs each query. search.enabled explicitly set.',
+    title: 'Search — fields and debounceMs',
+    description: 'content.search: fields restricts search to name+role only (ignores department). debounceMs=500. search.enabled explicitly set.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'search-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500 · onSearch callback (check console)' },
+        header: { title: 'Advanced Search Config', subtitle: 'search.fields · debounceMs=500' },
         content: {
           mode: 'grid',
           search: {
@@ -2674,7 +3732,6 @@ const widgemoExamples: Array<{
             placeholder: 'Search by name or role only…',
             fields: ['name', 'role'],
             debounceMs: 500,
-            onSearch: (query: string) => console.log('[onSearch]', query),
           },
           item: {
             fields: [
@@ -2690,69 +3747,70 @@ const widgemoExamples: Array<{
     },
   },
 
-  // ── NEW: Board advanced (actions, actionsPosition, hooks, swimlane labels) ─
+  // ── NEW: Board advanced (actions, hooks, swimlane labels) ─────────────────
   {
     id: 'board-advanced',
-    title: 'Board — card actions, hooks, swimlane labels',
-    description: 'BoardModeConfig: card actions array, actionsPosition="hover", hooks.onDragStart/onDrop (console logs), swimlanes.labels+defaultLabel, BoardColumnConfig.value (explicit match value differs from id).',
+    title: 'Board — card actions, swimlane items',
+    description: 'BoardModeConfig with columns and swimlanes using items arrays. ContentConfig.actions for card actions. dragEnabled for drag-and-drop.',
     data: twentyUsersData as Entity[],
     config: {
       id: 'board-advanced',
       collapse: { initialState: 'expanded' },
       zones: {
-        header: { title: 'Advanced Board Config', subtitle: 'card actions · actionsPosition=hover · hooks · swimlane labels+defaultLabel · column.value' },
+        header: { title: 'Advanced Board Config', subtitle: 'columns · swimlanes with items · card actions · dragEnabled' },
         content: {
           mode: 'board',
           modeConfig: {
             board: {
-              columnField: 'status',
-              columns: [
-                { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
-                { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
-                { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
-              ],
+              columns: {
+                field: 'status',
+                items: [
+                  { id: 'col-active',   label: '▶ Active',      value: 'active',   color: '#28a745' },
+                  { id: 'col-pending',  label: '⏳ In Progress', value: 'pending',  color: '#fd7e14' },
+                  { id: 'col-inactive', label: '✓ Done',         value: 'inactive', color: '#6c757d' },
+                ]
+              },
               swimlanes: {
                 field: 'department',
-                order: ['Engineering', 'Design', 'Business'],
-                labels: {
-                  Engineering: 'R&D Engineering',
-                  Design:      'Product Design',
-                  Business:    'Business Dev',
-                },
-                defaultLabel: 'Other Teams',
+                items: [
+                  { id: 'eng',  label: 'R&D Engineering', value: 'Engineering' },
+                  { id: 'des',  label: 'Product Design',  value: 'Design' },
+                  { id: 'bus',  label: 'Business Dev',    value: 'Business' },
+                ]
               },
               dragEnabled: true,
-              actionsPosition: 'hover' as const,
-              actions: {
-                card: [
-                  {
-                    id: 'card-view',
-                    label: 'View',
-                    icon: 'view',
-                    placement: 'pinned' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                  {
-                    id: 'card-edit',
-                    label: 'Edit',
-                    icon: 'edit',
-                    placement: 'menu' as const,
-                    onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
-                  },
-                ],
-              },
-              hooks: {
-                onDragStart: (item: Entity, fromColumn: string) => console.log('[onDragStart]', item.name, 'from', fromColumn),
-                onDrop: (item: Entity, fromColumn: string, toColumn: string) => console.log('[onDrop]', item.name, `${fromColumn} → ${toColumn}`),
-              },
-              item: {
-                fields: [
-                  { key: 'name', label: 'Name', type: 'text' as const },
-                  { key: 'role', label: 'Role', renderAs: 'badge' },
-                ],
-                layout: { type: 'auto' as const },
-              },
             },
+          },
+          gestures: [
+            {
+              type: 'item-drop',
+              enabled: true,
+              interactionId: 'board-drop',
+              interactionLabel: 'Board Drop'
+            }
+          ],
+          actions: [
+            {
+              id: 'card-view',
+              label: 'View',
+              icon: 'view',
+              placement: 'pinned' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-view', actionLabel: 'View', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+            {
+              id: 'card-edit',
+              label: 'Edit',
+              icon: 'edit',
+              placement: 'menu' as const,
+              onAction: (ctx: InteractionContext) => fireDemoAction({ actionId: 'card-edit', actionLabel: 'Edit', source: 'action.onAction', entity: ctx.entity as Record<string, unknown> }),
+            },
+          ],
+          item: {
+            fields: [
+              { key: 'name', label: 'Name', type: 'text' as const },
+              { key: 'role', label: 'Role', renderAs: 'badge' },
+            ],
+            layout: { type: 'auto' as const },
           },
         },
       },
@@ -2798,4 +3856,16 @@ const widgemoExamples: Array<{
     },
   },
 ];
-export default widgemoExamples;
+
+const widgemoExamplesWithInteractionSink = widgemoExamples.map((example) => ({
+  ...example,
+  config: {
+    ...example.config,
+    interactions: {
+      ...(example.config?.interactions ?? {}),
+      onEvent: emitDemoInteraction,
+    },
+  },
+}));
+
+export default widgemoExamplesWithInteractionSink;

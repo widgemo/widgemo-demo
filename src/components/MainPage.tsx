@@ -1,6 +1,7 @@
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
-import { TeaserSection, AnatomySection, GallerySection, AdvancedSection, ResourcesSection } from './main-page';
+import { TeaserSection, AnatomySection, AdvancedSection, ResourcesSection } from './main-page';
 
 export const MainPage: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -9,32 +10,33 @@ export const MainPage: React.FC = () => {
   // Determine if current theme should have dark teaser text
   const shouldHaveDarkTeaserText = currentTheme === 'light';
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const navbarHeight = 56; // Bootstrap navbar height
-      const elementPosition = element.offsetTop - navbarHeight;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-  };
-
-   
-  const handleLoadToSandbox = (configId: string) => {
-    // Navigate to sandbox with config param
-    navigate(`/sandbox?config=${configId}`);
-  };
-
   return (
     <div style={{ minHeight: '100vh' }}>
       <TeaserSection
-        onExploreGallery={() => scrollToSection('gallery')}
+        onExploreExamples={() => navigate('/examples')}
         onJumpToSandbox={() => navigate('/sandbox')}
         shouldHaveDarkText={shouldHaveDarkTeaserText}
       />
 
       <AnatomySection />
 
-      <GallerySection onLoadToSandbox={handleLoadToSandbox} currentTheme={currentTheme} />
+      <section className="section-block theme-aware-section">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
+          <div className="section-header">
+            <h2 className="section-title theme-aware-text">See It Working</h2>
+            <p className="section-subtitle theme-aware-text">
+              Every example is a real Widgemo config — open any of them in the Sandbox and edit live.
+            </p>
+          </div>
+          <Button
+            variant="primary"
+            onClick={() => navigate('/examples')}
+            style={{ backgroundColor: '#5f4b8b', borderColor: '#5f4b8b', padding: '0.6rem 2rem', fontSize: '1rem' }}
+          >
+            Browse Examples →
+          </Button>
+        </div>
+      </section>
 
       <AdvancedSection currentTheme={currentTheme} />
 
