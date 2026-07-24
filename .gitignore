@@ -26,3 +26,4 @@ dist-ssr
 # SSL certificates
 key.pem
 cert.pem
+.vercel
